@@ -2959,7 +2959,7 @@ const TECH_JOURNEYS = {
   ]
 };
 class Component extends DCLogic {
-  state = { selectedId: null, playing: false, step: -1, tab: 'journey', selectedVertical: 'apparel', pgSel: null, pgPersona: null, pgRows: { personas: true, pains: true, opps: true, backstage: true }, journeyVertical: 'b2bcloud' };
+  state = { selectedId: null, playing: false, step: -1, tab: 'process', selectedVertical: 'apparel', pgSel: null, pgPersona: null, pgRows: { personas: true, pains: true, opps: true, backstage: true }, journeyVertical: 'b2bcloud' };
   pickVertical = (id) => this.setState({ selectedVertical: id });
   pickJourneyVertical = (id) => this.setState({ journeyVertical: id, pgSel: null, pgPersona: null });
   pgRowsState() {
