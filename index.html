@@ -9,7 +9,7 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;475;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;475;500;600&family=Inter+Tight:wght@500;600&family=Marcellus&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
 <style>
   body { margin: 0; }
   a { color: #1b61c9; }
@@ -19,13 +19,18 @@
 </helmet>
 <div style="font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#ffffff;color:#181d26;min-height:100vh;">
 
-  <div style="display:flex;gap:32px;padding:0 48px;border-bottom:1px solid #dddddd;">
-    <button onClick="{{ selectProcessTab }}" style="background:none;border:none;border-bottom:2px solid {{ processTabBorder }};padding:20px 0;font-size:16px;font-weight:500;color:{{ processTabColor }};cursor:pointer;">Process</button>
-    <button onClick="{{ selectJourneyTab }}" style="background:none;border:none;border-bottom:2px solid {{ journeyTabBorder }};padding:20px 0;font-size:16px;font-weight:500;color:{{ journeyTabColor }};cursor:pointer;">Customer Journeys</button>
-    <button onClick="{{ selectCioTab }}" style="background:none;border:none;border-bottom:2px solid {{ cioTabBorder }};padding:20px 0;font-size:16px;font-weight:500;color:{{ cioTabColor }};cursor:pointer;">Case Studies</button>
-    <button onClick="{{ selectBaTab }}" style="background:none;border:none;border-bottom:2px solid {{ baTabBorder }};padding:20px 0;font-size:16px;font-weight:500;color:{{ baTabColor }};cursor:pointer;">Before and After</button>
-    <button onClick="{{ selectD2cTab }}" style="background:none;border:none;border-bottom:2px solid {{ d2cTabBorder }};padding:20px 0;font-size:16px;font-weight:500;color:{{ d2cTabColor }};cursor:pointer;">Design to Code Pipeline</button>
-  </div>
+  <header style="background:#808a7e;border-bottom:8px solid #767d71;">
+    <div style="max-width:1640px;margin:0 auto;padding:36px 40px;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:20px 40px;">
+      <div style="font-family:'Marcellus',Georgia,serif;font-size:24px;line-height:1.15;color:#ffffff;max-width:180px;">Customer Knowledge Base</div>
+      <nav style="order:2;flex:1 1 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px;">
+        <button onClick="{{ selectProcessTab }}" style="background:none;border:none;border-bottom:1px solid {{ processTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ processTabColor }};cursor:pointer;white-space:nowrap;">Process</button>
+        <button onClick="{{ selectJourneyTab }}" style="background:none;border:none;border-bottom:1px solid {{ journeyTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ journeyTabColor }};cursor:pointer;white-space:nowrap;">Customer Journeys</button>
+        <button onClick="{{ selectCioTab }}" style="background:none;border:none;border-bottom:1px solid {{ cioTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ cioTabColor }};cursor:pointer;white-space:nowrap;">Case Studies</button>
+        <button onClick="{{ selectBaTab }}" style="background:none;border:none;border-bottom:1px solid {{ baTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ baTabColor }};cursor:pointer;white-space:nowrap;">Keepers</button>
+        <button onClick="{{ selectD2cTab }}" style="background:none;border:none;border-bottom:1px solid {{ d2cTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ d2cTabColor }};cursor:pointer;white-space:nowrap;">Design to Code</button>
+      </nav>
+    </div>
+  </header>
 
   <sc-if value="{{ isSoonTab }}" hint-placeholder-val="{{ false }}">
     <div style="padding:120px 48px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;">
@@ -36,6 +41,7 @@
 
   <sc-if value="{{ isBaTab }}" hint-placeholder-val="{{ false }}">
     <div style="font-family: Inter, system-ui, sans-serif; padding: 48px 40px 64px; box-sizing: border-box">
+      <div style="max-width: 1560px; margin: 0 auto 48px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #41454d;">Evidence-based Patterns to Add to Our MCP Library</div>
       <div style="max-width: 1560px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px;">
         <sc-for list="{{ baChips }}" as="c" hint-placeholder-count="5">
           <button onClick="{{ c.pick }}" style="font-family:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:180px;padding:10px 14px;border-radius:6px;cursor:pointer;background:{{ c.bg }};border:1px solid {{ c.border }};">
@@ -225,7 +231,7 @@
   <sc-if value="{{ isJourneyTab }}" hint-placeholder-val="{{ false }}">
   <div style="font-family: Inter, system-ui, sans-serif; color: #333840; background: #ffffff; padding: 48px 40px 64px; box-sizing: border-box">
 
-    <div style="max-width: 1560px; margin: 0 auto 16px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #181d26;">Understanding Customers Across Verticals</div>
+    <div style="max-width: 1560px; margin: 0 auto 48px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #41454d;">Understanding Customers Across Verticals</div>
     <div style="max-width: 1560px; margin: 0 auto 32px; display: flex; flex-wrap: wrap; gap: 8px;">
       <sc-for list="{{ journeyChips }}" as="v" hint-placeholder-count="5">
         <button onClick="{{ v.pick }}" style="font-family:inherit;font-size:13px;font-weight:500;padding:7px 13px;border-radius:6px;cursor:pointer;background:{{ v.bg }};color:{{ v.color }};border:1px solid {{ v.border }};">{{ v.label }}</button>
@@ -260,7 +266,7 @@
     <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; max-width: 1560px; margin: 0 auto 32px">
       <div style="flex: 1 1 100%; min-width: 0">
         <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 12px">{{ journeyEyebrow }}</div>
-        <h1 style="font-size: 40px; font-weight: 400; line-height: 1.15; letter-spacing: -0.4px; color: #181d26; margin: 0 0 12px">{{ journeyTitle }}</h1>
+        <h1 style="font-size: 36px; font-weight: 400; line-height: 1.15; letter-spacing: -0.4px; color: #181d26; margin: 0 0 12px">{{ journeyTitle }}</h1>
         <p style="font-size: 14px; line-height: 1.5; color: #333840; margin: 0; max-width: 760px; text-wrap: pretty">{{ journeyDesc }}</p>
         <p style="font-size: 13px; line-height: 1.5; color: #41454d; margin: 10px 0 0; max-width: 760px; text-wrap: pretty">{{ journeySources }}</p>
       </div>
@@ -566,7 +572,7 @@
   <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:space-between">
   <header style="display:flex;flex-direction:column;gap:16px;max-width:760px;flex:1 1 480px">
     <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d">Customer journey map · Draft v0.1 · Sept 2026</div>
-    <h1 style="margin:0;font-size:40px;font-weight:400;line-height:1.2;color:#181d26;text-wrap:pretty">A CIO's path from AI pressure to platform value: GitLab × Whirl</h1>
+    <h1 style="margin:0;font-size:36px;font-weight:400;line-height:1.15;letter-spacing:-0.4px;color:#181d26;text-wrap:pretty">A CIO's path from AI pressure to platform value: GitLab + Whirl</h1>
     <p style="margin:0;font-size:18px;line-height:1.45;color:#333840;text-wrap:pretty">Built from a 9-minute customer conversation between Marco Castillo (Whirl) and Manu Narayan (CIO, GitLab). Where the transcript is silent, gaps are filled with inferred steps, pain points and opportunities, labelled as such for validation.</p>
   </header>
   <a href="https://www.youtube.com/watch?v=BztNi7cK2mU&amp;t=18s" target="_blank" rel="noopener noreferrer" style="flex:0 1 400px;display:flex;flex-direction:column;gap:10px;color:#181d26;text-decoration:none">
@@ -1555,7 +1561,8 @@
   </sc-if>
 
   <sc-if value="{{ isProcessTab }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:48px 48px 0;max-width:1400px;font-family:Inter, system-ui, sans-serif;color:#181d26;">
+  <div style="padding:48px 40px 0;max-width:1640px;margin:0 auto;box-sizing:border-box;font-family:Inter, system-ui, sans-serif;color:#181d26;">
+    <div style="margin: 0 0 48px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #41454d; text-wrap: pretty;">End-to-End Process that Starts Small and Scales to Multi-App Platform (especially when combined with the Design to Code MCP pipeline)</div>
     <div style="font-size:30px;font-weight:400;line-height:1.2;font-family:'Inter Tight','Inter',sans-serif;margin-bottom:8px;">Process</div>
     <div style="font-size:14px;color:#41454d;margin-bottom:32px;text-wrap:pretty;">Time scales can range from a few weeks (with little user feedback) to a quarterly release (with deeper and more grounded user research)</div>
     <div style="display:grid;grid-template-columns:minmax(200px,1fr) auto minmax(200px,1fr) auto minmax(200px,1fr) auto minmax(200px,1fr);align-items:stretch;gap:12px;overflow-x:auto;padding-bottom:4px;">
@@ -1641,8 +1648,9 @@
   </sc-if>
 
   <sc-if value="{{ isD2cTab }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:48px;max-width:1100px;">
-    <div style="font-size:30px;font-weight:400;line-height:1.2;font-family:'Inter Tight','Inter',sans-serif;margin-bottom:8px;">Design-to-Code</div>
+  <div style="padding:48px 40px;max-width:1640px;margin:0 auto;box-sizing:border-box;">
+    <div style="margin: 0 0 48px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #41454d; text-wrap: pretty;">A Summary of the Benefits to Design Iterations, Design System Management, Developer Hand-offs, and Scaling the Platform</div>
+    <div style="font-size:30px;font-weight:400;line-height:1.2;font-family:'Inter Tight','Inter',sans-serif;margin-bottom:8px;">Design-to-Code Pipeline</div>
     <div style="font-size:14px;color:#41454d;margin-bottom:40px;">Suggested path to a Claude Design → MCP Server → React pipeline (design to code).</div>
 
     <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
@@ -3015,19 +3023,19 @@ class Component extends DCLogic {
     const sel = this.state.selectedId ? NODES[this.state.selectedId] : null;
     const isFlowTab = this.state.tab === 'flow';
     return {
-      isFlowTab, isJourneyTab: this.state.tab === 'journey', isTeamTab: this.state.tab === 'team', isCioTab: this.state.tab === 'cio', selectCioTab: () => this.setState({ tab: 'cio' }), cioTabBorder: this.state.tab === 'cio' ? '#181d26' : 'transparent', cioTabColor: this.state.tab === 'cio' ? '#181d26' : '#41454d', isIaTab: this.state.tab === 'ia', isProcessTab: this.state.tab === 'process',
+      isFlowTab, isJourneyTab: this.state.tab === 'journey', isTeamTab: this.state.tab === 'team', isCioTab: this.state.tab === 'cio', selectCioTab: () => this.setState({ tab: 'cio' }), cioTabBorder: this.state.tab === 'cio' ? '#ffffff' : 'transparent', cioTabColor: this.state.tab === 'cio' ? '#ffffff' : '#ffffff', isIaTab: this.state.tab === 'ia', isProcessTab: this.state.tab === 'process',
       selectFlowTab: this.selectFlowTab, selectJourneyTab: this.selectJourneyTab, selectTeamTab: this.selectTeamTab, selectIaTab: this.selectIaTab, selectProcessTab: this.selectProcessTab,
       flowTabBorder: isFlowTab ? '#181d26' : 'transparent', flowTabColor: isFlowTab ? '#181d26' : '#41454d',
-      journeyTabBorder: this.state.tab === 'journey' ? '#181d26' : 'transparent', journeyTabColor: this.state.tab === 'journey' ? '#181d26' : '#41454d',
-      teamTabBorder: this.state.tab === 'team' ? '#181d26' : 'transparent', teamTabColor: this.state.tab === 'team' ? '#181d26' : '#41454d',
-      iaTabBorder: this.state.tab === 'ia' ? '#181d26' : 'transparent', iaTabColor: this.state.tab === 'ia' ? '#181d26' : '#41454d',
+      journeyTabBorder: this.state.tab === 'journey' ? '#ffffff' : 'transparent', journeyTabColor: this.state.tab === 'journey' ? '#ffffff' : '#ffffff',
+      teamTabBorder: this.state.tab === 'team' ? '#ffffff' : 'transparent', teamTabColor: this.state.tab === 'team' ? '#ffffff' : '#ffffff',
+      iaTabBorder: this.state.tab === 'ia' ? '#ffffff' : 'transparent', iaTabColor: this.state.tab === 'ia' ? '#ffffff' : '#ffffff',
       caseChips: [{ id: 'gitlab', label: 'GitLab' }].map(c => { const on = (this.state.caseStudy || 'gitlab') === c.id; return { ...c, pick: () => this.setState({ caseStudy: c.id }), bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#333840', border: on ? '#181d26' : '#dddddd' }; }),
       cio: CIO_VALS(this.props),
       isGitlabCase: (this.state.caseStudy || 'gitlab') === 'gitlab',
       isSoonTab: this.state.tab === 'research',
       isD2cTab: this.state.tab === 'd2c',
       selectD2cTab: () => this.setState({ tab: 'd2c' }),
-      d2cTabBorder: this.state.tab === 'd2c' ? '#181d26' : 'transparent', d2cTabColor: this.state.tab === 'd2c' ? '#181d26' : '#41454d',
+      d2cTabBorder: this.state.tab === 'd2c' ? '#ffffff' : 'transparent', d2cTabColor: this.state.tab === 'd2c' ? '#ffffff' : '#ffffff',
       isBaTab: this.state.tab === 'ba',
       baImgOpen: !!this.state.baImgOpen,
       baModal1: (this.state.baImgSrc || 'uploads/1.png') === 'uploads/1.png', baModal2: this.state.baImgSrc === 'uploads/2.png', baModal4: this.state.baImgSrc === 'uploads/4.png',
@@ -3045,11 +3053,11 @@ class Component extends DCLogic {
         { id: 'dep2', label: 'Dependency Graph 2', desc: 'Sample only' },
       ].map(c => { const on = (this.state.baSub || 'obs') === c.id; return { ...c, hasDesc: !!c.desc, pick: () => this.setState({ baSub: c.id }), bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#181d26', descColor: on ? '#e0e2e6' : '#41454d', border: on ? '#181d26' : '#dddddd' }; }),
       isProcessTab: this.state.tab === 'process',
-      soonTitle: { ba: 'Before and After', research: 'Research', process: 'Process', d2c: 'Design to Code Pipeline' }[this.state.tab] || '',
+      soonTitle: { ba: 'Keepers', research: 'Research', process: 'Process', d2c: 'Design to Code' }[this.state.tab] || '',
       selectBaTab: () => this.setState({ tab: 'ba' }), selectResearchTab: () => this.setState({ tab: 'research' }),
-      baTabBorder: this.state.tab === 'ba' ? '#181d26' : 'transparent', baTabColor: this.state.tab === 'ba' ? '#181d26' : '#41454d',
-      researchTabBorder: this.state.tab === 'research' ? '#181d26' : 'transparent', researchTabColor: this.state.tab === 'research' ? '#181d26' : '#41454d',
-      processTabBorder: this.state.tab === 'process' ? '#181d26' : 'transparent', processTabColor: this.state.tab === 'process' ? '#181d26' : '#41454d',
+      baTabBorder: this.state.tab === 'ba' ? '#ffffff' : 'transparent', baTabColor: this.state.tab === 'ba' ? '#ffffff' : '#ffffff',
+      researchTabBorder: this.state.tab === 'research' ? '#ffffff' : 'transparent', researchTabColor: this.state.tab === 'research' ? '#ffffff' : '#ffffff',
+      processTabBorder: this.state.tab === 'process' ? '#ffffff' : 'transparent', processTabColor: this.state.tab === 'process' ? '#ffffff' : '#ffffff',
       verticalChips: VERTICAL_LIST.map(v => {
         const on = vertId === v.id;
         return { label: v.label, bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#333840', border: on ? '#181d26' : '#dddddd', pick: () => this.pickVertical(v.id) };
