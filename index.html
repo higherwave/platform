@@ -225,6 +225,7 @@
   <sc-if value="{{ isJourneyTab }}" hint-placeholder-val="{{ false }}">
   <div style="font-family: Inter, system-ui, sans-serif; color: #333840; background: #ffffff; padding: 48px 40px 64px; box-sizing: border-box">
 
+    <div style="max-width: 1560px; margin: 0 auto 16px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #181d26;">Understanding Customers Across Verticals</div>
     <div style="max-width: 1560px; margin: 0 auto 32px; display: flex; flex-wrap: wrap; gap: 8px;">
       <sc-for list="{{ journeyChips }}" as="v" hint-placeholder-count="5">
         <button onClick="{{ v.pick }}" style="font-family:inherit;font-size:13px;font-weight:500;padding:7px 13px;border-radius:6px;cursor:pointer;background:{{ v.bg }};color:{{ v.color }};border:1px solid {{ v.border }};">{{ v.label }}</button>
