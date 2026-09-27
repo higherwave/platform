@@ -23,9 +23,9 @@
     <div style="max-width:1640px;margin:0 auto;padding:36px 40px;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:20px 40px;">
       <div style="font-family:'Marcellus',Georgia,serif;font-size:24px;line-height:1.15;color:#ffffff;max-width:180px;">Customer Knowledge Base</div>
       <nav style="order:2;flex:1 1 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px;">
+        <button onClick="{{ selectCioTab }}" style="background:none;border:none;border-bottom:1px solid {{ cioTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ cioTabColor }};cursor:pointer;white-space:nowrap;">Case Studies</button>
         <button onClick="{{ selectProcessTab }}" style="background:none;border:none;border-bottom:1px solid {{ processTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ processTabColor }};cursor:pointer;white-space:nowrap;">Process</button>
         <button onClick="{{ selectJourneyTab }}" style="background:none;border:none;border-bottom:1px solid {{ journeyTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ journeyTabColor }};cursor:pointer;white-space:nowrap;">Customer Journeys</button>
-        <button onClick="{{ selectCioTab }}" style="background:none;border:none;border-bottom:1px solid {{ cioTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ cioTabColor }};cursor:pointer;white-space:nowrap;">Case Studies</button>
         <button onClick="{{ selectBaTab }}" style="background:none;border:none;border-bottom:1px solid {{ baTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ baTabColor }};cursor:pointer;white-space:nowrap;">Keepers</button>
         <button onClick="{{ selectD2cTab }}" style="background:none;border:none;border-bottom:1px solid {{ d2cTabBorder }};padding:2px 0;font-family:'Source Serif 4',Georgia,serif;font-size:17px;font-weight:400;color:{{ d2cTabColor }};cursor:pointer;white-space:nowrap;">Design to Code</button>
       </nav>
@@ -2968,7 +2968,7 @@ const TECH_JOURNEYS = {
   ]
 };
 class Component extends DCLogic {
-  state = { selectedId: null, playing: false, step: -1, tab: 'process', selectedVertical: 'apparel', pgSel: null, pgPersona: null, pgRows: { personas: true, pains: true, opps: true, backstage: true }, journeyVertical: 'b2bcloud' };
+  state = { selectedId: null, playing: false, step: -1, tab: 'cio', selectedVertical: 'apparel', pgSel: null, pgPersona: null, pgRows: { personas: true, pains: true, opps: true, backstage: true }, journeyVertical: 'b2bcloud' };
   pickVertical = (id) => this.setState({ selectedVertical: id });
   pickJourneyVertical = (id) => this.setState({ journeyVertical: id, pgSel: null, pgPersona: null });
   pgRowsState() {
