@@ -46,7 +46,7 @@
     <div style="font-family: Inter, system-ui, sans-serif; padding: 48px 40px 64px; box-sizing: border-box">
       <div style="max-width: 1560px; margin: 0 auto 48px; font-size: 18px; font-weight: 500; line-height: 1.3; color: #41454d;">Evidence-based Patterns to Add to Our MCP Library</div>
       <div style="max-width: 1560px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px;">
-        <sc-for list="{{ baChips }}" as="c" hint-placeholder-count="5">
+        <sc-for list="{{ baChips }}" as="c" hint-placeholder-count="4">
           <button onClick="{{ c.pick }}" style="font-family:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:180px;padding:10px 14px;border-radius:6px;cursor:pointer;background:{{ c.bg }};border:1px solid {{ c.border }};">
             <span style="font-size:13px;font-weight:500;color:{{ c.color }};">{{ c.label }}</span>
             <sc-if value="{{ c.hasDesc }}" hint-placeholder-val="{{ true }}">
@@ -3063,8 +3063,7 @@ class Component extends DCLogic {
         { id: 'obs', label: 'Observability Redesign', desc: 'Automated AI investigations' },
         { id: 'omni', label: 'Omnichannel Marketing', desc: 'Predictive Analytics' },
         { id: 'api', label: 'API and Doc Repo', desc: 'Claude agents and Proto files' },
-        { id: 'dep1', label: 'Dependency Graph 1', desc: 'Sample only' },
-        { id: 'dep2', label: 'Dependency Graph 2', desc: 'Sample only' },
+        { id: 'dep1', label: 'Integrations', desc: 'and dependencies' },
       ].map(c => { const on = (this.state.baSub || 'obs') === c.id; return { ...c, hasDesc: !!c.desc, pick: () => this.setState({ baSub: c.id }), bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#181d26', descColor: on ? '#e0e2e6' : '#41454d', border: on ? '#181d26' : '#dddddd' }; }),
       isProcessTab: this.state.tab === 'process',
       soonTitle: { ba: 'Keepers', research: 'Research', process: 'Process', d2c: 'Design to Code' }[this.state.tab] || '',

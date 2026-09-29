@@ -7,7 +7,7 @@ Replace the previous `deploy/` contents with this folder. `index.html` is the fu
 - `support.js` — runtime (required, keep next to index.html)
 - `assets/cio-video-thumb.png` — Case Studies video thumbnail
 - `uploads/1.png`, `2.png`, `4.png` — Keepers thumbnails and full-size views
-- `uploads/dep-graph-1.png` — Keepers › Dependency Graph 1 thumbnail (links to the live Whirl app)
+- `uploads/dep-graph-1.png` — Keepers › Integrations thumbnail (links to the live Whirl app)
 
 ## Changes since the last deploy
 ### Header
