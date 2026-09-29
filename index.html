@@ -110,6 +110,16 @@
           </div>
         </sc-if>
       </sc-if>
+      <sc-if value="{{ isBaDep1 }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width: 1560px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 12px; color: #181d26;">
+          <div style="font-size: 14px; color: #41454d;">Click the thumbnail to open the live app in a new window.</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px;">
+            <a href="https://apptest1-eta.vercel.app/" target="_blank" rel="noopener noreferrer" style="display: block;">
+              <img src="uploads/dep-graph-1.png" alt="Whirl integration graph: impact of Workday Worker Type across Okta, ServiceNow and NetSuite" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: top left; display: block; border: 1px solid #dddddd; border-radius: 10px; cursor: pointer; background: #ffffff;"></img>
+            </a>
+          </div>
+        </div>
+      </sc-if>
       <sc-if value="{{ isBaSoon }}" hint-placeholder-val="{{ false }}">
         <div style="max-width: 1560px; margin: 0 auto; padding: 96px 0; text-align: center; font-size: 16px; color: #41454d;">Content coming soon.</div>
       </sc-if>
@@ -3047,7 +3057,8 @@ class Component extends DCLogic {
       openBaImg4: () => this.setState({ baImgOpen: true, baImgSrc: 'uploads/4.png' }),
       closeBaImg: () => this.setState({ baImgOpen: false }),
       isBaObs: (this.state.baSub || 'obs') === 'obs',
-      isBaSoon: (this.state.baSub || 'obs') !== 'obs',
+      isBaDep1: this.state.baSub === 'dep1',
+      isBaSoon: !['obs', 'dep1'].includes(this.state.baSub || 'obs'),
       baChips: [
         { id: 'obs', label: 'Observability Redesign', desc: 'Automated AI investigations' },
         { id: 'omni', label: 'Omnichannel Marketing', desc: 'Predictive Analytics' },
