@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Created Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="#" class="brand">Prototype Gallery</a>
+    <div class="muted" id="total"></div>
+  </div>
+</header>
+
+<main id="gallery" class="wrap page">
+  <div class="intro">
+    <h1>AI-Created Prototypes</h1>
+    <p>Browse working prototypes by interaction pattern. Pin the ones you return to and they'll stay at the top.</p>
+  </div>
+  <section id="pinned-section" class="section" hidden>
+    <div class="section-head"><h2>Pinned</h2><span class="count" id="pinned-count"></span></div>
+    <div class="grid" id="pinned-grid"></div>
+  </section>
+  <section class="section">
+    <div class="section-head"><h2 id="grid-title">All prototypes</h2><span class="count" id="grid-count"></span></div>
+    <div class="filters" role="tablist" id="filters"></div>
+    <div class="rule"></div>
+    <div class="empty" id="grid-empty" hidden>Everything in this category is pinned above.</div>
+    <div class="grid grid-main" id="grid"></div>
+  </section>
+</main>
+
+<main id="detail" class="wrap page detail" hidden></main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

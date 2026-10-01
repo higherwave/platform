@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#ffffff;color:#333840;font-family:"Haas","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#1b61c9;text-decoration:none}
+a:hover{color:#1a3866}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+  <header style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center">
+    <div style="width:100%;max-width:1280px;margin:0 auto;padding:0 48px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <button onClick="{{ goHome }}" style="font-size:16px;font-weight:500;color:#181d26;background:none;border:0;padding:0;cursor:pointer">Prototype Gallery</button>
+      <div style="font-size:14px;color:#41454d">{{ totalLabel }}</div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isGallery }}" hint-placeholder-val="{{ true }}">
+  <main style="width:100%;max-width:1280px;margin:0 auto;padding:64px 48px 96px;display:flex;flex-direction:column;gap:64px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h1 style="margin:0;font-size:40px;font-weight:400;line-height:1.2;color:#181d26">AI-Created Prototypes</h1>
+      <p style="margin:0;font-size:16px;line-height:1.5;color:#333840;text-wrap:pretty">Browse working prototypes by interaction pattern. Pin the ones you return to and they'll stay at the top.</p>
+    </div>
+
+    <sc-if value="{{ hasPinned }}" hint-placeholder-val="{{ false }}">
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <h2 style="margin:0;font-size:24px;font-weight:400;line-height:1.35;letter-spacing:0.12px;color:#181d26">Pinned</h2>
+        <span style="font-size:14px;font-weight:500;color:#41454d">{{ pinnedCount }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px">
+        <sc-for list="{{ pinned }}" as="p" hint-placeholder-count="0">
+          <article onClick="{{ p.view }}" style="display:flex;flex-direction:column;gap:16px;min-width:0;cursor:pointer">
+            <div style="position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:1px solid #e0e2e6;background:{{ p.tint }}" style-hover="border-color:#9297a0">
+              <image-slot id="thumb-{{ p.id }}" shape="rounded" radius="10" placeholder="Drop a screenshot" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+              <button onClick="{{ p.togglePin }}" aria-label="Unpin" title="Unpin" style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:9999px;border:1px solid #181d26;background:#181d26;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0" style-active="background:#0d1218">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#ffffff" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"><path d="M10 1.5l4.5 4.5-2 1-2.5 2.5.5 3-1.5 1.5-3-3L2 15l4-4-3-3L4.5 6.5l3 .5L10 4.5l-1-2z"></path></svg>
+              </button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">{{ p.category }}</span>
+              <h3 style="margin:0;font-size:18px;font-weight:500;line-height:1.4;color:#181d26">{{ p.title }}</h3>
+              <p style="margin:0;font-size:14px;line-height:1.45;color:#333840;text-wrap:pretty">{{ p.description }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <h2 style="margin:0;font-size:24px;font-weight:400;line-height:1.35;letter-spacing:0.12px;color:#181d26">{{ gridTitle }}</h2>
+          <span style="font-size:14px;font-weight:500;color:#41454d">{{ gridCount }}</span>
+        </div>
+        <div role="tablist" style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="8">
+            <button role="tab" aria-selected="{{ f.active }}" onClick="{{ f.select }}" style="display:flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:6px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }};font-size:14px;font-weight:500;cursor:pointer">
+              <span>{{ f.label }}</span>
+              <span style="font-size:12px;opacity:0.72">{{ f.count }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="height:1px;background:#dddddd"></div>
+      <sc-if value="{{ gridEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:48px 0;font-size:14px;color:#41454d">Everything in this category is pinned above.</div>
+      </sc-if>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:48px 24px">
+        <sc-for list="{{ items }}" as="p" hint-placeholder-count="6">
+          <article onClick="{{ p.view }}" style="display:flex;flex-direction:column;gap:16px;min-width:0;cursor:pointer">
+            <div style="position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:1px solid #e0e2e6;background:{{ p.tint }}" style-hover="border-color:#9297a0">
+              <image-slot id="thumb-{{ p.id }}" shape="rounded" radius="10" placeholder="Drop a screenshot" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+              <button onClick="{{ p.togglePin }}" aria-label="Pin" title="Pin to top" style="position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:9999px;border:1px solid #dddddd;background:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0" style-active="background:#e0e2e6">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#181d26" stroke-width="1.5" stroke-linejoin="round"><path d="M10 1.5l4.5 4.5-2 1-2.5 2.5.5 3-1.5 1.5-3-3L2 15l4-4-3-3L4.5 6.5l3 .5L10 4.5l-1-2z"></path></svg>
+              </button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">{{ p.category }}</span>
+              <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><h3 style="margin: 0; font-size: 18px; font-weight: 500; line-height: 1.4; color: #181d26">{{ p.title }}</h3></div><p style="margin:0;font-size:14px;line-height:1.45;color:#333840;text-wrap:pretty">{{ p.description }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Pattern detail" style="width:100%;max-width:1280px;margin:0 auto;padding:40px 48px 96px;display:flex;flex-direction:column;gap:40px">
+    <button onClick="{{ goHome }}" style="align-self:flex-start;display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;font-size:14px;font-weight:500;color:#1b61c9;cursor:pointer" style-hover="color:#1a3866">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"></path></svg>
+      <span>{{ backLabel }}</span>
+    </button>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:760px;min-width:0">
+        <span style="font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">{{ d.category }}</span>
+        <h1 style="margin:0;font-size:40px;font-weight:400;line-height:1.2;color:#181d26">{{ d.title }}</h1>
+        <p style="margin:0;font-size:16px;line-height:1.5;color:#333840;text-wrap:pretty">{{ d.description }}</p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ d.togglePin }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;border:1px solid {{ d.pinBorder }};background:{{ d.pinBg }};color:{{ d.pinFg }};font-size:14px;font-weight:500;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="{{ d.pinFill }}" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 1.5l4.5 4.5-2 1-2.5 2.5.5 3-1.5 1.5-3-3L2 15l4-4-3-3L4.5 6.5l3 .5L10 4.5l-1-2z"></path></svg>
+          <span>{{ d.pinLabel }}</span>
+        </button>
+        <button onClick="{{ d.open }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;border:1px solid #1b61c9;background:#1b61c9;color:#ffffff;font-size:14px;font-weight:500;cursor:pointer" style-hover="background:#1a3866;border-color:#1a3866">
+          <span>{{ d.openLabel }}</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 1.5h6v6M10.5 1.5L2 10"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px">
+      <section style="background:#f8fafc;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">Why it's useful</h2>
+        <p style="margin:0;font-size:15px;line-height:1.5;color:#181d26;text-wrap:pretty">{{ d.why }}</p>
+      </section>
+      <section style="background:#f8fafc;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">Usability principles</h2>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ d.principles }}" as="item" hint-placeholder-count="3">
+            <li style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#181d26"><span style="flex:none;width:6px;height:6px;border-radius:9999px;background:#1b61c9;margin-top:8px"></span><span>{{ item }}</span></li>
+          </sc-for>
+        </ul>
+      </section>
+      <section style="background:#f8fafc;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:12px;font-weight:500;letter-spacing:0.6px;text-transform:uppercase;color:#41454d">Ways to extend</h2>
+        <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ d.extensions }}" as="item" hint-placeholder-count="3">
+            <li style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#181d26"><span style="flex:none;width:6px;height:6px;border-radius:9999px;background:#181d26;margin-top:8px"></span><span>{{ item }}</span></li>
+          </sc-for>
+        </ul>
+      </section>
+    </div>
+
+    <div style="position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:1px solid #e0e2e6;background:{{ d.tint }}">
+      <image-slot id="thumb-{{ d.id }}" shape="rounded" radius="10" placeholder="Drop a screenshot of this pattern" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:fixed;left:50%;bottom:32px;transform:translateX(-50%);background:#181d26;color:#ffffff;border-radius:12px;padding:14px 20px;font-size:14px;line-height:1.4;box-shadow:0 4px 16px rgba(24,29,38,0.18)">{{ toastText }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tintedThumbnails&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const PROTOS = [
+  { id: 'obs-dashboard', title: 'Service health dashboard', category: 'Observability', description: 'Status, latency, and error rates for each service, with drill-down into incidents.', url: '',
+    why: 'Gives on-call and operations teams one place to see whether services are healthy and where to look first when they aren’t.',
+    principles: ['Visibility of system status', 'Progressive disclosure: summary first, incident detail on demand', 'Consistent color semantics for status'],
+    extensions: ['Per-team saved views', 'SLO burn-rate indicators', 'Link incidents to recent deploys'] },
+  { id: 'obs-logs', title: 'Log explorer', category: 'Observability', description: 'Live-tailing logs with saved queries and filters by field.', url: '',
+    why: 'Lets engineers move from a symptom to the log lines that explain it without writing raw queries.',
+    principles: ['Recognition over recall through field-based filters', 'Flexibility and efficiency: saved queries for experts', 'User control: pause and resume the live tail'],
+    extensions: ['Natural-language query input', 'Group repeated lines into patterns', 'Share a query as a link'] },
+  { id: 'obs-journey', title: 'Journey Map', category: 'Observability', description: 'Trace a user’s path across services and touchpoints, with drop-off and error points marked.', url: '',
+    why: 'Shows where users drop off or hit errors across a multi-step path, connecting the product view and the technical view of the same problem.',
+    principles: ['Match the real world: steps named in user terms', 'Visibility of status at each touchpoint', 'Minimalist design: only exceptions are highlighted'],
+    extensions: ['Compare journeys by user segment', 'Overlay release markers', 'Jump from a drop-off point to related logs'] },
+  { id: 'wf-builder', title: 'Workflow builder', category: 'Workflows', description: 'Trigger, condition, and action steps arranged on a vertical canvas.', url: '',
+    why: 'Lets non-developers automate repeatable work by composing triggers, conditions, and actions.',
+    principles: ['Visibility of the whole flow on one canvas', 'Error prevention: validate steps before publishing', 'User control: undo and version history'],
+    extensions: ['Templates for common automations', 'Test runs with sample data', 'AI-suggested next step'] },
+  { id: 'wf-approval', title: 'Approval Workflow', category: 'Workflows', description: 'Route requests to reviewers in sequence, with approve, reject, and comment at each step.', url: '',
+    why: 'Makes sign-off explicit and auditable, so requests don’t stall in email threads.',
+    principles: ['Visibility of status: who has it and what happens next', 'Error prevention: a comment is required to reject', 'Consistency across approval types'],
+    extensions: ['Parallel and conditional approvers', 'Delegation while out of office', 'Approve from Slack or email'] },
+  { id: 'wf-bpa', title: 'Business Process Analysis', category: 'Workflows', description: 'Map each step of a process with its time and handoffs to find bottlenecks and automation opportunities.', url: '',
+    why: 'Helps teams see where time is lost in a process before deciding what to automate.',
+    principles: ['Match the real world: steps mirror how work actually happens', 'Recognition over recall: bottlenecks highlighted visually', 'Minimalist design: detail on demand'],
+    extensions: ['Import event logs for process mining', 'Estimate time saved per automation', 'Compare a process before and after changes'] },
+  { id: 'obs-task-dash', title: 'Task-driven Dashboard', category: 'Workflows', description: 'A dashboard organized around the tasks a user needs to complete, surfacing only the metrics relevant to each.', url: '',
+    why: 'Reduces dashboard noise by grouping metrics around the decisions a user has to make.',
+    principles: ['Minimalist design: only task-relevant metrics', 'Match the real world: organized by job, not by data source', 'Progressive disclosure'],
+    extensions: ['Role-based default tasks', 'Mark tasks complete to collapse them', 'Alerts tied to each task'] },
+  { id: 'onb-checklist', title: 'Onboarding (with Inline Guidance)', category: 'Onboarding', description: 'A dismissible checklist that tracks first-run tasks across sessions.', url: '',
+    why: 'Shortens time to first value by showing new users what to do next and how far they’ve come.',
+    principles: ['Visibility of progress', 'User control: dismiss and restore', 'Help in context: guidance appears beside the task'],
+    extensions: ['Personalize tasks by role', 'Acknowledge completion', 'Admin view of team onboarding progress'] },
+  { id: 'onb-setup', title: 'Simple Wizard', category: 'Onboarding', description: 'A simple linear task list targeted to the logged in user\'s context.', url: '',
+    why: 'Gets a user through required setup in a fixed order with few decisions per step.',
+    principles: ['Error prevention: one decision at a time', 'Visibility of progress across steps', 'Sensible defaults from the user’s context'],
+    extensions: ['Save and resume later', 'Branching steps based on answers', 'Review screen before finishing'] },
+  { id: 'tg-tour', title: 'Pendo-style Guides', category: 'Onboarding', description: 'Step-by-step callouts that walk new users through key features.', url: '',
+    why: 'Introduces key features in place, so users learn the interface while using it.',
+    principles: ['Help in context', 'User control: skip, pause, and resume', 'Minimalist design: one idea per step'],
+    extensions: ['Tours triggered by new releases', 'Branching by role', 'Completion analytics'] },
+  { id: 'tg-training', title: 'User Training', category: 'Onboarding', description: 'Short lessons with progress tracking that teach users core tasks at their own pace.', url: '',
+    why: 'Builds lasting skill with short lessons users can take when it suits them.',
+    principles: ['Visibility of progress', 'Chunking: content split into short lessons', 'Practice tied to real tasks'],
+    extensions: ['Certifications', 'Manager-assigned learning paths', 'Lessons embedded in the product'] },
+  { id: 'ai-draft', title: 'Product Requirement Writer', category: 'Productivity', description: 'Build a PR doc by stepping through preset questions, with opportunities for custom edits as needed.', url: '',
+    why: 'Turns a blank-page task into a guided sequence of questions, producing a structured PRD faster.',
+    principles: ['Recognition over recall: preset questions', 'User control: edit any generated section', 'Visibility of the inputs the AI used'],
+    extensions: ['Team-specific templates', 'Pull context from tickets or research notes', 'Export to document tools'] },
+  { id: 'prod-kanban', title: 'Kanban Project Management', category: 'Productivity', description: 'Move work items across status columns, with work-in-progress limits and quick filters by owner.', url: '',
+    why: 'Shows the state of every work item at a glance, so teams can spot blocked work and balance load.',
+    principles: ['Visibility of status through column position', 'Direct manipulation: drag cards between columns', 'Error prevention: warn when a WIP limit is exceeded'],
+    extensions: ['Swimlanes by team or priority', 'Cycle-time analytics per column', 'Automations when a card changes column'] },
+  { id: 'int-directory', title: 'Double-sided Marketplace', category: 'Integrations', description: 'Browse available integrations from the perspective of three users.', url: '',
+    why: 'Shows how one marketplace serves the different needs of customers, partners, and admins.',
+    principles: ['Consistency across user perspectives', 'Recognition over recall: categories and search', 'Trust signals before connecting'],
+    extensions: ['Partner analytics view', 'Admin approval for new installs', 'Recommendations based on usage'] },
+  { id: 'int-mapping', title: 'Dependency Graph for Operations', category: 'Integrations', description: 'View operational systems dependencies during upgrades or digital transformation projects', url: '',
+    why: 'Makes hidden dependencies visible so teams can plan upgrades and migrations with less risk.',
+    principles: ['Visibility of system relationships', 'Progressive disclosure: expand a node for detail', 'Error prevention: flag impact before a change'],
+    extensions: ['Simulate the impact of retiring a system', 'Ownership and contact overlay', 'Change history over time'] },
+  { id: 'notify-rules', title: 'Platform-level Settings', category: 'Platform Core', description: 'Platform-level settings on both desktop and mobile (notification settings as the example).', url: '',
+    why: 'Gives users one consistent place to control platform-wide preferences across devices.',
+    principles: ['Consistency between desktop and mobile', 'User control and freedom', 'Clear defaults with plain-language labels'],
+    extensions: ['Quiet hours and digests', 'Per-workspace overrides', 'Admin-enforced policies'] },
+  { id: 'dt-bulk', title: 'Bulk row editing', category: 'Platform Core', description: 'Select many rows and apply one change, with undo.', url: '',
+    why: 'Saves time on repetitive edits across many records while keeping changes reversible.',
+    principles: ['Error prevention: preview affected rows', 'User control: undo', 'Visibility of the selection count'],
+    extensions: ['Bulk edit from a filtered view', 'Scheduled bulk changes', 'Audit log of bulk actions'] },
+  { id: 'wf-runs', title: 'AI-Driven Support Investigations', category: 'Agents', description: 'Select from a prompt library, add necessary criteria for context, and the system runs investigations for you.', url: '',
+    why: 'Lets support teams start a thorough investigation from a proven prompt instead of from scratch.',
+    principles: ['Recognition over recall: a prompt library', 'Visibility of agent progress and steps', 'User control: review findings before acting'],
+    extensions: ['Save custom prompts to the library', 'Hand off findings to a ticket', 'Schedule recurring investigations'] },
+  { id: 'tg-help', title: 'Context-sensitive Assistant', category: 'Agents', description: 'An AI assistant displayed with content providing immediate context-specific help based on its trigger.', url: '',
+    why: 'Answers questions where they come up, using what’s on screen as context.',
+    principles: ['Help in context', 'Visibility of the context the assistant used', 'User control: dismiss or expand'],
+    extensions: ['Proactive suggestions when an error occurs', 'Escalate to a human', 'Learn from resolved questions'] },
+];
+const TINTS = ['#fcab79', '#a8d8c4', '#f5e9d4', '#f4d35e', '#e0e2e6', '#d9a441'];
+const KEY = 'protoGallery.pinned';
+const readHash = () => { const m = location.hash.match(/^#p=(.+)$/); return m ? decodeURIComponent(m[1]) : null; };
+
+class Component extends DCLogic {
+  state = { filter: 'All', pinned: [], toast: '', selected: null };
+
+  componentDidMount() {
+    try { const p = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(p)) this.setState({ pinned: p }); } catch (e) {}
+    this._onHash = () => { this.setState({ selected: readHash() }); window.scrollTo(0, 0); };
+    window.addEventListener('hashchange', this._onHash);
+    this.setState({ selected: readHash() });
+  }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('hashchange', this._onHash); }
+
+  togglePin(id, e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    this.setState(s => {
+      const pinned = s.pinned.includes(id) ? s.pinned.filter(x => x !== id) : [...s.pinned, id];
+      try { localStorage.setItem(KEY, JSON.stringify(pinned)); } catch (err) {}
+      return { pinned };
+    });
+  }
+
+  view(id) { location.hash = 'p=' + encodeURIComponent(id); }
+  goHome() { if (location.hash) history.pushState(null, '', location.pathname + location.search); this.setState({ selected: null }); window.scrollTo(0, 0); }
+
+  open(p) {
+    if (p.url) { window.open(p.url, '_blank', 'noopener'); return; }
+    clearTimeout(this._t);
+    this.setState({ toast: `“${p.title}” is coming soon.` });
+    this._t = setTimeout(() => this.setState({ toast: '' }), 2400);
+  }
+
+  renderVals() {
+    const { filter, pinned, toast, selected } = this.state;
+    const tinted = this.props.tintedThumbnails ?? true;
+    const cats = [...new Set(PROTOS.map(p => p.category))];
+    const decorate = p => ({
+      ...p,
+      tint: tinted ? TINTS[PROTOS.indexOf(p) % TINTS.length] : '#f8fafc',
+      openLabel: p.url ? 'Open prototype' : 'Prototype coming soon',
+      togglePin: e => this.togglePin(p.id, e),
+      view: () => this.view(p.id),
+      open: () => this.open(p),
+    });
+    const sel = selected ? PROTOS.find(p => p.id === selected) : null;
+    let d = {};
+    if (sel) {
+      const isPinned = pinned.includes(sel.id);
+      d = {
+        ...decorate(sel),
+        pinLabel: isPinned ? 'Pinned' : 'Pin',
+        pinBg: isPinned ? '#181d26' : '#ffffff',
+        pinFg: isPinned ? '#ffffff' : '#181d26',
+        pinBorder: isPinned ? '#181d26' : '#dddddd',
+        pinFill: isPinned ? '#ffffff' : 'none',
+      };
+    }
+    const pinnedItems = pinned.map(id => PROTOS.find(p => p.id === id)).filter(Boolean).map(decorate);
+    const unpinned = PROTOS.filter(p => !pinned.includes(p.id));
+    const items = unpinned.filter(p => filter === 'All' || p.category === filter).map(decorate);
+    const filters = ['All', ...cats].map(label => {
+      const active = label === filter;
+      return {
+        label, active,
+        count: label === 'All' ? PROTOS.length : PROTOS.filter(p => p.category === label).length,
+        bg: active ? '#181d26' : '#ffffff',
+        fg: active ? '#ffffff' : '#181d26',
+        border: active ? '#181d26' : '#dddddd',
+        select: () => this.setState({ filter: label }),
+      };
+    });
+    return {
+      isGallery: !sel,
+      isDetail: !!sel,
+      d,
+      goHome: () => this.goHome(),
+      backLabel: filter === 'All' ? 'All prototypes' : filter,
+      totalLabel: `${PROTOS.length} prototypes`,
+      pinned: pinnedItems,
+      pinnedCount: pinnedItems.length ? String(pinnedItems.length) : '',
+      hasPinned: pinnedItems.length > 0,
+      filters,
+      items,
+      gridTitle: filter === 'All' ? 'All prototypes' : filter,
+      gridCount: String(items.length),
+      gridEmpty: items.length === 0,
+      toastOn: !!toast,
+      toastText: toast,
+    };
+  }
+}
+</script>
+</body>
+</html>
