@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: #fff; color: #333840; font-family: "Haas", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: #1b61c9; text-decoration: none; }
 a:hover { color: #1a3866; }
