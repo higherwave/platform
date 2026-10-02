@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-Created Prototypes</title>
+<title>Knowledge Base</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -11,8 +11,12 @@
 <body>
 <header class="topbar">
   <div class="wrap topbar-inner">
-    <a href="#" class="brand">Prototype Gallery</a>
-    <div class="muted" id="total"></div>
+    <a href="#" class="brand">Knowledge Base</a>
+    <nav class="tabs">
+      <a href="#" class="tab" id="tab-patterns">Patterns and Prototypes</a>
+      <a href="#cases" class="tab" id="tab-cases">Case Studies</a>
+    </nav>
+    <div></div>
   </div>
 </header>
 
@@ -36,9 +40,12 @@
 
 <main id="detail" class="wrap page detail" hidden></main>
 
+<main id="cases" hidden></main>
+
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="data.js"></script>
+<script src="cases.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -74,12 +74,17 @@
   }
 
   function route() {
+    const cases = location.hash === '#cases';
     const m = location.hash.match(/^#p=(.+)$/);
-    const p = m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
-    $('gallery').hidden = !!p;
-    $('detail').hidden = !p;
-    if (p) { renderDetail(p); document.title = `${p.title} · AI-Created Prototypes`; }
-    else { renderGallery(); document.title = 'AI-Created Prototypes'; }
+    const p = !cases && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
+    $('tab-patterns').classList.toggle('on', !cases);
+    $('tab-cases').classList.toggle('on', cases);
+    $('cases').hidden = !cases;
+    $('gallery').hidden = cases || !!p;
+    $('detail').hidden = cases || !p;
+    if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
+    else if (p) { renderDetail(p); document.title = `${p.title} · Knowledge Base`; }
+    else { renderGallery(); document.title = 'Patterns and Prototypes · Knowledge Base'; }
   }
 
   let toastT;
@@ -107,6 +112,5 @@
   });
   window.addEventListener('hashchange', () => { route(); window.scrollTo(0, 0); });
 
-  $('total').textContent = `${PROTOS.length} prototypes`;
   route();
 })();

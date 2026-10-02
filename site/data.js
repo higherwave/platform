@@ -40,7 +40,7 @@ window.PROTOS = [
     principles: ['Error prevention: one decision at a time', 'Visibility of progress across steps', 'Sensible defaults from the user’s context'],
     extensions: ['Save and resume later', 'Branching steps based on answers', 'Review screen before finishing'] },
   { id: 'onb-two-level', title: 'Two-Level Onboarding Flow', category: 'Onboarding', description: 'Onboarding split into two levels: account-wide setup first, then guidance for each user.', url: 'prototypes/onboarding/2-level-onboarding-flow/',
-    why: 'Keeps setup for the whole organization apart from what each person needs to learn, so neither group sees steps meant for the other.',
+    why: 'Modular format that uses progressive disclosure for scale, simplicity, and the possibility of controlling different categories of setup options with roles.',
     principles: ['Match the real world: setup steps follow who is responsible', 'Visibility of progress at each level', 'Progressive disclosure: user steps unlock after the account is set up'],
     extensions: ['Hand off admin steps to another teammate', 'Role-specific user tracks', 'Admin view of each user’s progress'] },
   { id: 'tg-tour', title: 'Pendo-style Guides', category: 'Onboarding', description: 'Step-by-step callouts that walk new users through key features.', url: 'prototypes/onboarding/pendo-style-guides/',
