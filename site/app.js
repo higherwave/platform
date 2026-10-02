@@ -1,6 +1,8 @@
 (() => {
   const PROTOS = window.PROTOS;
   const THUMBS = window.THUMBS || {};
+  const SHOTS = window.SHOTS || {};
+  const shot = p => SHOTS[p.id] || THUMBS[p.id];
   const TINTS = ['#fcab79', '#a8d8c4', '#f5e9d4', '#f4d35e', '#e0e2e6', '#d9a441'];
   const KEY = 'protoGallery.pinned';
   const PIN_PATH = '<path d="M10 1.5l4.5 4.5-2 1-2.5 2.5.5 3-1.5 1.5-3-3L2 15l4-4-3-3L4.5 6.5l3 .5L10 4.5l-1-2z"></path>';
@@ -68,7 +70,7 @@
         <section class="panel"><h2>Usability principles</h2><ul>${list(p.principles)}</ul></section>
         <section class="panel ext"><h2>Ways to extend</h2><ul>${list(p.extensions)}</ul></section>
       </div>
-      <div class="shot${THUMBS[p.id] ? '' : ' placeholder'}" style="background:${tint(p)}">${THUMBS[p.id] ? `<img src="${THUMBS[p.id]}" alt="${esc(p.title)} screenshot">` : ''}</div>`;
+      <div class="shot${shot(p) ? '' : ' placeholder'}" style="background:${tint(p)}">${shot(p) ? `<img src="${shot(p)}" alt="${esc(p.title)} screenshot">` : ''}</div>`;
   }
 
   function route() {
