@@ -24,7 +24,7 @@
 <div style="background:#ffffff;color:#333840;font-family:Inter,system-ui,sans-serif;min-height:100vh;padding:72px 24px 120px;">
   <div style="max-width:900px;margin:0 auto;">
 
-    <h1 style="font-family:Inter,system-ui,sans-serif;font-size:46px;font-weight:500;line-height:1.05;letter-spacing:-0.01em;color:#181d26;margin:40px 0 36px;">Product Designer Practice Exam</h1>
+    <h1 style="font-family:Inter,system-ui,sans-serif;font-size:46px;font-weight:500;line-height:1.05;letter-spacing:-0.01em;color:#181d26;margin:40px 0 36px;">Whirl Onboarding Practice Exam</h1>
 
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:36px;position:sticky;top:0;background:#ffffff;padding:12px 0;z-index:5;">
       <button onClick="{{ timedToggle.onClick }}" style="{{ timedToggle.style }}"><span style="{{ timedToggle.dotStyle }}"></span>{{ timedToggle.label }}</button>
@@ -89,7 +89,7 @@
           </div>
         </sc-if>
         <sc-if value="{{ review.noFlags }}" hint-placeholder-val="{{ false }}">
-          <p style="font-size:16px;line-height:1.5;color:#41454d;">Nothing flagged — you're clear. Every question you passed through is settled.</p>
+          <p style="font-size:16px;line-height:1.5;color:#41454d;">Nothing flagged. You're ready to start working in Whirl.</p>
         </sc-if>
         <button onClick="{{ review.onBack }}" style="margin-top:24px;background:#181d26;color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;">← Back to questions</button>
       </div>
@@ -135,7 +135,7 @@
 
           <sc-if value="{{ q.isRevealed }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:22px;padding-top:22px;border-top:1px solid #dddddd;animation:fadeUp 0.3s ease;">
-              <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#aa2d00;margin-bottom:8px;">What they're really probing for</div>
+              <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#aa2d00;margin-bottom:8px;">What this is really testing</div>
               <div style="font-size:15px;line-height:1.55;color:#333840;margin-bottom:22px;">{{ q.probing }}</div>
 
               <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#181d26;margin-bottom:10px;">Model answer</div>
@@ -249,7 +249,7 @@
                 </div>
               </sc-if>
 
-              <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0a2e0e;margin-bottom:10px;">If you land it, expect the follow-up</div>
+              <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#0a2e0e;margin-bottom:10px;">If you've got it, try the follow-up</div>
               <div style="display:flex;flex-direction:column;gap:8px;">
                 <sc-for list="{{ q.followups }}" as="f" hint-placeholder-count="2">
                   <div style="display:flex;gap:10px;font-size:14.5px;line-height:1.5;color:#333840;">
@@ -271,7 +271,7 @@
     </div>
     </sc-if>
 
-    <div style="margin-top:56px;padding-top:28px;border-top:1px solid #dddddd;font-size:13px;color:#9297a0;line-height:1.6;">Model answers draw on the deck's own framing — clarifying the objective, mapping the system, grounding decisions in evidence, prioritization, and higher-level pattern work — plus general Staff Product Designer interview craft. They're a strong starting point to react against, not a script to memorize.</div>
+    <div style="margin-top:56px;padding-top:28px;border-top:1px solid #dddddd;font-size:13px;color:#9297a0;line-height:1.6;">Prepared by your Whirl onboarding trainer. Model answers draw on Whirl's platform, capabilities, and security documentation. Use them as a reference to check your understanding, not a script to memorize. Questions about your environment? Ask your Whirl contact.</div>
 
   </div>
 </div>
@@ -281,605 +281,417 @@ class Component extends DCLogic {
   state = { theme: "all", started: {}, revealed: {}, remaining: {}, selected: {}, timed: true, index: 0, flagged: {}, reviewScreen: false, reviewOpen: {}, expanded: {} };
 
   data = [
-    // ===== STRATEGY =====
-    { id: "s1", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How would you go about designing complex agentic workflows?",
-      probing: "Whether you can sequence a real design process for agentic work — mapping the flow first, then agent-specific risk, then structure, then prototyping — rather than jumping straight to UI.",
-      core: "I would want to understand the outcomes the workflow is trying to achieve, map out the flow and exceptions (so ... what information is flowing through the system, who touches it, and where does it break), where humans need to be in the loop, and how we can stand up a prototype quickly to begin iterations and deeper dives.",
+    // ===== PLATFORM BASICS =====
+    { id: "b1", theme: "platform", persona: "admin", type: "mcq", seconds: 45,
+      question: "Whirl describes itself as an IBE. What does IBE stand for, and what is it the counterpart to?",
+      probing: "Whether you can explain Whirl's category in one sentence to a stakeholder who has never heard of it.",
+      options: [
+        { text: "Intelligent Build Engine — a counterpart to CI/CD pipelines" },
+        { text: "Integrated Business Environment — IT's answer to the developer IDE", correct: true },
+        { text: "Integrated Backlog Explorer — a counterpart to Jira" },
+        { text: "Internal Business Exchange — a counterpart to iPaaS integration tools" }
+      ],
+      answer: "Integrated Business Environment. Developers got the IDE and coding agents; the IBE gives Enterprise IT an environment to research, analyze, design, configure, test, and evolve enterprise systems in days, not months.",
+      followups: [
+        "Explain to a business stakeholder, in one sentence, why an IDE isn't enough for IT work.",
+        "Which part of your team's week would the IBE replace first?"
+      ] },
+    { id: "b2", theme: "platform", persona: "admin", type: "open", seconds: 120,
+      question: "Name the three layers of the Whirl platform and what each one does.",
+      probing: "Whether you understand how data flows from your systems into agent output, so you know where to look when something is missing or wrong.",
+      core: "From the bottom up: Connectors pull from your systems, Intelligence turns that into connected context, and Agents turn context into work.",
       numbered: [
-        "I would first want to clarify the objective. Why are we doing this? What value is it adding or pain point is it solving? That gives me outcomes to measure against.",
-        "I would want to understand the ecosystem and map the workflows first: What's flowing through the system, who touches it, and where does it break down?",
-        "From that, deeper dives with constraints would help. How do we recover from errors? How does performance or permissions come into play? Where should humans be in the loop? Do we have observability to monitor this as we go?",
-        "How should AI appear within the workflow for different users based on the data they need or the task that needs to be performed (event-driven or predictive recommendations, conversational assistants, automated task completion, etc)?",
-        "Then, we quickly iterate with users on prototypes to come to a shippable outcome."
+        "Whirl Connectors — secure, read-only connections to your enterprise applications, running in your dedicated environment.",
+        "Whirl Intelligence — a connected, continuously updated view of your processes, configurations, dependencies, and rules.",
+        "Whirl Agents — research, requirements, design, coding, and testing work built on top of that context."
+      ],
+      closing: "If an agent's output looks thin, the first question is usually whether the right system is connected and indexed, not whether the agent is broken.",
+      followups: [
+        "An agent misses a dependency you know exists. Which layer do you check first?",
+        "Which of your systems of record should be connected before anything else?"
+      ] },
+    { id: "b3", theme: "platform", persona: "architect", type: "open", seconds: 130,
+      question: "Your CIO asks why the team should use Whirl instead of handing engineers a general coding agent. What's your answer?",
+      probing: "Whether you can articulate what makes enterprise IT work different from software development, rather than just saying 'it's more specialized.'",
+      numbered: [
+        "Enterprise IT work is more than writing code: it's understanding how configured systems actually behave, analyzing impact, defining requirements, getting sign-off, testing, and releasing.",
+        "A coding agent doesn't carry context on your org's configurations, integrations, and processes. Whirl maintains that context continuously, so output is grounded in your environment.",
+        "IT works cross-functionally. Whirl is built around stakeholder-visible status, approval workflows, and sign-off gates, which an IDE isn't.",
+        "Whirl still hands off to the IDE or coding agent of choice when code is needed. It complements those tools; it doesn't compete with them."
       ],
       followups: [
-        "Pick one decision from your last role and give me the actual number it moved.",
-        "What if the metric moved the wrong way — would you have noticed, and how fast?"
+        "Where would you still reach for a coding agent directly?",
+        "What would building this in-house actually require from your team?"
       ] },
-    { id: "s3", theme: "strategy", persona: "vp", type: "open", seconds: 120,
-      question: "What do you think makes a successful product?",
-      probing: "Whether you hold a whole-product view — business model, execution, support, trust — rather than reducing success to design quality.",
-      numbered: [
-        "Solving the right problems for customers",
-        "Product-market fit",
-        "Good strategy and execution",
-        "Good quality and UX",
-        "Good support",
-        "A pricing model that works for both the customer and the business.",
-        "Trust (especially in the era of AI)"
+    { id: "b4", theme: "platform", persona: "analyst", type: "mcq", seconds: 45,
+      question: "Which stage of the Whirl workflow produces epics, user stories, and test cases?",
+      probing: "Whether you know which stage to start in for a given task.",
+      options: [
+        { text: "Research" },
+        { text: "Analysis" },
+        { text: "Design + test", correct: true },
+        { text: "Configure" }
       ],
+      answer: "Design + test. It generates epics, user stories, and test cases from your systems context plus the BRD. Research builds understanding, Analysis covers impact, Requirements defines the BRD, Code passes work to your IDE, and Configure accelerates updates.",
       followups: [
-        "Which of these can design actually not move, and why?",
-        "Pick the one most often neglected and tell me what it costs."
-      ] },
-    { id: "s5", theme: "strategy", persona: "vp", type: "open", seconds: 130,
-      question: "You've mapped the whole platform and there's more broken than one team can fix this year. How do you decide what design fights for this quarter — and how do you say no to the rest without losing credibility?",
-      probing: "Prioritization and org savvy — Staff designers pick battles by leverage and can defend the 'no' out loud.",
-      core: "In general, you want to focus on outcomes and quality, not output.",
-      numbered: [
-        "So, prioritize by impact against the outcomes we've set for the release and start with those that are cheap, high value targets.",
-        "With what's left, beyond the high impact items, rank the rest and begin understanding what outcomes are being measured there to prepare for later releases."
-      ],
-      followups: [
-        "What's the first thing you'd fight for, and why that one?",
-        "A senior stakeholder's pet problem is below your line. How do you tell them?"
-      ] },
-    { id: "s7", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How do you handle ambiguity?",
-      probing: "Whether you have a real, repeatable approach to reducing ambiguity — evidence, prototyping, and sequencing — rather than just tolerating it.",
-      numbered: [
-        "As much as possible, I try to remove the ambiguity altogether through by finding themes in user research, tribal knowledge, and telemetry data. You need *some* upfront context to prevent focus and ideas from spiraling out of control.",
-        "Sometimes the fastest way to answer a question is to prototype it, put it in front of users, and see what we learn.",
-        { text: "For larger problems, I break the experience into logical, shippable units based on dependencies, customer value, and effort.\n\nI don't think every part of a problem has to be solved before you can ship—you can often create a smaller slice that lets the team learn and keep moving." }
-      ],
-      followups: [
-        "Give me a real example where you broke a problem into shippable slices.",
-        "What's a time removing the ambiguity upfront turned out to be the wrong call?"
-      ] },
-    { id: "s9", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How do you ground yourself to make sure you're moving in the right direction?",
-      probing: "Whether you have a durable, reusable checklist that ties every decision back to the business — or whether your grounding is ad hoc per project.",
-      answer: "I have a few questions and metrics that have been reliable across projects and teams. They relate to business outcomes, the longer-term roadmap, and release-level features.",
-      numbered: [
-        "Why are we building this? What value is it adding or pain point is it solving?",
-        "What business outcomes are we driving and are decisions made customer-first and grounded in data?",
-        "What assumptions are we making about users (ICP)?",
-        "Are we reducing cognitive load while setting up the platform for scale?",
-        "Are designs reducing support tickets?",
-        "How do permissions, exceptions, or performance affect outcomes?"
-      ],
-      followups: [
-        "Which of these do teams answer worst, in your experience?",
-        "Walk me through applying this checklist to a real project you've worked on."
-      ] },
-    { id: "s14", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How have you used AI to improve your design process?",
-      probing: "Whether you use AI as real leverage across research, exploration, and handoff — or just as a novelty in one step.",
-      answer: "I've integrated AI throughout the process, including:",
-      numbered: [
-        "Finding user research themes from meeting transcripts",
-        "General research and deliverables (competitive research, storyboards, journey maps, user flows, etc.)",
-        "Fast exploration of design ideas",
-        "And I've developed a design to code workflow with Claude and MCP servers that provides automated governance and major productivity enhancements to design system management and developer hand-offs."
-      ],
-      closing: "In general, I've been exploring how AI can change not just individual designer productivity, but the entire relationship between design systems, prototyping, engineering handoff and product development.",
-      followups: [
-        "Where has AI given you a wrong answer you almost shipped, and how did you catch it?",
-        "Which of these would you set up first on our team, and what would it take?"
-      ] },
-    { id: "s10", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How do you go about finding product-market fit?",
-      probing: "Whether you can separate what users say from what they do — and whether you understand design's role in making the signal readable at all.",
-      core: "For market fit, I would focus more on watching retention curves, not satisfaction scores. NPS moves with mood; retention doesn't. Satisfaction scores tell you what people are willing to say about the product; return behavior tells you what the product is actually worth to them.\n\nAnd what you're really after is knowing 'what feature or functionality would most customers be very disappointed if you took it away from them'. That's your market fit.",
-      numbered: [
-        "The Why? What's the actual value that makes users love this?",
-        "Who are the primary personas using it? That's your target segment.",
-        "Measure adoption and retention",
-        "Identify a growth model. How are you going to scale this?"
-      ],
-      followups: [
-        "You have retention data but no clear core action. Where do you start?",
-        "One segment lights up and it's not the segment the roadmap serves. What do you recommend?"
-      ] },
-    { id: "s15", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "How do you think AI will change product design?",
-      probing: "Whether you have a real thesis about the shift — interface, workflow, process, and trust — instead of generic enthusiasm about AI.",
-      numbered: [
-        "I think it's going to be a lot less static screens and more adaptive experiences and automation that allow for extreme personalization and can execute new tasks on-the-fly based on whatever outcome the user wants.",
-        "That means telemetry will take on a whole category of data. Monitoring inputs and outputs of AI assistants.",
-        "I think there's a new burden of trusting the system that may have always been there - but is exponentially more important now.",
-        "And then, of course, using AI internally is already starting to provide pretty amazing productivity enhancements with user research, visualizations, prototyping, and design-to-code processes."
-      ],
-      followups: [
-        "What does an adaptive interface get wrong most often, and how do you guard against it?",
-        "Which of these shifts would you act on first at Cleo?"
-      ] },
-    { id: "s16", theme: "strategy", persona: "pm", type: "open", seconds: 140,
-      question: "What changes can be made with AI agents that would not affect the core operation of the platform?",
-      probing: "Whether you can identify low-risk, additive AI surface area — value without touching the transactional spine.",
-      numbered: [
-        "Insights that layer on top of the data and functionality already there, like describing dashboard metrics with better business context.",
-        "Proactive alerts when anomalies are caught - but with human-only interventions.",
-        "Improved search and assessments",
-        "Easy, flexible custom reports"
-      ],
-      followups: [
-        "Which of these would you ship first, and what would prove it worked?",
-        "Where's the line you wouldn't cross without a human in the loop?"
-      ] },
-    { id: "s17", theme: "strategy", persona: "pm", type: "open", seconds: 140,
-      question: "The PM or executive leader hands you a high-level design brief and says Design This. What do you do next?",
-      probing: "Whether you have a real first move for underspecified work — clarifying the objective and constraints — rather than jumping straight to screens.",
-      numbered: [
-        "I always start by clarifying the objective. Why are we building this? What's the value ad - or pain point - we're addressing?",
-        "Start into draft design iterations with a working prototype - to generate internal discussions and address any concerns.",
-        "Then, if possible, putting designs in front of users before development is always preferred - especially with brand new features."
-      ],
-      followups: [
-        "What's the first question you'd ask them?",
-        "How long would you spend on that before showing anything visual?"
-      ] },
-    { id: "s18", theme: "strategy", persona: "vp", type: "open", seconds: 150,
-      question: "If hired, what would you want to accomplish in the first 90 days?",
-      probing: "Whether you have a real onboarding plan grounded in evidence and cadence — rather than vague promises to 'learn the product.'",
-      core: "1. Understand the product and business (platform, patterns, personas, workflows, metrics)\n\n2. Look at data used and the tribal knowledge we have (telemetry, BI, CSMs, Support) and identify any gaps.\n\n3. Then, talk with customers - and try to start a regular cadence of user meetings.\n\n4. Then, connect all of that to the redesign and start working with Product, Engineering, and business leaders on prioritization, how we can break up work into workable chunks, and start with items that build momentum.",
-      followups: [
-        "Which of these would you compress if you only had 30 days, not 90?",
-        "What would make you conclude the plan itself needs to change mid-way through?"
-      ] },
-    { id: "s19", theme: "strategy", persona: "vp", type: "open", seconds: 160,
-      question: "What are the most important questions to consider in a major B2B platform redesign?",
-      probing: "Whether you can name the few questions that actually matter in a platform redesign — friction, continuity, business metric — rather than a generic redesign checklist.",
-      core: "You get a lot of mileage out of answering a few simple questions completely:\n\n1. What is the primary friction point costing our users time or money?\n\n2. How will we maintain workflow continuity for power users so there's no disruption or disorientation to users? What are the critical paths? How can we start to integrate AI without creating disruption?\n\n3. How will onboarding work for existing users? Do we have a bridge from old to new?\n\n4. What core business metric is this redesign expected to move?\n\n5. Do we have a method of continually validating suggested changes with customers?\n\n6. What needs to be released together - and what can be released in phases?",
-      image: "assets/grounding-questions.png",
-      followups: [
-        "Which of these three would you weight most heavily if they pulled in different directions?",
-        "How would you measure 'workflow continuity' concretely after launch?"
-      ] },
-    // ===== PROCESS =====
-    { id: "p6", theme: "process", persona: "pm", type: "open", seconds: 45,
-      question: "A PM wants to cram three features into a release you think should ship one, well. What's the strongest Staff-level framing to make your case?",
-      probing: "Whether you argue scope in the language of outcomes, or fall back on craft preference and turf.",
-      answer: "Tie scope to the outcome: one feature that fully solves the job beats three that each half-solve it — show which single cut moves the metric most.",
-      followups: [
-        "Which single feature would you cut to, and how would you prove it's the one?",
-        "The PM says all three are already promised to a customer. Now what?"
-      ] },
-    { id: "p5", theme: "process", persona: "pm", type: "open", seconds: 130,
-      question: "A PM hands you a solution dressed as a requirement — 'add a dashboard here.' You think it's the wrong problem. How do you push back without becoming the designer who blocks every ticket?",
-      probing: "Whether you can redirect to the real problem without being obstructive — collaboration maturity under a decisive PM.",
-      answer: "I always want to take a step back and ask why? What is the JTBD here? What problem are we solving? And is the right one?\n\nThe requirement may actually be a good solution - but let's make sure.",
-      followups: [
-        "The PM insists on the dashboard anyway. What do you do?",
-        "How do you tell 'this is the wrong problem' from 'I just don't like their idea'?"
-      ] },
-    // ===== CRAFT =====
-    { id: "c10", theme: "craft", persona: "pm", type: "open", seconds: 130,
-      question: "How do you approach UX Reviews?",
-      probing: "Whether you have a repeatable review lens tied to user outcomes, or just react to whatever looks off on the screen.",
-      core: "I tend to work from the outside > in. First asking who the users are and what this screen or flow is trying to help them with. From there, has the team effectively covered simple navigation, cognitive overhead and visual distractions, usable and discoverable starting points and flows, and correct content strategy.\n\nI'm mostly measuring against 4 simple criteria:\n1. Are we solving the right problems for users with this?\n2. Are we reducing friction?\n3. Are we helping people make better decisions?\n4. Are we helping people move faster with less risks?",
-      numbered: [
-        "Is the IA simple and scalable?",
-        "Is the content shown - relevant to the context?",
-        "Are proper defaults used?",
-        "Is affordance and discoverability covered?",
-        "Is consistency covered?",
-        "How does the system speak to the user (in other words, has language, labeling, and overall guidance been covered correctly)?"
-      ],
-      followups: [
-        "Walk me through applying this to a real screen you reviewed recently.",
-        "What do you do when the review surfaces a problem that's above the reviewer's scope to fix?"
-      ] },
-    { id: "c9", theme: "craft", persona: "vp", type: "open", seconds: 130,
-      question: "What do you think designers get wrong?",
-      probing: "Whether you can critique the discipline honestly and specifically — pattern-matching real failure modes rather than generic platitudes.",
-      core: "I think they tend to get lost in the weeds with process, components, craft - and miss the mark on what they're actually solving for (both for the customer and the company). They also don't zoom out enough and look for platform connections, gaps, and opportunities to enhance the experience in a bigger way.\n\nAnd, in terms of where we're going, systems-thinking is becoming table stakes.",
-      numbered: [
-        "Many designers tend to get lost in the weeds (process, components, etc.) and the myopic focus tends to create blind spots, occasionally solving the wrong problem - or leaving a solution incomplete.",
-        "I think they get tethered to screens without standing back and asking, how far can we go in simplifying this process? Sometimes the best experience will be less screens - or full automation - no UI altogether."
-      ],
-      followups: [
-        "Have you caught yourself doing this? What did it cost?",
-        "How do you build in the habit of zooming out before you start on screens?"
-      ] },
-    { id: "c8", theme: "craft", persona: "pm", type: "open", seconds: 130,
-      question: "How do you approach accessibility?",
-      probing: "Whether you have a real operational model for accessibility — structural, contextual, and ongoing — rather than treating it as a single one-time checklist.",
-      core: "I look at accessibility from the perspective of what it takes to implement and test it.\n\n1. Structural\n\n2. Medium implementation, such as accessibility for one context, like an form, or accessibility that gets baked into design system components (like proper color usage).\n\n3. And then, the things that need ongoing monitoring.",
-      closing: "The WebAIM group's \"Million Sites\" studies every year consistently finds accessibility issues in 6 categories (broken links, broken button links, low contrast text, missing text equivalents for media, missing form input labels, missing language attribute).\n\nOnly one of those is related directly to the design system: the low contrast text, assuming design system standards are being followed.\n\nMoving forward, even though humans need to be aware of what the system is doing, AI tools like MCP servers will help to govern items like this.",
-      followups: [
-        "Which of those six categories is hardest to catch before ship, and why?",
-        "How would an MCP server actually catch a contrast violation before it merges?"
-      ] },
-    { id: "c7", theme: "craft", persona: "pm", type: "open", seconds: 130,
-      question: "What is your experience creating or evolving design systems?",
-      probing: "Whether you've actually owned design-system work end to end, and whether your thinking has kept up with how AI is changing the discipline.",
-      answer: "I've worked with design systems and patterns across Aryaka, Informatica, Oracle, and 6sense, helping create and evolve guidelines, patterns, and component organization.\n\nMore recently, AI has changed the strategy. Starting at Netflix, the focus changed to setting up self-governing design to code pipelines—using Claude Design, MCP, and React - which greatly improves productivity on design iterations, design system management, prototype creation, and design-developer hand-offs.",
-      followups: [
-        "What does 'self-governing' actually mean in that pipeline — what enforces it?",
-        "What broke or didn't work when you first set this up?"
-      ] },
-    { id: "c2", theme: "craft", persona: "vp", type: "open", seconds: 130,
-      question: "You preach 'propose incrementally — a small, reversible first step over a big reveal.' Tell me about a time incrementalism was the WRONG call and a bold bet would have won.",
-      probing: "Whether you apply your principles with judgment or dogma. Staff designers know when to break their own rules.",
-      answer: "Incrementalism is usually a good idea, catching small problems before they become bigger ones - and getting updates out to customers faster.\n\nBut, I think the times when it's better to release a bigger feature all at once, and not release incrementally, is when it's structural in nature - like redesigns to the information architecture, like I recently did at Netflix. Trying to break that type of a change into multiple releases would be very disorienting for users.",
-      followups: [
-        "How did you know it was structural and not just people resisting change?",
-        "What did the bold bet cost you when it didn't fully land?"
-      ] },
-    { id: "c4", theme: "craft", persona: "vp", type: "open", seconds: 120,
-      question: "What are features that you thought were important that you had to let go of? And what was your thinking?",
-      probing: "Ego versus craft. Whether 'minimalism' is a real discipline for you or a word on a slide.",
-      answer: "Describe the visual enhancements to the 6sense Audience Workflow that you knew would improve usability for complex flows - but agreed with product leaders that they weren't critical for the GA release.",
-      followups: [
-        "How did you measure that it wasn't earning its place?",
-        "Who fought you to keep it, and how did you handle that conversation?"
+        "What has to exist before Design + test can produce useful stories?",
+        "Which stage would you start in for a vague request from Sales Ops?"
       ] },
 
-    { id: "c5", theme: "craft", persona: "vp", type: "open", seconds: 120,
-      question: "When is the best design no new UI at all? Give me a case where you argued against building the very thing you were asked to design.",
-      probing: "Product judgment and restraint — whether you optimize for the user's job or for design output.",
-      answer: "The informatica example",
+    // ===== INTELLIGENCE & CONTEXT =====
+    { id: "n1", theme: "intelligence", persona: "architect", type: "open", seconds: 120,
+      question: "What is the 'rediscovery tax,' and how does Whirl avoid it?",
+      probing: "Whether you understand why persistent, governed context matters more than a smarter model.",
+      answer: "The rediscovery tax is the time spent relearning how a system works every time someone starts a new project or a new AI session: re-reading configs, re-tracing integrations, re-interviewing the person who built it.\n\nWhirl avoids it by retaining governed, secure context about your systems and processes from the start, so each piece of work builds on what's already known instead of starting from zero.",
       followups: [
-        "How did you get the team to accept 'there's nothing to build here'?",
-        "Where's the line between healthy restraint and under-designing?"
+        "Where does your team pay the rediscovery tax most today?",
+        "What happens to that context when the person who built a system leaves?"
       ] },
-    { id: "c6", theme: "craft", persona: "pm", type: "open", seconds: 130,
-      question: "What experience do you have designing for complex workflows?",
-      probing: "Whether you can point to specific, real workflow systems you've owned — and name what made each one complex.",
+    { id: "n2", theme: "intelligence", persona: "analyst", type: "open", seconds: 140,
+      question: "You've just been assigned an unfamiliar Salesforce org. How would you use Whirl in your first week to get up to speed?",
+      probing: "Whether you can sequence Whirl's research capabilities into a practical onboarding plan.",
       numbered: [
-        "Oracle Cloud Billing (mapping out multi-user custom experience billing-related workflows).",
-        "6sense which was related to Marketing Operations GTM strategy workflows (providing a tool for users to create and edit their own workflows).",
-        "Netflix Customer Support AI-driven Investigation workflows."
+        "Run an As-Is Process Map to see current processes, roles, systems, and pain points.",
+        "Generate an Onboarding Guide for your role: processes, risks, key contacts, and a 30-day learning path.",
+        "Use Research to ask direct questions about how specific objects, automations, and integrations behave.",
+        "Run a few health checks (hardcoded rule IDs, every-save rules, missing rule bypasses) to learn where the fragile spots are."
       ],
       followups: [
-        "Pick the hardest of those and walk me through the part that nearly failed.",
-        "What's the common technique you carry across all three?"
+        "Which of these would you share with your manager, and why?",
+        "How would you verify the process map matches what people actually do?"
       ] },
-    // ===== COLLABORATION =====
-    { id: "x5", theme: "collaboration", persona: "em", type: "open", seconds: 45,
-      question: "A PM and an engineer both push back on your design in review. What's the next move?",
-      probing: "Influence without authority and ego management — the core Staff test.",
-      answer: "For any push back, I always just:",
+    { id: "n3", theme: "intelligence", persona: "admin", type: "open", seconds: 120,
+      question: "An agent's answer about a validation rule doesn't match what you see in the org. What do you do?",
+      probing: "Whether you treat agent output as something to verify against the source, and know how to trace a mismatch.",
       numbered: [
-        "Clarify objectives we're working towards and",
-        "Try to get to the bottom of real concerns. Is it a technical issue, time issue, etc? There's usually some underlying concern."
+        "Check the source: confirm the rule in the org and note what's different.",
+        "Check freshness and coverage: was the change recent, and is that system fully connected?",
+        "Ask the agent to show what it based the answer on, and correct or re-run with the right context.",
+        "Report the mismatch to your Whirl contact so the gap can be fixed for everyone on your team."
       ],
-      closing: "And, as long as I know we're solving the right problems for users - and are set up for growth, I'm open to other opinions.",
-        followups: [
-        "When would you actually escalate instead of committing?",
-        "How do you commit to a decision you still think is wrong without sandbagging it?"
-      ] },
-    { id: "x8", theme: "collaboration", persona: "em", type: "open", seconds: 120,
-      question: "How do you typically work with a remote and distributed team?",
-      probing: "Whether you can actually make progress across time zones without meetings as the engine — and whether async work is a habit or an aspiration.",
-      core: "I've worked mostly with distributed teams, across many time zones. As long as communication, ownership, and expecations are clear, it works well.\n\nThe way I tend to approach it is:",
-      numbered: [
-        "I'm generally async-first— collaborating and answering any questions as they come up.",
-        "I pair that with a regular cadence of meetings for collaboration and alignment, scheduled to accommodate the team time zones as much as possible.",
-        "And if something is blocking progress, I'm always willing to make time for an ad-hoc conversation."
-      ],
+      closing: "The goal is output an IT professional is willing to put their name on. Verification is part of the workflow, not a sign the tool failed.",
       followups: [
-        "What's the one thing you refuse to resolve asynchronously?",
-        "How do you keep decisions made in a thread from getting lost or relitigated later?"
-      ] },
-    { id: "x9", theme: "collaboration", persona: "vp", type: "open", seconds: 150,
-      question: "How would you create consistency across a multi-product platform without slowing down individual product teams?",
-      probing: "Whether you have a concrete mechanism for consistency-without-friction, or just a governance-process answer that trades speed for compliance.",
-      core: "In a Claude Design → MCP Server → React pipeline, the tension between consistency and speed mostly disappears because the MCP server sits at the exact seam where a designer's or an AI agent's output becomes code. It's not a style guide someone has to remember to check — it's the thing the generation has to pass through.\n\nConsistency becomes a property of the pipeline, not a discipline product teams have to practice.\n\nSo, the benefits are wide-reaching, but here are a few:",
-      numbered: [
-        "The design system stops being documentation and becomes the source of truth that can be queried.",
-        "The MCP server is the governance layer, not a governance meeting.",
-        "Teams can move faster, because they have less specs and reviews to deal with - and when they review a generated page - it's the real thing - a page sitting on a dev server.",
-        "We can still update the design system as needed, you just do that at the source. The process for getting a new pattern or component in the system will be much simpler.",
-        "The design-to-code pipeline can also be integrated into the larger umbrella of an engineering harness that provides even more governance and workflow benefits."
-      ],
-      followups: [
-        "What happens when a product team needs something the design system genuinely doesn't support yet?",
-        "How do you keep the MCP server itself from becoming the new bottleneck?"
-      ] },
-    { id: "x4", theme: "collaboration", persona: "vp", type: "open", seconds: 140,
-      question: "As a Product Design lead, you influence without authority — and three teams will tell you 'not now.' Walk me through how you actually get adoption without a mandate.",
-      probing: "The real Staff bar: driving change laterally. Vision is cheap; adoption without power is the job.",
-      answer: "I would want to start with the team that can see the biggest benefits from the change - and work with them to create a pilot project. A successful pilot - a real world example - would make it much easier for other teams to adopt.",
-      followups: [
-        "Which team do you pilot with, and why them specifically?",
-        "The pilot succeeds but the other teams still say 'not now.' Then what?"
-      ] },
-    { id: "s6", theme: "strategy", persona: "pm", type: "open", seconds: 150,
-      question: "What considerations do you think are important when designing for compliance?",
-      probing: "Whether you reason from the customer's actual problems in a regulated domain and pair each with a product outcome — rather than listing features or generic 'trust and safety' language.",
-      numbered: [
-        "Understanding the data that's covered under a requirement",
-        "Make sure it's secured at rest and in transit - with the proper user access controls",
-        "Make sure the proper reporting and audit trails are available"
-      ],
-      followups: [
-        "Which of those problems would you tackle first, and why that one?",
-        "How would you keep 'keep human control' from turning into a rubber-stamp step users click past?"
+        "When would you stop and escalate instead of re-running?",
+        "How would you tell the rest of the team about the gap?"
       ] },
 
-    // ===== DESIGN LEADERSHIP =====
-    { id: "l1", theme: "leadership", persona: "vp", type: "open", seconds: 45,
-      question: "How do you think your impact should primarily show up in the platform?",
-      probing: "Whether you understand Staff as a force multiplier versus a very productive senior IC — the single most common leveling mistake.",
-      answer: "Through the quality of decisions the team makes together— and how we ground those decisions to make sure we're moving in the right direction.\n\nThat multiplies the team's output and judgment, not just patterns and pixels.",
+    // ===== AGENTS & WORKFLOWS =====
+    { id: "g1", theme: "agents", persona: "analyst", type: "open", seconds: 150,
+      question: "A business leader sends a two-line request: 'We need a new approval step for discounts over 20%.' Walk through how you'd take it from request to build-ready work in Whirl.",
+      probing: "Whether you can chain Whirl's capabilities end to end rather than jumping straight to configuration.",
+      flow: [
+        "Business Intent — one-page brief, checked against system context",
+        "Change Impact Analysis — objects, automations, integrations, and teams affected",
+        "Business Requirements — prioritized, testable requirements with risks and open questions",
+        "Solution Design — blueprint, including cross-system data flows",
+        "User Stories — build-ready stories with acceptance criteria and edge cases",
+        "Test Plan — QA and UAT cases tied to requirements",
+        "Release Readiness — documented release decision"
+      ],
       followups: [
-        "Give me a concrete example of you making a decision better without being the one who made it.",
-        "Where's the line between multiplying the team and abdicating the hard problems?"
+        "Where in that chain would you bring the business leader back in?",
+        "Which step would you skip for a very small change, and what's the risk?"
       ] },
-    { id: "l9", theme: "leadership", persona: "vp", type: "open", seconds: 130,
-      question: "Describe successful leadership and how you've led teams in the past.",
-      probing: "Whether your model of leadership is concrete and people-specific, or a generic list of leadership virtues.",
-      answer: "I think it comes down to clarity, removing blocks, and always being there to help when questions arise.\n\nBeyond that, I want to connect what's needed in the moment to a designer's career goals. If a designer feels they're supported, you've helped them remove blocks and provided clarity around the goals, that helps to boost ownership and self-reliance.",
+    { id: "g2", theme: "agents", persona: "architect", type: "open", seconds: 130,
+      question: "Before a large change, you want to know what could break. Which Whirl capability do you use, and what should you look for in its output?",
+      probing: "Whether you use impact analysis as a decision tool, not a formality.",
+      answer: "Change Impact Analysis. It identifies the objects, automations, integrations, and teams affected by a proposed change.",
+      bulletsLabel: "What to look for",
+      bullets: [
+        "Integrations that touch the affected objects, since those failures often show up in other systems first.",
+        "Automations that fire on the same records and could conflict.",
+        "Teams affected who haven't been told yet.",
+        "Anything that changes the scope or timeline of the request."
+      ],
       followups: [
-        "Give me a specific example of connecting a task to someone's career goal.",
-        "What do you do when removing a block isn't actually in your power?"
+        "The analysis shows an integration you didn't expect. What's your next step?",
+        "How would you present this to a CAB?"
       ] },
-    { id: "l8", theme: "leadership", persona: "vp", type: "open", seconds: 130,
-      question: "What are your strengths and weaknesses?",
-      probing: "Whether you can give a specific, self-aware answer instead of a rehearsed non-answer or a humble-brag disguised as a weakness.",
+    { id: "g3", theme: "agents", persona: "admin", type: "mcq", seconds: 45,
+      question: "You're planning to move off Process Builder. Which Whirl capability helps you start?",
+      probing: "Whether you know Whirl's technical-debt capabilities by name.",
+      options: [
+        { text: "Retirement Plan" },
+        { text: "Process Builder Migration", correct: true },
+        { text: "Org Comparison" },
+        { text: "Vendor Replacement" }
+      ],
+      answer: "Process Builder Migration inventories active Process Builders and assesses readiness for migration to Flow. Workflow Rule Migration does the same for Workflow Rules.",
+      followups: [
+        "How would you prioritize which Process Builders move first?",
+        "What tests would you want in place before switching any of them off?"
+      ] },
+    { id: "g4", theme: "agents", persona: "architect", type: "open", seconds: 130,
+      question: "Your company is consolidating two Salesforce orgs after an acquisition. How can Whirl help?",
+      probing: "Whether you can apply Whirl to a large, multi-step transformation, not just individual tickets.",
+      numbered: [
+        "Org Comparison to find overlaps and conflicts across data, automations, and security.",
+        "Migration Assessment to guide pre-migration decisions across systems, data, processes, security, and compliance.",
+        "Duplicate Fields and Hardcoded Rule IDs checks to find things that commonly break during a merge.",
+        "To-Be Process Design and Process Gap Analysis to agree on how the combined process should work, with stakeholder review."
+      ],
+      followups: [
+        "Which conflicts would you resolve with the business before any technical work starts?",
+        "How would you break this into releases?"
+      ] },
+    { id: "g5", theme: "agents", persona: "analyst", type: "open", seconds: 120,
+      question: "Whirl generates the user stories. At what point do you hand off to your IDE or coding agent, and what goes with it?",
+      probing: "Whether you understand the handoff between Whirl and developer tools, and keep context intact across it.",
+      answer: "Hand off once a story has a Technical Design: a precise implementation spec for that individual story. Whirl passes code into the IDE or coding agent of choice.\n\nThe story, acceptance criteria, technical design, and linked test cases should travel together, so the developer isn't rediscovering context Whirl already had.",
+      followups: [
+        "What do you do when the developer finds the spec is wrong mid-build?",
+        "Who owns updating the test cases if the implementation changes?"
+      ] },
+
+    // ===== REQUIREMENTS & DESIGN =====
+    { id: "r1", theme: "requirements", persona: "analyst", type: "open", seconds: 130,
+      question: "You have a page of messy meeting notes from a requirements session. How do you turn them into something stakeholders can sign off on?",
+      probing: "Whether you know to combine notes with system context, and to review output before sending it.",
+      numbered: [
+        "Use Business Requirements to turn the notes plus system context into prioritized, testable requirements.",
+        "Review the risks and open questions it surfaces, and resolve the ones you can before sharing.",
+        "Send the requirements to stakeholders through Whirl's approval workflow so sign-off is visible and recorded."
+      ],
+      closing: "The open questions list is often the most valuable part. It shows stakeholders what still needs a decision.",
+      followups: [
+        "A stakeholder signs off but disagrees with one requirement in a side conversation. What do you do?",
+        "What makes a requirement 'testable'?"
+      ] },
+    { id: "r2", theme: "requirements", persona: "architect", type: "open", seconds: 120,
+      question: "What's the difference between To-Be Process Design and Solution Design in Whirl?",
+      probing: "Whether you can separate the business process decision from the system design decision.",
+      tableHead: { a: "To-Be Process Design", b: "Solution Design" },
+      tableRows: [
+        { problem: "Defines how the future process should work", outcome: "Defines how the system will implement it" },
+        { problem: "Built from current workflows and requirements", outcome: "Built from requirements and future processes" },
+        { problem: "Documents key design decisions", outcome: "Produces a Salesforce solution blueprint" },
+        { problem: "Audience: business owners and analysts", outcome: "Audience: architects and builders, including cross-system data flows" }
+      ],
+      followups: [
+        "Why does it matter that the process design is agreed before the solution design?",
+        "What would you do if the solution design can't support the agreed process?"
+      ] },
+    { id: "r3", theme: "requirements", persona: "analyst", type: "open", seconds: 120,
+      question: "Marketing is launching a new product and wants the CRM ready. How does Whirl help before IT configuration begins?",
+      probing: "Whether you know to get business sign-off on system requirements before building.",
+      answer: "Product Launch Readiness turns new-product materials into system requirements for business sign-off before IT configuration begins.\n\nIf the launch includes a new region, Market Entry Plan covers the localization, compliance, territory, and CRM changes needed.",
+      followups: [
+        "What do you do if Marketing's materials are incomplete?",
+        "Who needs to sign off before configuration starts?"
+      ] },
+
+    // ===== TESTING & RELEASE =====
+    { id: "t1", theme: "testing", persona: "admin", type: "open", seconds: 130,
+      question: "What should a Whirl Test Plan include, and how is it connected to the rest of the work?",
+      probing: "Whether you see testing as traceable to requirements, not a separate activity.",
+      answer: "A Test Plan creates QA and UAT test cases tied to requirements, with expected results and pass/fail criteria.",
+      numbered: [
+        "Each test case maps back to a requirement, so you can show what's covered and what isn't.",
+        "Expected results and pass/fail criteria are explicit, so UAT testers in the business don't have to guess.",
+        "Edge cases from the user stories should show up as test cases."
+      ],
+      followups: [
+        "A requirement has no test case. Is that a problem?",
+        "Who runs UAT, and how do you get their results back into Whirl?"
+      ] },
+    { id: "t2", theme: "testing", persona: "admin", type: "open", seconds: 130,
+      question: "It's the day before a release. What does Release Readiness check, and what do you do with the result?",
+      probing: "Whether you treat the release decision as documented and accountable.",
+      bulletsLabel: "Release Readiness checks",
+      bullets: [
+        "Impacts — what this change touches.",
+        "Testing — whether planned tests were run and passed.",
+        "Communications — whether affected teams know what's changing.",
+        "Rollback plan — how you'd reverse it."
+      ],
+      closing: "The output supports a documented release decision. Bring it to your CAB or release owner; don't treat it as automatic approval.",
+      followups: [
+        "Testing is complete but there's no rollback plan. Do you ship?",
+        "How would you explain a 'no-go' to the business stakeholder who's waiting?"
+      ] },
+    { id: "t3", theme: "testing", persona: "architect", type: "open", seconds: 120,
+      question: "You need to retire an old integration that some teams may still rely on. How do you do it safely with Whirl?",
+      probing: "Whether you know retirement is a staged process with ownership, not a single delete.",
+      spectrum: ["Announcement", "Soft disablement", "Monitoring", "Removal", "Archiving"],
+      spectrumNote: "Retirement Plan walks a component through each stage with clear ownership. Run Change Impact Analysis first to find who still depends on it.",
+      followups: [
+        "Monitoring shows one team still using it. What now?",
+        "How long would you leave it soft-disabled?"
+      ] },
+
+    // ===== SECURITY & ACCESS =====
+    { id: "x1", theme: "security", persona: "admin", type: "mcq", seconds: 45,
+      question: "Your security team asks whether Whirl uses your data to train models. What's the correct answer?",
+      probing: "Whether you can answer the most common security question accurately.",
+      options: [
+        { text: "Only anonymized data is used for training" },
+        { text: "Data is used to fine-tune a Whirl model for your org only" },
+        { text: "No. Your data is never used to train anything, and Whirl doesn't run its own models", correct: true },
+        { text: "Training is opt-out in the admin settings" }
+      ],
+      answer: "No. Your data is never used to train anything. Whirl does not run its own models; it uses established model providers, and data isolation is consistent across the AI layer.",
+      followups: [
+        "Where can your security team get the SOC 2 Type II report?",
+        "How would you explain 'no proprietary models' to a non-technical stakeholder?"
+      ] },
+    { id: "x2", theme: "security", persona: "architect", type: "open", seconds: 130,
+      question: "A security reviewer asks how Whirl's architecture differs from typical SaaS. What do you tell them?",
+      probing: "Whether you can explain Whirl's isolation model accurately, without overstating or understating it.",
       groups: [
-        { label: "Strengths", items: [
-          "A fairly even mix of analytical and creative",
-          "I tend to think in systems",
-          "I've been told I tend to maintain calm in the middle of chaos"
+        { label: "Isolation", items: [
+          "Not multi-tenant SaaS",
+          "Fully isolated AWS environment per customer",
+          "No shared infrastructure between customers"
         ] },
-        { label: "Weaknesses", items: [
-          "I might rephrase weakness as \"things I need to get better at\" but:",
-          "I can always get better at connecting metrics back to business value in a way that Finance leaders would appreciate.",
-          "I think communication skills can always be improved"
+        { label: "Operations", items: [
+          "Immutable by design: versioned, auditable changes",
+          "No interactive login to production, such as SSH",
+          "Access limited to Whirl-managed devices with FIDO2 MFA"
+        ] },
+        { label: "Connections", items: [
+          "Read-only connectors to your systems",
+          "Non-human identity via Aembit, so credentials can't be lifted or leaked"
+        ] },
+        { label: "Assurance", items: [
+          "SOC 2 Type II, audited annually",
+          "Independent third-party penetration testing",
+          "Reports available on request via the Trust Center"
         ] }
       ],
       followups: [
-        "Give me a real example where the metrics-to-business-value gap actually cost you in a room.",
-        "What have you actually done to close either of these gaps?"
+        "They ask where your data lives. What's the answer?",
+        "Who would you bring in if they want to go deeper?"
       ] },
-    { id: "l7", theme: "leadership", persona: "vp", type: "open", seconds: 130,
-      question: "How do you approach change management of any kind?",
-      probing: "Whether you have a real, repeatable approach to landing change with a team, or just push it out and hope it sticks.",
+    { id: "x3", theme: "security", persona: "admin", type: "open", seconds: 130,
+      question: "Whirl recommends time-bound, project-scoped access for agents. Why, and how would you apply it on your team?",
+      probing: "Whether you understand the risk of agents accumulating more access than the people who built them.",
+      answer: "AI agents can end up with more access than the humans who set them up, and broad standing access rarely gets cleaned up. Time-bound, project-scoped access limits an agent to what a specific project needs, for as long as it needs it.",
       numbered: [
-        "Make sure the team is clear on objectives and any concerns have been addressed",
-        "Regular and Clear Communications",
-        "Lean Methodologies and Tracking",
-        "Continuous Feedback Loops"
+        "Scope access to the systems and objects the project actually touches.",
+        "Set an end date that matches the project timeline.",
+        "Review and remove access when the project closes."
       ],
       followups: [
-        "Give me a real example of a change that didn't stick, and why.",
-        "How do you know when concerns raised early were actually addressed versus just heard?"
+        "A project runs long and access expires mid-work. What's the right process?",
+        "Who on your team should approve agent access?"
       ] },
-    { id: "l2", theme: "leadership", persona: "vp", type: "open", seconds: 140,
-      question: "You have no direct reports, but we expect you to raise the whole team's bar. A designer keeps shipping mediocre work and takes critique badly. What do you actually do?",
-      probing: "Leadership without authority — whether you'll have the direct, caring conversation or hide behind 'not my report.'",
-      answer: "I'd pull them aside first and coach them to adopt a scientist's mindset: try to prove yourself wrong. It's much better to get negative feedback internally before release than afterward.\nThen I'd level-set on the fundamentals—what we're measuring against, the questions we ask, the patterns we use, and the rationale behind them.",
+    { id: "x4", theme: "security", persona: "analyst", type: "open", seconds: 120,
+      question: "Which Whirl capabilities would you use to prepare for a data exposure or compliance review?",
+      probing: "Whether you know Whirl's audit capabilities and when to use them.",
+      numbered: [
+        "External Access Audit — reviews sharing settings and profiles to find data exposed to external and guest users.",
+        "Data Classification Audit — finds missing or inconsistent field ownership and compliance classifications within an object."
+      ],
       followups: [
-        "They agree in the room, then nothing changes. What's your next move?",
-        "How do you give hard feedback without making yourself the team's unofficial cop?"
-      ] },
-    { id: "l4", theme: "leadership", persona: "vp", type: "open", seconds: 140,
-      question: "We want you to set a design vision the org rallies behind. How do you do that without it becoming your personal taste imposed on everyone?",
-      probing: "Vision versus ego — whether you can create shared ownership or just install your preferences as law.",
-      answer: "I think a vision people rally behind is built from evidence and shared context about what we're trying to accomplish for customers overall. I like collaboration as much as possible. I try to set the bar - and offer initial solutions to meet it - but I want everyone to feel ownership.",
-      followups: [
-        "A senior designer fundamentally disagrees with the vision. How do you handle it?",
-        "How do you keep 'co-authored' from becoming design-by-committee mush?"
-      ] },
-    { id: "l5", theme: "leadership", persona: "em", type: "open", seconds: 130,
-      question: "We can hire exactly one designer: a junior with huge raw potential, or a senior who's plug-and-play tomorrow. Make the call, defend it — and tell me what you're really optimizing for.",
-      probing: "Judgment on team composition and short- versus long-term thinking, and whether you can commit to a decision under a forced tradeoff.",
-      answer: "It depends on what's needed. If the team needed someone to own a new complex part of the platform and be completely self-directed with research and design, work across multiple stakeholders, etc. - it should probably be a more senior designer. \n\nIf it's just volume of work based on organic growth, I would probably opt for a junior designer with a strong foundation and a great attitude. I've worked with both before - and a good junior designer is a hard-working sponge. ",
-      followups: [
-        "Say the team is drowning right now. Which one, and why?",
-        "You pick the junior and they struggle for six months. Was it the wrong call?"
+        "The audit finds guest users can see a sensitive field. Who do you tell, and in what order?",
+        "How often would you re-run these?"
       ] },
 
-    { id: "l6", theme: "leadership", persona: "vp", type: "open", seconds: 120,
-      question: "I've noticed your title bounce around a little. Can you explain that?",
-      probing: "Whether you can address the résumé question directly and without defensiveness — and what you actually optimize for now.",
-      numbered: [
-        "Earlier in my career, I cared more about moving up the ladder in title and salary.",
-        "For the past decade, it's been much more about connecting with the right team and the right outlook for the future.",
-        "I feel like any perceived step back in pay or title will be made up for - and probably exceeded - in the near future with the right team."
+    // ===== COLLABORATION & SIGN-OFF =====
+    { id: "c1", theme: "collaboration", persona: "analyst", type: "open", seconds: 120,
+      question: "How is Whirl built for cross-functional work, and how should your team use it?",
+      probing: "Whether you use Whirl's sign-off features instead of falling back to email and spreadsheets.",
+      answer: "IT rarely works alone: an architect's design needs business sign-off, a change needs CAB approval, and requirements only matter once a stakeholder validates them. Whirl is built around stakeholder-visible status, approval workflows, and sign-off gates.",
+      bulletsLabel: "In practice",
+      bullets: [
+        "Route approvals through Whirl so status is visible to everyone.",
+        "Keep decisions attached to the artifact they apply to.",
+        "Don't move to the next stage until the sign-off gate is cleared."
       ],
       followups: [
-        "What does 'the right team' look like concretely for you?",
-        "If the title here stayed flat for two years, how would you feel about that?"
+        "A stakeholder approves over Slack instead. What do you do?",
+        "Which sign-off gate is most often skipped on your team?"
       ] },
-    // ===== CONFLICT HANDLING =====
-    { id: "k2", theme: "conflict", persona: "em", type: "open", seconds: 140,
-      question: "An engineer flatly refuses to build your design — 'it's not feasible' — and you suspect it's really 'I don't want to.' How do you handle it without a standoff or steamrolling them?",
-      probing: "Whether you can separate real constraints from resistance and resolve it collaboratively rather than by authority or avoidance.",
-      answer: "With any push back, I always want to clarify the objectives we're working towards ... and what the real underlying concerns are.\n\nOnce we get that out in the open, I think the options narrow.\n\nAt the end of the day, as long as I know we're solving the right problems for customers and are set up for growth, I'm open to different ideas.",
+    { id: "c2", theme: "collaboration", persona: "architect", type: "open", seconds: 120,
+      question: "A business stakeholder disagrees with the process gap analysis. How do you handle it?",
+      probing: "Whether you use the artifact to structure the conversation instead of defending it.",
+      numbered: [
+        "Walk through the specific gap they disagree with. Process Gap Analysis documents each difference with its reason and impact, so you can discuss one item at a time.",
+        "Find out whether they disagree with the facts (how it works today) or the decision (how it should work).",
+        "Update the analysis and record the decision so it isn't reopened later."
+      ],
       followups: [
-        "How do you tell a real constraint from a preference dressed as one?",
-        "You escalate and leadership sides with the engineer. How do you keep the relationship intact?"
-      ] },
-    { id: "k3", theme: "conflict", persona: "vp", type: "open", seconds: 140,
-      question: "A senior stakeholder overrides your design with a HiPPO decision you think is wrong, and the team's watching to see what you do. Walk me through it.",
-      probing: "Managing up under pressure — whether you can push back on authority with evidence and grace, and model disagree-and-commit.",
-      answer: "Even though I'm making the same rationales for the design that I would with anyone, I would try to tie those rationales to whatever business outcome the leader is primarily focused on.",
-      followups: [
-        "You commit, ship it, and the data proves you were right. How do you handle that conversation?",
-        "When is a design decision worth risking the relationship to escalate?"
-      ] },
-    { id: "k4", theme: "conflict", persona: "pm", type: "open", seconds: 130,
-      question: "Two designers on the team are in a slow-burning turf war over who owns a shared surface, and it's leaking into the work. You're the Staff designer, not their manager. Do you step in?",
-      probing: "Whether you'll address peer conflict that hurts the work, and can mediate without authority or making it worse.",
-      answer: "If it's affecting the work, I think I would need to - but it wouldn't be taking sides. I would just want to see if there's a way to separate the work - in order to keep the ball rolling.",
-      followups: [
-        "They both leave the room still resentful. Did you actually solve anything?",
-        "When do you handle it yourself versus escalate to their manager?"
-      ] },
-    { id: "k5", theme: "conflict", persona: "vp", type: "open", seconds: 130,
-      question: "Tell me about a real conflict you handled badly. Not a humble-brag — one where you were genuinely part of the problem.",
-      probing: "Self-awareness and growth — whether you can own a real failure without deflecting, and show what actually changed.",
-      answer: "Talk about the integration of 6sense workflows into the marketing app that you shouldn't have agreed to without the caveat of thinking through what was actually needed for the first release.",
-      followups: [
-        "What specifically would you do differently if that exact situation happened tomorrow?",
-        "How do you know the change stuck and it wasn't a one-time correction?"
+        "They're right and the as-is map was wrong. What else needs updating?",
+        "How do you keep this from delaying the whole project?"
       ] },
 
-    // ===== AMBIGUITY & SCOPE =====
-    { id: "a1", theme: "ambiguity", persona: "vp", type: "open", seconds: 45,
-      question: "You're handed a vague, open-ended problem with no clear requirements. What's the strongest first move?",
-      probing: "Whether you reduce ambiguity by framing the problem, or cope with it by generating output or offloading it back.",
-      answer: "Clarify the objective — what business outcome are we optimizing? Frame the problem before touching a screen.",
-      followups: [
-        "The stakeholder can't articulate the objective either. Now what?",
-        "How do you frame the problem without quietly narrowing it to the answer you already like?"
-      ] },
-    { id: "a7", theme: "ambiguity", persona: "vp", type: "open", seconds: 160,
-      question: "Tell me about a time you had to bring order to a chaotic or fragmented product experience.",
-      probing: "Whether you can point to a real, specific case and name what you personally did to create order — not just describe that the product got better.",
-      answer: "Many, but I would say 6sense Intelligent Workflows was probably the best example. The product itself reduced fragmentation in the platform by bringing different siloed pieces together into one view, so users could view, update, and automated marketing strategies in one system.\n\nSome of the ways I personally helped ground the team are:",
+    // ===== ADOPTION & ROLLOUT =====
+    { id: "a1", theme: "adoption", persona: "admin", type: "open", seconds: 130,
+      question: "You're leading Whirl adoption for your IT team. What does a good first 30 days look like?",
+      probing: "Whether you can plan a rollout that builds real habits, not just logins.",
       numbered: [
-        "The questions we ask ourselves. I put this to the team early on to help with OKRs and outcomes - and always helped them consider if how we're making decisions. Is it user-focused and grounded in data, etc.",
-        "The way I organized mocks, prototypes, and Jira tickets helped provide a base for them team to work off of.",
-        "I worked with PM to establish a few standards around the many moving parts the app had and terminology.",
-        "And then, I helped our global team stay on track by answering questions and making decisions async on Slack."
+        "Connect the core systems of record first, so agents have real context.",
+        "Pick one real, well-scoped project, not a demo, and run it end to end in Whirl.",
+        "Have each role use the capabilities closest to their daily work: analysts on requirements, architects on design and impact, admins on health checks and testing.",
+        "Share what the pilot produced and how long it took, then expand to the next project."
       ],
       followups: [
-        "Which of those four made the biggest difference, and how did you know?",
-        "What was still fragmented when you left, and what would you do differently?"
+        "What would you pick as the first project, and why?",
+        "One teammate keeps working the old way. What do you do?"
       ] },
-    { id: "a6", theme: "ambiguity", persona: "em", type: "open", seconds: 120,
-      question: "Are you comfortable with environments with changing requirements that still require you to deliver something tangible?",
-      probing: "Whether change genuinely doesn't rattle you — and whether you have a concrete working loop to point at, not just a claim of flexibility.",
-      answer: "Yes. I've worked in many environments where that was either possible - or the norm.\n\nIf something changes today, I don't necessarily wait for the next formal meeting. I'll clarify the requirement, quickly create a mock or prototype, get it in front of the right people or users, and work directly with engineering to determine what can actually ship.\n\nAI makes the production side faster now, but the underlying way of working isn't new to me.",
-      followups: [
-        "Walk me through the last time you ran that loop in two days — what shipped?",
-        "How do you keep that speed from producing work that's fast but shallow?"
-      ] },
-    { id: "a2", theme: "ambiguity", persona: "pm", type: "open", seconds: 140,
-      question: "'Make it more intuitive.' That's the entire brief. A skeptical PM is watching to see if you flail. What do you actually do with that?",
-      probing: "Whether you can convert a mushy, subjective ask into a concrete, testable problem instead of guessing at pixels.",
+    { id: "a2", theme: "adoption", persona: "architect", type: "open", seconds: 120,
+      question: "Whirl's goal is to become 'the environment you work inside,' not a tool you log into. What habits make that happen?",
+      probing: "Whether you see adoption as daily workflow change, not occasional use.",
       numbered: [
-        "I dig a little deeper into the outcome. Why are we building this? Can we get a little more context?",
-        "If we can have a least a little better grounding upfront, then there are several usability principles we can check against to achieve \"intuitive\"."
+        "Start every new request in Whirl, even small ones.",
+        "Keep requirements, designs, stories, and tests in Whirl instead of copying them out.",
+        "Use Research before asking a colleague how something works.",
+        "Run health checks on a regular schedule, not only when something breaks."
       ],
       followups: [
-        "You reframe it and the PM says 'no, I just mean make it look cleaner.' Then what?",
-        "How do you avoid solving your interpretation of the problem instead of theirs?"
+        "Which of these is hardest for your team, and why?",
+        "How would you know the habit has stuck?"
       ] },
-    { id: "a3", theme: "ambiguity", persona: "pm", type: "open", seconds: 130,
-      question: "Requirements are still shifting weekly, but the deadline hasn't moved. How do you design something real without either freezing until it's certain or building on sand?",
-      probing: "Whether you can make progress under moving targets — decoupling the stable core from the volatile edges.",
-      answer: "I separate what's stable from what's still moving and build against the stable core first.",
-      numbered: [
-        "Anchor what can't change, get that designed and the team working on it.",
-        "Use what data you have to make assumptions where you don't have decisions yet to start to prioritize what's left.",
-        "As you discover things that could put a release at risk, double down on those before they become a challenge."
+    { id: "a3", theme: "adoption", persona: "admin", type: "open", seconds: 120,
+      question: "Which health checks would you run first on a mature Salesforce org, and why?",
+      probing: "Whether you can prioritize Whirl's technical-debt findings by risk.",
+      groups: [
+        { label: "Run first: deployment risk", items: [
+          "Hardcoded Rule IDs",
+          "Missing Rule Bypasses",
+          "Event Retry Gaps",
+          "Unchecked Event Publishing"
+        ] },
+        { label: "Run next: maintainability", items: [
+          "Multiple Apex Triggers",
+          "Oversized Apex Classes",
+          "Outdated Apex Versions",
+          "Every-Save Rules"
+        ] },
+        { label: "Clean up over time", items: [
+          "Duplicate Fields",
+          "Required Field Candidates",
+          "Picklist Rule Review",
+          "Relationship Field Limits"
+        ] }
       ],
       followups: [
-        "Which parts do you refuse to build until they're settled, and why those?",
-        "The core assumption you built the spine on turns out to be the thing that changed. Now what?"
-      ] },
-    { id: "a5", theme: "ambiguity", persona: "em", type: "open", seconds: 130,
-      question: "You're the most senior designer and everyone's looking to you for the answer — but you genuinely don't know yet. How do you lead through not-knowing without either faking confidence or freezing the room?",
-      probing: "Comfort with uncertainty and honest leadership — whether you can hold ambiguity out loud without losing the room's trust.",
-      numbered: [
-        "I would first be honest that I don't have all the answers yet - and make sure we understand where the gaps are.",
-        "Then, I would help get the data - or conduct the tests - to get the information.",
-        "The answer may not always be clear cut, but we can add more solid rationales around why we're choosing the path we've chosen."
-      ],
-      followups: [
-        "How do you show that kind of uncertainty to junior designers without unsettling them?",
-        "Where's the line between honest 'I don't know' and just being indecisive?"
+        "The first check returns 200 findings. How do you triage them?",
+        "Who should own fixing them?"
       ] },
 
-    // ===== METRICS & MEASUREMENT =====
-    { id: "m5", theme: "metrics", persona: "vp", type: "open", seconds: 150,
-      question: "How would you prove that the redesign actually moves the business for BillTrust?",
-      probing: "Whether you can tie design work to the specific economics of the business (AR/DSO) rather than generic usability metrics, and whether you'd build shared accountability with Finance.",
-      answer: "The ideal would be to build a shared scorecard with Product and Finance with telemetry data, KPIs, and direct customer feedback — time-to-value, dispute resolution time, self-service payment adoption, time-to-first-payment, etc. — hopefully tied a little more to business outcomes, not just usability outcomes. Then, design decisions show up on finance's dashboard, not just ours.",
-      followups: [
-        "How would you fill in those blanks before you had real data — what would you estimate and how?",
-        "What happens if Finance disagrees with which metrics matter most?"
-      ] },
-    { id: "m7", theme: "metrics", persona: "vp", type: "open", seconds: 150,
-      question: "How would you measure success of your designs?",
-      probing: "Whether you start from the outcome the product is supposed to produce and then pick metrics to match — rather than reaching for adoption and engagement by reflex.",
-      answer: "I think measurements should ask the questions: Did the product:\n— reduce friction\n— improve decision quality, and\n— help customers move faster with less risk?\nSo ...",
+    // ===== MEASURING VALUE =====
+    { id: "v1", theme: "value", persona: "architect", type: "open", seconds: 130,
+      question: "Your CIO asks whether Whirl is working. How do you measure it?",
+      probing: "Whether you measure outcomes the business cares about, not just usage.",
       numbered: [
-        "A combination of adoption, engagement, and time-to-value, and retention metrics.",
-        "Reduction of support tickets",
-        "With AI, you want to know if agents are achieving expected outcomes and how much time was saved on the end-to-end flow.",
-        "And, I think it's always good to get subjective opinions about the changes directly from customers. Qualitative data can sometimes tell you things that data alone never will."
+        "Cycle time: how long from request to release, compared with similar work before Whirl.",
+        "Backlog: whether the team is clearing it faster.",
+        "Rework: fewer defects and fewer requirements changes after sign-off.",
+        "Rediscovery time: how quickly new team members get productive on an unfamiliar system."
       ],
+      closing: "Capture a baseline on a few comparable projects before you start, so you have something to compare against.",
       followups: [
-        "Pick one of these as the primary metric for your first 90 days here. Which, and why?",
-        "How would you baseline time saved on an agentic workflow before the agent exists?"
+        "Which of these would you report first, and to whom?",
+        "How would you separate Whirl's impact from other changes on the team?"
       ] },
-    { id: "m2", theme: "metrics", persona: "pm", type: "open", seconds: 140,
-      question: "How do you measure the impact of a design change that has no obvious number attached — a clarity fix, a trust improvement, a reduced-anxiety flow? Or do you just admit design can't be measured here?",
-      probing: "Whether you can build a measurement story for soft outcomes instead of retreating to 'design is unquantifiable.'",
-      answer: "Direct user feedback, in my opinion, is the only way to know when even telemetry or a KPI doesn't exist. Always useful but required in those situations.",
+    { id: "v2", theme: "value", persona: "analyst", type: "open", seconds: 120,
+      question: "A stakeholder says, 'AI output still needs review, so what did we actually save?' How do you answer?",
+      probing: "Whether you can explain where the time savings come from without overstating them.",
+      answer: "Review is expected; Whirl is built so IT professionals can sign off on its output with confidence. The time saved is in what comes before review: discovery, documentation, impact analysis, drafting requirements, and writing test cases, which are the tasks Whirl compresses from weeks to hours.\n\nReviewing a complete, grounded draft is much faster than producing it from scratch.",
       followups: [
-        "Your proxy moves but you can't prove your change caused it. How do you talk about that?",
-        "What do you do when the only honest answer is 'we can't isolate this'?"
-      ] },
-    { id: "m3", theme: "metrics", persona: "pm", type: "open", seconds: 140,
-      question: "Leadership wants a single north-star metric for design and they want it now. You know one number can be gamed and misread. What do you give them, and how do you keep it from becoming a weapon?",
-      probing: "Metrics literacy and org savvy — whether you understand Goodhart's law and can serve the ask without enabling bad behavior.",
-      answer: "I would probably say Time-to-Value, but with the caveat that they'll get much higher-quality information by combining adoption, engagement, time-to-value, retention, and direct customer feedback.",
-      followups: [
-        "Name the guardrail metrics you'd attach and what damage each one catches.",
-        "A team starts gaming your north star. How do you respond without killing the metric?"
-      ] },
-    { id: "m4", theme: "metrics", persona: "vp", type: "open", seconds: 130,
-      question: "Your A/B test comes back flat — no significant difference — on a redesign you believe in. Do you ship it, kill it, or keep iterating? Defend the call.",
-      probing: "Whether you can reason about evidence honestly under ego pressure, not just rationalize shipping what you already like.",
-      answer: "Flat results don't necessarily prevent shipping designs. The data is there to ground decision making, but the decisions are still on us.\n\nSo, if two approaches are identical from the user's perspective, I usually see if there are other boxes that can be checked. Is one design more scalable than the other? Is one easier for Engineering to implement?\n\nIf they're equal in every way, I would have no problem making a recommendation on one over the other.",
-      followups: [
-        "How do you avoid p-hacking your way to the sub-segment that makes you right?",
-        "You ship the flat result for strategic reasons. How do you defend that to a data-driven exec?"
-      ] },
-    { id: "m5", theme: "metrics", persona: "em", type: "open", seconds: 130,
-      question: "The data clearly says one thing and your design intuition screams the opposite. Which wins, and how do you decide without just picking whichever confirms what you wanted?",
-      probing: "Judgment at the seam of data and craft — whether you can hold both honestly instead of worshipping or dismissing the numbers.",
-      numbered: [
-        "I would start by stress-testing the data. What was measured? Is it capturing data over enough people to see a theme?",
-        "If the data checks, then I stress-test my own intuition and try to prove myself wrong. Why did I come to the conclusion I did? And why is off from what users actually experience? Maybe it's a learning moment for me."
-      ],
-      followups: [
-        "Give me a real time your intuition was right and the data was wrong — and how you knew.",
-        "There's no time or budget to test. You have to call it now. What do you do?"
-      ] },
-
-    // ===== CROSS-FUNCTIONAL INFLUENCE =====
-    { id: "i3", theme: "influence", persona: "vp", type: "open", seconds: 130,
-      question: "You're pulled into a room full of executives to defend a design direction, and you have about ninety seconds before they move on. How do you make the case land?",
-      probing: "Executive communication — whether you lead with outcome and decision, or bury them in process and craft.",
-      answer: "I want to talk about the decision in terms of the business outcomes they're trying to achieve:",
-      numbered: [
-        "Here's the outcome we're driving",
-        "Here's the decision I'm recommending and why",
-        "Here's the one piece of evidence that makes it credible.",
-        "Here's what I need from you - in terms of feedback or approval."
-      ],
-      followups: [
-        "An exec interrupts with a skeptical question thirty seconds in. How do you handle it?",
-        "How do you show conviction without coming across as inflexible or defensive?"
-      ] },
-    { id: "i4", theme: "influence", persona: "em", type: "open", seconds: 130,
-      question: "You're brought onto a project late — engineering's already building, PM's already committed. Your design input isn't really wanted. How do you add value without blowing up the timeline or being the person who shows up to complain?",
-      probing: "Whether you can influence from a weak position with pragmatism, triaging impact instead of demanding a redo.",
-      numbered: [
-        "I focus on the highest-impact things that are still cheap to change: a missing error state, an accessibility gap that's costly to retrofit later, etc. and then bank the smaller issues",
-        "I try to frame everything as reducing their risk, not critiquing their work."
-      ],
-      followups: [
-        "You spot a fundamental problem that a small fix can't solve. Do you raise it or let it ship?",
-        "How do you get invited earlier on the next project without lecturing them about process?"
-      ] },
-    { id: "i5", theme: "influence", persona: "pm", type: "open", seconds: 130,
-      question: "You built real influence with one PM — then they leave and a new one arrives who's skeptical of design and wants to move fast. All that trust resets. How do you rebuild it without starting a turf fight?",
-      probing: "Whether you understand influence as continually re-earned per relationship, and can win over a skeptic through delivery, not territory.",
-      answer: "I start with the data and rationales that I would use anyway - and - by understanding that the PM is under pressure to deliver and align design to that— I want them to experience design as the thing that makes their goals more likely and more successful, not harder to achieve - or a bottleneck.",
-      followups: [
-        "They keep cutting design out of decisions to go faster. How do you respond?",
-        "What's the first win you'd go for, and how do you pick it?"
+        "Give a specific task from your last project and how long it took before Whirl.",
+        "When would review take longer than doing it yourself?"
       ] }
   ];
 
@@ -929,20 +741,20 @@ class Component extends DCLogic {
   renderVals() {
     const themeDefs = [
       { id: "all", label: "All Categories" },
-      { id: "strategy", label: "Strategy" },
-      { id: "process", label: "Process" },
-      { id: "craft", label: "Craft" },
-      { id: "collaboration", label: "Collaboration" },
-      { id: "leadership", label: "Design Leadership" },
-      { id: "conflict", label: "Conflict" },
-      { id: "ambiguity", label: "Ambiguity & Scope" },
-      { id: "metrics", label: "Metrics" },
-      { id: "influence", label: "Cross-functional Influence" }
+      { id: "platform", label: "Platform Basics" },
+      { id: "intelligence", label: "Intelligence & Context" },
+      { id: "agents", label: "Agents & Workflows" },
+      { id: "requirements", label: "Requirements & Design" },
+      { id: "testing", label: "Testing & Release" },
+      { id: "security", label: "Security & Access" },
+      { id: "collaboration", label: "Collaboration & Sign-off" },
+      { id: "adoption", label: "Adoption & Rollout" },
+      { id: "value", label: "Measuring Value" }
     ];
     const personaMeta = {
-      vp: { label: "VP of Product", bg: "#aa2d00" },
-      pm: { label: "Product Manager", bg: "#0a2e0e" },
-      em: { label: "Engineering Manager", bg: "#181d26" }
+      admin: { label: "Admin", bg: "#aa2d00" },
+      architect: { label: "Architect", bg: "#0a2e0e" },
+      analyst: { label: "Business Analyst", bg: "#181d26" }
     };
     const active = this.state.theme;
     const timed = this.state.timed;
