@@ -75,14 +75,22 @@
 
   function route() {
     const cases = location.hash === '#cases';
+    const training = location.hash === '#training';
     const m = location.hash.match(/^#p=(.+)$/);
-    const p = !cases && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
-    $('tab-patterns').classList.toggle('on', !cases);
+    const p = !cases && !training && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
+    $('tab-patterns').classList.toggle('on', !cases && !training);
     $('tab-cases').classList.toggle('on', cases);
+    $('tab-training').classList.toggle('on', training);
     $('cases').hidden = !cases;
-    $('gallery').hidden = cases || !!p;
-    $('detail').hidden = cases || !p;
-    if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
+    $('training').hidden = !training;
+    $('gallery').hidden = cases || training || !!p;
+    $('detail').hidden = cases || training || !p;
+    if (training) {
+      const f = document.querySelector('.training-frame');
+      if (!f.src) f.src = 'training/onboarding/index.html';
+      document.title = 'Product Training · Knowledge Base';
+    }
+    else if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
     else if (p) { renderDetail(p); document.title = `${p.title} · Knowledge Base`; }
     else { renderGallery(); document.title = 'Patterns and Prototypes · Knowledge Base'; }
   }
