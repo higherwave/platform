@@ -113,6 +113,26 @@ a{color:#1b61c9}a:hover{color:#1a3866}
                 <div onClick="{{ r.toggle }}" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ r.kebabBg }}" style-hover="background:#e0e2e6">
                   <svg width="4" height="16" viewBox="0 0 4 16" fill="#181d26"><circle cx="2" cy="2" r="1.8"></circle><circle cx="2" cy="8" r="1.8"></circle><circle cx="2" cy="14" r="1.8"></circle></svg>
                 </div>
+                <sc-if value="{{ r.guide }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ stop }}" style="position:absolute;right:60px;top:-14px;width:300px;background:#181d26;color:#ffffff;border-radius:10px;box-shadow:0 10px 32px rgba(24,29,38,.28);padding:18px 18px 14px;display:flex;flex-direction:column;gap:10px;animation:dcfade .3s ease-out">
+                    <div style="position:absolute;right:-7px;top:26px;width:14px;height:14px;background:#181d26;transform:rotate(45deg)"></div>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                      <span style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#fcab79">NEW</span>
+                      <div onClick="{{ dismissGuide }}" style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#333840">
+                        <svg width="12" height="12" viewBox="0 0 16 16" stroke="#ffffff" stroke-width="2"><path d="M3 3l10 10M13 3L3 13"></path></svg>
+                      </div>
+                    </div>
+                    <div style="font-size:17px;font-weight:500">Get AI session context</div>
+                    <div style="font-size:14px;line-height:1.5;color:#e0e2e6;text-wrap:pretty">Open the actions menu on any session and choose Show Session Context to see what happened 3 hours before and after.</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:4px">
+                      <span style="font-size:12px;color:#9297a0">1 of 1</span>
+                      <div style="display:flex;gap:8px">
+                        <div onClick="{{ dismissGuide }}" style="padding:7px 12px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;color:#e0e2e6" style-hover="background:#333840">Dismiss</div>
+                        <div onClick="{{ r.toggle }}" style="padding:7px 14px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#ffffff;color:#181d26">Show me</div>
+                      </div>
+                    </div>
+                  </div>
+                </sc-if>
                 <sc-if value="{{ r.menuOpen }}" hint-placeholder-val="{{ false }}">
                   <div onClick="{{ stop }}" style="position:absolute;right:52px;top:6px;width:320px;background:#ffffff;border:1px solid #dddddd;border-radius:10px;box-shadow:0 8px 28px rgba(24,29,38,.14);padding:6px;display:flex;flex-direction:column;animation:dcfade .14s ease-out">
                     <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="3">
@@ -198,7 +218,7 @@ a{color:#1b61c9}a:hover{color:#1a3866}
   </aside>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;loadingDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1200,&quot;min&quot;:0,&quot;max&quot;:4000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;showMenuDescriptions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;highlightSourceRow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuide&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;loadingDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1200,&quot;min&quot;:0,&quot;max&quot;:4000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;showMenuDescriptions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;highlightSourceRow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   state = { menuRow: null, panelRow: null, phase: 'idle', saved: false, thread: [], draft: '', chips: { active: false, missing: true, start: true, play: false, end: false } };
   scrollRef = React.createRef();
@@ -259,6 +279,7 @@ class Component extends DCLogic {
       ['Offline', 'M12 4v11M7 10l5 5 5-5M5 20h14'], ['Gaming', 'M6 8h12a3 3 0 0 1 3 3v3a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-3a3 3 0 0 1 3-3zM8 11v3M6.5 12.5h3'], ['Logs', 'M4 4h16v16H4zM4 9h16M9 9v11']
     ];
     const chipDefs = [['active', 'Active Stream', '#e3f2eb'], ['missing', 'Missing Stop_Playback', '#eef0f3'], ['start', 'Start Error', '#fde2d2'], ['play', 'Play Error', '#fbeee6'], ['end', 'End Error', '#efeaf6']];
+    const guideOn = (this.props.showGuide ?? true) && !s.guideDone && s.menuRow === null && s.panelRow === null;
     const pr = s.panelRow !== null ? rows[s.panelRow] : rows[4];
     const showMenuDesc = this.props.showMenuDescriptions ?? true;
     const menuFor = (i) => [
@@ -272,13 +293,15 @@ class Component extends DCLogic {
       rows: rows.map(r => ({
         ...r, initial: r.profile[0], avatarBg: avatar[r.profile],
         bg: s.panelRow === r.i && (this.props.highlightSourceRow ?? true) ? '#eef3fc' : r.tone === 'peach' ? '#fbe4d6' : r.tone === 'grey' ? '#f1f2f4' : '#ffffff',
-        z: s.menuRow === r.i ? 5 : 1,
+        z: s.menuRow === r.i || (r.i === 0 && guideOn) ? 5 : 1,
+        guide: r.i === 0 && guideOn,
         menuOpen: s.menuRow === r.i,
         kebabBg: s.menuRow === r.i ? '#e0e2e6' : 'transparent',
-        toggle: (e) => { e.stopPropagation(); this.setState(st => ({ menuRow: st.menuRow === r.i ? null : r.i })); },
+        toggle: (e) => { e.stopPropagation(); this.setState(st => ({ guideDone: true, menuRow: st.menuRow === r.i ? null : r.i })); },
       })),
       menuItems: s.menuRow !== null ? menuFor(s.menuRow) : [],
       stop: (e) => e.stopPropagation(),
+      dismissGuide: (e) => { e.stopPropagation(); this.setState({ guideDone: true }); },
       panelTransform: s.panelRow !== null ? 'translateX(0)' : 'translateX(105%)',
       closePanel: () => { clearTimeout(this._t); this.setState({ panelRow: null, phase: 'idle' }); },
       ctx: { title: pr.title, profile: pr.profile, date: pr.date, time: pr.time, summary: pr.summary, windowLabel: pr.window },
