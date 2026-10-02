@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff;font-family:"Inter Display","Inter",system-ui,sans-serif;color:#181d26;-webkit-font-smoothing:antialiased}
+a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
+*{box-sizing:border-box}
+</style>
+</helmet>
+<div data-screen-label="Integration graph" style="height:100vh;display:flex;background:#ffffff;overflow:hidden">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;min-height:0">
+<div style="flex:none;border-bottom:1px solid #dddddd;display:flex;flex-direction:column;gap:10px;padding:14px 32px">
+<div style="display:flex;align-items:center;gap:12px;white-space:nowrap;flex-wrap:wrap">
+<div style="font-size:18px;font-weight:500">Impact of</div>
+<div style="height:32px;padding:0 12px;border-radius:6px;border:1px solid #181d26;display:flex;align-items:center;font-size:14px;font-weight:500">Workday · Worker Type</div>
+<div style="font-size:14px;color:#41454d">scoped to CHG-0142</div>
+<div style="display:flex;gap:4px;background:#f8fafc;border:1px solid #dddddd;border-radius:10px;padding:3px">
+<sc-for list="{{ hopOpts }}" as="h" hint-placeholder-count="2"><div onClick="{{ h.pick }}" style="height:26px;padding:0 12px;border-radius:6px;display:flex;align-items:center;font-size:13px;font-weight:500;cursor:pointer;background:{{ h.bg }};color:{{ h.fg }}">{{ h.label }}</div></sc-for>
+</div>
+</div>
+<div style="display:flex;gap:20px;font-size:13px;color:#333840;align-items:center;white-space:nowrap;flex-wrap:wrap">
+<div style="display:flex;align-items:center;gap:8px"><svg width="28" height="8"><line x1="0" y1="4" x2="28" y2="4" stroke="#181d26" stroke-width="2"></line></svg>Data flow</div>
+<div style="display:flex;align-items:center;gap:8px"><svg width="28" height="8"><line x1="0" y1="4" x2="28" y2="4" stroke="#181d26" stroke-width="2" stroke-dasharray="6 4"></line></svg>Trigger</div>
+<div style="display:flex;align-items:center;gap:8px"><svg width="28" height="8"><line x1="0" y1="4" x2="28" y2="4" stroke="#181d26" stroke-width="2" stroke-dasharray="1 4" stroke-linecap="round"></line></svg>Approval</div>
+<div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:14px;border:1.5px dashed #9297a0;border-radius:4px"></span>Indirect</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;position:relative;padding:24px 32px;overflow:auto">
+<div style="position:relative;width:804px;height:640px">
+<div style="position:absolute;left:0;width:804px;top:0;bottom:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+<sc-for list="{{ lanes }}" as="ln" hint-placeholder-count="4"><div style="background:#f8fafc;border-radius:10px;padding:14px 16px;font-size:13px;font-weight:500;color:#41454d">{{ ln }}</div></sc-for>
+</div>
+<div style="position:absolute;left:0;top:0;width:804px;height:640px">
+<svg width="804" height="640" style="position:absolute;inset:0">
+<sc-for list="{{ edges }}" as="e" hint-placeholder-count="0"><path d="{{ e.d }}" fill="none" stroke="{{ e.stroke }}" stroke-width="2" stroke-dasharray="{{ e.dash }}" stroke-linecap="round"></path></sc-for>
+</svg>
+<sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="0"><div onClick="{{ nd.pick }}" style="position:absolute;left:{{ nd.x }}px;top:{{ nd.y }}px;width:164px;height:64px;border-radius:10px;background:{{ nd.bg }};color:{{ nd.fg }};border:{{ nd.border }};padding:10px 12px;display:flex;flex-direction:column;gap:3px;cursor:pointer"><div style="font-size:11px;opacity:0.8">{{ nd.type }}</div><div style="font-size:13px;font-weight:500;line-height:1.3">{{ nd.name }}</div></div></sc-for>
+</div>
+</div>
+</div>
+</div>
+<div style="width:340px;flex:none;border-left:1px solid #dddddd;padding:32px 24px;display:flex;flex-direction:column;gap:20px;overflow:auto">
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:#41454d">{{ sel.sys }} · {{ sel.type }}</div><div style="font-size:22px;line-height:1.3">{{ sel.name }}</div><div><span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:500;color:{{ sel.p.fg }};background:{{ sel.p.bg }};border:1px solid {{ sel.p.bd }}">{{ sel.p.label }}</span></div></div>
+<div style="background:#f5e9d4;border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:6px"><div style="font-size:13px;font-weight:500">What this means for CHG-0142</div><div style="font-size:14px;line-height:1.5;color:#333840">{{ sel.impact }}</div></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:500;color:#41454d">Evidence</div><div style="font-size:14px;line-height:1.5;color:#333840">{{ sel.evidence }}</div></div>
+<sc-if value="{{ askConfirm }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:8px"><div onClick="{{ verify }}" style="height:32px;padding:0 14px;border-radius:10px;background:#181d26;color:#ffffff;display:flex;align-items:center;font-size:13px;font-weight:500;cursor:pointer">Confirm</div><div style="height:32px;padding:0 14px;border-radius:10px;border:1px solid #dddddd;background:#ffffff;display:flex;align-items:center;font-size:13px;font-weight:500">Correct</div></div></sc-if>
+<sc-if value="{{ sel.links.length }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:13px;font-weight:500;color:#41454d">Connected</div>
+<sc-for list="{{ sel.links }}" as="lk" hint-placeholder-count="2"><div onClick="{{ lk.pick }}" style="cursor:pointer;background:#ffffff;border:1px solid #dddddd;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px" style-hover="border-color:#181d26"><div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:12px;color:#41454d">{{ lk.sys }} · {{ lk.dir }}</div><div style="font-size:14px;font-weight:500">{{ lk.name }}</div></div><span style="font-size:12px;color:#41454d">{{ lk.kind }}</span></div></sc-for>
+</div></sc-if>
+<div style="font-size:12px;color:#41454d;margin-top:auto">Click any node to inspect it.</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;inferredVerified&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Scenario&quot;},&quot;defaultHops&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[1,2],&quot;default&quot;:2,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Graph&quot;},&quot;highlightConnections&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Graph&quot;}}">
+const P = {
+  config: { label: 'From config', fg: '#254fad', bg: '#ffffff', bd: '#458fff' },
+  confirmed: { label: 'Confirmed', fg: '#006400', bg: '#ffffff', bd: '#39bf45' },
+  inferred: { label: 'Inferred', fg: '#181d26', bg: '#f4d35e', bd: '#d9a441' },
+};
+const LANES = ['Workday', 'Okta', 'ServiceNow', 'NetSuite'];
+const LX = [14, 218, 422, 626];
+const NODES = [
+  { id: 'wt', lane: 0, y: 64, type: 'Field', name: 'Worker Type', src: true, p: 'config', impact: 'The field being changed. Adding a Contractor value fans out to three downstream systems.', evidence: 'Workday tenant config, field WRK_TYPE, 3 existing values.' },
+  { id: 'bp', lane: 0, y: 224, type: 'Business process', name: 'Hire: Contractor sub-process', p: 'config', impact: 'New sub-process needed. Triggered when Worker Type = Contractor.', evidence: 'Hire BP definition, condition rules on step 2.' },
+  { id: 'ap', lane: 0, y: 384, type: 'Approval step', name: 'Cost center owner approval', indirect: true, p: 'inferred', impact: 'Whirl infers contractors skip this step because the existing rule only matches Employee. Needs confirmation.', evidence: 'Inferred from 212 completed hires in the last 12 months; no contractor records exist yet.' },
+  { id: 'pr', lane: 1, y: 64, type: 'Provisioning rule', name: 'Map employeeType attribute', p: 'config', impact: 'Rule must accept the new value or contractors will be provisioned as employees.', evidence: 'Okta profile mapping, Workday → Okta, attribute employeeType.' },
+  { id: 'gr', lane: 1, y: 224, type: 'Group', name: 'Contractors-Default', indirect: true, p: 'confirmed', impact: 'Two hops away. Group membership drives app access; confirm contractor app list.', evidence: 'Confirmed by IT Security, Aug 14.' },
+  { id: 'ci', lane: 2, y: 144, type: 'Catalog item', name: 'New hire onboarding', p: 'config', impact: 'Triggered on hire. Needs a Contractor variant with reduced equipment.', evidence: 'Flow Designer trigger on inbound Workday event.' },
+  { id: 'lp', lane: 2, y: 304, type: 'Workflow', name: 'Laptop request', indirect: true, p: 'confirmed', impact: 'Two hops away. Contractors receive VDI access, not hardware.', evidence: 'Confirmed by IT Ops, Jul 30.' },
+  { id: 'vr', lane: 3, y: 384, type: 'Record', name: 'Vendor record (1099)', p: 'config', impact: 'Contractors are paid as vendors. A vendor record must be created on hire.', evidence: 'NetSuite integration script, vendor sync from Workday.' },
+  { id: 'ar', lane: 3, y: 544, type: 'Approval routing', name: 'AP invoice approval', indirect: true, p: 'config', impact: 'Two hops away. Routing uses department from Workday; no change expected.', evidence: 'NetSuite approval rule AP-04.' },
+];
+const EDGES = [['wt','pr','data'],['wt','bp','trigger'],['bp','ap','approval'],['pr','gr','data'],['wt','ci','trigger'],['ci','lp','trigger'],['wt','vr','data'],['vr','ar','approval']];
+const DASH = { data: '', trigger: '7 5', approval: '1 6' };
+const KIND = { data: 'Data flow', trigger: 'Trigger', approval: 'Approval' };
+
+class Component extends DCLogic {
+  state = { sel: 'ap', verified: null, hops: null };
+  renderVals() {
+    const verified = this.state.verified ?? this.props.inferredVerified ?? false;
+    const hops = this.state.hops ?? this.props.defaultHops ?? 2;
+    const hl = this.props.highlightConnections ?? true;
+    const visible = NODES.filter(n => hops === 2 || !n.indirect);
+    const ids = new Set(visible.map(n => n.id));
+    const selId = ids.has(this.state.sel) ? this.state.sel : 'wt';
+    const pos = Object.fromEntries(NODES.map(n => [n.id, { x: LX[n.lane], y: n.y, lane: n.lane }]));
+    const vEdges = EDGES.filter(([a, b]) => ids.has(a) && ids.has(b));
+    const edges = vEdges.map(([a, b, k]) => {
+      const A = pos[a], B = pos[b];
+      let d;
+      if (A.lane === B.lane) d = `M${A.x + 82} ${A.y + 64} L${B.x + 82} ${B.y}`;
+      else if (Math.abs(A.lane - B.lane) > 1) { const x1 = A.x + 164, y1 = A.y + 32, x2 = B.x, y2 = B.y + 32; d = `M${x1} ${y1} C${x1 + 20} ${y1} ${x1 + 20} ${y2} ${x1 + 40} ${y2} L${x2} ${y2}`; }
+      else { const x1 = A.x + 164, y1 = A.y + 32, x2 = B.x, y2 = B.y + 32, m = (x1 + x2) / 2; d = `M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2} ${y2}`; }
+      const on = a === selId || b === selId;
+      return { d, dash: DASH[k], stroke: !hl || on ? '#181d26' : '#c9ccd1' };
+    });
+    const pick = id => () => this.setState({ sel: id });
+    const nodes = visible.map(n => {
+      const on = n.id === selId;
+      return {
+        ...n, x: LX[n.lane], y: n.y,
+        bg: n.src ? '#aa2d00' : on ? '#181d26' : '#ffffff',
+        fg: n.src || on ? '#ffffff' : '#181d26',
+        border: n.src || on ? '1.5px solid transparent' : n.indirect ? '1.5px dashed #9297a0' : '1.5px solid #181d26',
+        pick: pick(n.id),
+      };
+    });
+    const s = NODES.find(n => n.id === selId);
+    const byId = Object.fromEntries(NODES.map(n => [n.id, n]));
+    const links = vEdges.filter(([a, b]) => a === selId || b === selId).map(([a, b, k]) => {
+      const other = byId[a === selId ? b : a];
+      return { name: other.name, sys: LANES[other.lane], dir: a === selId ? 'Downstream' : 'Upstream', kind: KIND[k], pick: pick(other.id) };
+    });
+    const isInf = s.p === 'inferred';
+    const sel = { ...s, sys: LANES[s.lane], links, p: isInf ? (verified ? P.confirmed : P.inferred) : P[s.p],
+      impact: isInf && verified ? 'Confirmed: contractors skip cost center owner approval.' : s.impact };
+    return {
+      lanes: LANES, nodes, edges, sel,
+      askConfirm: isInf && !verified,
+      verify: () => this.setState({ verified: true }),
+      hopOpts: [1, 2].map(h => ({ label: h + (h === 1 ? ' hop' : ' hops'), bg: h === hops ? '#181d26' : 'transparent', fg: h === hops ? '#ffffff' : '#333840', pick: () => this.setState({ hops: h }) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

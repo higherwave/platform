@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#ffffff;color:#333840;font-size:14px;line-height:1.25">
+
+<header style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center;gap:32px;padding:0 32px;background:#ffffff;position:sticky;top:0;z-index:30">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:24px;height:24px;border-radius:6px;background:#181d26;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:5px">
+      <div style="background:#a8d8c4;border-radius:1px"></div><div style="background:#fcab79;border-radius:1px"></div><div style="background:#f4d35e;border-radius:1px"></div><div style="background:#ffffff;border-radius:1px"></div>
+    </div>
+    <span style="font-size:16px;font-weight:500;color:#181d26">Support Health</span>
+  </div>
+  <nav style="display:flex;gap:24px;height:100%">
+    <button onClick="{{ goOverview }}" style="background:none;border:none;padding:0;height:100%;font-size:14px;cursor:pointer;color:{{ tabA.color }};border-bottom:2px solid {{ tabA.line }}">Overview</button>
+    <button onClick="{{ goLog }}" style="background:none;border:none;padding:0;height:100%;font-size:14px;cursor:pointer;color:{{ tabB.color }};border-bottom:2px solid {{ tabB.line }}">Conversations</button>
+  </nav>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:16px">
+    <span style="color:#41454d;font-size:13px">Updated Sep 30, 5:00 PM</span>
+    <div style="width:32px;height:32px;border-radius:50%;background:#f5e9d4;color:#181d26;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500">AK</div>
+  </div>
+</header>
+
+<sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+<main style="max-width:1280px;margin:0 auto;padding:40px 32px 96px;display:flex;flex-direction:column;gap:24px">
+
+  <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <h1 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;color:#181d26">Customer service health</h1>
+      <div style="color:#41454d">{{ subtitle }}</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <select value="{{ channel }}" onChange="{{ setChannel }}" style="height:40px;padding:0 12px;border:1px solid #dddddd;border-radius:6px;background:#ffffff;color:#181d26;font-size:14px;font-family:inherit">
+        <sc-for list="{{ channelOpts }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
+      </select>
+      <div style="display:flex;border:1px solid #dddddd;border-radius:6px;padding:3px;gap:2px">
+        <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="3">
+          <button onClick="{{ r.onClick }}" style="height:32px;padding:0 14px;border:none;border-radius:4px;font-size:14px;cursor:pointer;background:{{ r.bg }};color:{{ r.fg }}">{{ r.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <section style="background:#181d26;color:#ffffff;border-radius:12px;padding:40px;display:flex;flex-wrap:wrap;gap:48px">
+    <div style="flex:1 1 280px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:14px;font-weight:500;color:#e0e2e6">Health score</span>
+        <span style="padding:3px 10px;border-radius:6px;font-size:13px;font-weight:500;color:#181d26;background:{{ health.bg }}">{{ health.label }}</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:72px;line-height:1;font-weight:400">{{ health.score }}</span><span style="font-size:20px;color:#e0e2e6">/ 100</span></div>
+      <div style="display:flex;gap:28px;flex-wrap:wrap">
+        <sc-for list="{{ health.parts }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:#e0e2e6">{{ p.label }}</span><span style="font-size:18px;font-weight:500">{{ p.value }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1.4 1 360px;display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:14px;font-weight:500;color:#e0e2e6;margin-bottom:8px">What changed vs the previous period</span>
+      <sc-for list="{{ insights }}" as="i" hint-placeholder-count="3">
+        <button onClick="{{ i.onClick }}" style="display:flex;align-items:center;gap:16px;text-align:left;background:none;border:none;border-top:1px solid #41454d;padding:16px 0;color:#ffffff;cursor:pointer;font-size:16px;line-height:1.4" style-hover="color:#a8d8c4">
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:{{ i.dot }}"></span>
+          <span style="flex:1;text-wrap:pretty">{{ i.text }}</span>
+          <span style="font-size:14px;color:#e0e2e6;flex:none">View →</span>
+        </button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="7">
+      <button onClick="{{ k.onClick }}" style="text-align:left;background:#ffffff;border:1px solid #dddddd;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;cursor:pointer;font-family:inherit" style-hover="background:#f8fafc;border-color:#9297a0">
+        <span style="font-size:14px;font-weight:500;color:#41454d">{{ k.label }}</span>
+        <span style="font-size:32px;font-weight:400;line-height:1.1;color:#181d26">{{ k.value }}</span>
+        <span style="font-size:13px;color:#41454d"><span style="font-weight:500;color:{{ k.dColor }}">{{ k.delta }}</span> {{ k.note }}</span>
+      </button>
+    </sc-for>
+  </section>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px">
+    <section style="flex:2 1 560px;border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:20px;min-width:0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:18px;font-weight:500;color:#181d26">Conversation volume</h2><span style="color:#41454d">Created per day. Click a day to see its conversations.</span></div>
+        <div style="display:flex;gap:16px;font-size:13px;color:#41454d">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#181d26"></span>Agent handled</span>
+          <sc-if value="{{ showFin }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#a8d8c4"></span>Resolved by Fin</span></sc-if>
+        </div>
+      </div>
+      <div style="position:relative;height:200px;margin-right:32px">
+        <div style="position:absolute;left:0;right:0;top:0;border-top:1px dashed #dddddd"></div>
+        <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed #dddddd"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;border-top:1px solid #dddddd"></div>
+        <span style="position:absolute;right:-32px;top:-7px;font-size:12px;color:#41454d">{{ vol.max }}</span>
+        <span style="position:absolute;right:-32px;top:calc(50% - 7px);font-size:12px;color:#41454d">{{ vol.half }}</span>
+        <div style="position:absolute;inset:0;display:flex;align-items:flex-end;gap:{{ vol.gap }}">
+          <sc-for list="{{ vol.bars }}" as="b" hint-placeholder-count="30">
+            <button title="{{ b.title }}" onClick="{{ b.onClick }}" style="flex:1;min-width:0;height:{{ b.h }}%;border:none;padding:0;background:none;display:flex;flex-direction:column;cursor:pointer" style-hover="opacity:0.75">
+              <span style="flex:1;background:#181d26;border-radius:3px 3px 0 0"></span>
+              <span style="height:{{ b.finH }}%;background:#a8d8c4"></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:{{ vol.gap }};margin-right:32px;margin-top:-8px">
+        <sc-for list="{{ vol.bars }}" as="b" hint-placeholder-count="30"><span style="flex:1;min-width:0;font-size:12px;color:#41454d;white-space:nowrap;overflow:visible">{{ b.label }}</span></sc-for>
+      </div>
+    </section>
+
+    <section style="flex:1 1 320px;border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:18px;font-weight:500;color:#181d26">Unresolved backlog</h2><span style="color:#41454d">Right now, across all dates</span></div>
+      <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:40px;line-height:1;color:#181d26">{{ backlog.total }}</span><span style="color:#41454d">conversations</span></div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ backlog.statuses }}" as="s" hint-placeholder-count="3">
+          <button onClick="{{ s.onClick }}" style="display:grid;grid-template-columns:72px 1fr 36px;align-items:center;gap:12px;background:none;border:none;border-top:1px solid #dddddd;padding:12px 0;cursor:pointer;font-size:14px;color:#333840;text-align:left" style-hover="background:#f8fafc">
+            <span>{{ s.label }}</span>
+            <span style="height:8px;background:#f8fafc;border-radius:4px;overflow:hidden"><span style="display:block;height:100%;border-radius:4px;width:{{ s.w }}%;background:{{ s.color }}"></span></span>
+            <span style="text-align:right;font-weight:500;color:#181d26">{{ s.count }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:13px;font-weight:500;color:#41454d">Age since created</span>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <sc-for list="{{ backlog.ages }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.onClick }}" style="border:1px solid #dddddd;border-radius:6px;background:{{ a.bg }};padding:10px 8px;display:flex;flex-direction:column;gap:4px;cursor:pointer;text-align:left" style-hover="border-color:#9297a0">
+              <span style="font-size:18px;font-weight:500;color:#181d26">{{ a.count }}</span>
+              <span style="font-size:12px;color:#41454d">{{ a.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:24px">
+    <section style="flex:3 1 560px;border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:18px;font-weight:500;color:#181d26">Topics</h2><span style="color:#41454d">What customers contacted you about, and how each topic is going</span></div>
+      <div style="overflow-x:auto">
+      <div style="min-width:520px;font-size:14px">
+        <div style="display:grid;grid-template-columns:minmax(120px,1.4fr) 90px minmax(100px,1.6fr) 64px 96px 80px;gap:16px;color:#41454d;font-size:13px;font-weight:500;padding:8px 0">
+          <span>Topic</span><span>Volume</span><span>Share</span><span style="text-align:right">CSAT</span>
+          <span style="text-align:right"><sc-if value="{{ showFin }}" hint-placeholder-val="{{ true }}">Fin resolved</sc-if></span>
+          <span style="text-align:right">Breaches</span>
+        </div>
+        <sc-for list="{{ topics }}" as="t" hint-placeholder-count="7">
+          <div onClick="{{ t.onClick }}" style="display:grid;grid-template-columns:minmax(120px,1.4fr) 90px minmax(100px,1.6fr) 64px 96px 80px;gap:16px;align-items:center;border-top:1px solid #dddddd;padding:12px 0;cursor:pointer" style-hover="background:#f8fafc">
+            <span style="color:#181d26;font-weight:500">{{ t.name }}</span>
+            <span>{{ t.count }} <span style="font-size:12px;color:{{ t.dColor }}">{{ t.delta }}</span></span>
+            <div style="height:8px;background:#f8fafc;border-radius:4px"><div style="height:100%;border-radius:4px;background:#181d26;width:{{ t.w }}%"></div></div>
+            <span style="text-align:right;color:{{ t.csatColor }}">{{ t.csat }}</span>
+            <span style="text-align:right"><sc-if value="{{ showFin }}" hint-placeholder-val="{{ true }}">{{ t.fin }}</sc-if></span>
+            <span style="text-align:right;color:{{ t.brColor }}">{{ t.breached }}</span>
+          </div>
+        </sc-for>
+      </div>
+      </div>
+    </section>
+
+    <section style="flex:2 1 340px;border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:18px;font-weight:500;color:#181d26">SLA by priority</h2><span style="color:#41454d">First reply targets met, agent-handled</span></div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ slaRows }}" as="s" hint-placeholder-count="4">
+          <button onClick="{{ s.onClick }}" style="display:flex;flex-direction:column;gap:8px;background:none;border:none;border-top:1px solid #dddddd;padding:14px 0;cursor:pointer;text-align:left;font-size:14px;color:#333840" style-hover="background:#f8fafc">
+            <span style="display:flex;justify-content:space-between;width:100%;gap:8px">
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ s.dot }}"></span><span style="font-weight:500;color:#181d26">{{ s.name }}</span><span style="color:#41454d">{{ s.target }}</span></span>
+              <span><span style="font-weight:500;color:#181d26">{{ s.pct }}</span> <span style="color:{{ s.brColor }}">· {{ s.breached }} breached</span></span>
+            </span>
+            <span style="height:8px;width:100%;background:#f5e9d4;border-radius:4px;overflow:hidden"><span style="display:block;height:100%;background:#0a2e0e;width:{{ s.w }}%"></span></span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <section style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-size:18px;font-weight:500;color:#181d26">Team performance</h2><span style="color:#41454d">Agents ranked by conversations solved in this period</span></div>
+    <div style="overflow-x:auto">
+    <div style="min-width:640px;font-size:14px">
+      <div style="display:grid;grid-template-columns:minmax(180px,2fr) repeat(5,minmax(80px,1fr));gap:16px;color:#41454d;font-size:13px;font-weight:500;padding:8px 0">
+        <span>Agent</span><span style="text-align:right">Solved</span><span style="text-align:right">Open now</span><span style="text-align:right">Median first reply</span><span style="text-align:right">SLA met</span><span style="text-align:right">CSAT</span>
+      </div>
+      <sc-for list="{{ agents }}" as="a" hint-placeholder-count="8">
+        <div onClick="{{ a.onClick }}" style="display:grid;grid-template-columns:minmax(180px,2fr) repeat(5,minmax(80px,1fr));gap:16px;align-items:center;border-top:1px solid #dddddd;padding:10px 0;cursor:pointer" style-hover="background:#f8fafc">
+          <span style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:50%;background:{{ a.bg }};color:#181d26;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center">{{ a.initials }}</span><span style="color:#181d26;font-weight:500">{{ a.name }}</span></span>
+          <span style="text-align:right">{{ a.solved }}</span>
+          <span style="text-align:right">{{ a.open }}</span>
+          <span style="text-align:right">{{ a.frt }}</span>
+          <span style="text-align:right;color:{{ a.slaColor }}">{{ a.sla }}</span>
+          <span style="text-align:right;color:{{ a.csatColor }}">{{ a.csat }}</span>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isLog }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:1440px;margin:0 auto;padding:32px 32px 96px;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#41454d">
+    <a href="#" onClick="{{ goOverviewLink }}">Overview</a><span>/</span><span>Conversations</span>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+    <h1 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;color:#181d26">Conversation log</h1>
+    <span style="color:#41454d;font-size:16px">{{ resultCount }}</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:relative;z-index:20">
+    <div style="position:relative;flex:0 1 340px;min-width:220px">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="position:absolute;left:14px;top:14px"><circle cx="7" cy="7" r="5" stroke="#41454d" stroke-width="1.5"></circle><path d="M11 11l3.5 3.5" stroke="#41454d" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      <input value="{{ q }}" onChange="{{ setQ }}" placeholder="Search ID, subject, customer, agent" style="width:100%;height:44px;padding:12px 16px 12px 38px;border:1px solid #dddddd;border-radius:6px;font-size:14px;font-family:inherit;color:#181d26;outline:none" style-focus="border-color:#458fff"></input>
+    </div>
+    <sc-for list="{{ defs }}" as="d" hint-placeholder-count="8">
+      <div style="position:relative">
+        <button onClick="{{ d.toggleMenu }}" style="height:44px;padding:0 14px;border:1px solid {{ d.border }};border-radius:6px;background:{{ d.bg }};color:#181d26;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px">
+          <span>{{ d.label }}</span><span style="font-weight:500">{{ d.badge }}</span><span style="font-size:10px;color:#41454d">▼</span>
+        </button>
+        <sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:50px;left:0;z-index:40;background:#ffffff;border:1px solid #dddddd;border-radius:10px;box-shadow:0 8px 24px rgba(24,29,38,0.12);padding:6px;min-width:230px;max-height:360px;overflow:auto">
+            <sc-for list="{{ d.options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.toggle }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border:none;background:none;border-radius:6px;cursor:pointer;font-size:14px;color:#181d26;text-align:left" style-hover="background:#f8fafc">
+                <span style="width:16px;height:16px;flex:none;border-radius:{{ o.radius }};border:1px solid {{ o.boxBorder }};background:{{ o.boxBg }};color:#ffffff;font-size:11px;display:flex;align-items:center;justify-content:center">{{ o.mark }}</span>
+                <span style="flex:1">{{ o.label }}</span>
+                <span style="color:#41454d;font-size:13px">{{ o.count }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}"><div onClick="{{ closeMenu }}" style="position:fixed;inset:0;z-index:15"></div></sc-if>
+
+  <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+      <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2">
+        <button onClick="{{ c.remove }}" style="height:32px;padding:0 10px 0 12px;border:1px solid #dddddd;border-radius:6px;background:#f8fafc;color:#181d26;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="border-color:#9297a0">
+          <span><span style="color:#41454d">{{ c.key }}:</span> {{ c.value }}</span><span style="font-size:14px;color:#41454d">×</span>
+        </button>
+      </sc-for>
+      <button onClick="{{ clearAll }}" style="background:none;border:none;color:#1b61c9;font-size:13px;cursor:pointer;padding:0 8px">Clear all</button>
+    </div>
+  </sc-if>
+
+  <div style="border:1px solid #dddddd;border-radius:10px;overflow:auto">
+    <div style="min-width:1300px;font-size:14px">
+      <div style="display:grid;grid-template-columns:minmax(260px,2.6fr) 96px 96px 96px 130px 130px 96px 96px 104px 72px 140px;gap:12px;padding:12px 16px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;white-space:nowrap">
+        <span onClick="{{ sorts.id.on }}" style="cursor:pointer">Conversation {{ sorts.id.arrow }}</span>
+        <span onClick="{{ sorts.status.on }}" style="cursor:pointer">Status {{ sorts.status.arrow }}</span>
+        <span onClick="{{ sorts.priority.on }}" style="cursor:pointer">Priority {{ sorts.priority.arrow }}</span>
+        <span>Channel</span>
+        <span>Handled by</span>
+        <span>Topic</span>
+        <span onClick="{{ sorts.frt.on }}" style="cursor:pointer;text-align:right">First reply {{ sorts.frt.arrow }}</span>
+        <span onClick="{{ sorts.res.on }}" style="cursor:pointer;text-align:right">Resolution {{ sorts.res.arrow }}</span>
+        <span>SLA</span>
+        <span onClick="{{ sorts.csat.on }}" style="cursor:pointer">CSAT {{ sorts.csat.arrow }}</span>
+        <span onClick="{{ sorts.created.on }}" style="cursor:pointer">Created {{ sorts.created.arrow }}</span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+        <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:minmax(260px,2.6fr) 96px 96px 96px 130px 130px 96px 96px 104px 72px 140px;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid #dddddd;cursor:pointer;white-space:nowrap" style-hover="background:#f8fafc">
+          <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+            <span style="color:#181d26;font-weight:500;overflow:hidden;text-overflow:ellipsis">{{ r.subject }}</span>
+            <span style="font-size:13px;color:#41454d;overflow:hidden;text-overflow:ellipsis">{{ r.idText }} · {{ r.name }}, {{ r.company }}</span>
+          </div>
+          <span><span style="padding:3px 8px;border-radius:6px;font-size:13px;font-weight:500;background:{{ r.sBg }};color:{{ r.sFg }}">{{ r.status }}</span></span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.pDot }}"></span>{{ r.priority }}</span>
+          <span>{{ r.channel }}</span>
+          <span style="overflow:hidden;text-overflow:ellipsis">{{ r.handler }}</span>
+          <span style="overflow:hidden;text-overflow:ellipsis">{{ r.topic }}</span>
+          <span style="text-align:right">{{ r.frtText }}</span>
+          <span style="text-align:right">{{ r.resText }}</span>
+          <span style="display:flex;align-items:center;gap:6px;color:{{ r.slaFg }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.slaDot }}"></span>{{ r.sla }}</span>
+          <span style="color:{{ r.csatFg }}">{{ r.csatText }}</span>
+          <span style="color:#41454d">{{ r.createdText }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:64px 24px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <span style="font-size:18px;font-weight:500;color:#181d26">No conversations match these filters</span>
+        <button onClick="{{ clearAll }}" style="height:40px;padding:0 20px;border:1px solid #dddddd;border-radius:12px;background:#ffffff;color:#181d26;font-size:14px;font-weight:500;cursor:pointer">Clear filters</button>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+    <span style="color:#41454d">{{ pageText }}</span>
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ prevPage }}" disabled="{{ prevDisabled }}" style="height:40px;padding:0 16px;border:1px solid #dddddd;border-radius:12px;background:#ffffff;color:#181d26;font-size:14px;font-weight:500;cursor:pointer">← Previous</button>
+      <button onClick="{{ nextPage }}" disabled="{{ nextDisabled }}" style="height:40px;padding:0 16px;border:1px solid #dddddd;border-radius:12px;background:#ffffff;color:#181d26;font-size:14px;font-weight:500;cursor:pointer">Next →</button>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeSel }}" style="position:fixed;inset:0;background:rgba(24,29,38,0.32);z-index:50"></div>
+  <aside style="position:fixed;top:0;right:0;bottom:0;width:min(480px,100vw);background:#ffffff;z-index:51;overflow:auto;padding:32px;display:flex;flex-direction:column;gap:24px;box-shadow:-8px 0 32px rgba(24,29,38,0.12)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="color:#41454d">{{ sel.idText }} · {{ sel.channel }}</span>
+      <button onClick="{{ closeSel }}" style="width:40px;height:40px;border-radius:50%;border:1px solid #dddddd;background:#ffffff;color:#181d26;font-size:18px;cursor:pointer">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="margin:0;font-size:24px;font-weight:400;line-height:1.35;color:#181d26">{{ sel.subject }}</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span style="padding:3px 8px;border-radius:6px;font-size:13px;font-weight:500;background:{{ sel.sBg }};color:{{ sel.sFg }}">{{ sel.status }}</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><span style="width:8px;height:8px;border-radius:50%;background:{{ sel.pDot }}"></span>{{ sel.priority }} priority</span>
+      </div>
+    </div>
+    <div style="background:#f5e9d4;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:16px;font-weight:500;color:#181d26">{{ sel.name }}</span>
+      <span style="color:#333840">{{ sel.company }} · {{ sel.email }}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px">
+      <sc-for list="{{ sel.facts }}" as="f" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:#41454d">{{ f.k }}</span><span style="color:#181d26;font-weight:500">{{ f.v }}</span></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <span style="font-size:16px;font-weight:500;color:#181d26;margin-bottom:12px">Timeline</span>
+      <sc-for list="{{ sel.timeline }}" as="e" hint-placeholder-count="3">
+        <div style="display:flex;gap:14px">
+          <div style="display:flex;flex-direction:column;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:#181d26;margin-top:4px"></span><span style="flex:1;width:1px;background:#dddddd"></span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:18px"><span style="color:#181d26">{{ e.text }}</span><span style="font-size:13px;color:#41454d">{{ e.time }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+  </aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showFin&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;defaultRange&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;7&quot;,&quot;14&quot;,&quot;30&quot;],&quot;default&quot;:&quot;30&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;pageSize&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;25&quot;,&quot;50&quot;,&quot;100&quot;],&quot;default&quot;:&quot;25&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Log&quot;}}">
+const NOW = new Date(2026, 8, 30, 17, 0).getTime(), DAY = 864e5, TODAY0 = new Date(2026, 8, 30).getTime();
+const C = { ink:'#181d26', body:'#333840', muted:'#41454d', hair:'#dddddd', strong:'#9297a0', soft:'#f8fafc', gray:'#e0e2e6', coral:'#aa2d00', forest:'#0a2e0e', cream:'#f5e9d4', peach:'#fcab79', mint:'#a8d8c4', yellow:'#f4d35e', mustard:'#d9a441', success:'#006400' };
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const AGENTS = ['Maya Chen','Jonah Reyes','Priya Natarajan','Luis Ortega','Hannah Berg','Sam Okafor','Elena Petrova','Theo Laurent'];
+const TOPICS = {
+  'Billing': { w:18, fin:.38, subj:['Charged twice this month','Invoice shows wrong VAT number','Update card on file','Annual plan proration question'] },
+  'Login & access': { w:16, fin:.62, subj:['Can’t reset password','2FA codes not arriving','Locked out after SSO change','Invite link expired'] },
+  'Shipping': { w:15, fin:.55, subj:['Where is my order?','Tracking hasn’t updated in 4 days','Change delivery address','Package marked delivered but missing'] },
+  'Refunds': { w:12, fin:.22, subj:['Refund not received yet','Refund for duplicate order','Partial refund for damaged item','Cancel and refund subscription'] },
+  'Bug report': { w:11, fin:.08, subj:['Export to CSV fails','Dashboard won’t load on Safari','Notifications sent twice','Search returns no results'] },
+  'Integrations': { w:9, fin:.18, subj:['Slack integration disconnected','Webhook returning 401','Salesforce sync missing fields','API rate limit questions'] },
+  'Account changes': { w:19, fin:.5, subj:['Change account owner','Add seats to our plan','Rename workspace','Delete my account'] },
+};
+const TOPIC_NAMES = Object.keys(TOPICS);
+const CHANNELS = [['Messenger',42],['Email',33],['WhatsApp',13],['Phone',12]];
+const PRI = [['Urgent',6],['High',20],['Normal',60],['Low',14]];
+const PRI_ORDER = { Urgent:0, High:1, Normal:2, Low:3 };
+const SLA_T = { Urgent:15, High:60, Normal:240, Low:480 };
+const FRT_BASE = { Messenger:3, WhatsApp:7, Email:95, Phone:1 };
+const RES_BASE = { Messenger:50, WhatsApp:110, Email:620, Phone:20 };
+const PRI_F = { Urgent:.12, High:.5, Normal:1, Low:1.6 };
+const FIRST = ['Ava','Noah','Mia','Leo','Zoe','Omar','Ivy','Kai','Nina','Ezra','Lena','Ravi','Clara','Felix','Aisha','Diego','Sofia','Marcus','Yuki','Ben'];
+const LAST = ['Patel','Kim','Novak','Silva','Brooks','Haddad','Larsen','Moreau','Tanaka','Walsh','Romero','Fischer','Adeyemi','Costa','Ng'];
+const COMPANIES = ['Northwind','Brightline','Oakframe','Lumen Labs','Harbor & Co','Fieldnote','Corvid','Parcelly','Tidewater','Kestrel','Marlow Studio','Quanta Freight'];
+const STATUS_STYLE = { 'Open':[C.peach,C.ink], 'Pending':[C.yellow,C.ink], 'On hold':[C.gray,C.ink], 'Solved':[C.mint,C.ink], 'Closed':[C.soft,C.muted] };
+const PRI_DOT = { Urgent:C.coral, High:C.mustard, Normal:C.strong, Low:C.hair };
+const SLA_STYLE = { 'Breached':[C.coral,C.coral], 'At risk':[C.mustard,C.ink], 'On track':[C.strong,C.ink], 'Met':[C.success,C.ink], '—':[C.hair,C.muted] };
+const UNRESOLVED = ['Open','Pending','On hold'];
+
+function mkRng(s) { return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+const R = mkRng(11);
+const gauss = () => { const u = R() || 1e-9, v = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+const wpick = a => { const t = a.reduce((s, x) => s + x[1], 0); let r = R() * t; for (const x of a) { if ((r -= x[1]) < 0) return x[0]; } return a[a.length - 1][0]; };
+const pick = a => a[Math.floor(R() * a.length)];
+
+function genData() {
+  const out = [], tw = TOPIC_NAMES.map(n => [n, TOPICS[n].w]);
+  for (let d = 59; d >= 0; d--) {
+    const day0 = TODAY0 - d * DAY, dow = new Date(day0).getDay(), wk = dow === 0 || dow === 6;
+    let n = Math.max(4, Math.round((wk ? 10 : 22) + gauss() * 3));
+    for (let i = 0; i < n; i++) {
+      const h = Math.min(23.9, Math.max(0, 7 + R() * 13 + gauss()));
+      const created = day0 + h * 36e5;
+      if (created > NOW) continue;
+      const recent = d < 7, topic = wpick(tw), channel = wpick(CHANNELS), priority = wpick(PRI);
+      let finP = TOPICS[topic].fin + (recent ? .06 : 0);
+      if (channel === 'Phone') finP = 0;
+      if (priority === 'Urgent') finP *= .3;
+      const fin = R() < finP, ageMin = (NOW - created) / 6e4, age = ageMin / 1440;
+      const billingBad = topic === 'Billing' && recent;
+      let frt, res = null, status, sla, csat = null;
+      if (fin) {
+        frt = 0.1; res = 2 + R() * 12; status = age > 4 ? 'Closed' : 'Solved'; sla = 'Met';
+      } else {
+        frt = Math.max(0.5, FRT_BASE[channel] * PRI_F[priority] * Math.exp(gauss() * .9) * (billingBad ? 2.2 : 1));
+        if (frt > ageMin) frt = null;
+        const r = R();
+        if (age < 1) status = r < .42 ? 'Open' : r < .66 ? 'Pending' : r < .71 ? 'On hold' : 'Solved';
+        else if (age < 4) status = r < .14 ? 'Open' : r < .28 ? 'Pending' : r < .33 ? 'On hold' : 'Solved';
+        else status = r < .025 ? 'Open' : r < .045 ? 'Pending' : r < .055 ? 'On hold' : age > 4 ? 'Closed' : 'Solved';
+        if (frt == null && !UNRESOLVED.includes(status)) status = 'Open';
+        if (status === 'Solved' || status === 'Closed') {
+          res = Math.max(frt || 5, RES_BASE[channel] * Math.exp(gauss() * .8) * (billingBad ? 1.6 : 1));
+          if (res > ageMin) res = ageMin * (.3 + R() * .6);
+        }
+        const t = SLA_T[priority];
+        sla = frt != null ? (frt <= t ? 'Met' : 'Breached') : (ageMin > t ? 'Breached' : ageMin > t * .75 ? 'At risk' : 'On track');
+      }
+      if ((status === 'Solved' || status === 'Closed') && R() < .4) {
+        const arr = fin ? [5,5,5,4,4,4,3,2,1] : (sla === 'Breached' || billingBad) ? [5,4,3,3,2,2,1,4] : [5,5,5,5,4,4,4,3,2];
+        csat = pick(arr);
+      }
+      const fn = pick(FIRST), ln = pick(LAST), company = pick(COMPANIES);
+      out.push({ created, topic, channel, priority, fin, frt, res, status, sla, csat,
+        handler: fin ? 'Fin AI' : pick(AGENTS), subject: pick(TOPICS[topic].subj), name: fn + ' ' + ln, company,
+        email: (fn[0] + ln).toLowerCase() + '@' + company.toLowerCase().replace(/[^a-z]/g, '') + '.com' });
+    }
+  }
+  out.sort((a, b) => a.created - b.created);
+  out.forEach((r, i) => { r.id = 48120 + i; });
+  return out.reverse();
+}
+const DATA = genData();
+
+const med = a => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const pctOf = (a, f) => a.length ? a.filter(f).length / a.length * 100 : null;
+function stats(set) {
+  const rated = set.filter(r => r.csat), slaSet = set.filter(r => !r.fin && (r.sla === 'Met' || r.sla === 'Breached'));
+  return { count: set.length, csat: pctOf(rated, r => r.csat >= 4), frt: med(set.filter(r => !r.fin && r.frt != null).map(r => r.frt)),
+    res: med(set.filter(r => !r.fin && r.res != null).map(r => r.res)), fin: pctOf(set, r => r.fin), sla: pctOf(slaSet, r => r.sla === 'Met'),
+    breached: set.filter(r => r.sla === 'Breached').length };
+}
+function dur(m) {
+  if (m == null) return '—';
+  if (m < 1) return '<1m';
+  if (m < 60) return Math.round(m) + 'm';
+  if (m < 1440) { const h = Math.floor(m / 60), mm = Math.round(m % 60); return mm ? `${h}h ${mm}m` : `${h}h`; }
+  const d = Math.floor(m / 1440), h = Math.round((m % 1440) / 60); return h ? `${d}d ${h}h` : `${d}d`;
+}
+const pct = v => v == null ? '—' : Math.round(v) + '%';
+const hm = t => { const d = new Date(t); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+const dateShort = t => { const d = new Date(t); return MON[d.getMonth()] + ' ' + d.getDate(); };
+function fmtTime(t) {
+  if (t >= TODAY0) return 'Today, ' + hm(t);
+  if (t >= TODAY0 - DAY) return 'Yesterday, ' + hm(t);
+  return dateShort(t) + ', ' + hm(t);
+}
+function delta(cur, prev, kind, goodUp) {
+  if (cur == null || prev == null) return { text: '—', color: C.muted };
+  let diff, text;
+  if (kind === 'pts') { diff = cur - prev; text = (diff >= 0 ? '↑ ' : '↓ ') + Math.abs(diff).toFixed(1) + ' pts'; }
+  else { diff = prev ? (cur - prev) / prev * 100 : 0; text = (diff >= 0 ? '↑ ' : '↓ ') + Math.abs(Math.round(diff)) + '%'; }
+  const tiny = Math.abs(diff) < (kind === 'pts' ? .5 : 2);
+  const color = goodUp == null || tiny ? C.muted : ((goodUp ? diff > 0 : diff < 0) ? C.success : C.coral);
+  return { text, color };
+}
+const csatValue = r => r.csat == null ? 'Not rated' : r.csat >= 4 ? 'Positive (4–5)' : r.csat === 3 ? 'Neutral (3)' : 'Negative (1–2)';
+const DEFS = [
+  ['date','Date',['Today','Last 7 days','Last 14 days','Last 30 days','Last 60 days']],
+  ['status','Status',['Open','Pending','On hold','Solved','Closed']],
+  ['priority','Priority',['Urgent','High','Normal','Low']],
+  ['channel','Channel',CHANNELS.map(c => c[0])],
+  ['handler','Handled by',['Fin AI', ...AGENTS]],
+  ['topic','Topic',TOPIC_NAMES],
+  ['sla','SLA',['Breached','At risk','On track','Met']],
+  ['csat','CSAT',['Positive (4–5)','Neutral (3)','Negative (1–2)','Not rated']],
+];
+const DATE_DAYS = { 'Today':1, 'Last 7 days':7, 'Last 14 days':14, 'Last 30 days':30, 'Last 60 days':60 };
+const dateRange = label => ({ label, from: TODAY0 - (DATE_DAYS[label] - 1) * DAY, to: NOW });
+const EMPTY = () => ({ q:'', date:null, status:[], priority:[], channel:[], handler:[], topic:[], sla:[], csat:[] });
+const val = (r, k) => k === 'csat' ? csatValue(r) : r[k];
+function match(r, f, skip) {
+  if (f.q) { const q = f.q.toLowerCase(); if (!(`#${r.id} ${r.subject} ${r.name} ${r.company} ${r.handler} ${r.topic}`).toLowerCase().includes(q)) return false; }
+  if (skip !== 'date' && f.date && (r.created < f.date.from || r.created > f.date.to)) return false;
+  for (const [k] of DEFS) { if (k === 'date' || k === skip) continue; if (f[k].length && !f[k].includes(val(r, k))) return false; }
+  return true;
+}
+const AV_BG = [C.mint, C.peach, C.yellow, C.cream, C.gray, C.mint, C.peach, C.yellow];
+
+class Component extends DCLogic {
+  state = { view: 'overview', range: null, channel: 'All channels', f: EMPTY(), sort: { key: 'created', dir: 'desc' }, page: 0, menu: null, sel: null };
+
+  drill(preset, opts = {}) {
+    const range = this.getRange(), ch = this.state.channel;
+    const f = { ...EMPTY(), date: opts.noDate ? null : (opts.date || { label: `Last ${range} days`, from: TODAY0 - (range - 1) * DAY, to: NOW }), channel: ch !== 'All channels' ? [ch] : [], ...preset };
+    this.setState({ view: 'log', f, page: 0, menu: null, sel: null, sort: opts.sort || { key: 'created', dir: 'desc' } });
+    window.scrollTo(0, 0);
+  }
+  getRange() { return this.state.range ?? parseInt(this.props.defaultRange ?? '30', 10); }
+  setF(patch) { this.setState(s => ({ f: { ...s.f, ...patch }, page: 0 })); }
+
+  overviewVals(showFin) {
+    const range = this.getRange(), ch = this.state.channel;
+    const start = TODAY0 - (range - 1) * DAY, pStart = start - range * DAY;
+    const base = ch === 'All channels' ? DATA : DATA.filter(r => r.channel === ch);
+    const cur = base.filter(r => r.created >= start), prev = base.filter(r => r.created >= pStart && r.created < start);
+    const S = stats(cur), P = stats(prev);
+    const unresolved = base.filter(r => UNRESOLVED.includes(r.status));
+    const aged = unresolved.filter(r => NOW - r.created > 3 * DAY).length;
+    const d = (k, kind, up) => delta(S[k], P[k], kind, up);
+    const note = 'vs previous ' + range + ' days';
+    const kpis = [
+      { label: 'Conversations', value: S.count.toLocaleString(), ...d('count', 'rel', null), note, onClick: () => this.drill({}) },
+      { label: 'CSAT', value: pct(S.csat), ...d('csat', 'pts', true), note, onClick: () => this.drill({ csat: ['Positive (4–5)','Neutral (3)','Negative (1–2)'] }, { sort: { key: 'csat', dir: 'asc' } }) },
+      { label: 'Median first reply', value: dur(S.frt), ...d('frt', 'rel', false), note, onClick: () => this.drill({ handler: AGENTS }, { sort: { key: 'frt', dir: 'desc' } }) },
+      { label: 'Median resolution', value: dur(S.res), ...d('res', 'rel', false), note, onClick: () => this.drill({ status: ['Solved','Closed'], handler: AGENTS }, { sort: { key: 'res', dir: 'desc' } }) },
+      ...(showFin ? [{ label: 'Fin resolution rate', value: pct(S.fin), ...d('fin', 'pts', true), note, onClick: () => this.drill({ handler: ['Fin AI'] }) }] : []),
+      { label: 'SLA attainment', value: pct(S.sla), ...d('sla', 'pts', true), note, onClick: () => this.drill({ sla: ['Breached'] }) },
+      { label: 'Unresolved now', value: unresolved.length.toString(), text: aged.toString(), color: aged > 15 ? C.coral : C.muted, note: 'older than 3 days', onClick: () => this.drill({ status: UNRESOLVED }, { noDate: true }) },
+    ].map(k => ({ ...k, delta: k.text, dColor: k.color }));
+
+    const ageScore = unresolved.length ? 100 - aged / unresolved.length * 100 : 100;
+    const score = Math.round(.4 * (S.csat ?? 0) + .4 * (S.sla ?? 0) + .2 * ageScore);
+    const health = { score, label: score >= 80 ? 'Healthy' : score >= 65 ? 'Needs attention' : 'At risk', bg: score >= 80 ? C.mint : score >= 65 ? C.yellow : C.peach,
+      parts: [{ label: 'CSAT · 40%', value: pct(S.csat) }, { label: 'SLA met · 40%', value: pct(S.sla) }, { label: 'Backlog under 3 days · 20%', value: pct(ageScore) }] };
+
+    const topicStats = TOPIC_NAMES.map(name => { const c = cur.filter(r => r.topic === name), p = prev.filter(r => r.topic === name); return { name, S: stats(c), P: stats(p) }; });
+    const insights = [];
+    const worstCsat = [...topicStats].filter(t => t.S.csat != null && t.P.csat != null).sort((a, b) => (a.S.csat - a.P.csat) - (b.S.csat - b.P.csat))[0];
+    if (worstCsat) { const df = worstCsat.S.csat - worstCsat.P.csat; insights.push({ dot: df < 0 ? C.peach : C.mint, text: `CSAT for ${worstCsat.name} ${df < 0 ? 'fell' : 'rose'} ${Math.abs(Math.round(df))} pts to ${pct(worstCsat.S.csat)}`, onClick: () => this.drill({ topic: [worstCsat.name], csat: ['Negative (1–2)','Neutral (3)'] }) }); }
+    const mostBr = [...topicStats].sort((a, b) => b.S.breached - a.S.breached)[0];
+    if (mostBr) insights.push({ dot: C.peach, text: `${mostBr.name} had ${mostBr.S.breached} SLA breaches, the most of any topic (${mostBr.P.breached} last period)`, onClick: () => this.drill({ topic: [mostBr.name], sla: ['Breached'] }) });
+    if (showFin) { const df = (S.fin ?? 0) - (P.fin ?? 0); insights.push({ dot: df >= 0 ? C.mint : C.peach, text: `Fin resolved ${pct(S.fin)} of conversations without an agent, ${df >= 0 ? 'up' : 'down'} ${Math.abs(df).toFixed(1)} pts`, onClick: () => this.drill({ handler: ['Fin AI'] }) }); }
+    else { const fd = delta(S.frt, P.frt, 'rel', false); insights.push({ dot: C.yellow, text: `Median first reply is ${dur(S.frt)}, ${fd.text.replace('↑ ', 'up ').replace('↓ ', 'down ')} on the previous period`, onClick: () => this.drill({}, { sort: { key: 'frt', dir: 'desc' } }) }); }
+
+    const days = [];
+    for (let i = range - 1; i >= 0; i--) {
+      const d0 = TODAY0 - i * DAY, set = cur.filter(r => r.created >= d0 && r.created < d0 + DAY), fin = showFin ? set.filter(r => r.fin).length : 0;
+      days.push({ d0, total: set.length, fin });
+    }
+    const maxV = Math.max(1, ...days.map(x => x.total)), top = Math.ceil(maxV / 10) * 10;
+    const every = range <= 7 ? 1 : range <= 14 ? 2 : 5;
+    const vol = { max: top, half: top / 2, gap: range > 14 ? '4px' : '10px', bars: days.map((x, i) => ({
+      h: x.total / top * 100, finH: x.total ? x.fin / x.total * 100 : 0,
+      label: (range - 1 - i) % every === 0 ? (range <= 7 ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(x.d0).getDay()] : dateShort(x.d0)) : '',
+      title: `${dateShort(x.d0)}: ${x.total} conversations${showFin ? `, ${x.fin} resolved by Fin` : ''}`,
+      onClick: () => this.drill({}, { date: { label: dateShort(x.d0), from: x.d0, to: x.d0 + DAY - 1 } }) })) };
+
+    const maxSt = Math.max(1, ...UNRESOLVED.map(s => unresolved.filter(r => r.status === s).length));
+    const ageB = [['< 1 day', 0, 1], ['1–3 days', 1, 3], ['3–7 days', 3, 7], ['7+ days', 7, 999]];
+    const backlog = { total: unresolved.length,
+      statuses: UNRESOLVED.map(s => { const n = unresolved.filter(r => r.status === s).length; return { label: s, count: n, w: n / maxSt * 100, color: STATUS_STYLE[s][0], onClick: () => this.drill({ status: [s] }, { noDate: true }) }; }),
+      ages: ageB.map(([label, a, b], i) => ({ label, bg: i >= 2 ? C.cream : '#ffffff', count: unresolved.filter(r => { const g = (NOW - r.created) / DAY; return g >= a && g < b; }).length,
+        onClick: () => this.drill({ status: UNRESOLVED }, { date: { label: 'Created ' + label + ' ago', from: Math.max(0, NOW - b * DAY), to: NOW - a * DAY } }) })) };
+
+    const maxT = Math.max(1, ...topicStats.map(t => t.S.count));
+    const topics = [...topicStats].sort((a, b) => b.S.count - a.S.count).map(t => { const dl = delta(t.S.count, t.P.count, 'rel', null);
+      return { name: t.name, count: t.S.count, delta: dl.text, dColor: C.muted, w: t.S.count / maxT * 100, csat: pct(t.S.csat), csatColor: t.S.csat != null && t.S.csat < 70 ? C.coral : C.body,
+        fin: pct(t.S.fin), breached: t.S.breached, brColor: t.S.breached >= 15 ? C.coral : C.body, onClick: () => this.drill({ topic: [t.name] }) }; });
+
+    const slaRows = ['Urgent','High','Normal','Low'].map(p => { const st = stats(cur.filter(r => r.priority === p));
+      return { name: p, dot: PRI_DOT[p], target: dur(SLA_T[p]) + ' target', pct: pct(st.sla), w: st.sla ?? 0, breached: st.breached, brColor: st.breached ? C.coral : C.muted, onClick: () => this.drill({ priority: [p], sla: ['Breached'] }) }; });
+
+    const agents = AGENTS.map((name, i) => { const mine = cur.filter(r => r.handler === name), st = stats(mine);
+      return { name, initials: name.split(' ').map(x => x[0]).join(''), bg: AV_BG[i], solved: mine.filter(r => r.status === 'Solved' || r.status === 'Closed').length,
+        open: unresolved.filter(r => r.handler === name).length, frt: dur(st.frt), sla: pct(st.sla), slaColor: st.sla != null && st.sla < 75 ? C.coral : C.body,
+        csat: pct(st.csat), csatColor: st.csat != null && st.csat < 70 ? C.coral : C.body, onClick: () => this.drill({ handler: [name] }) }; }).sort((a, b) => b.solved - a.solved);
+
+    return { subtitle: `${ch}. Last ${range} days, compared with the ${range} days before.`, kpis, health, insights, vol, backlog, topics, slaRows, agents,
+      ranges: [7, 14, 30].map(n => ({ label: n + ' days', bg: n === range ? C.ink : '#ffffff', fg: n === range ? '#ffffff' : C.ink, onClick: () => this.setState({ range: n }) })) };
+  }
+
+  logVals() {
+    const { f, sort, menu } = this.state, pageSize = parseInt(this.props.pageSize ?? '25', 10);
+    const filtered = DATA.filter(r => match(r, f));
+    const dir = sort.dir === 'asc' ? 1 : -1;
+    const keyFn = { id: r => r.id, created: r => r.created, priority: r => PRI_ORDER[r.priority], status: r => UNRESOLVED.includes(r.status) ? 0 : 1,
+      frt: r => r.frt ?? (sort.dir === 'asc' ? 1e9 : -1), res: r => r.res ?? (sort.dir === 'asc' ? 1e9 : -1), csat: r => r.csat ?? (sort.dir === 'asc' ? 9 : -1) }[sort.key];
+    const sorted = [...filtered].sort((a, b) => (keyFn(a) - keyFn(b)) * dir || b.created - a.created);
+    const pages = Math.max(1, Math.ceil(sorted.length / pageSize)), page = Math.min(this.state.page, pages - 1);
+    const slice = sorted.slice(page * pageSize, page * pageSize + pageSize);
+
+    const defs = DEFS.map(([key, label, opts]) => {
+      const others = DATA.filter(r => match(r, f, key));
+      const isDate = key === 'date', sel = isDate ? (f.date ? [f.date.label] : []) : f[key];
+      return { label, open: menu === key, border: sel.length ? C.ink : C.hair, bg: sel.length ? C.soft : '#ffffff',
+        badge: sel.length ? (isDate ? '· ' + f.date.label : '· ' + sel.length) : '',
+        toggleMenu: () => this.setState(s => ({ menu: s.menu === key ? null : key })),
+        options: opts.map(o => { const on = sel.includes(o);
+          const count = isDate ? others.filter(r => r.created >= dateRange(o).from).length : others.filter(r => val(r, key) === o).length;
+          return { label: o, count, mark: on ? '✓' : '', radius: isDate ? '50%' : '4px', boxBg: on ? C.ink : '#ffffff', boxBorder: on ? C.ink : C.strong,
+            toggle: () => isDate ? this.setState(s => ({ f: { ...s.f, date: on ? null : dateRange(o) }, page: 0, menu: null })) : this.setF({ [key]: on ? f[key].filter(x => x !== o) : [...f[key], o] }) }; }) };
+    });
+    const chips = [];
+    if (f.date) chips.push({ key: 'Date', value: f.date.label, remove: () => this.setF({ date: null }) });
+    DEFS.forEach(([key, label]) => { if (key !== 'date') f[key].forEach(v => chips.push({ key: label, value: v, remove: () => this.setF({ [key]: f[key].filter(x => x !== v) }) })); });
+    if (f.q) chips.push({ key: 'Search', value: '“' + f.q + '”', remove: () => this.setF({ q: '' }) });
+
+    const sortCol = k => ({ arrow: sort.key === k ? (sort.dir === 'asc' ? '↑' : '↓') : '', on: () => this.setState(s => ({ sort: { key: k, dir: s.sort.key === k && s.sort.dir === 'desc' ? 'asc' : 'desc' }, page: 0 })) });
+    const rows = slice.map(r => this.rowVM(r));
+    const from = sorted.length ? page * pageSize + 1 : 0, to = page * pageSize + slice.length;
+    return { defs, chips, hasChips: chips.length > 0, rows, empty: sorted.length === 0, q: f.q,
+      resultCount: sorted.length.toLocaleString() + ' conversation' + (sorted.length === 1 ? '' : 's'),
+      pageText: `${from}–${to} of ${sorted.length.toLocaleString()} · Page ${page + 1} of ${pages}`,
+      prevDisabled: page === 0, nextDisabled: page >= pages - 1,
+      prevPage: () => this.setState({ page: Math.max(0, page - 1) }), nextPage: () => this.setState({ page: Math.min(pages - 1, page + 1) }),
+      sorts: { id: sortCol('id'), status: sortCol('status'), priority: sortCol('priority'), frt: sortCol('frt'), res: sortCol('res'), csat: sortCol('csat'), created: sortCol('created') },
+      menuOpen: !!menu };
+  }
+
+  rowVM(r) {
+    const [sBg, sFg] = STATUS_STYLE[r.status], slaKey = r.fin ? '—' : r.sla, [slaDot, slaFg] = SLA_STYLE[slaKey];
+    return { ...r, idText: '#' + r.id, sBg, sFg, pDot: PRI_DOT[r.priority], handler: r.fin ? 'Fin AI' : r.handler,
+      frtText: r.fin ? 'Instant' : r.frt == null ? 'Awaiting' : dur(r.frt), resText: r.res == null ? '—' : dur(r.res),
+      sla: r.fin ? 'n/a' : r.sla, slaDot, slaFg, csatText: r.csat == null ? '—' : r.csat + ' / 5', csatFg: r.csat == null ? C.muted : r.csat <= 2 ? C.coral : C.ink,
+      createdText: fmtTime(r.created), open: () => this.setState({ sel: r.id }) };
+  }
+
+  selVals() {
+    const r = DATA.find(x => x.id === this.state.sel);
+    if (!r) return null;
+    const vm = this.rowVM(r);
+    const timeline = [{ text: `Conversation started via ${r.channel}`, time: fmtTime(r.created) }];
+    if (r.fin) timeline.push({ text: 'Fin AI answered and resolved', time: fmtTime(r.created + r.res * 6e4) });
+    else {
+      if (r.frt != null) timeline.push({ text: `First reply from ${r.handler}`, time: fmtTime(r.created + r.frt * 6e4) + ' · ' + dur(r.frt) + ' after start' });
+      else timeline.push({ text: `Waiting on first reply from ${r.handler}`, time: dur((NOW - r.created) / 6e4) + ' elapsed' });
+      if (r.res != null) timeline.push({ text: `Marked ${r.status.toLowerCase()} by ${r.handler}`, time: fmtTime(r.created + r.res * 6e4) });
+    }
+    if (r.csat != null) timeline.push({ text: `Customer rated ${r.csat} / 5`, time: fmtTime(r.created + (r.res || 0) * 6e4 + 36e5) });
+    return { ...vm, timeline, facts: [
+      { k: 'Handled by', v: vm.handler }, { k: 'Topic', v: r.topic }, { k: 'First reply', v: vm.frtText }, { k: 'Resolution', v: vm.resText },
+      { k: 'SLA', v: r.fin ? 'n/a' : `${r.sla} (${dur(SLA_T[r.priority])} target)` }, { k: 'CSAT', v: vm.csatText } ] };
+  }
+
+  renderVals() {
+    const showFin = this.props.showFin ?? true, isLog = this.state.view === 'log';
+    const tab = on => ({ color: on ? C.ink : C.muted, line: on ? C.ink : 'transparent' });
+    const sel = this.state.sel != null ? this.selVals() : null;
+    return {
+      isOverview: !isLog, isLog, showFin, tabA: tab(!isLog), tabB: tab(isLog),
+      channel: this.state.channel, channelOpts: ['All channels', ...CHANNELS.map(c => c[0])],
+      setChannel: e => this.setState({ channel: e.target.value }),
+      goOverview: () => this.setState({ view: 'overview', menu: null }),
+      goOverviewLink: e => { e.preventDefault(); this.setState({ view: 'overview', menu: null }); },
+      goLog: () => this.drill({}),
+      setQ: e => this.setF({ q: e.target.value }),
+      clearAll: () => this.setState({ f: EMPTY(), page: 0 }),
+      closeMenu: () => this.setState({ menu: null }),
+      hasSel: !!sel, sel: sel || {}, closeSel: () => this.setState({ sel: null }),
+      ...(isLog ? this.logVals() : this.overviewVals(showFin)),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;475;500;600&family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  a { color: #1b61c9; }
+  a:hover { color: #1a3866; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+</style>
+</helmet>
+<div style="font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#ffffff;color:#181d26;min-height:100vh;">
+
+  <div style="font-family: Inter, system-ui, sans-serif; color: #333840; background: #ffffff; padding: 48px 40px 64px; box-sizing: border-box">
+
+    <div style="max-width: 1560px; margin: 0 auto 32px; display: flex; flex-wrap: wrap; gap: 8px;">
+      <sc-for list="{{ journeyChips }}" as="v" hint-placeholder-count="13">
+        <button onClick="{{ v.pick }}" style="font-family:inherit;font-size:13px;font-weight:500;padding:7px 13px;border-radius:6px;cursor:pointer;background:{{ v.bg }};color:{{ v.color }};border:1px solid {{ v.border }};">{{ v.label }}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isCrossJourney }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width: 900px; margin: 0 auto;">
+        <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 12px">Cross-platform · rolled up across verticals</div>
+        <h1 style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26; margin: 0 0 32px">Shared themes across supply chains</h1>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 32px;">
+          <div>
+            <div style="font-size: 16px; font-weight: 500; color: #aa2d00; margin-bottom: 12px;">Shared pain points</div>
+            <sc-for list="{{ crossPains }}" as="pain" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: 12px minmax(0,1fr); gap: 8px; align-items: start; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                <div style="width: 6px; height: 6px; border-radius: 9999px; background: #aa2d00; margin-top: 6px"></div>
+                <div style="font-size: 14px; line-height: 1.5; color: #333840;">{{ pain }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 500; color: #0a2e0e; margin-bottom: 12px;">Shared opportunities</div>
+            <sc-for list="{{ crossOpps }}" as="opp" hint-placeholder-count="5">
+              <div style="background: #f8fafc; border-radius: 10px; padding: 12px; margin-bottom: 10px; font-size: 14px; line-height: 1.5; color: #181d26;">{{ opp }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFullJourney }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; max-width: 1560px; margin: 0 auto 32px">
+      <div style="max-width: 640px">
+        <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 12px">{{ journeyEyebrow }}</div>
+        <h1 style="font-size: 40px; font-weight: 400; line-height: 1.15; letter-spacing: -0.4px; color: #181d26; margin: 0 0 12px">{{ journeyTitle }}</h1>
+        <p style="font-size: 14px; line-height: 1.5; color: #333840; margin: 0; text-wrap: pretty">{{ journeyDesc }}</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Rows</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{ rowToggles }}" as="r" hint-placeholder-count="4">
+            <sc-if value="{{ r.on }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ r.toggle }}" style="font-family: inherit; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; border: 1px solid #181d26; background: #181d26; color: #ffffff; cursor: pointer">{{ r.label }}</button>
+            </sc-if>
+            <sc-if value="{{ r.off }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ r.toggle }}" style="font-family: inherit; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #9297a0; cursor: pointer">{{ r.label }}</button>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ personaHighlightOn }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width: 1560px; margin: 0 auto 28px; padding: 16px 20px; background: #f8fafc; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+        <span style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-right: 6px">Trace a persona</span>
+        <sc-for list="{{ personaChips }}" as="c" hint-placeholder-count="8">
+          <sc-if value="{{ c.active }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ c.pick }}" style="font-family: inherit; font-size: 14px; font-weight: 500; padding: 7px 13px; border-radius: 6px; border: 1px solid #aa2d00; background: #aa2d00; color: #ffffff; cursor: pointer">{{ c.label }}</button>
+          </sc-if>
+          <sc-if value="{{ c.inactive }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ c.pick }}" style="font-family: inherit; font-size: 14px; font-weight: 400; padding: 7px 13px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #333840; cursor: pointer">{{ c.label }}</button>
+          </sc-if>
+        </sc-for>
+        <sc-if value="{{ hasPersona }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearPersona }}" style="font-family: inherit; font-size: 14px; font-weight: 400; padding: 7px 4px; border: none; background: transparent; color: #1b61c9; cursor: pointer; text-decoration: underline">Clear</button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <div style="max-width: 1560px; margin: 0 auto; overflow-x: auto; padding-bottom: 8px">
+      <div style="min-width: 1500px">
+
+        <div style="display: grid; grid-template-columns: 180px repeat(6, minmax(0, 1fr)); gap: 0; border-top: 1px solid #181d26">
+          <div style="padding: 20px 16px 20px 0; font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; border-right: 1px solid #dddddd">Flow</div>
+          <div style="padding: 20px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: 7px; right: -16px; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #aa2d00"></div>
+              <div style="position: absolute; right: -6px; top: 3px; width: 7px; height: 7px; border-right: 2px solid #9297a0; border-top: 2px solid #9297a0; transform: rotate(45deg)"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">01</div>
+            </div>
+            <sc-if value="{{ pgS1.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS1.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #aa2d00; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS1.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS1.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS1.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS1.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #aa2d00; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS1.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS1.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS1.leadTime }}</div>
+          </div>
+
+          <div style="padding: 20px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: -16px; right: -16px; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #d9a441"></div>
+              <div style="position: absolute; right: -6px; top: 3px; width: 7px; height: 7px; border-right: 2px solid #9297a0; border-top: 2px solid #9297a0; transform: rotate(45deg)"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">02</div>
+            </div>
+            <sc-if value="{{ pgS2.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS2.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #d9a441; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS2.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS2.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS2.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS2.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #d9a441; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS2.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS2.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS2.leadTime }}</div>
+          </div>
+
+          <div style="padding: 20px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: -16px; right: -16px; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #0a2e0e"></div>
+              <div style="position: absolute; right: -6px; top: 3px; width: 7px; height: 7px; border-right: 2px solid #9297a0; border-top: 2px solid #9297a0; transform: rotate(45deg)"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">03</div>
+            </div>
+            <sc-if value="{{ pgS3.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS3.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #0a2e0e; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS3.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS3.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS3.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS3.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #0a2e0e; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS3.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS3.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS3.leadTime }}</div>
+          </div>
+
+          <div style="padding: 20px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: -16px; right: -16px; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #254fad"></div>
+              <div style="position: absolute; right: -6px; top: 3px; width: 7px; height: 7px; border-right: 2px solid #9297a0; border-top: 2px solid #9297a0; transform: rotate(45deg)"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">04</div>
+            </div>
+            <sc-if value="{{ pgS4.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS4.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #254fad; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS4.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS4.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS4.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS4.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #254fad; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS4.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS4.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS4.leadTime }}</div>
+          </div>
+
+          <div style="padding: 20px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: -16px; right: -16px; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #41454d"></div>
+              <div style="position: absolute; right: -6px; top: 3px; width: 7px; height: 7px; border-right: 2px solid #9297a0; border-top: 2px solid #9297a0; transform: rotate(45deg)"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">05</div>
+            </div>
+            <sc-if value="{{ pgS5.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS5.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #41454d; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS5.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS5.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS5.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS5.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #41454d; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS5.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS5.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS5.leadTime }}</div>
+          </div>
+
+          <div style="padding: 20px 16px; display: flex; flex-direction: column; gap: 14px">
+            <div style="position: relative; height: 16px">
+              <div style="position: absolute; left: -16px; right: 50%; top: 7px; height: 2px; background: #e0e2e6"></div>
+              <div style="position: absolute; left: 0; top: 1px; width: 14px; height: 14px; border-radius: 9999px; background: #181d26"></div>
+              <div style="position: absolute; left: 26px; top: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">06 · end</div>
+            </div>
+            <sc-if value="{{ pgS6.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ pgS6.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: none; border-top: 3px solid #181d26; padding: 14px; border-radius: 10px; background: #181d26; color: #ffffff; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS6.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; opacity: 0.75">{{ pgS6.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; opacity: 0.75">Hide detail</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ pgS6.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ pgS6.pick }}" style="font-family: inherit; text-align: left; cursor: pointer; border: 1px solid #dddddd; border-top: 3px solid #181d26; padding: 14px; border-radius: 10px; background: #ffffff; color: #181d26; display: flex; flex-direction: column; gap: 6px">
+                <span style="font-size: 18px; font-weight: 500; line-height: 1.25">{{ pgS6.name }}</span>
+                <span style="font-size: 14px; font-weight: 400; line-height: 1.35; color: #41454d">{{ pgS6.tier }}</span>
+                <span style="font-size: 13px; font-weight: 500; margin-top: 4px; color: #1b61c9">Detail</span>
+              </button>
+            </sc-if>
+            <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ pgS6.leadTime }}</div>
+          </div>
+        </div>
+
+        <sc-if value="{{ pgDetailOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #f5e9d4; border-radius: 10px; padding: 24px; margin: 16px 0 20px; display: grid; grid-template-columns: 260px repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start">
+            <div>
+              <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 8px">Stage {{ pgSel.num }} detail</div>
+              <div style="font-size: 20px; font-weight: 500; line-height: 1.25; color: #181d26">{{ pgSel.name }}</div>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 8px">What "good" looks like</div>
+              <div style="font-size: 14px; line-height: 1.5; color: #181d26; text-wrap: pretty">{{ pgSel.good }}</div>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 8px">Signal to watch</div>
+              <div style="font-size: 14px; line-height: 1.5; color: #181d26; text-wrap: pretty">{{ pgSel.watch }}</div>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; margin-bottom: 8px">Evidence the next stage relies on</div>
+              <div style="font-size: 14px; line-height: 1.5; color: #181d26; text-wrap: pretty">{{ pgSel.evidence }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ pgShowPersonas }}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: 180px repeat(6, minmax(0, 1fr)); border-top: 1px solid #dddddd">
+            <div style="padding: 24px 16px 24px 0; border-right: 1px solid #dddddd">
+              <div style="font-size: 16px; font-weight: 500; color: #181d26">Personas</div>
+              <div style="font-size: 14px; line-height: 1.35; color: #41454d; margin-top: 6px">Who is in the stage and what they are doing</div>
+            </div>
+            <sc-for list="{{ pgSteps }}" as="s" hint-placeholder-count="6">
+              <div style="padding: 24px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 16px">
+                <sc-for list="{{ s.personas }}" as="p" hint-placeholder-count="3">
+                  <sc-if value="{{ p.on }}" hint-placeholder-val="{{ true }}">
+                    <div style="display: flex; flex-direction: column; gap: 5px">
+                      <div style="font-size: 14px; font-weight: 500; color: #181d26">{{ p.name }}</div>
+                      <div style="font-size: 14px; line-height: 1.4; color: #333840; text-wrap: pretty">{{ p.doing }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.off }}" hint-placeholder-val="{{ false }}">
+                    <div style="display: flex; flex-direction: column; gap: 5px; opacity: 0.22">
+                      <div style="font-size: 14px; font-weight: 500; color: #181d26">{{ p.name }}</div>
+                      <div style="font-size: 14px; line-height: 1.4; color: #333840; text-wrap: pretty">{{ p.doing }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ pgShowPains }}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: 180px repeat(6, minmax(0, 1fr)); border-top: 1px solid #dddddd">
+            <div style="padding: 24px 16px 24px 0; border-right: 1px solid #dddddd">
+              <div style="font-size: 16px; font-weight: 500; color: #aa2d00">Pain points</div>
+              <div style="font-size: 14px; line-height: 1.35; color: #41454d; margin-top: 6px">Where the stage breaks down today</div>
+            </div>
+            <sc-for list="{{ pgSteps }}" as="s" hint-placeholder-count="6">
+              <div style="padding: 24px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 12px">
+                <sc-for list="{{ s.pains }}" as="pain" hint-placeholder-count="3">
+                  <div style="display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 8px; align-items: start">
+                    <div style="width: 6px; height: 6px; border-radius: 9999px; background: #aa2d00; margin-top: 6px"></div>
+                    <div style="font-size: 14px; line-height: 1.4; color: #333840; text-wrap: pretty">{{ pain }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ pgShowOpps }}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: 180px repeat(6, minmax(0, 1fr)); border-top: 1px solid #dddddd">
+            <div style="padding: 24px 16px 24px 0; border-right: 1px solid #dddddd">
+              <div style="font-size: 16px; font-weight: 500; color: #0a2e0e">Opportunities</div>
+              <div style="font-size: 14px; line-height: 1.35; color: #41454d; margin-top: 6px">Service moves worth prototyping</div>
+            </div>
+            <sc-for list="{{ pgSteps }}" as="s" hint-placeholder-count="6">
+              <div style="padding: 24px 16px; border-right: 1px solid #dddddd; display: flex; flex-direction: column; gap: 12px">
+                <sc-for list="{{ s.opps }}" as="opp" hint-placeholder-count="2">
+                  <div style="background: #f8fafc; border-radius: 10px; padding: 12px; font-size: 14px; line-height: 1.4; color: #181d26; text-wrap: pretty">{{ opp }}</div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ pgShowBackstage }}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: 180px repeat(6, minmax(0, 1fr)); border-top: 1px dashed #9297a0; background: #181d26">
+            <div style="padding: 24px 16px; border-right: 1px solid #41454d">
+              <div style="font-size: 16px; font-weight: 500; color: #ffffff">Backstage</div>
+              <div style="font-size: 14px; line-height: 1.35; color: #e0e2e6; margin-top: 6px">Systems, owners, and the handoff out of the stage</div>
+            </div>
+            <sc-for list="{{ pgSteps }}" as="s" hint-placeholder-count="6">
+              <div style="padding: 24px 16px; border-right: 1px solid #41454d; display: flex; flex-direction: column; gap: 14px">
+                <div>
+                  <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #a8d8c4; margin-bottom: 5px">Systems</div>
+                  <div style="font-size: 14px; line-height: 1.4; color: #ffffff; text-wrap: pretty">{{ s.systems }}</div>
+                </div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #a8d8c4; margin-bottom: 5px">Owners</div>
+                  <div style="font-size: 14px; line-height: 1.4; color: #ffffff; text-wrap: pretty">{{ s.owners }}</div>
+                </div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #a8d8c4; margin-bottom: 5px">Handoff</div>
+                  <div style="font-size: 14px; line-height: 1.4; color: #ffffff; text-wrap: pretty">{{ s.handoff }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+    <div style="max-width: 1560px; margin: 32px auto 0; display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: #41454d">
+      <span>Front stage rows sit on white canvas; the backstage band is the only inverted surface.</span>
+      <span>Lead times are indicative planning windows, not commitments.</span>
+    </div>
+    </sc-if>
+
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:800},&quot;playSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1200,&quot;min&quot;:600,&quot;max&quot;:2400,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Animation&quot;},&quot;activeAccent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#254fad&quot;,&quot;options&quot;:[&quot;#aa2d00&quot;,&quot;#d9a441&quot;,&quot;#254fad&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Animation&quot;}}">
+const VERTICAL_FLOWS = {
+  apparel: { heading: 'Apparel order fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Customer checkout', desc: 'The customer completes checkout on the storefront. The order record captures SKU, quantity, and shipping address, and is queued for fulfillment.', facts: ['Order #48213 · 2 items', 'Placed 9:14 AM via storefront'] },
+    materials: { title: 'Materials supplier', subtitle: 'Raw fabric & trim', desc: 'Before assembly can start, the factory receives raw fabric and trim from its materials supplier — a separate upstream link that feeds the manufacturer.', facts: ['Textile mill, Vietnam', 'Cotton poplin, cut-to-order'] },
+    manufacturer: { title: 'Manufacturer', subtitle: 'Cut, sew, QC', desc: 'The contract factory cuts, sews, and quality-checks the garment, then issues an Advance Ship Notice (ASN) once finished goods are ready to move.', facts: ['Contract factory · 12-day lead time', 'Ships via ASN (EDI 856)'] },
+    warehouse: { title: 'Warehouse', subtitle: 'Receive, pick & pack', desc: 'Finished goods arrive at the regional distribution center, where they are received against the ASN, picked, and packed for the outbound leg.', facts: ['Regional DC — East', 'Packed into 1 parcel'] },
+    vehicle: { title: 'Delivery vehicle assigned', subtitle: 'Carrier routing', desc: 'A routing engine matches the parcel to an available vehicle and driver by capacity and route density — this runs in parallel with invoicing.', facts: ['Regional 3PL, van #114', 'Driver: J. Alvarez'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'In parallel with vehicle assignment, the system issues an invoice and captures payment, closing the financial side of the order.', facts: ['Invoice EDI 810 issued', 'Payment captured, Visa ••4471'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'The assigned vehicle runs its route. Each stop reports a live status — delivered, out for delivery, or pending — visible to dispatch and the customer.', facts: ['3-stop route, this order is stop 2', 'Live tracking link sent to customer'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at doorstep', desc: 'At the final stop, the driver captures a signature or photo as proof of delivery, and the order is closed out as complete.', facts: ['Signed: A. Chen, 2:41 PM', 'Photo capture on file'] }
+  } },
+  retail: { heading: 'Retail & e-commerce fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Storefront checkout', desc: 'Customer checks out online; the order captures SKUs, quantities, and destination and is queued for fulfillment.', facts: ['Order #77012 · 3 items', 'Placed via mobile app'] },
+    materials: { title: 'Component supplier', subtitle: 'Packaging & inserts', desc: 'Retail SKUs draw on upstream suppliers of packaging, private-label components, or co-pack materials before a finished unit exists.', facts: ['Co-packer, regional', 'Kitting materials, weekly replenishment'] },
+    manufacturer: { title: 'Brand / vendor', subtitle: 'Produce or kit SKU', desc: 'The vendor produces or kits the item and issues an ASN once the shipment is staged for the retailer\u2019s DC.', facts: ['Vendor lead time · 5 days', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Fulfillment center', subtitle: 'Receive, pick & pack', desc: 'The order is received against the ASN, picked from inventory, and packed for outbound shipment.', facts: ['FC — Zone 4', 'Single-unit parcel'] },
+    vehicle: { title: 'Delivery vehicle assigned', subtitle: 'Carrier routing', desc: 'A routing engine assigns the parcel to a courier or last-mile carrier by zone and capacity.', facts: ['National carrier, ground', 'Route optimized same night'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Payment is captured at checkout; the invoice and any tax documents post in parallel with routing.', facts: ['Payment captured at order time', 'Receipt emailed to customer'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop on the courier\u2019s route reports live status, visible to customer service and the tracking page.', facts: ['4-stop route, this order is stop 3', 'SMS tracking updates enabled'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at doorstep', desc: 'The courier logs delivery with a photo or doorstep scan, closing out the order.', facts: ['Doorstep photo on file', 'Delivered 3:05 PM'] }
+  } },
+  manufacturing: { heading: 'Industrial manufacturing fulfillment', nodes: {
+    order: { title: 'Purchase order placed', subtitle: 'B2B procurement', desc: 'A buyer issues a purchase order for parts or equipment, specifying quantity, spec, and required delivery date.', facts: ['PO #55210 · 500 units', 'Issued via EDI 850'] },
+    materials: { title: 'Raw material supplier', subtitle: 'Metals, resins, components', desc: 'The plant sources raw stock — metal, resin, or sub-components — from qualified suppliers ahead of the production run.', facts: ['Steel coil supplier, tier 2', 'Min order qty enforced'] },
+    manufacturer: { title: 'Production plant', subtitle: 'Machine, assemble, test', desc: 'The plant runs the production order, performs in-line QA, and issues an ASN once units clear final test.', facts: ['Run rate: 200 units/day', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Distribution warehouse', subtitle: 'Receive, palletize & stage', desc: 'Finished units are received, palletized, and staged for outbound freight to the buyer or distributor.', facts: ['Central DC, palletized', '1 pallet, 40 units'] },
+    vehicle: { title: 'Freight carrier assigned', subtitle: 'LTL/FTL routing', desc: 'A freight broker or TMS matches the shipment to an available truck by load size and lane.', facts: ['LTL carrier, dock-to-dock', 'Trailer #2291'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'The plant issues an invoice against the PO; payment terms (e.g. net-30) are tracked in parallel with shipping.', facts: ['Invoice EDI 810 issued', 'Net-30 terms'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'The carrier\u2019s multi-stop route reports status per delivery, visible to the buyer\u2019s receiving dock.', facts: ['2-stop route, this order is stop 1', 'ETA shared with receiving dock'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at receiving dock', desc: 'The receiving dock signs the bill of lading, confirming quantity and condition on arrival.', facts: ['BOL signed: dock supervisor', 'Received in full, no damage'] }
+  } },
+  automotive: { heading: 'Automotive parts fulfillment', nodes: {
+    order: { title: 'Kanban order triggered', subtitle: 'JIT replenishment signal', desc: 'A kanban card or MRP signal fires when line-side stock hits its reorder point, generating a replenishment order.', facts: ['Kanban card #A-118', 'Triggered at line-side min'] },
+    materials: { title: 'Tier-2 parts supplier', subtitle: 'Sub-components', desc: 'The tier-1 supplier draws sub-components — castings, fasteners, wiring — from its own tier-2 supplier base.', facts: ['Tier-2 supplier, domestic', 'Sequenced delivery windows'] },
+    manufacturer: { title: 'Tier-1 supplier', subtitle: 'Build to sequence', desc: 'The tier-1 supplier builds and sequences parts to the OEM\u2019s production schedule, shipping just-in-time.', facts: ['Build-to-sequence, 2-hr window', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Consolidation center', subtitle: 'Cross-dock, no long-term storage', desc: 'Parts move through a cross-dock consolidation center rather than sitting in long-term storage.', facts: ['Cross-dock, <4 hr dwell', 'Sequenced onto milk-run trailer'] },
+    vehicle: { title: 'Milk-run truck assigned', subtitle: 'Scheduled JIT route', desc: 'A dedicated milk-run truck on a fixed schedule is assigned to carry the sequenced load to the assembly plant.', facts: ['Milk-run route, fixed schedule', 'Truck #JIT-07'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Invoicing runs against the release schedule in parallel with the physical JIT delivery.', facts: ['Invoice EDI 810 issued', 'Self-billing via ERS'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'The milk-run\u2019s stops are tracked against the plant\u2019s takt time; a missed window can stop the line.', facts: ['3-stop route, this order is stop 2', 'Line-side ETA tracked to the minute'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed line-side', desc: 'Parts are confirmed received line-side, and the kanban loop closes for the next cycle.', facts: ['Line-side scan confirmed', 'Delivered within takt window'] }
+  } },
+  food: { heading: 'Food & beverage fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Retailer / distributor order', desc: 'A grocery distributor places an order against a standing plan, specifying quantity and required delivery window.', facts: ['Order #F-3391 · 1 pallet', 'Placed via EDI 850'] },
+    materials: { title: 'Ingredient supplier', subtitle: 'Raw ingredients', desc: 'The processor sources raw ingredients from growers or ingredient suppliers, tracked by lot for traceability.', facts: ['Regional grower co-op', 'Lot-coded intake'] },
+    manufacturer: { title: 'Processing plant', subtitle: 'Process, pack, QC', desc: 'The plant processes and packs the product under food-safety controls, then issues an ASN.', facts: ['HACCP-controlled line', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Cold chain warehouse', subtitle: 'Receive, temp-check & stage', desc: 'Goods are received into temperature-controlled storage, with cold-chain integrity checked at each handoff.', facts: ['Refrigerated DC, 34\u00b0F', 'Temp logged on receipt'] },
+    vehicle: { title: 'Reefer truck assigned', subtitle: 'Cold chain routing', desc: 'A refrigerated truck is assigned to preserve the cold chain from warehouse to destination.', facts: ['Reefer trailer, set to 36\u00b0F', 'Route optimized for transit time'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'The invoice is issued against the order and reconciled with delivered quantity, run in parallel with shipping.', facts: ['Invoice EDI 810 issued', 'Short-dated stock flagged for credit'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status and in-transit temperature are tracked, since a cold-chain break can void the load.', facts: ['5-stop route, this order is stop 4', 'In-transit temp logged continuously'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at dock, temp verified', desc: 'The receiving dock verifies temperature and signs for the load, closing the delivery.', facts: ['Temp verified on arrival: 35\u00b0F', 'Signed: receiving associate'] }
+  } },
+  pharma: { heading: 'Pharmaceutical distribution', nodes: {
+    order: { title: 'Order placed', subtitle: 'Pharmacy / hospital order', desc: 'A pharmacy or hospital places an order through its wholesaler, specifying NDC codes and quantities.', facts: ['Order #RX-8842', 'Placed via wholesaler portal'] },
+    materials: { title: 'API supplier', subtitle: 'Active pharmaceutical ingredient', desc: 'The manufacturer sources its active pharmaceutical ingredient from a qualified, audited API supplier.', facts: ['GMP-audited API supplier', 'Certificate of analysis required'] },
+    manufacturer: { title: 'Manufacturer', subtitle: 'Formulate, fill, QC release', desc: 'The drug is formulated, filled, and released by quality control before it can ship, then an ASN is issued.', facts: ['Batch release by QA', 'Serialized per DSCSA'] },
+    warehouse: { title: 'Licensed distribution center', subtitle: 'Receive, verify, stage', desc: 'The wholesaler\u2019s licensed DC receives and verifies serialized units before staging for shipment.', facts: ['Serial numbers verified on receipt', 'Climate-controlled storage'] },
+    vehicle: { title: 'Controlled carrier assigned', subtitle: 'Chain-of-custody routing', desc: 'A carrier meeting chain-of-custody and, where needed, cold-chain requirements is assigned to the shipment.', facts: ['Licensed pharma carrier', 'Chain-of-custody log started'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Billing is processed against the order in parallel, reconciled with 340B or contract pricing where applicable.', facts: ['Invoice issued against contract price', '340B eligibility checked'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status and custody handoff are logged to maintain an unbroken chain of custody.', facts: ['2-stop route, this order is stop 1', 'Custody log updated per stop'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed by licensed receiver', desc: 'A licensed pharmacist or receiver signs for the delivery, completing the chain-of-custody record.', facts: ['Signed: licensed pharmacist', 'Serial numbers reconciled on receipt'] }
+  } },
+  electronics: { heading: 'Consumer electronics fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Retail / direct checkout', desc: 'A customer or retailer places an order for a finished device, queued against available finished-goods inventory.', facts: ['Order #EL-6021', 'Placed via retail partner'] },
+    materials: { title: 'Component supplier', subtitle: 'Chips, PCBs, displays', desc: 'The contract manufacturer sources semiconductors, PCBs, and displays from a global multi-tier supplier base.', facts: ['Multi-region component sourcing', 'Allocation-constrained parts flagged'] },
+    manufacturer: { title: 'Contract manufacturer', subtitle: 'SMT, assembly, test', desc: 'The CM runs surface-mount assembly and functional test, then issues an ASN once units pass QA.', facts: ['SMT line, 3-day cycle', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Regional warehouse', subtitle: 'Receive, kit & pack', desc: 'Finished devices are received, kitted with accessories, and packed for outbound distribution.', facts: ['Regional DC — APAC hub', 'Kitted with charger & manual'] },
+    vehicle: { title: 'Delivery vehicle assigned', subtitle: 'Carrier routing', desc: 'A carrier is assigned based on value, weight, and required transit speed for the device category.', facts: ['Parcel carrier, insured', 'Signature-required flag set'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Payment and any import duties are settled in parallel with vehicle assignment.', facts: ['Invoice EDI 810 issued', 'Duties prepaid (DDP)'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop reports live status; high-value electronics often require signature confirmation.', facts: ['3-stop route, this order is stop 2', 'Signature required at delivery'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Signature confirmed', desc: 'The recipient signs for the device, closing out the order with a verified signature on file.', facts: ['Signed: recipient, 11:20 AM', 'Serial number matched to order'] }
+  } },
+  chemicals: { heading: 'Chemicals distribution', nodes: {
+    order: { title: 'Order placed', subtitle: 'Industrial buyer order', desc: 'An industrial buyer places an order for bulk or packaged chemicals, specifying grade and required documentation.', facts: ['Order #CH-2210 · 1 tote', 'Safety data sheet requested'] },
+    materials: { title: 'Feedstock supplier', subtitle: 'Base chemicals', desc: 'The plant sources base feedstock chemicals from upstream suppliers, tracked for hazard classification.', facts: ['Feedstock supplier, contracted', 'Hazard class verified on intake'] },
+    manufacturer: { title: 'Chemical plant', subtitle: 'React, blend, QC', desc: 'The plant reacts or blends the product to spec, tests it, and issues an ASN with the batch\u2019s SDS attached.', facts: ['Batch tested before release', 'SDS attached to ASN'] },
+    warehouse: { title: 'Hazmat warehouse', subtitle: 'Receive, segregate & stage', desc: 'The product is received into hazmat-compliant storage, segregated by class from incompatible materials.', facts: ['Hazmat-certified storage', 'Segregated by hazard class'] },
+    vehicle: { title: 'Hazmat carrier assigned', subtitle: 'Certified routing', desc: 'A carrier certified for hazardous materials transport is assigned, with route restrictions applied.', facts: ['DOT hazmat-certified carrier', 'Restricted-route compliant'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Billing and hazard documentation fees are settled in parallel with hazmat carrier assignment.', facts: ['Invoice EDI 810 issued', 'SDS fee included'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status is tracked alongside placard and containment checks required en route.', facts: ['1-stop dedicated route', 'Placarding verified before dispatch'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed by certified receiver', desc: 'A trained receiver signs for the load and confirms containment integrity on arrival.', facts: ['Signed: certified hazmat receiver', 'Containment verified, no leaks'] }
+  } },
+  agriculture: { heading: 'Agriculture & agribusiness fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Buyer contract order', desc: 'A processor or buyer places an order against a seasonal supply contract with a grower or co-op.', facts: ['Contract order #AG-501', 'Volume set at planting season'] },
+    materials: { title: 'Input supplier', subtitle: 'Seed, feed & inputs', desc: 'The farm sources seed, feed, or crop inputs from suppliers ahead of the growing or feeding cycle.', facts: ['Certified seed supplier', 'Inputs delivered pre-season'] },
+    manufacturer: { title: 'Farm / processor', subtitle: 'Grow or process, grade', desc: 'The farm grows and harvests, or the processor mills and grades, the crop before it ships onward.', facts: ['Grading at harvest', 'ASN sent on load-out'] },
+    warehouse: { title: 'Grain elevator / packhouse', subtitle: 'Receive, grade & stage', desc: 'Product is received, graded, and staged at an elevator or packhouse ahead of outbound transport.', facts: ['Elevator storage, bulk', 'Moisture-tested on intake'] },
+    vehicle: { title: 'Freight carrier assigned', subtitle: 'Rail / truck routing', desc: 'A rail car or truck is assigned depending on volume and distance to the buyer or port.', facts: ['Rail car assigned for bulk lot', 'Routed to export terminal'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Payment is settled against contract price and delivered grade, in parallel with transport.', facts: ['Invoice issued against contract price', 'Grade-adjusted settlement'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status is tracked, with grade and weight reconciled at the receiving elevator or plant.', facts: ['1-stop route to processor', 'Weight ticket generated en route'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at receiving elevator', desc: 'The receiving elevator or plant confirms weight and grade, closing out the delivery.', facts: ['Weight ticket signed on receipt', 'Grade matched to contract spec'] }
+  } },
+  energy: { heading: 'Energy & utilities fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Utility / operator order', desc: 'A utility or operator places an order for equipment or fuel against a maintenance or supply plan.', facts: ['Order #EN-330', 'Placed against MRO plan'] },
+    materials: { title: 'Component supplier', subtitle: 'Transformers, cable, parts', desc: 'The equipment supplier sources transformers, cable, and grid components from its own vendor base.', facts: ['Long-lead transformer supplier', 'Lead time: 6+ months'] },
+    manufacturer: { title: 'Equipment manufacturer', subtitle: 'Build, test, certify', desc: 'The manufacturer builds and certifies equipment to grid standards, then issues an ASN.', facts: ['UL/IEC certified build', 'ASN sent via EDI 856'] },
+    warehouse: { title: 'Utility warehouse', subtitle: 'Receive, stage & inspect', desc: 'Equipment is received, inspected, and staged at a utility warehouse ahead of field deployment.', facts: ['Regional utility yard', 'Inspected before field release'] },
+    vehicle: { title: 'Heavy-haul vehicle assigned', subtitle: 'Specialized routing', desc: 'Oversized or heavy equipment is assigned a specialized heavy-haul carrier and permitted route.', facts: ['Heavy-haul permit secured', 'Escort vehicle assigned'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Billing is processed against the capital or MRO purchase order in parallel with transport.', facts: ['Invoice issued against PO', 'Milestone billing applied'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status is tracked, including permit checkpoints for oversized loads.', facts: ['1-stop route to substation site', 'Permit checkpoints cleared'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed at field site', desc: 'Field crew confirms receipt and condition at the substation or job site.', facts: ['Signed: field crew lead', 'Condition inspected on arrival'] }
+  } },
+  construction: { heading: 'Construction materials fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Project material order', desc: 'A contractor places an order for materials against a project schedule, tied to a specific job site.', facts: ['Order #CN-902 · Job site 4', 'Tied to project schedule'] },
+    materials: { title: 'Raw material supplier', subtitle: 'Aggregate, rebar, lumber', desc: 'The materials yard sources aggregate, rebar, or lumber from quarries and mills ahead of the order.', facts: ['Regional quarry supplier', 'Volume locked at bid'] },
+    manufacturer: { title: 'Fabricator / yard', subtitle: 'Cut, fabricate, batch', desc: 'The yard fabricates or batches material to spec (e.g. cut rebar, batched concrete) and issues an ASN.', facts: ['Fabricated to project spec', 'ASN sent on load-out'] },
+    warehouse: { title: 'Staging yard', subtitle: 'Receive, stage & sequence', desc: 'Material is received and sequenced at a staging yard for delivery in the order the site needs it.', facts: ['Laydown yard, sequenced by phase', 'Staged for next pour'] },
+    vehicle: { title: 'Delivery vehicle assigned', subtitle: 'Flatbed / mixer routing', desc: 'A flatbed, mixer, or dump truck is assigned depending on material type and site access.', facts: ['Concrete mixer, timed pour', 'Site access confirmed'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Billing is processed against the project purchase order in parallel with delivery scheduling.', facts: ['Invoice issued against project PO', 'Retention terms applied'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status is tracked tightly, since a late pour or delivery can halt site work.', facts: ['1-stop route to job site', 'Delivery window: 60-min pour'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed by site superintendent', desc: 'The site superintendent signs the delivery ticket, confirming quantity and material condition.', facts: ['Signed: site superintendent', 'Ticket matched to project PO'] }
+  } },
+  aerospace: { heading: 'Aerospace & defense fulfillment', nodes: {
+    order: { title: 'Order placed', subtitle: 'Contract / program order', desc: 'A prime contractor places an order for a part against a program contract, with full specification and traceability requirements.', facts: ['Order #AD-114, program-linked', 'Full traceability required'] },
+    materials: { title: 'Certified material supplier', subtitle: 'Aerospace-grade alloys', desc: 'The supplier sources aerospace-grade alloys or composites from AS9100-certified material suppliers.', facts: ['AS9100-certified supplier', 'Material cert traceable to heat lot'] },
+    manufacturer: { title: 'Manufacturer', subtitle: 'Machine, inspect, certify', desc: 'The part is machined and inspected to drawing tolerance, then certified before it can ship.', facts: ['First-article inspection passed', 'Certificate of conformance issued'] },
+    warehouse: { title: 'Certified warehouse', subtitle: 'Receive, inspect & stage', desc: 'Parts are received into a certified warehouse with incoming inspection before staging for shipment.', facts: ['Incoming QA inspection', 'ITAR-controlled storage'] },
+    vehicle: { title: 'Approved carrier assigned', subtitle: 'Export-compliant routing', desc: 'A carrier approved for export-controlled goods is assigned, with documentation for customs and ITAR compliance.', facts: ['ITAR-compliant carrier', 'Export documentation attached'] },
+    invoice: { title: 'Invoice & payment', subtitle: 'Billing settled, in parallel', desc: 'Billing is processed against the contract line item in parallel with export-compliant routing.', facts: ['Invoice issued against contract CLIN', 'DCAA-compliant billing'] },
+    delivery: { title: 'Delivery — stop statuses', subtitle: 'Route in progress', desc: 'Each stop\u2019s status and chain-of-custody are logged to preserve traceability for the program.', facts: ['1-stop route to prime contractor', 'Custody log maintained end to end'] },
+    pod: { title: 'Proof of delivery', subtitle: 'Confirmed with full documentation', desc: 'Receiving inspection confirms the part and matches all certification paperwork before acceptance.', facts: ['Signed: receiving inspector', 'Cert package matched and filed'] }
+  } }
+};
+const JOURNEY_FULL = {
+  retail: [
+    { num: '01', name: 'Assortment & buying', tier: 'Merchandising', leadTime: '4–6 months ahead of season',
+      personas: [{ key: 'buyer', name: 'Buyer', doing: 'Commits open-to-buy across vendors months ahead of the selling season.' }, { key: 'vendor', name: 'Vendor', doing: 'Confirms cost, MOQ, and ship windows against the buy.' }],
+      pains: ['Open-to-buy locks volume before demand signal is strong.', 'Vendor compliance data arrives after the PO is already cut.'],
+      opps: ['A shared forecast view with key vendors, updated monthly.'],
+      systems: 'PLM · Vendor portal · OTB planning tool', owners: 'Merchandising · Vendor management', handoff: 'Confirmed PO → vendor production',
+      good: 'The buy is placed against a forecast both sides trust.', watch: 'Forecast accuracy at 60 days out.', evidence: 'PO terms both parties can trace back to the plan.' },
+    { num: '02', name: 'Vendor production', tier: 'Vendor / co-pack', leadTime: '4–8 weeks',
+      personas: [{ key: 'vendor', name: 'Vendor', doing: 'Produces or kits the SKU to the retailer\u2019s spec and packaging.' }, { key: 'quality', name: 'Quality inspector', doing: 'Runs pre-ship inspection on a sample of the order.' }],
+      pains: ['Packaging compliance failures are caught at inspection, not at design.', 'Vendor capacity is shared across several retail accounts at once.'],
+      opps: ['Packaging compliance checked digitally before production starts.'],
+      systems: 'Vendor compliance system · Inspection reports', owners: 'Vendor management · Quality', handoff: 'Inspected goods, ASN → inbound freight',
+      good: 'Goods pass inspection on the first pass and ship on schedule.', watch: 'First-pass inspection rate.', evidence: 'ASN and inspection report attached before freight books.' },
+    { num: '03', name: 'Inbound freight', tier: 'Ocean / domestic carriers', leadTime: '2–5 weeks',
+      personas: [{ key: 'logistics', name: 'Logistics coordinator', doing: 'Books freight and tracks customs clearance for imported goods.' }, { key: 'planner', name: 'Allocation planner', doing: 'Pre-allocates inbound units to channels before receipt.' }],
+      pains: ['Port delays are discovered after the booking, not before.', 'Allocation is finalized before actual receipt confirms quantity.'],
+      opps: ['Live port and carrier disruption data feeding the allocation plan.'],
+      systems: 'TMS · Customs broker portal · Allocation model', owners: 'Logistics · Demand planning', handoff: 'Cleared goods → fulfillment center receiving',
+      good: 'Goods clear customs and land inside the promised receiving window.', watch: 'Days of variance between promised and actual receipt.', evidence: 'Customs release status tied to the PO.' },
+    { num: '04', name: 'FC receiving & putaway', tier: 'Fulfillment center', leadTime: '1–2 days',
+      personas: [{ key: 'fc', name: 'FC associate', doing: 'Receives against the ASN, verifies count, and puts away to a slot.' }, { key: 'planner', name: 'Allocation planner', doing: 'Confirms channel allocation matches what actually arrived.' }],
+      pains: ['Receiving discrepancies against the ASN slow down putaway.', 'Peak season compresses the receiving window sharply.'],
+      opps: ['Pre-slotting decisions made from the ASN before trucks arrive.'],
+      systems: 'WMS · OMS', owners: 'FC operations · Demand planning', handoff: 'Putaway inventory → channel fulfillment',
+      good: 'Receipt matches the ASN and inventory is sellable within hours.', watch: 'Dock-to-stock time.', evidence: 'Slotted inventory record visible to all channels.' },
+    { num: '05', name: 'Fulfillment & last mile', tier: 'FC / carrier network', leadTime: '1–4 days',
+      personas: [{ key: 'fc', name: 'FC associate', doing: 'Picks, packs, and stages the order for the assigned carrier.' }, { key: 'driver', name: 'Delivery driver', doing: 'Runs the last-mile route and updates stop status live.' }],
+      pains: ['Multiple carrier SLAs make one delivery promise hard to guarantee.', 'Peak volume strains pick accuracy right when it matters most.'],
+      opps: ['A carrier-agnostic tracking layer for one consistent customer promise.'],
+      systems: 'WMS · TMS · Carrier tracking API', owners: 'FC operations · Logistics', handoff: 'Delivered parcel → customer / returns',
+      good: 'The parcel arrives inside the promised window, first attempt.', watch: 'First-attempt delivery success rate.', evidence: 'Stop-level tracking visible to customer service.' },
+    { num: '06', name: 'Delivery, returns & service', tier: 'Customer / reverse logistics', leadTime: 'Same day',
+      personas: [{ key: 'customer', name: 'Customer', doing: 'Receives the order and may initiate a return or exchange.' }, { key: 'cs', name: 'Customer service', doing: 'Handles delivery issues and processes return authorizations.' }],
+      pains: ['Returns intake competes with new-order fulfillment for dock space.', 'Return reason data rarely makes it back to merchandising.'],
+      opps: ['A dedicated returns lane feeding structured reason data to buying.'],
+      systems: 'Returns portal · CRM', owners: 'Customer service · Reverse logistics', handoff: 'Sale → return, restock, or resale',
+      good: 'Returns process quickly and the reason data improves next season\u2019s buy.', watch: 'Return rate by reason code.', evidence: 'Structured return data fed back to merchandising.' }
+  ],
+  manufacturing: [
+    { num: '01', name: 'Raw material procurement', tier: 'Tier-2/3 suppliers', leadTime: '2–4 months ahead',
+      personas: [{ key: 'buyer', name: 'Procurement buyer', doing: 'Sources metal, resin, or sub-components against the production plan.' }, { key: 'supplier', name: 'Material supplier', doing: 'Commits volume and delivery windows against long-lead materials.' }],
+      pains: ['Long-lead materials are ordered against forecasts that shift before delivery.', 'Supplier capacity constraints surface late, close to the promised date.'],
+      opps: ['Shared capacity visibility with key suppliers, updated weekly.'],
+      systems: 'ERP · Supplier portal', owners: 'Procurement', handoff: 'Confirmed material orders → production scheduling',
+      good: 'Materials arrive inside the window the schedule assumed.', watch: 'Supplier on-time delivery rate.', evidence: 'PO confirmations tied to the production schedule.' },
+    { num: '02', name: 'Production scheduling', tier: 'Plant planning', leadTime: '2–6 weeks ahead',
+      personas: [{ key: 'planner', name: 'Production planner', doing: 'Builds the run schedule against material availability and capacity.' }, { key: 'plant', name: 'Plant manager', doing: 'Commits line time across competing product orders.' }],
+      pains: ['Schedule changes ripple late, after materials are already committed.', 'Capacity is booked reactively rather than against a forward plan.'],
+      opps: ['A rolling schedule that flags material conflicts before they lock in.'],
+      systems: 'MES · ERP', owners: 'Production planning', handoff: 'Locked schedule → plant floor',
+      good: 'The schedule holds without late-stage material conflicts.', watch: 'Schedule change rate inside the lead-time window.', evidence: 'Material-to-schedule match confirmed before the run starts.' },
+    { num: '03', name: 'Plant assembly & QA', tier: 'Production line', leadTime: '1–3 weeks on the line',
+      personas: [{ key: 'operator', name: 'Line operator', doing: 'Runs the assembly or machining process to spec.' }, { key: 'quality', name: 'Quality inspector', doing: 'Performs in-line and final QA before release.' }],
+      pains: ['In-line defects are caught late, after several units have run.', 'Overtime absorbs delay caused upstream rather than surfacing it.'],
+      opps: ['Statistical process control that flags drift before a defect run.'],
+      systems: 'MES · SPC tooling', owners: 'Production · Quality', handoff: 'QA-released units → freight & warehousing',
+      good: 'The run finishes on straight time with a clean QA release.', watch: 'First-pass yield.', evidence: 'QA release record tied to the batch.' },
+    { num: '04', name: 'Freight & warehousing', tier: 'Outbound logistics', leadTime: '3–10 days',
+      personas: [{ key: 'logistics', name: 'Logistics coordinator', doing: 'Books freight once goods clear QA and stages the load.' }, { key: 'wh', name: 'Warehouse associate', doing: 'Receives, palletizes, and stages finished goods.' }],
+      pains: ['Freight is booked reactively once goods are ready, missing better rates.', 'Palletizing errors surface only at the buyer\u2019s dock.'],
+      opps: ['Freight booked against the production plan, not the finished-goods date.'],
+      systems: 'TMS · WMS', owners: 'Logistics · Warehouse operations', handoff: 'Staged freight → buyer receiving',
+      good: 'The load ships on the planned lane at the planned rate.', watch: 'Freight cost variance versus plan.', evidence: 'BOL and pallet manifest matched before dispatch.' },
+    { num: '05', name: 'In-transit', tier: 'Carrier network', leadTime: '2–7 days transit',
+      personas: [{ key: 'driver', name: 'Carrier / driver', doing: 'Moves the load and reports status at each checkpoint.' }, { key: 'logistics', name: 'Logistics coordinator', doing: 'Monitors transit exceptions and reroutes as needed.' }],
+      pains: ['Transit exceptions are often discovered by the customer first.', 'Multi-stop loads make a single delivery promise harder to hold.'],
+      opps: ['Exception alerts routed to logistics before the customer notices.'],
+      systems: 'TMS · Carrier EDI', owners: 'Logistics', handoff: 'In-transit load → buyer dock',
+      good: 'The load arrives inside the promised window with no exceptions.', watch: 'On-time delivery rate.', evidence: 'Checkpoint status log for the shipment.' },
+    { num: '06', name: 'Buyer receiving', tier: 'Customer dock', leadTime: 'Same day',
+      personas: [{ key: 'receiver', name: 'Receiving dock supervisor', doing: 'Verifies count and condition and signs the BOL.' }, { key: 'buyer', name: 'Buyer', doing: 'Reconciles receipt against the PO for payment release.' }],
+      pains: ['Receiving discrepancies are resolved by phone and email after the fact.', 'Payment release is delayed by manual three-way matching.'],
+      opps: ['A shared digital BOL both sides confirm at the dock in real time.'],
+      systems: 'ERP · EDI 810', owners: 'Receiving · Accounts payable', handoff: 'Signed receipt → invoice reconciliation',
+      good: 'Receipt matches the PO and payment releases without dispute.', watch: 'Days to invoice reconciliation.', evidence: 'Signed BOL matched to PO and invoice.' }
+  ],
+  automotive: [
+    { num: '01', name: 'Kanban signal & sequencing', tier: 'OEM plant', leadTime: 'Hours ahead',
+      personas: [{ key: 'planner', name: 'Sequencing planner', doing: 'Converts the OEM build sequence into supplier pull signals.' }, { key: 'tier1', name: 'Tier-1 supplier', doing: 'Receives the kanban signal and triggers its own build.' }],
+      pains: ['A single line stoppage cascades through every tier within hours.', 'Buffer stock is invisible across tiers until it runs out.'],
+      opps: ['Shared buffer visibility so a shortage is seen before it stops the line.'],
+      systems: 'MRP · Kanban/EDI signal', owners: 'OEM production control', handoff: 'Pull signal → tier-1 build-to-sequence',
+      good: 'Every pull signal is fulfilled without touching safety stock.', watch: 'Line-stop incidents per week.', evidence: 'Signal-to-fulfillment time log.' },
+    { num: '02', name: 'Tier-2 sub-component supply', tier: 'Sub-suppliers', leadTime: '1–3 days ahead',
+      personas: [{ key: 'tier2', name: 'Tier-2 supplier', doing: 'Supplies castings, fasteners, or wiring into the tier-1 build.' }, { key: 'quality', name: 'Quality auditor', doing: 'Audits tier-2 process capability periodically.' }],
+      pains: ['Tier-2 capacity constraints are invisible until tier-1 flags them.', 'Quality issues at tier-2 surface only once installed at tier-1.'],
+      opps: ['Direct capacity signals from tier-2 into the OEM\u2019s planning system.'],
+      systems: 'Tier-1 MRP · Supplier scorecards', owners: 'Tier-1 supply chain', handoff: 'Sub-components → tier-1 sequencing',
+      good: 'Tier-2 supply holds without buffer draw-down.', watch: 'Tier-2 on-time-in-full rate.', evidence: 'Component lot traceable to the tier-2 batch.' },
+    { num: '03', name: 'Tier-1 build-to-sequence', tier: 'Tier-1 supplier', leadTime: '2–4 hr window',
+      personas: [{ key: 'tier1', name: 'Tier-1 supplier', doing: 'Builds and sequences parts to the OEM\u2019s exact production order.' }, { key: 'operator', name: 'Line operator', doing: 'Executes the sequenced build and load-out.' }],
+      pains: ['Sequencing errors are expensive to correct once parts are in transit.', 'A short build window leaves little room for rework.'],
+      opps: ['Sequence validation at the point of load, not after the truck departs.'],
+      systems: 'MES · Sequencing system', owners: 'Tier-1 production', handoff: 'Sequenced load → JIT milk-run',
+      good: 'The load leaves in sequence, verified before the truck departs.', watch: 'Sequence error rate at load.', evidence: 'Load manifest matched to the OEM build order.' },
+    { num: '04', name: 'JIT milk-run delivery', tier: 'Dedicated carrier', leadTime: 'Fixed schedule',
+      personas: [{ key: 'driver', name: 'Milk-run driver', doing: 'Runs a fixed multi-stop route on a tight, repeating schedule.' }, { key: 'planner', name: 'Logistics coordinator', doing: 'Monitors the route against takt time in real time.' }],
+      pains: ['Traffic or dock delays have zero buffer against takt time.', 'A missed window can stop the assembly line directly.'],
+      opps: ['Dynamic routing that reslots a late truck into the next dock window.'],
+      systems: 'TMS · Real-time GPS tracking', owners: 'Logistics', handoff: 'Delivered load → line-side receiving',
+      good: 'Every stop lands inside its takt-time window.', watch: 'On-time-to-takt rate.', evidence: 'Stop-level timestamp log against the schedule.' },
+    { num: '05', name: 'Line-side receipt', tier: 'Assembly line', leadTime: 'Minutes',
+      personas: [{ key: 'operator', name: 'Line operator', doing: 'Unloads and scans parts directly to the line.' }, { key: 'quality', name: 'Quality auditor', doing: 'Spot-checks sequence and part condition on arrival.' }],
+      pains: ['A mis-sequenced pallet is discovered only once it reaches the line.', 'Damaged parts found line-side stop the process immediately.'],
+      opps: ['Scan-and-verify at unload, before the pallet moves toward the line.'],
+      systems: 'Line-side scanning system', owners: 'Assembly operations', handoff: 'Verified parts → vehicle assembly',
+      good: 'Parts install without a sequence or condition issue.', watch: 'Line-side rejection rate.', evidence: 'Scan log tied to the vehicle build number.' },
+    { num: '06', name: 'Vehicle build & handoff', tier: 'Final assembly', leadTime: 'Same shift',
+      personas: [{ key: 'operator', name: 'Assembly operator', doing: 'Installs the part into the vehicle build.' }, { key: 'quality', name: 'Quality auditor', doing: 'Signs off the build station before the vehicle moves on.' }],
+      pains: ['A part-level defect can be hard to trace back to its source lot.', 'Build data and supplier lot data live in separate systems.'],
+      opps: ['Lot-level traceability linked directly to the finished vehicle record.'],
+      systems: 'MES · Vehicle build record', owners: 'Final assembly · Quality', handoff: 'Completed build → OEM distribution',
+      good: 'Every installed part is traceable to its supplier lot.', watch: 'Warranty claims traced to a supplier lot.', evidence: 'Build record linking VIN to component lots.' }
+  ],
+  food: [
+    { num: '01', name: 'Ingredient sourcing', tier: 'Growers / co-ops', leadTime: 'Seasonal, months ahead',
+      personas: [{ key: 'grower', name: 'Grower / co-op', doing: 'Grows and delivers raw ingredients under a seasonal contract.' }, { key: 'qa', name: 'Food safety auditor', doing: 'Audits growing and handling practices for certification.' }],
+      pains: ['Seasonal and weather volatility makes supply hard to lock in.', 'Certification evidence lags the actual harvest by weeks.'],
+      opps: ['Multi-region sourcing agreements that hedge against a bad season.'],
+      systems: 'Sourcing tracker · Certification registry', owners: 'Sourcing · Food safety', handoff: 'Certified ingredients → processing plant',
+      good: 'Ingredient volume and certification are confirmed before the run.', watch: 'Share of volume traceable to a named farm.', evidence: 'Certificate and lot ID reconciled at intake.' },
+    { num: '02', name: 'Processing & packing', tier: 'Processing plant', leadTime: 'Days',
+      personas: [{ key: 'plant', name: 'Plant operator', doing: 'Processes and packs product under food-safety controls.' }, { key: 'qa', name: 'Food safety auditor', doing: 'Runs HACCP checks and can place a batch on hold.' }],
+      pains: ['Food-safety holds can freeze a batch with little visibility to planning.', 'Line changeovers between products risk cross-contamination.'],
+      opps: ['Real-time hold status visible to logistics so alternate stock ships.'],
+      systems: 'HACCP system · MES', owners: 'Plant operations · Food safety', handoff: 'Packed, cleared batch → cold chain warehousing',
+      good: 'Batches clear HACCP checks and ship inside the planned window.', watch: 'Hold rate per batch.', evidence: 'HACCP clearance record tied to the batch.' },
+    { num: '03', name: 'Cold chain warehousing', tier: 'Refrigerated DC', leadTime: '1–3 days',
+      personas: [{ key: 'wh', name: 'DC associate', doing: 'Receives and stores product under continuous temperature control.' }, { key: 'qa', name: 'Food safety auditor', doing: 'Monitors temperature logs for excursions.' }],
+      pains: ['A short cold-chain break is often found only at the next checkpoint.', 'Mixed-temperature product creates handling complexity.'],
+      opps: ['Continuous temperature logging with alerts at the moment of excursion.'],
+      systems: 'WMS · Temperature monitoring', owners: 'DC operations · Food safety', handoff: 'Temperature-verified stock → reefer transport',
+      good: 'Cold chain integrity holds continuously through storage.', watch: 'Temperature excursion count.', evidence: 'Continuous temp log attached to the lot.' },
+    { num: '04', name: 'Reefer transport', tier: 'Refrigerated carrier', leadTime: '1–4 days transit',
+      personas: [{ key: 'driver', name: 'Reefer driver', doing: 'Maintains set temperature and delivers on schedule.' }, { key: 'logistics', name: 'Logistics coordinator', doing: 'Monitors in-transit temperature and reroutes on failure.' }],
+      pains: ['Reefer breakdowns en route can spoil a load before rerouting.', 'Multi-stop routes extend total time out of temperature control.'],
+      opps: ['Predictive reefer maintenance flagged before a unit is loaded.'],
+      systems: 'TMS · In-transit temp sensors', owners: 'Logistics', handoff: 'Delivered load → retail / distributor dock',
+      good: 'The load arrives within temperature spec, on schedule.', watch: 'In-transit temperature excursion rate.', evidence: 'Delivery temp log matched to the lot.' },
+    { num: '05', name: 'Retail / distributor receiving', tier: 'Store / distributor dock', leadTime: 'Same day',
+      personas: [{ key: 'receiver', name: 'Receiving associate', doing: 'Verifies temperature and shelf life on arrival.' }, { key: 'planner', name: 'Category planner', doing: 'Plans sell-through against the remaining shelf life.' }],
+      pains: ['Short-dated stock sometimes arrives with little runway to sell through.', 'Temperature disputes at receipt are resolved manually.'],
+      opps: ['Shelf-life data shared with the receiving dock before the truck arrives.'],
+      systems: 'WMS · POS forecasting', owners: 'Receiving · Category management', handoff: 'Received stock → shelf / consumer sale',
+      good: 'Stock arrives with enough shelf life to sell through reliably.', watch: 'Average shelf life remaining at receipt.', evidence: 'Lot and date code confirmed at receiving.' },
+    { num: '06', name: 'Sale & traceability', tier: 'Consumer / recall systems', leadTime: 'Same day',
+      personas: [{ key: 'consumer', name: 'Consumer', doing: 'Purchases and consumes the product.' }, { key: 'qa', name: 'Food safety auditor', doing: 'Traces any recall back through the lot chain.' }],
+      pains: ['Recalls are hard to trace quickly back through every step.', 'Lot data fragments across systems from farm to shelf.'],
+      opps: ['End-to-end lot traceability that resolves a recall in minutes.'],
+      systems: 'Traceability database', owners: 'Food safety · Quality', handoff: 'Sale → traceability record close-out',
+      good: 'Any recall can be traced to source within hours, not days.', watch: 'Recall trace time.', evidence: 'Unbroken lot record from farm to sale.' }
+  ],
+  pharma: [
+    { num: '01', name: 'API sourcing', tier: 'API supplier', leadTime: 'Months ahead',
+      personas: [{ key: 'sourcing', name: 'Sourcing manager', doing: 'Qualifies and orders active pharmaceutical ingredient from an audited supplier.' }, { key: 'qa', name: 'QA auditor', doing: 'Audits the API supplier against GMP standards.' }],
+      pains: ['A single-source API creates a hard stop if that supplier has an issue.', 'Certificate of analysis review adds time before release.'],
+      opps: ['Qualifying a second API source ahead of time, not after disruption.'],
+      systems: 'GMP audit system · Supplier qualification', owners: 'Sourcing · Quality assurance', handoff: 'Qualified API → formulation',
+      good: 'API arrives with a clean, matching certificate of analysis.', watch: 'Supplier audit finding rate.', evidence: 'CoA matched to the batch before release.' },
+    { num: '02', name: 'Formulation & batch release', tier: 'Manufacturer', leadTime: '2–6 weeks',
+      personas: [{ key: 'mfg', name: 'Manufacturing lead', doing: 'Formulates and fills the batch to specification.' }, { key: 'qa', name: 'QA release officer', doing: 'Reviews and releases the batch before it can ship.' }],
+      pains: ['QA release cycles can be a bottleneck before any shipment begins.', 'Deviation investigations delay release unpredictably.'],
+      opps: ['Parallel QA testing tracks to shorten release time without cutting rigor.'],
+      systems: 'MES · QA release system', owners: 'Manufacturing · Quality assurance', handoff: 'Released, serialized batch → licensed distribution',
+      good: 'The batch releases inside the planned window with no deviation.', watch: 'Average batch release cycle time.', evidence: 'Batch release record with serialized unit IDs.' },
+    { num: '03', name: 'Licensed distribution', tier: 'Wholesaler DC', leadTime: '1–3 days',
+      personas: [{ key: 'dc', name: 'DC associate', doing: 'Receives and verifies serialized units against DSCSA requirements.' }, { key: 'compliance', name: 'Compliance officer', doing: 'Confirms chain-of-custody documentation at receipt.' }],
+      pains: ['Serialization mismatches at receipt trigger manual investigation.', 'Documentation gaps can hold a shipment at the DC.'],
+      opps: ['Automated serial number reconciliation at the point of receipt.'],
+      systems: 'DSCSA serialization system · WMS', owners: 'DC operations · Compliance', handoff: 'Verified stock → chain-of-custody transport',
+      good: 'Serial numbers reconcile automatically without manual review.', watch: 'Serialization mismatch rate.', evidence: 'Reconciled serial log tied to the shipment.' },
+    { num: '04', name: 'Chain-of-custody transport', tier: 'Licensed carrier', leadTime: '1–2 days transit',
+      personas: [{ key: 'driver', name: 'Licensed carrier', doing: 'Transports the shipment while logging custody at every handoff.' }, { key: 'compliance', name: 'Compliance officer', doing: 'Monitors the custody log for gaps in transit.' }],
+      pains: ['A custody gap anywhere in transit can jeopardize the shipment\u2019s status.', 'Cold-chain products add a second compliance dimension in transit.'],
+      opps: ['Continuous custody logging shared across every handoff in real time.'],
+      systems: 'Chain-of-custody tracking', owners: 'Logistics · Compliance', handoff: 'Custody-verified shipment → pharmacy / hospital',
+      good: 'Custody log is unbroken from DC to final receiver.', watch: 'Custody gap incidents.', evidence: 'Continuous custody log for the shipment.' },
+    { num: '05', name: 'Pharmacy / hospital receipt', tier: 'Licensed receiver', leadTime: 'Same day',
+      personas: [{ key: 'pharmacist', name: 'Licensed pharmacist', doing: 'Receives, verifies, and accepts the shipment into inventory.' }, { key: 'compliance', name: 'Compliance officer', doing: 'Confirms the full documentation package is complete.' }],
+      pains: ['Matching certification paperwork to physical units is still manual.', 'Recall lookups require checking multiple disconnected systems.'],
+      opps: ['Lot-level traceability that resolves a recall to specific deliveries in minutes.'],
+      systems: 'Pharmacy inventory system', owners: 'Pharmacy · Compliance', handoff: 'Accepted stock → patient dispensing',
+      good: 'The shipment is accepted with a complete, verified record.', watch: 'Recall trace time to specific deliveries.', evidence: 'Full documentation package matched to lot.' },
+    { num: '06', name: 'Dispensing & pharmacovigilance', tier: 'Patient / provider', leadTime: 'Ongoing',
+      personas: [{ key: 'provider', name: 'Provider / pharmacist', doing: 'Dispenses the medication and monitors for adverse events.' }, { key: 'patient', name: 'Patient', doing: 'Receives and uses the medication, may report side effects.' }],
+      pains: ['Adverse event reports can be slow to reach the manufacturer.', 'Post-market safety signals take time to aggregate across sites.'],
+      opps: ['A faster adverse-event reporting loop back to the manufacturer.'],
+      systems: 'Pharmacovigilance database', owners: 'Provider network · Regulatory affairs', handoff: 'Dispensed dose → safety monitoring',
+      good: 'Safety signals are identified and reported quickly.', watch: 'Time from adverse event to report.', evidence: 'Pharmacovigilance record tied to the lot.' }
+  ],
+  electronics: [
+    { num: '01', name: 'Component sourcing', tier: 'Global component suppliers', leadTime: '3–9 months ahead',
+      personas: [{ key: 'sourcing', name: 'Sourcing manager', doing: 'Secures chips, PCBs, and displays across a multi-region base.' }, { key: 'supplier', name: 'Component supplier', doing: 'Allocates constrained parts across competing customers.' }],
+      pains: ['Allocation-constrained chips can delay a device line for months.', 'Multi-region sourcing adds tariff and compliance complexity.'],
+      opps: ['Earlier visibility into allocation risk, built into the roadmap.'],
+      systems: 'Component sourcing tracker', owners: 'Sourcing', handoff: 'Allocated components → contract assembly',
+      good: 'Critical components are secured well ahead of the build date.', watch: 'Allocation risk flagged versus roadmap date.', evidence: 'Component lot IDs tied to the build order.' },
+    { num: '02', name: 'Contract assembly & test', tier: 'Contract manufacturer', leadTime: '2–4 weeks',
+      personas: [{ key: 'cm', name: 'CM line lead', doing: 'Runs SMT assembly and functional test on the device.' }, { key: 'quality', name: 'Quality engineer', doing: 'Reviews test yield and defect data.' }],
+      pains: ['Late component arrival compresses the assembly and test window.', 'Test failures late in the run are costly to trace back.'],
+      opps: ['Modular test stations that absorb a compressed schedule without cutting QA.'],
+      systems: 'MES · Functional test system', owners: 'Contract manufacturer · Quality', handoff: 'Tested units → regional warehousing',
+      good: 'The run finishes on schedule with high first-pass test yield.', watch: 'First-pass test yield.', evidence: 'Test result log tied to the unit serial number.' },
+    { num: '03', name: 'Regional warehousing & kitting', tier: 'Regional DC', leadTime: '2–5 days',
+      personas: [{ key: 'wh', name: 'DC associate', doing: 'Receives units and kits them with chargers and manuals.' }, { key: 'planner', name: 'Demand planner', doing: 'Allocates finished units across regional demand.' }],
+      pains: ['Kitting errors surface only after the unit ships.', 'Regional allocation is finalized before actual demand is clear.'],
+      opps: ['Automated kit verification by weight or scan before sealing the box.'],
+      systems: 'WMS · Kitting verification', owners: 'DC operations · Demand planning', handoff: 'Kitted, allocated units → carrier delivery',
+      good: 'Every kit is verified complete before it leaves the DC.', watch: 'Kitting error rate.', evidence: 'Scan-verified kit record tied to the serial number.' },
+    { num: '04', name: 'Carrier delivery', tier: 'Parcel carrier', leadTime: '1–3 days',
+      personas: [{ key: 'driver', name: 'Delivery driver', doing: 'Delivers high-value parcels with signature confirmation.' }, { key: 'cs', name: 'Customer service', doing: 'Handles loss or theft claims on high-value units.' }],
+      pains: ['High-value units are a common target for porch theft or loss claims.', 'Claims investigation is slow without strong delivery evidence.'],
+      opps: ['Signature-required and photo-on-delivery as default for high-value SKUs.'],
+      systems: 'Carrier tracking API', owners: 'Logistics · Customer service', handoff: 'Delivered unit → customer',
+      good: 'The unit is delivered and confirmed without a loss claim.', watch: 'Loss/theft claim rate on high-value SKUs.', evidence: 'Signature and photo on file for the delivery.' },
+    { num: '05', name: 'Setup & activation', tier: 'Customer', leadTime: 'Same day',
+      personas: [{ key: 'customer', name: 'Customer', doing: 'Unboxes and activates the device, registering the serial number.' }, { key: 'cs', name: 'Customer service', doing: 'Supports setup issues and matches the unit to the order.' }],
+      pains: ['Serial number reconciliation between order and delivered unit is manual.', 'Setup issues generate support volume that could be prevented.'],
+      opps: ['Serial number auto-matched to the order at the point of delivery scan.'],
+      systems: 'CRM · Device registration system', owners: 'Customer service', handoff: 'Activated device → warranty & service',
+      good: 'The device activates cleanly, matched automatically to the order.', watch: 'Setup-related support contact rate.', evidence: 'Serial number matched to order at activation.' },
+    { num: '06', name: 'Warranty & service loop', tier: 'Service network', leadTime: 'Ongoing',
+      personas: [{ key: 'customer', name: 'Customer', doing: 'Requests warranty service or repair when an issue occurs.' }, { key: 'service', name: 'Service technician', doing: 'Diagnoses and repairs or replaces the unit.' }],
+      pains: ['Repair root-cause data rarely makes it back to design or sourcing.', 'Replacement logistics run separately from new-unit fulfillment.'],
+      opps: ['Repair root-cause data fed back into component sourcing decisions.'],
+      systems: 'Service ticketing · RMA system', owners: 'Service network · Quality', handoff: 'Repair/replace decision → sourcing feedback loop',
+      good: 'Repair data flows back and informs the next design or sourcing cycle.', watch: 'Repeat-failure rate by component.', evidence: 'RMA record linked to the original component lot.' }
+  ],
+  chemicals: [
+    { num: '01', name: 'Feedstock sourcing', tier: 'Feedstock supplier', leadTime: '1–3 months ahead',
+      personas: [{ key: 'sourcing', name: 'Sourcing manager', doing: 'Sources base feedstock chemicals from contracted suppliers.' }, { key: 'safety', name: 'Safety officer', doing: 'Verifies hazard classification on intake.' }],
+      pains: ['Hazard classification data can lag the physical shipment.', 'Feedstock price volatility complicates contract planning.'],
+      opps: ['Hazard and SDS data attached to the order before the material ships.'],
+      systems: 'Procurement system · SDS database', owners: 'Procurement · Safety', handoff: 'Classified feedstock → reaction/blending',
+      good: 'Feedstock arrives with hazard data already verified.', watch: 'SDS-to-shipment lag time.', evidence: 'SDS matched to the feedstock lot before receipt.' },
+    { num: '02', name: 'Reaction, blending & QC', tier: 'Chemical plant', leadTime: 'Days',
+      personas: [{ key: 'operator', name: 'Plant operator', doing: 'Runs the reaction or blending process to spec.' }, { key: 'qc', name: 'QC analyst', doing: 'Tests the batch before it can be released.' }],
+      pains: ['A failed batch test discovered late can strand a scheduled shipment.', 'Batch documentation is compiled manually after the run.'],
+      opps: ['In-line quality sensors that catch drift before the batch completes.'],
+      systems: 'Process control system · LIMS', owners: 'Plant operations · QC', handoff: 'QC-released batch → hazmat warehousing',
+      good: 'The batch passes QC on the first test and ships as scheduled.', watch: 'First-pass QC rate.', evidence: 'Batch test record with SDS attached.' },
+    { num: '03', name: 'Hazmat warehousing', tier: 'Certified warehouse', leadTime: '1–3 days',
+      personas: [{ key: 'wh', name: 'Warehouse associate', doing: 'Receives and segregates material by hazard class.' }, { key: 'safety', name: 'Safety officer', doing: 'Audits segregation and storage compliance.' }],
+      pains: ['Segregation errors between incompatible materials are a real safety risk.', 'Storage capacity by hazard class is a frequent constraint.'],
+      opps: ['Automated placement rules enforced at putaway, not just at audit.'],
+      systems: 'WMS · Hazmat compliance system', owners: 'Warehouse operations · Safety', handoff: 'Segregated stock → certified hazmat transport',
+      good: 'Every load is stored and segregated to code without exception.', watch: 'Segregation compliance audit findings.', evidence: 'Placement log tied to hazard class rules.' },
+    { num: '04', name: 'Certified hazmat transport', tier: 'DOT-certified carrier', leadTime: '1–5 days transit',
+      personas: [{ key: 'driver', name: 'Hazmat driver', doing: 'Transports the load under DOT hazmat certification.' }, { key: 'safety', name: 'Safety officer', doing: 'Confirms route and placarding compliance before dispatch.' }],
+      pains: ['Route restrictions are sometimes discovered after loading.', 'Placarding errors can hold a shipment at inspection.'],
+      opps: ['Route compliance checked automatically at booking, not at the gate.'],
+      systems: 'TMS · DOT compliance system', owners: 'Logistics · Safety', handoff: 'Compliant shipment → certified receiving',
+      good: 'The load moves on an approved route with correct placarding.', watch: 'Roadside inspection hold rate.', evidence: 'Route and placard compliance record for the shipment.' },
+    { num: '05', name: 'Certified receiving', tier: 'Certified receiver', leadTime: 'Same day',
+      personas: [{ key: 'receiver', name: 'Certified receiver', doing: 'Verifies containment integrity and signs for the load.' }, { key: 'safety', name: 'Safety officer', doing: 'Logs the containment check for the record.' }],
+      pains: ['Containment checks on arrival are manual and inconsistently documented.', 'Discrepancies at receipt require a separate investigation process.'],
+      opps: ['A standard digital containment checklist logged at every delivery.'],
+      systems: 'Receiving compliance system', owners: 'Receiving · Safety', handoff: 'Verified receipt → downstream processing',
+      good: 'Containment is verified and logged the same way every time.', watch: 'Containment discrepancy rate.', evidence: 'Digital containment checklist for the delivery.' },
+    { num: '06', name: 'Downstream use & disposal', tier: 'End user / disposal', leadTime: 'Ongoing',
+      personas: [{ key: 'user', name: 'Downstream user', doing: 'Uses the chemical in its intended process.' }, { key: 'safety', name: 'Safety officer', doing: 'Tracks end-of-life disposal or reclamation.' }],
+      pains: ['Disposal and reclamation records are often incomplete.', 'End-of-life tracking is disconnected from the original supply record.'],
+      opps: ['A closed-loop record linking supply, use, and disposal.'],
+      systems: 'EHS tracking system', owners: 'EHS · Safety', handoff: 'Use record → disposal/reclamation closeout',
+      good: 'The full lifecycle from supply to disposal is documented.', watch: 'Disposal record completeness rate.', evidence: 'Closed-loop lifecycle record for the lot.' }
+  ],
+  agriculture: [
+    { num: '01', name: 'Input supply', tier: 'Seed / feed suppliers', leadTime: 'Pre-season',
+      personas: [{ key: 'supplier', name: 'Input supplier', doing: 'Delivers certified seed, feed, or crop inputs pre-season.' }, { key: 'farmer', name: 'Farmer', doing: 'Plans input needs against expected planting conditions.' }],
+      pains: ['Input availability is locked a season ahead of actual conditions.', 'Price volatility on inputs complicates margin planning.'],
+      opps: ['Flexible input contracts that adjust closer to planting.'],
+      systems: 'Input ordering system', owners: 'Farm management', handoff: 'Delivered inputs → growing / processing',
+      good: 'Inputs arrive matched to actual planting conditions.', watch: 'Input-to-planting timing variance.', evidence: 'Input delivery record tied to the planting plan.' },
+    { num: '02', name: 'Growing, processing & grading', tier: 'Farm / processor', leadTime: 'Growing season',
+      personas: [{ key: 'farmer', name: 'Farmer', doing: 'Grows and harvests the crop against the seasonal plan.' }, { key: 'grader', name: 'Grader', doing: 'Grades the harvested crop for quality and yield.' }],
+      pains: ['Yield and grade are unknown until harvest, after volumes were contracted.', 'Weather risk can shift the outcome late in the season.'],
+      opps: ['Mid-season yield estimates shared with buyers to adjust expectations early.'],
+      systems: 'Farm management software', owners: 'Farm operations', handoff: 'Graded crop → elevator / packhouse',
+      good: 'Buyers get an accurate yield signal well before harvest completes.', watch: 'Forecast-to-actual yield variance.', evidence: 'Grading record shared with the buyer at harvest.' },
+    { num: '03', name: 'Elevator / packhouse staging', tier: 'Elevator / packhouse', leadTime: '1–2 weeks',
+      personas: [{ key: 'elevator', name: 'Elevator operator', doing: 'Receives, tests, and stages the crop for outbound shipment.' }, { key: 'grader', name: 'Grader', doing: 'Confirms grade at intake against the contract terms.' }],
+      pains: ['Grading disputes between grower and buyer can hold up settlement.', 'Storage capacity is a bottleneck at harvest peak.'],
+      opps: ['Third-party grading data both sides trust, captured at intake.'],
+      systems: 'Elevator management system', owners: 'Elevator operations', handoff: 'Staged, graded lot → rail / truck transport',
+      good: 'Grade is confirmed once, trusted by both sides, at intake.', watch: 'Grading dispute rate.', evidence: 'Third-party grading record tied to the lot.' },
+    { num: '04', name: 'Rail / truck transport', tier: 'Freight carrier', leadTime: '3–10 days transit',
+      personas: [{ key: 'logistics', name: 'Logistics coordinator', doing: 'Books rail cars or trucks against the harvest schedule.' }, { key: 'carrier', name: 'Carrier', doing: 'Moves the bulk lot to the processor or export terminal.' }],
+      pains: ['Rail car availability is a frequent bottleneck at harvest peak.', 'Booking is often reactive rather than tied to the harvest forecast.'],
+      opps: ['Advance rail car booking tied to the harvest forecast, not the harvest date.'],
+      systems: 'TMS · Rail booking system', owners: 'Logistics', handoff: 'Transported lot → processor / export terminal',
+      good: 'Transport capacity is secured ahead of the harvest peak.', watch: 'Rail car availability lead time.', evidence: 'Booking record tied to the harvest forecast.' },
+    { num: '05', name: 'Elevator / processor receiving', tier: 'Processor dock', leadTime: 'Same day',
+      personas: [{ key: 'receiver', name: 'Receiving operator', doing: 'Weighs and grades the lot on arrival for settlement.' }, { key: 'farmer', name: 'Farmer / grower', doing: 'Reconciles the settlement against the contract price.' }],
+      pains: ['Weight and grade reconciliation at receipt is still largely manual.', 'Settlement delays can strain grower cash flow.'],
+      opps: ['Digital weight tickets that settle against contract price automatically.'],
+      systems: 'Weighbridge system · ERP', owners: 'Receiving · Finance', handoff: 'Settled lot → processing / export',
+      good: 'Settlement completes automatically at the point of weigh-in.', watch: 'Days to settlement after receipt.', evidence: 'Digital weight ticket tied to the contract.' },
+    { num: '06', name: 'Processing & export / retail', tier: 'Processor / exporter', leadTime: 'Ongoing',
+      personas: [{ key: 'processor', name: 'Processor', doing: 'Processes or exports the commodity to its next market.' }, { key: 'buyer', name: 'End buyer', doing: 'Receives the finished commodity for further use or sale.' }],
+      pains: ['Traceability back to the originating farm often stops at the elevator.', 'Export documentation can be a manual, error-prone step.'],
+      opps: ['Farm-level traceability carried through to the export document.'],
+      systems: 'Export documentation system', owners: 'Processor · Export compliance', handoff: 'Exported / processed commodity → buyer',
+      good: 'The buyer can trace the lot back to its originating farm.', watch: 'Export documentation error rate.', evidence: 'Traceability record from farm to export document.' }
+  ],
+  energy: [
+    { num: '01', name: 'Component sourcing', tier: 'Grid component suppliers', leadTime: '6+ months ahead',
+      personas: [{ key: 'buyer', name: 'Procurement buyer', doing: 'Orders transformers, cable, or grid components years ahead of need.' }, { key: 'supplier', name: 'Component supplier', doing: 'Commits long-lead manufacturing capacity.' }],
+      pains: ['Long-lead transformers can take 6+ months, exposing projects to delay.', 'Capacity is booked without a firm project milestone tied to it.'],
+      opps: ['Earlier ordering triggers tied to project milestones, not the build date.'],
+      systems: 'Procurement system', owners: 'Procurement · Asset planning', handoff: 'Ordered components → equipment build',
+      good: 'Long-lead equipment is ordered against a milestone, not a guess.', watch: 'Order-to-milestone lead time gap.', evidence: 'PO tied to a specific project milestone.' },
+    { num: '02', name: 'Equipment build & certify', tier: 'Manufacturer', leadTime: '3–6 months',
+      personas: [{ key: 'mfg', name: 'Manufacturing lead', doing: 'Builds equipment to grid standards and specification.' }, { key: 'cert', name: 'Certification engineer', doing: 'Runs UL/IEC certification testing before release.' }],
+      pains: ['Certification delays can hold a build even after manufacturing completes.', 'Test failures late in certification are costly to remediate.'],
+      opps: ['Certification testing run in parallel with final assembly steps.'],
+      systems: 'MES · Certification test system', owners: 'Manufacturing · Certification', handoff: 'Certified equipment → utility warehousing',
+      good: 'Equipment completes certification on the first pass.', watch: 'First-pass certification rate.', evidence: 'Certification record tied to the equipment serial number.' },
+    { num: '03', name: 'Utility warehousing', tier: 'Utility yard', leadTime: 'Days to weeks',
+      personas: [{ key: 'yard', name: 'Yard operator', doing: 'Receives, inspects, and stages equipment for field deployment.' }, { key: 'planner', name: 'Asset planner', doing: 'Schedules equipment release against field project timing.' }],
+      pains: ['Field-return equipment and new equipment often share the same yard space.', 'Yard capacity constraints can delay staging for new projects.'],
+      opps: ['A separate staging area for field returns so new equipment moves faster.'],
+      systems: 'Yard management system', owners: 'Utility operations', handoff: 'Staged equipment → heavy-haul transport',
+      good: 'New equipment stages and releases without competing for yard space.', watch: 'Staging dwell time.', evidence: 'Yard release record tied to the project schedule.' },
+    { num: '04', name: 'Heavy-haul transport', tier: 'Specialized carrier', leadTime: 'Days, permit-dependent',
+      personas: [{ key: 'carrier', name: 'Heavy-haul carrier', doing: 'Transports oversized equipment under a secured permit.' }, { key: 'planner', name: 'Logistics coordinator', doing: 'Files permits and coordinates escort requirements.' }],
+      pains: ['Oversized-load permits can take weeks and stall a ready shipment.', 'Escort and route restrictions add coordination overhead.'],
+      opps: ['Permit applications filed against the project schedule, well ahead of dispatch.'],
+      systems: 'Permit management system', owners: 'Logistics', handoff: 'Delivered equipment → field site receipt',
+      good: 'The permit is in hand before the equipment is ready to move.', watch: 'Permit approval lead time.', evidence: 'Approved permit tied to the shipment.' },
+    { num: '05', name: 'Field site receipt', tier: 'Field crew', leadTime: 'Same day',
+      personas: [{ key: 'crew', name: 'Field crew lead', doing: 'Receives and inspects equipment at the substation or job site.' }, { key: 'planner', name: 'Project manager', doing: 'Confirms site readiness ahead of the delivery window.' }],
+      pains: ['Site readiness and delivery timing are not always coordinated closely.', 'A delivery arriving before the site is ready causes rework.'],
+      opps: ['A shared delivery window confirmed with the site crew before dispatch.'],
+      systems: 'Field service management system', owners: 'Field operations', handoff: 'Received equipment → installation',
+      good: 'Equipment arrives exactly when the site is ready for it.', watch: 'Site readiness-to-delivery mismatch rate.', evidence: 'Confirmed delivery window record.' },
+    { num: '06', name: 'Installation & energization', tier: 'Grid operations', leadTime: 'Days to weeks',
+      personas: [{ key: 'crew', name: 'Field crew', doing: 'Installs and commissions the equipment into the grid.' }, { key: 'ops', name: 'Grid operations engineer', doing: 'Energizes and monitors the new asset.' }],
+      pains: ['Commissioning issues discovered at energization can delay in-service date.', 'Asset data handoff to operations is sometimes incomplete.'],
+      opps: ['A complete digital asset record handed to operations at energization.'],
+      systems: 'Asset management system', owners: 'Grid operations', handoff: 'Energized asset → ongoing maintenance',
+      good: 'The asset energizes on schedule with a complete record in hand.', watch: 'Commissioning issue rate.', evidence: 'Digital asset record at energization.' }
+  ],
+  construction: [
+    { num: '01', name: 'Raw material sourcing', tier: 'Quarry / mill supplier', leadTime: 'Weeks ahead',
+      personas: [{ key: 'buyer', name: 'Procurement lead', doing: 'Sources aggregate, rebar, or lumber against the project bid.' }, { key: 'supplier', name: 'Materials supplier', doing: 'Commits volume and pricing for the project.' }],
+      pains: ['Material price and availability can shift materially between bid and order.', 'Long-lead specialty materials are easy to under-plan.'],
+      opps: ['Locking material pricing at bid time with a defined volume commitment.'],
+      systems: 'Procurement system', owners: 'Procurement', handoff: 'Sourced materials → fabrication / batching',
+      good: 'Material cost and volume hold to what was bid.', watch: 'Bid-to-actual material cost variance.', evidence: 'Locked pricing agreement tied to the project.' },
+    { num: '02', name: 'Fabrication & batching', tier: 'Fabricator / yard', leadTime: 'Days to weeks',
+      personas: [{ key: 'fab', name: 'Fabricator', doing: 'Cuts rebar or batches concrete to the project spec.' }, { key: 'qa', name: 'QA inspector', doing: 'Verifies fabricated material against drawings.' }],
+      pains: ['Fabrication errors discovered on site cause costly rework and delay.', 'Batching timing has to match the pour schedule precisely.'],
+      opps: ['Digital spec verification at the yard before material leaves for site.'],
+      systems: 'Fabrication tracking system', owners: 'Fabrication · QA', handoff: 'Fabricated material → staging yard',
+      good: 'Fabricated material matches spec with zero site rework.', watch: 'Spec mismatch rate found on site.', evidence: 'Digital spec sign-off before dispatch.' },
+    { num: '03', name: 'Staging yard sequencing', tier: 'Laydown yard', leadTime: '1–5 days',
+      personas: [{ key: 'yard', name: 'Yard coordinator', doing: 'Sequences material for delivery in the order the site needs it.' }, { key: 'super', name: 'Site superintendent', doing: 'Communicates the site\u2019s phase schedule to the yard.' }],
+      pains: ['Material sometimes arrives at the yard out of the sequence the site needs.', 'Miscommunication between site phase and yard sequencing causes delays.'],
+      opps: ['Yard sequencing tied directly to the site\u2019s phase schedule.'],
+      systems: 'Yard management system', owners: 'Yard operations', handoff: 'Sequenced material → site delivery',
+      good: 'Material arrives at the yard already in the site\u2019s needed order.', watch: 'Sequencing mismatch incidents.', evidence: 'Yard sequence log tied to the phase schedule.' },
+    { num: '04', name: 'Site delivery', tier: 'Delivery vehicle', leadTime: 'Same day, timed',
+      personas: [{ key: 'driver', name: 'Delivery driver', doing: 'Delivers material or concrete to a tight, timed window.' }, { key: 'super', name: 'Site superintendent', doing: 'Coordinates crew and equipment to receive the delivery.' }],
+      pains: ['A late concrete pour delivery can force a costly restart of the pour.', 'Site access constraints can delay unloading.'],
+      opps: ['Live ETA feed to the site super so pour prep times to the truck, not the clock.'],
+      systems: 'Dispatch / ETA tracking', owners: 'Logistics · Site management', handoff: 'Delivered material → superintendent sign-off',
+      good: 'The delivery lands inside the exact window the pour needs.', watch: 'Delivery-to-pour-window variance.', evidence: 'Live ETA log matched to the pour schedule.' },
+    { num: '05', name: 'Superintendent sign-off', tier: 'Site superintendent', leadTime: 'Same day',
+      personas: [{ key: 'super', name: 'Site superintendent', doing: 'Signs the delivery ticket, confirming quantity and condition.' }, { key: 'buyer', name: 'Project buyer', doing: 'Reconciles the ticket against the project PO for payment.' }],
+      pains: ['Delivery ticket discrepancies are often resolved after the crew has moved on.', 'Paper tickets are easy to lose before reconciliation.'],
+      opps: ['Digital delivery tickets matched to the PO at the moment of drop-off.'],
+      systems: 'Project management system', owners: 'Site management · Procurement', handoff: 'Signed ticket → project cost tracking',
+      good: 'Every ticket reconciles to the PO the same day it\u2019s signed.', watch: 'Ticket-to-PO reconciliation time.', evidence: 'Digital delivery ticket matched at drop-off.' },
+    { num: '06', name: 'Installation & inspection', tier: 'Trade crew / inspector', leadTime: 'Days to weeks',
+      personas: [{ key: 'crew', name: 'Trade crew', doing: 'Installs the material into the building or structure.' }, { key: 'inspector', name: 'Building inspector', doing: 'Inspects the installed work against code.' }],
+      pains: ['Failed inspections traced back to material issues cause rework.', 'Material traceability to the installed location is often informal.'],
+      opps: ['A material-to-location record that speeds up any failed-inspection investigation.'],
+      systems: 'Inspection tracking system', owners: 'Trade contractor · Inspection', handoff: 'Inspected work → project closeout',
+      good: 'Installed work passes inspection with material traceable if needed.', watch: 'Inspection failure rate tied to material.', evidence: 'Material-to-location record for the installed work.' }
+  ],
+  aerospace: [
+    { num: '01', name: 'Certified material sourcing', tier: 'AS9100 supplier', leadTime: 'Months ahead',
+      personas: [{ key: 'buyer', name: 'Procurement lead', doing: 'Sources aerospace-grade alloys from AS9100-certified suppliers.' }, { key: 'qa', name: 'Quality engineer', doing: 'Verifies material certification traceable to the heat lot.' }],
+      pains: ['A single certified source for a critical alloy creates real program risk.', 'Material certification review adds time before it can be used.'],
+      opps: ['Qualifying a second certified source before it becomes a program risk.'],
+      systems: 'Supplier qualification system', owners: 'Procurement · Quality', handoff: 'Certified material → machining & certification',
+      good: 'Material arrives with a clean certificate traceable to its heat lot.', watch: 'Supplier qualification coverage per critical alloy.', evidence: 'Material certificate matched to the heat lot.' },
+    { num: '02', name: 'Machining & certification', tier: 'Manufacturer', leadTime: 'Weeks',
+      personas: [{ key: 'mfg', name: 'Manufacturing engineer', doing: 'Machines the part to drawing tolerance.' }, { key: 'qa', name: 'Quality inspector', doing: 'Runs first-article inspection before certifying the part.' }],
+      pains: ['First-article inspection failures can push back a program milestone.', 'Tolerance issues found late are expensive to correct.'],
+      opps: ['Digital twin simulation to catch tolerance issues before first-article cut.'],
+      systems: 'CMM inspection system · MES', owners: 'Manufacturing · Quality', handoff: 'Certified part → certified warehousing',
+      good: 'First-article inspection passes without a tolerance finding.', watch: 'First-article pass rate.', evidence: 'Certificate of conformance tied to the part serial number.' },
+    { num: '03', name: 'Certified warehousing', tier: 'Certified warehouse', leadTime: 'Days',
+      personas: [{ key: 'wh', name: 'Warehouse associate', doing: 'Receives and inspects parts into ITAR-controlled storage.' }, { key: 'compliance', name: 'Export compliance officer', doing: 'Verifies ITAR handling requirements are met.' }],
+      pains: ['ITAR-controlled parts require handling that slows routine warehouse flow.', 'Mixed controlled and uncontrolled inventory adds complexity.'],
+      opps: ['A dedicated ITAR-compliant zone so controlled parts do not bottleneck the rest.'],
+      systems: 'ITAR compliance system · WMS', owners: 'Warehouse operations · Export compliance', handoff: 'Compliant stock → export-compliant transport',
+      good: 'Controlled parts move through storage without slowing other flow.', watch: 'ITAR handling exception rate.', evidence: 'Compliance log tied to the controlled part.' },
+    { num: '04', name: 'Export-compliant transport', tier: 'Approved carrier', leadTime: 'Days',
+      personas: [{ key: 'carrier', name: 'Approved carrier', doing: 'Transports export-controlled goods with full documentation.' }, { key: 'compliance', name: 'Export compliance officer', doing: 'Prepares and verifies export documentation.' }],
+      pains: ['Export documentation errors can hold a shipment at the border for days.', 'Documentation is often compiled manually per shipment.'],
+      opps: ['Automated export document generation tied to the program\u2019s compliance data.'],
+      systems: 'Export documentation system', owners: 'Logistics · Export compliance', handoff: 'Documented shipment → prime contractor receiving',
+      good: 'The shipment clears without a documentation hold.', watch: 'Border/customs hold rate.', evidence: 'Export documentation package matched to the shipment.' },
+    { num: '05', name: 'Documented receiving', tier: 'Prime contractor', leadTime: 'Same day',
+      personas: [{ key: 'receiver', name: 'Receiving inspector', doing: 'Matches the part and its certification package on arrival.' }, { key: 'qa', name: 'Program quality lead', doing: 'Confirms the part is accepted into the program build.' }],
+      pains: ['Matching certification paperwork to physical parts is still largely manual.', 'Missing paperwork can hold acceptance even when the part is correct.'],
+      opps: ['Digital certification packages that travel with the part\u2019s serial number.'],
+      systems: 'Program quality management system', owners: 'Receiving · Program quality', handoff: 'Accepted part → program build / assembly',
+      good: 'The part is accepted with its full digital certification package.', watch: 'Documentation-related acceptance delay rate.', evidence: 'Digital cert package linked to the serial number.' },
+    { num: '06', name: 'Program build & sustainment', tier: 'Final assembly / sustainment', leadTime: 'Ongoing',
+      personas: [{ key: 'assembler', name: 'Assembly technician', doing: 'Installs the part into the program build.' }, { key: 'sustainment', name: 'Sustainment engineer', doing: 'Tracks the part through its service life.' }],
+      pains: ['Tracing a part through decades of service life is a real challenge.', 'Sustainment data can be disconnected from original manufacturing records.'],
+      opps: ['A lifecycle record that follows the part from manufacture through sustainment.'],
+      systems: 'Configuration management system', owners: 'Program management · Sustainment', handoff: 'Installed part → lifecycle sustainment record',
+      good: 'The part\u2019s full history is traceable across its service life.', watch: 'Configuration record completeness.', evidence: 'Lifecycle record linking manufacture to sustainment.' }
+  ]
+};
+const JOURNEY_LIGHT = {
+  retail: [
+    { name: 'Order & inventory sync', tier: 'Storefront / OMS', pain: 'Inventory shown online drifts from what is actually on the shelf or in the FC.', opp: 'Real-time inventory sync between channels before the order confirms.' },
+    { name: 'Fulfillment center pick & pack', tier: 'FC operations', pain: 'Peak volume pushes pick accuracy down right when order volume is highest.', opp: 'Dynamic slotting that reprioritizes fast-movers during peak windows.' },
+    { name: 'Last-mile carrier handoff', tier: 'Carrier network', pain: 'Multiple carrier SLAs make a single delivery promise hard to guarantee.', opp: 'A single carrier-agnostic tracking layer for the customer-facing promise.' },
+    { name: 'Doorstep delivery & returns', tier: 'Customer / reverse logistics', pain: 'Returns intake competes with new-order fulfillment for the same dock space.', opp: 'A dedicated returns lane that does not slow down outbound picking.' }
+  ],
+  manufacturing: [
+    { name: 'Raw material procurement', tier: 'Tier-2/3 suppliers', pain: 'Long-lead materials are ordered against forecasts that shift before delivery.', opp: 'Shared capacity visibility with key suppliers, updated weekly not quarterly.' },
+    { name: 'Production scheduling', tier: 'Plant planning', pain: 'Schedule changes ripple late, after materials are already committed.', opp: 'A rolling schedule that flags material conflicts before they are locked in.' },
+    { name: 'Plant assembly & QA', tier: 'Production line', pain: 'In-line defects are caught late, after several units have already run.', opp: 'Statistical process control that flags drift before it becomes a defect run.' },
+    { name: 'Freight & warehousing', tier: 'Outbound logistics', pain: 'Freight is booked reactively once goods are ready, missing better rates.', opp: 'Freight booked against the production plan, not the finished-goods date.' },
+    { name: 'Buyer receiving', tier: 'Customer dock', pain: 'Receiving discrepancies are resolved by phone and email after the fact.', opp: 'A shared digital BOL that both sides confirm at the dock in real time.' }
+  ],
+  automotive: [
+    { name: 'Kanban signal & sequencing', tier: 'OEM plant', pain: 'A single line stoppage cascades through every tier within hours.', opp: 'Buffer visibility shared across tiers so a shortage is seen before it stops the line.' },
+    { name: 'Tier-2 sub-component supply', tier: 'Sub-suppliers', pain: 'Tier-2 capacity constraints are invisible to the OEM until tier-1 flags them.', opp: 'Direct capacity signals from tier-2 into the OEM\u2019s planning system.' },
+    { name: 'Tier-1 build-to-sequence', tier: 'Tier-1 supplier', pain: 'Sequencing errors are expensive to correct once parts are in transit.', opp: 'Sequence validation at the point of load, not after the truck departs.' },
+    { name: 'JIT milk-run delivery', tier: 'Dedicated carrier', pain: 'Traffic or dock delays have zero buffer against takt time.', opp: 'Dynamic routing that reslots a late truck into the next available dock window.' },
+    { name: 'Line-side receipt', tier: 'Assembly line', pain: 'A mis-sequenced pallet is discovered only once it reaches the line.', opp: 'Scan-and-verify at unload, before the pallet moves toward the line.' }
+  ],
+  food: [
+    { name: 'Ingredient sourcing', tier: 'Growers / co-ops', pain: 'Seasonal and weather volatility makes ingredient supply hard to lock in.', opp: 'Multi-region sourcing agreements that hedge against a single bad season.' },
+    { name: 'Processing & packing', tier: 'Processing plant', pain: 'Food-safety holds can freeze a batch with little visibility to planning.', opp: 'Real-time hold status visible to logistics so alternate stock ships instead.' },
+    { name: 'Cold chain warehousing', tier: 'Refrigerated DC', pain: 'A short break in the cold chain is often discovered only at the next checkpoint.', opp: 'Continuous temperature logging with alerts at the moment of excursion.' },
+    { name: 'Reefer transport', tier: 'Refrigerated carrier', pain: 'Reefer breakdowns en route can spoil a full load before rerouting happens.', opp: 'Predictive reefer maintenance flags before a unit is loaded, not after.' },
+    { name: 'Retail / dock receiving', tier: 'Store / distributor dock', pain: 'Short-dated stock sometimes arrives with little runway left to sell through.', opp: 'Shelf-life data shared with the receiving dock before the truck arrives.' }
+  ],
+  pharma: [
+    { name: 'API sourcing', tier: 'API supplier', pain: 'A single-source API creates a hard stop if that supplier has an issue.', opp: 'Qualifying a second API source ahead of time, not after a disruption.' },
+    { name: 'Formulation & batch release', tier: 'Manufacturer', pain: 'QA release cycles can be a bottleneck before any shipment can begin.', opp: 'Parallel QA testing tracks to shorten release time without cutting rigor.' },
+    { name: 'Licensed distribution', tier: 'Wholesaler DC', pain: 'Serialization mismatches at receipt trigger manual investigation.', opp: 'Automated serial number reconciliation at the point of receipt.' },
+    { name: 'Chain-of-custody transport', tier: 'Licensed carrier', pain: 'A custody gap anywhere in transit can jeopardize the whole shipment\u2019s status.', opp: 'Continuous custody logging shared across every handoff in real time.' },
+    { name: 'Pharmacy / hospital receipt', tier: 'Licensed receiver', pain: 'Recalls are hard to trace quickly back through every distribution step.', opp: 'Lot-level traceability that resolves a recall to specific deliveries in minutes.' }
+  ],
+  electronics: [
+    { name: 'Component sourcing', tier: 'Global component suppliers', pain: 'Allocation-constrained chips can delay a whole device line for months.', opp: 'Earlier visibility into allocation risk, built into the product roadmap.' },
+    { name: 'Contract assembly & test', tier: 'Contract manufacturer', pain: 'Late component arrival compresses the assembly and test window.', opp: 'Modular test stations that can absorb a compressed schedule without cutting QA.' },
+    { name: 'Regional warehousing & kitting', tier: 'Regional DC', pain: 'Kitting errors (wrong accessory) surface only after the unit ships.', opp: 'Automated kit verification by weight or scan before sealing the box.' },
+    { name: 'Carrier delivery', tier: 'Parcel carrier', pain: 'High-value units are a common target for porch theft or loss claims.', opp: 'Signature-required and photo-on-delivery as default for high-value SKUs.' },
+    { name: 'Signature confirmation', tier: 'Customer', pain: 'Serial number reconciliation between order and delivered unit is manual.', opp: 'Serial number auto-matched to the order at the point of delivery scan.' }
+  ],
+  chemicals: [
+    { name: 'Feedstock sourcing', tier: 'Feedstock supplier', pain: 'Hazard classification data can lag the physical shipment of the material.', opp: 'Hazard and SDS data attached to the order before the material ships.' },
+    { name: 'Reaction / blending & QC', tier: 'Chemical plant', pain: 'A failed batch test discovered late can strand a scheduled shipment.', opp: 'In-line quality sensors that catch drift before the batch completes.' },
+    { name: 'Hazmat warehousing', tier: 'Certified warehouse', pain: 'Segregation errors between incompatible materials are a real safety risk.', opp: 'Automated placement rules enforced at putaway, not just at audit.' },
+    { name: 'Certified hazmat transport', tier: 'DOT-certified carrier', pain: 'Route restrictions are sometimes discovered after a shipment is already loaded.', opp: 'Route compliance checked automatically at booking, not at the gate.' },
+    { name: 'Certified receiving', tier: 'Certified receiver', pain: 'Containment checks on arrival are manual and inconsistently documented.', opp: 'A standard digital containment checklist logged at every delivery.' }
+  ],
+  agriculture: [
+    { name: 'Input supply', tier: 'Seed / feed suppliers', pain: 'Input availability is locked in a season ahead of actual planting conditions.', opp: 'Flexible input contracts that adjust closer to planting based on conditions.' },
+    { name: 'Growing / processing & grading', tier: 'Farm / processor', pain: 'Yield and grade are unknown until harvest, long after volumes were contracted.', opp: 'Mid-season yield estimates shared with buyers to adjust expectations early.' },
+    { name: 'Elevator / packhouse staging', tier: 'Elevator / packhouse', pain: 'Grading disputes between grower and buyer can hold up settlement.', opp: 'Third-party grading data both sides trust, captured at intake.' },
+    { name: 'Rail / truck transport', tier: 'Freight carrier', pain: 'Rail car availability is a frequent bottleneck at harvest peak.', opp: 'Advance rail car booking tied to the harvest forecast, not the harvest date.' },
+    { name: 'Elevator receiving', tier: 'Processor dock', pain: 'Weight and grade reconciliation at receipt is still largely manual.', opp: 'Digital weight tickets that settle against contract price automatically.' }
+  ],
+  energy: [
+    { name: 'Component sourcing', tier: 'Grid component suppliers', pain: 'Long-lead transformers can take 6+ months, exposing projects to delay risk.', opp: 'Earlier ordering triggers tied to project milestones, not just the build date.' },
+    { name: 'Equipment build & certify', tier: 'Manufacturer', pain: 'Certification delays can hold a build even after manufacturing is complete.', opp: 'Certification testing run in parallel with final assembly steps.' },
+    { name: 'Utility warehousing', tier: 'Utility yard', pain: 'Field-return equipment and new equipment often share the same yard space.', opp: 'A separate staging area for field returns so new equipment moves faster.' },
+    { name: 'Heavy-haul transport', tier: 'Specialized carrier', pain: 'Oversized-load permits can take weeks and stall an otherwise-ready shipment.', opp: 'Permit applications filed against the project schedule, well ahead of dispatch.' },
+    { name: 'Field site receipt', tier: 'Field crew', pain: 'Site readiness and delivery timing are not always coordinated closely.', opp: 'A shared delivery window confirmed with the site crew before dispatch.' }
+  ],
+  construction: [
+    { name: 'Raw material sourcing', tier: 'Quarry / mill supplier', pain: 'Material price and availability can shift materially between bid and order.', opp: 'Locking material pricing at bid time with a defined volume commitment.' },
+    { name: 'Fabrication / batching', tier: 'Fabricator / yard', pain: 'Fabrication errors discovered on site cause costly rework and delay.', opp: 'Digital spec verification at the yard before material leaves for site.' },
+    { name: 'Staging yard sequencing', tier: 'Laydown yard', pain: 'Material sometimes arrives at the yard out of the sequence the site needs.', opp: 'Yard sequencing tied directly to the site\u2019s phase schedule.' },
+    { name: 'Site delivery', tier: 'Delivery vehicle', pain: 'A late concrete pour delivery can force a costly restart of the pour.', opp: 'Live ETA feed to the site super so pour prep times to the truck, not the clock.' },
+    { name: 'Superintendent sign-off', tier: 'Site superintendent', pain: 'Delivery ticket discrepancies are often resolved after the crew has moved on.', opp: 'Digital delivery tickets matched to the PO at the moment of drop-off.' }
+  ],
+  aerospace: [
+    { name: 'Certified material sourcing', tier: 'AS9100 supplier', pain: 'A single certified source for a critical alloy creates real program risk.', opp: 'Qualifying a second certified source before it becomes a program risk.' },
+    { name: 'Machining & certification', tier: 'Manufacturer', pain: 'First-article inspection failures can push back an entire program milestone.', opp: 'Digital twin simulation to catch tolerance issues before first-article cut.' },
+    { name: 'Certified warehousing', tier: 'Certified warehouse', pain: 'ITAR-controlled parts require handling that slows routine warehouse flow.', opp: 'A dedicated ITAR-compliant zone so controlled parts do not bottleneck the rest.' },
+    { name: 'Export-compliant transport', tier: 'Approved carrier', pain: 'Export documentation errors can hold a shipment at the border for days.', opp: 'Automated export document generation tied to the program\u2019s compliance data.' },
+    { name: 'Documented receiving', tier: 'Prime contractor', pain: 'Matching certification paperwork to physical parts is still largely manual.', opp: 'Digital certification packages that travel with the part\u2019s serial number.' }
+  ]
+};
+const CROSS_PLATFORM_THEMES = {
+  pains: [
+    'Visibility gaps between tiers: a disruption upstream is usually discovered downstream, after it has already cost time.',
+    'Manual reconciliation at handoffs — paperwork, certificates, or tickets — slows down what should be a real-time confirmation.',
+    'Forecasts and commitments made months ahead rarely match conditions by the time goods actually move.',
+    'Peak-load moments (seasonal, promotional, or takt-driven) are where quality and speed most often break down.',
+    'Compliance and documentation requirements are often verified after the fact rather than built into the handoff itself.'
+  ],
+  opportunities: [
+    'Shared, real-time visibility across tiers instead of siloed systems that only reconcile at the next checkpoint.',
+    'Moving verification (quality, compliance, custody) to the point of handoff rather than after the fact.',
+    'Booking capacity — freight, line time, certification — against the plan itself, not the date goods happen to be ready.',
+    'Digital records that travel with the physical good (a passport, certificate, or serial number) instead of living in a separate system.',
+    'Designing explicitly for peak-load conditions rather than treating them as an exception to a steady-state process.'
+  ]
+};
+const VERTICAL_LIST = [
+  { id: 'apparel', label: 'Apparel & textiles' },
+  { id: 'retail', label: 'Retail & e-commerce' },
+  { id: 'manufacturing', label: 'Manufacturing & industrial' },
+  { id: 'automotive', label: 'Automotive' },
+  { id: 'food', label: 'Food & beverage' },
+  { id: 'pharma', label: 'Pharmaceuticals & healthcare' },
+  { id: 'electronics', label: 'Consumer electronics' },
+  { id: 'chemicals', label: 'Chemicals' },
+  { id: 'agriculture', label: 'Agriculture & agribusiness' },
+  { id: 'energy', label: 'Energy & utilities' },
+  { id: 'construction', label: 'Construction & building materials' },
+  { id: 'aerospace', label: 'Aerospace & defense' }
+];
+const VERTICALS = [
+  { id: 'retail', title: 'Retail & e-commerce', desc: 'Storefront to doorstep fulfillment' },
+  { id: 'manufacturing', title: 'Manufacturing & industrial', desc: 'Raw materials to finished goods' },
+  { id: 'automotive', title: 'Automotive', desc: 'Just-in-time parts to assembly line' },
+  { id: 'food', title: 'Food & beverage', desc: 'Cold chain and perishables' },
+  { id: 'pharma', title: 'Pharmaceuticals & healthcare', desc: 'Regulated, temperature-controlled distribution' },
+  { id: 'electronics', title: 'Consumer electronics', desc: 'Global component sourcing, contract assembly' },
+  { id: 'apparel', title: 'Apparel & textiles', desc: 'Multi-tier sourcing, seasonal cycles' },
+  { id: 'chemicals', title: 'Chemicals', desc: 'Hazmat handling and bulk logistics' },
+  { id: 'agriculture', title: 'Agriculture & agribusiness', desc: 'Farm to processor to retailer' },
+  { id: 'energy', title: 'Energy & utilities', desc: 'Equipment and fuel distribution networks' },
+  { id: 'construction', title: 'Construction & building materials', desc: 'Project-based, heavy freight' },
+  { id: 'aerospace', title: 'Aerospace & defense', desc: 'Long lead times, strict compliance' }
+];
+const PG_STEPS = [
+  {
+    num: "01", name: "Fiber & material sourcing", tier: "Tier 4 — farms, co-ops, recyclers",
+    leadTime: "12–18 months ahead of season",
+    personas: [
+      { key: "matdev", name: "Material developer", doing: "Qualifies organic, recycled, and regenerative fibers and sets Fair Trade and bluesign criteria before the season locks." },
+      { key: "grower", name: "Fiber grower / co-op", doing: "Grows cotton or hemp on multi-year contracts and logs field practice for certification." },
+      { key: "auditor", name: "Responsibility auditor", doing: "Verifies farm-level certification claims and chain-of-custody paperwork." }
+    ],
+    pains: [
+      "Certification evidence arrives as PDFs and spreadsheets, months behind the buying calendar.",
+      "Weather and yield volatility break volume commitments made a season earlier.",
+      "Traceability thins out below the first tier — the fiber's origin is asserted, not observed."
+    ],
+    opps: [
+      "A shared fiber ledger co-owned with co-ops, updated at harvest instead of at audit.",
+      "Multi-year offtake pricing that de-risks a grower's switch to regenerative practice."
+    ],
+    systems: "Fiber sourcing tracker · Textile Exchange registry · ROC and Fair Trade certificates",
+    owners: "Materials team · Social & Environmental Responsibility",
+    handoff: "Approved fiber list and volumes → mill nomination",
+    good: "The season's fiber pool is confirmed with named farms and verified volumes before fabric development starts.",
+    watch: "Share of fiber volume traceable to a named farm, and how late in the calendar that number settles.",
+    evidence: "Certificate IDs and volume reconciliation that the mill's transaction certificate must match."
+  },
+  {
+    num: "02", name: "Spinning, knitting & dyeing", tier: "Tier 3–2 — spinners, mills, dyehouses",
+    leadTime: "4–6 months ahead of production",
+    personas: [
+      { key: "mill", name: "Mill partner", doing: "Spins, knits, and dyes to Patagonia spec while holding approved chemistry for each substrate." },
+      { key: "matdev", name: "Material developer", doing: "Runs lab dips and durability testing, then signs off hand-feel, shrinkage, and colorfastness." },
+      { key: "auditor", name: "Responsibility auditor", doing: "Audits chemical management and wastewater treatment at the dyehouse." }
+    ],
+    pains: [
+      "Mills are nominated by the brand but contracted through the factory, splitting accountability.",
+      "Chemistry restrictions differ by market, so one fabric carries several compliance stories.",
+      "Lab-dip cycles add weeks with no visibility for downstream planning."
+    ],
+    opps: [
+      "A single fabric passport that travels with the roll instead of living in an email chain.",
+      "A pre-approved chemistry library so mills stop re-qualifying the same dye per program."
+    ],
+    systems: "PLM · bluesign bluetool · Mill scorecards · Restricted substances list",
+    owners: "Materials · Quality · Social & Environmental Responsibility",
+    handoff: "Approved fabric, roll IDs, and test reports → cut & sew",
+    good: "Fabric passes first-round testing and ships to the factory inside the booked window with its test file attached.",
+    watch: "First-pass lab-dip approval rate and days lost per rejected dip.",
+    evidence: "Roll-level IDs that let a finished garment be tied back to a dye lot."
+  },
+  {
+    num: "03", name: "Cut, sew & assembly", tier: "Tier 1 — finished-goods factories",
+    leadTime: "60–90 days on the line",
+    personas: [
+      { key: "factory", name: "Factory manager", doing: "Plans lines, books fabric, and commits to ship dates across several brands at once." },
+      { key: "operator", name: "Sewing operator", doing: "Builds garments to spec, paid piece-rate plus a Fair Trade premium on certified styles." },
+      { key: "auditor", name: "Responsibility auditor", doing: "Assesses wages, hours, and grievance mechanisms on site." }
+    ],
+    pains: [
+      "Late fabric compresses the sew window and overtime absorbs the delay.",
+      "The Fair Trade premium is calculated per style, which makes worker payouts uneven line to line.",
+      "Worker grievances surface at audit rather than in the week they happen."
+    ],
+    opps: [
+      "Capacity booking that reserves line time before fabric is confirmed, with a shared exposure view.",
+      "A direct worker feedback channel that runs independent of factory management."
+    ],
+    systems: "ERP work orders · Fair Trade premium ledger · Audit corrective-action tracker",
+    owners: "Production · Factory management · Social & Environmental Responsibility",
+    handoff: "Packed cartons, carton manifest, and ASN → freight",
+    good: "Lines run to plan on straight time, with premium payouts posted in the same period the work happened.",
+    watch: "Overtime hours per unit and the gap between promised and actual ex-factory date.",
+    evidence: "Carton-level manifest linking each unit to a work order and dye lot."
+  },
+  {
+    num: "04", name: "Inbound freight & quality",
+    tier: "Ocean, air, customs, inspection",
+    leadTime: "25–40 days in transit",
+    personas: [
+      { key: "logistics", name: "Logistics coordinator", doing: "Books ocean freight, manages consolidation, and watches customs and duty exposure." },
+      { key: "quality", name: "Quality inspector", doing: "Runs inspection at origin and on receipt, then releases or holds the lot." },
+      { key: "factory", name: "Factory manager", doing: "Hands over documents and stages cartons against the booking window." }
+    ],
+    pains: [
+      "Port and carrier disruption is discovered after booking rather than before it.",
+      "Origin and destination inspections duplicate work and sometimes disagree on the result.",
+      "Emissions per shipment are reconstructed after the fact, so mode choice is never a live tradeoff."
+    ],
+    opps: [
+      "Show cost, transit, and emissions side by side at booking time instead of in quarterly reporting.",
+      "One inspection record shared between origin QA and the distribution center."
+    ],
+    systems: "TMS · Customs broker portal · QA hold log · Carrier EDI",
+    owners: "Logistics · Trade compliance · Quality assurance",
+    handoff: "Receipt confirmation and release status → DC putaway",
+    good: "Goods clear customs and are released without a hold, on the mode that was planned.",
+    watch: "Share of volume moved by air as a recovery measure, and hold rate on receipt.",
+    evidence: "Release status and inspection result attached to each carton before putaway."
+  },
+  {
+    num: "05", name: "Distribution & fulfillment",
+    tier: "Distribution center, 3PL, carriers",
+    leadTime: "1–4 days to ship",
+    personas: [
+      { key: "dc", name: "DC associate", doing: "Receives, puts away, and picks for wholesale, dealer, and e-commerce channels from one pool." },
+      { key: "planner", name: "Demand planner", doing: "Allocates constrained inventory across channels, regions, and repair demand." },
+      { key: "logistics", name: "Logistics coordinator", doing: "Books outbound carriers and manages returns intake alongside new goods." }
+    ],
+    pains: [
+      "Channel allocation is a spreadsheet negotiation, so late changes strand inventory in the wrong pool.",
+      "Returns and repair intake arrive at the same dock as new goods but need different handling.",
+      "A concentrated DC footprint makes coastal delivery slower and more carbon-heavy than it needs to be."
+    ],
+    opps: [
+      "Allocation rules that rank repair and reuse demand explicitly against new orders.",
+      "A separate reverse-logistics intake lane with its own service level and staffing."
+    ],
+    systems: "WMS · OMS · Allocation model · Returns intake queue",
+    owners: "DC operations · Demand planning · Customer service",
+    handoff: "Outbound shipment → store, dealer, or customer",
+    good: "Every channel gets its committed allocation and reverse flow moves without competing for the same dock hours.",
+    watch: "Fill rate by channel and dwell time on returned or repairable units.",
+    evidence: "Unit-level inventory record that carries the garment's origin data into retail."
+  },
+  {
+    num: "06", name: "Retail & point of sale",
+    tier: "Owned stores, dealers, e-commerce",
+    leadTime: "Same day",
+    personas: [
+      { key: "retail", name: "Retail associate", doing: "Fits the customer, explains the material and repair story, and books Worn Wear service." },
+      { key: "customer", name: "Customer", doing: "Compares durability and footprint claims and expects the product to last rather than be replaced." },
+      { key: "planner", name: "Demand planner", doing: "Reads sell-through to reset next season's buy and replenishment." }
+    ],
+    pains: [
+      "The traceability story stops at the country of assembly, so associates cannot answer fiber-level questions.",
+      "Stock gaps on core sizes push customers toward substitutes or a competitor.",
+      "Repair intake competes with selling time on the floor during peak hours."
+    ],
+    opps: [
+      "A scannable garment passport that reads the same in store, on the site, and at repair intake.",
+      "Move repair booking off the sales floor so associates keep selling while service is captured."
+    ],
+    systems: "POS · Store inventory · Worn Wear service queue · CRM",
+    owners: "Retail operations · Customer service · Demand planning",
+    handoff: "Sale → ownership, repair, and resale lifecycle",
+    good: "The customer leaves with the right size and a claim they can verify themselves.",
+    watch: "Size-break availability on core styles and repair bookings captured per store week.",
+    evidence: "Sell-through and repair signals fed back to sourcing for the next season."
+  }
+];
+
+JOURNEY_FULL.apparel = PG_STEPS;
+const JOURNEY_META = {
+  apparel: { eyebrow: 'Service design blueprint · apparel supply chain', title: 'Patagonia: fiber to point of sale', desc: 'Six stages of a multi-tier apparel chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  retail: { eyebrow: 'Service design blueprint · retail & e-commerce', title: 'Retail: assortment to doorstep', desc: 'Six stages of a retail fulfillment chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  manufacturing: { eyebrow: 'Service design blueprint · industrial manufacturing', title: 'Manufacturing: material to buyer dock', desc: 'Six stages of an industrial manufacturing chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  automotive: { eyebrow: 'Service design blueprint · automotive', title: 'Automotive: kanban to vehicle build', desc: 'Six stages of a just-in-time automotive chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  food: { eyebrow: 'Service design blueprint · food & beverage', title: 'Food & beverage: ingredient to shelf', desc: 'Six stages of a cold-chain food supply chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  pharma: { eyebrow: 'Service design blueprint · pharmaceuticals', title: 'Pharma: API to patient', desc: 'Six stages of a regulated pharmaceutical chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  electronics: { eyebrow: 'Service design blueprint · consumer electronics', title: 'Electronics: component to service loop', desc: 'Six stages of a global electronics chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  chemicals: { eyebrow: 'Service design blueprint · chemicals', title: 'Chemicals: feedstock to disposal', desc: 'Six stages of a hazmat chemical chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  agriculture: { eyebrow: 'Service design blueprint · agriculture & agribusiness', title: 'Agriculture: input to export', desc: 'Six stages of an agricultural supply chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  energy: { eyebrow: 'Service design blueprint · energy & utilities', title: 'Energy: component to energization', desc: 'Six stages of a utility equipment chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  construction: { eyebrow: 'Service design blueprint · construction materials', title: 'Construction: material to installed work', desc: 'Six stages of a project-based construction chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' },
+  aerospace: { eyebrow: 'Service design blueprint · aerospace & defense', title: 'Aerospace: certified material to sustainment', desc: 'Six stages of a certified aerospace chain, read as a journey. Each column carries the actors, their friction, and where the service could be redesigned. The backstage band holds the systems and handoffs that make the front stage possible.' }
+};
+function deriveChips(steps) {
+  const seen = {};
+  const out = [];
+  steps.forEach(s => s.personas.forEach(p => {
+    if (!seen[p.key]) { seen[p.key] = true; out.push({ key: p.key, label: p.name }); }
+  }));
+  return out;
+}
+const PG_CHIPS = [
+  { key: "matdev", label: "Material developer" },
+  { key: "grower", label: "Fiber grower" },
+  { key: "mill", label: "Mill partner" },
+  { key: "factory", label: "Factory manager" },
+  { key: "operator", label: "Sewing operator" },
+  { key: "auditor", label: "Responsibility auditor" },
+  { key: "quality", label: "Quality inspector" },
+  { key: "logistics", label: "Logistics coordinator" },
+  { key: "dc", label: "DC associate" },
+  { key: "planner", label: "Demand planner" },
+  { key: "retail", label: "Retail associate" },
+  { key: "customer", label: "Customer" }
+];
+
+const SITEMAP_SECTIONS = [
+  { title: 'Cockpit (home)', subtitle: 'Persona-based real-time dashboards', items: ['KPI & network scorecards', 'Alerts & exceptions feed', 'Recent activity', 'Trading partner health'] },
+  { title: 'Activity views', subtitle: 'Deep visibility into every flow', items: ['Activity view', 'Message view', 'Trading partner view', 'Transaction search & drill-in'] },
+  { title: 'Trading partner onboarding', subtitle: 'No-code partner setup', items: ['Partner profiles', 'Reusable partner workflows', 'AI-assisted mapping', 'Go-live checklist'] },
+  { title: 'Integration Studio', subtitle: 'Build & operate integrations', items: ['EDI & non-EDI mapping', 'API integration management', 'Orchestration / workflows', 'Connectors (ERP, ecommerce, cloud)'] },
+  { title: 'Exception management', subtitle: 'Resolve issues before they disrupt fulfillment', items: ['Issue queue', 'Reprocess / resolve actions', 'Ticketing & escalation', 'Status notifications'] },
+  { title: 'Analytics & reporting', subtitle: 'Cross-platform insight', items: ['Custom & pre-built reports', 'Message volume trends', 'Network scorecards (shared with partners)', 'Scheduled report delivery'] },
+  { title: 'Administration', subtitle: 'Platform & account management', items: ['Users & roles', 'Security & protocols (AS2, SFTP, etc.)', 'Connections & endpoints', 'Support & documentation'] }
+];
+const GROWTH_STEPS = [
+  { letter: 'a', title: 'Design to Code Pipeline', items: [
+    'Pilot project for design-to-code pipeline: including design/dev hand-offs, design system management, and engineering workflow management with harness engineering.',
+    'When ready, begin testing on production releases.'
+  ] },
+  { letter: 'b', title: 'Pattern Library (with specs)', items: [
+    'Existing screen inventory.',
+    '"First level" enhancements to deal with obvious usability improvements and making sure patterns are designed for scale.',
+    'Pattern Gallery for reference by humans and the MCP server (design to code).',
+    'AI Patterns becomes a new category in the guidelines (and MCP).'
+  ] },
+  { letter: 'c', title: 'Gain a Better Understanding of Users', items: [
+    'Journey Maps and process flows by vertical.',
+    'Rollups of pain points and opportunities across verticals.'
+  ] },
+  { letter: 'd', title: 'Comparative Analysis', items: [
+    'What valuable solutions are we missing that already exist in the market?'
+  ] }
+];
+const PROCESS_STEPS = [
+  { num: '01', text: 'Screen inventory (common patterns)' },
+  { num: '02', text: 'Design system selection (SFDC, MUI, etc.)' },
+  { num: '03', text: 'Pattern tweaks to accommodate scale and a new design system' },
+  { num: '04', text: 'MCP server setup in parallel with pilot dev server setup' },
+  { num: '05', text: 'Add design system and new patterns to GitHub for the MCP server to reference' },
+  { num: '06', text: 'Pilot test run' },
+  { num: '07', text: 'One production run for one team first — quickly expanding to more teams one at a time' }
+];
+const STEP_LABELS = [
+  'Step 1 of 6 — order received',
+  'Step 2 of 6 — sourcing & manufacturing',
+  'Step 3 of 6 — received at warehouse',
+  'Step 4 of 6 — vehicle assignment & invoicing (parallel)',
+  'Step 5 of 6 — en route for delivery',
+  'Step 6 of 6 — delivered'
+];
+class Component extends DCLogic {
+  state = { selectedId: null, playing: false, step: -1, tab: 'journey', selectedVertical: 'apparel', pgSel: null, pgPersona: null, pgRows: null, journeyVertical: 'apparel' };
+  pickVertical = (id) => this.setState({ selectedVertical: id });
+  pickJourneyVertical = (id) => this.setState({ journeyVertical: id, pgSel: null, pgPersona: null });
+  pgRowsState() {
+    if (this.state.pgRows) return this.state.pgRows;
+    return { personas: true, pains: true, opps: true, backstage: true };
+  }
+  pgToggleRow(key) {
+    const rows = { ...this.pgRowsState() };
+    rows[key] = !rows[key];
+    this.setState({ pgRows: rows });
+  }
+  selectFlowTab = () => this.setState({ tab: 'flow' });
+  selectJourneyTab = () => this.setState({ tab: 'journey' });
+  selectTeamTab = () => this.setState({ tab: 'team' });
+  selectIaTab = () => this.setState({ tab: 'ia' });
+  selectProcessTab = () => this.setState({ tab: 'process' });
+  selectGrowthTab = () => this.setState({ tab: 'growth' });
+  selectDashboard = () => this.setState({ galleryLayout: 'dashboard' });
+  selectTable = () => this.setState({ galleryLayout: 'table' });
+  selectDetail = () => this.setState({ galleryLayout: 'detail' });
+  selectSettings = () => this.setState({ galleryLayout: 'settings' });
+  selectLogin = () => this.setState({ galleryLayout: 'login' });
+  galleryBack = () => this.setState({ galleryLayout: null });
+  componentWillUnmount() { clearInterval(this.timer); }
+  togglePlay = () => {
+    if (this.state.playing) { clearInterval(this.timer); this.setState({ playing: false }); return; }
+    this.setState({ playing: true, step: 0 });
+    const speed = this.props.playSpeed ?? 1200;
+    this.timer = setInterval(() => {
+      this.setState(s => {
+        if (s.step >= 5) { clearInterval(this.timer); return { playing: false }; }
+        return { step: s.step + 1 };
+      });
+    }, speed);
+  };
+  reset = () => { clearInterval(this.timer); this.setState({ playing: false, step: -1 }); };
+  selectNode = (id) => this.setState({ selectedId: id });
+  closePanel = () => this.setState({ selectedId: null });
+  renderVals() {
+    const step = this.state.step;
+    const accent = this.props.activeAccent || '#aa2d00';
+    const idle = '#dddddd';
+    const border = (on) => on ? accent : idle;
+    const glow = (on) => on ? `0 0 0 4px ${accent}22` : 'none';
+    const active = {
+      order: step === 0, materials: step === 1, manufacturer: step === 1,
+      warehouse: step === 2, vehicle: step === 3, invoice: step === 3,
+      delivery: step === 4, pod: step === 5
+    };
+    const stroke = (on) => on ? accent : '#9297a0';
+    const vertId = this.state.selectedVertical || 'apparel';
+    const NODES = VERTICAL_FLOWS[vertId].nodes;
+    const sel = this.state.selectedId ? NODES[this.state.selectedId] : null;
+    const isFlowTab = this.state.tab === 'flow';
+    return {
+      isFlowTab, isJourneyTab: this.state.tab === 'journey', isTeamTab: this.state.tab === 'team', isIaTab: this.state.tab === 'ia', isProcessTab: this.state.tab === 'process', isGrowthTab: this.state.tab === 'growth',
+      selectFlowTab: this.selectFlowTab, selectJourneyTab: this.selectJourneyTab, selectTeamTab: this.selectTeamTab, selectIaTab: this.selectIaTab, selectProcessTab: this.selectProcessTab, selectGrowthTab: this.selectGrowthTab,
+      growthTabBorder: this.state.tab === 'growth' ? '#181d26' : 'transparent', growthTabColor: this.state.tab === 'growth' ? '#181d26' : '#41454d',
+      growthSteps: GROWTH_STEPS,
+      flowTabBorder: isFlowTab ? '#181d26' : 'transparent', flowTabColor: isFlowTab ? '#181d26' : '#41454d',
+      journeyTabBorder: this.state.tab === 'journey' ? '#181d26' : 'transparent', journeyTabColor: this.state.tab === 'journey' ? '#181d26' : '#41454d',
+      teamTabBorder: this.state.tab === 'team' ? '#181d26' : 'transparent', teamTabColor: this.state.tab === 'team' ? '#181d26' : '#41454d',
+      iaTabBorder: this.state.tab === 'ia' ? '#181d26' : 'transparent', iaTabColor: this.state.tab === 'ia' ? '#181d26' : '#41454d',
+      processTabBorder: this.state.tab === 'process' ? '#181d26' : 'transparent', processTabColor: this.state.tab === 'process' ? '#181d26' : '#41454d',
+      verticalChips: VERTICAL_LIST.map(v => {
+        const on = vertId === v.id;
+        return { label: v.label, bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#333840', border: on ? '#181d26' : '#dddddd', pick: () => this.pickVertical(v.id) };
+      }),
+      heading: VERTICAL_FLOWS[vertId].heading,
+      playButtonLabel: this.state.playing ? 'Pause' : (step >= 5 ? 'Replay' : 'Play flow'),
+      togglePlay: this.togglePlay,
+      reset: this.reset,
+      stepLabel: step >= 0 ? STEP_LABELS[step] : 'Click Play to run an order through the chain, or click any step to inspect it.',
+      nOrder: NODES.order, nMaterials: NODES.materials, nManufacturer: NODES.manufacturer, nWarehouse: NODES.warehouse, nVehicle: NODES.vehicle, nInvoice: NODES.invoice, nDelivery: NODES.delivery, nPod: NODES.pod,
+      orderBorder: border(active.order), orderShadow: glow(active.order),
+      materialsBorder: border(active.materials), materialsShadow: glow(active.materials),
+      manufacturerBorder: border(active.manufacturer), manufacturerShadow: glow(active.manufacturer),
+      warehouseBorder: border(active.warehouse), warehouseShadow: glow(active.warehouse),
+      vehicleBorder: border(active.vehicle), vehicleShadow: glow(active.vehicle),
+      invoiceBorder: border(active.invoice), invoiceShadow: glow(active.invoice),
+      deliveryBorder: border(active.delivery), deliveryShadow: glow(active.delivery),
+      podBorder: border(active.pod), podShadow: glow(active.pod),
+      e1Stroke: stroke(step === 1), e2Stroke: stroke(step === 1), e3Stroke: stroke(step === 2),
+      e4Stroke: stroke(step === 3), e5Stroke: stroke(step === 3), e6Stroke: stroke(step === 4),
+      e7Stroke: stroke(step === 4), e8Stroke: stroke(step === 5),
+      stops: [
+        { label: 'Stop 1', status: 'Delivered', color: '#006400' },
+        { label: 'Stop 2 (this order)', status: 'Out for delivery', color: '#aa2d00' },
+        { label: 'Stop 3', status: 'Pending', color: '#9297a0' }
+      ],
+      selectOrder: () => this.selectNode('order'),
+      selectMaterials: () => this.selectNode('materials'),
+      selectManufacturer: () => this.selectNode('manufacturer'),
+      selectWarehouse: () => this.selectNode('warehouse'),
+      selectVehicle: () => this.selectNode('vehicle'),
+      selectInvoice: () => this.selectNode('invoice'),
+      selectDelivery: () => this.selectNode('delivery'),
+      selectPod: () => this.selectNode('pod'),
+      hasSelection: !!sel,
+      selectedNode: sel || { title: '', subtitle: '', desc: '', facts: [] },
+      closePanel: this.closePanel,
+      ...this.pgRenderVals(),
+      ...this.journeyRenderVals(),
+      processSteps: PROCESS_STEPS,
+      ...this.galleryRenderVals(),
+      sitemapSections: SITEMAP_SECTIONS
+    };
+  }
+  galleryRenderVals() {
+    const gl = this.state.galleryLayout;
+    const labels = { dashboard: 'Dashboard / app home', table: 'Data table / list view', detail: 'Record detail page', settings: 'Settings / form page', login: 'Login / auth page' };
+    return {
+      isGalleryHome: !gl,
+      selectDashboard: this.selectDashboard, selectTable: this.selectTable, selectDetail: this.selectDetail, selectSettings: this.selectSettings, selectLogin: this.selectLogin,
+      galleryBack: this.galleryBack,
+      gallerySelectedLabel: labels[gl] || '',
+      isDashboardSelected: gl === 'dashboard', isTableSelected: gl === 'table', isDetailSelected: gl === 'detail', isSettingsSelected: gl === 'settings', isLoginSelected: gl === 'login'
+    };
+  }
+  journeyRenderVals() {
+    const jv = this.state.journeyVertical || 'apparel';
+    const chips = [{ id: 'cross', label: 'Cross-platform' }, { id: 'apparel', label: 'Apparel & textiles' }, ...VERTICAL_LIST.filter(v => v.id !== 'apparel')];
+    const journeyChips = chips.map(c => {
+      const on = jv === c.id;
+      return { label: c.label, bg: on ? '#181d26' : '#ffffff', color: on ? '#ffffff' : '#333840', border: on ? '#181d26' : '#dddddd', pick: () => this.pickJourneyVertical(c.id) };
+    });
+    const meta = JOURNEY_META[jv] || JOURNEY_META.apparel;
+    return {
+      journeyChips,
+      isFullJourney: jv !== 'cross',
+      isCrossJourney: jv === 'cross',
+      journeyEyebrow: meta.eyebrow, journeyTitle: meta.title, journeyDesc: meta.desc,
+      crossPains: CROSS_PLATFORM_THEMES.pains,
+      crossOpps: CROSS_PLATFORM_THEMES.opportunities
+    };
+  }
+  pgRenderVals() {
+    const rows = this.pgRowsState();
+    const persona = this.state.pgPersona;
+    const pgSelIdx = this.state.pgSel;
+    const jv = this.state.journeyVertical || 'apparel';
+    const stepsSrc = JOURNEY_FULL[jv] || JOURNEY_FULL.apparel;
+    const chipsSrc = deriveChips(stepsSrc);
+    const pgSteps = stepsSrc.map((s, i) => ({
+      ...s,
+      selected: pgSelIdx === i,
+      unselected: pgSelIdx !== i,
+      pick: () => this.setState({ pgSel: pgSelIdx === i ? null : i }),
+      personas: s.personas.map(p => ({
+        ...p,
+        on: !persona || p.key === persona,
+        off: !!persona && p.key !== persona
+      }))
+    }));
+    const rowDefs = [
+      { key: "personas", label: "Personas" },
+      { key: "pains", label: "Pain points" },
+      { key: "opps", label: "Opportunities" },
+      { key: "backstage", label: "Backstage" }
+    ];
+    return {
+      pgSteps,
+      pgS1: pgSteps[0], pgS2: pgSteps[1], pgS3: pgSteps[2], pgS4: pgSteps[3], pgS5: pgSteps[4], pgS6: pgSteps[5],
+      pgSel: pgSelIdx === null ? {} : stepsSrc[pgSelIdx],
+      pgDetailOpen: pgSelIdx !== null,
+      pgShowPersonas: rows.personas,
+      pgShowPains: rows.pains,
+      pgShowOpps: rows.opps,
+      pgShowBackstage: rows.backstage,
+      personaHighlightOn: true,
+      hasPersona: !!persona,
+      clearPersona: () => this.setState({ pgPersona: null }),
+      personaChips: chipsSrc.map(c => ({
+        ...c,
+        active: persona === c.key,
+        inactive: persona !== c.key,
+        pick: () => this.setState({ pgPersona: persona === c.key ? null : c.key })
+      })),
+      rowToggles: rowDefs.map(r => ({
+        label: r.label,
+        on: !!rows[r.key],
+        off: !rows[r.key],
+        toggle: () => this.pgToggleRow(r.key)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

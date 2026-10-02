@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff;color:#181d26;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1b61c9}a:hover{color:#1a3866}
+@keyframes dcdot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+@keyframes dcfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-width:1280px;min-height:100vh;display:flex;flex-direction:column;background:#ffffff">
+  <header style="height:64px;display:flex;align-items:center;gap:24px;padding:0 24px;border-bottom:1px solid #dddddd;background:#ffffff;position:sticky;top:0;z-index:20">
+    <div style="display:flex;align-items:center;gap:10px;width:260px">
+      <div style="width:28px;height:28px;border-radius:6px;background:#181d26;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px">A</div>
+      <div style="font-size:20px;font-weight:500">Argus</div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;gap:10px;color:#9297a0;font-size:16px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <span>Find Anything</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:28px;font-size:14px;font-weight:500">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14"></path><circle cx="12" cy="17" r=".6" fill="#181d26"></circle></svg>
+      <div style="width:1px;height:20px;background:#dddddd"></div>
+      <span>CIA Platform</span>
+      <span>Make Short URL</span>
+      <span style="display:flex;align-items:center;gap:6px">Production <svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 3l4 4 4-4" fill="#181d26"></path></svg></span>
+      <div style="width:32px;height:32px;border-radius:50%;background:#e0e2e6;display:flex;align-items:center;justify-content:center;font-size:12px;color:#41454d">JD</div>
+    </div>
+  </header>
+
+  <div style="flex:1;display:flex">
+    <nav style="width:96px;flex-shrink:0;border-right:1px solid #dddddd;padding:24px 8px;display:flex;flex-direction:column;gap:6px">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="9">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:10px;background:{{ n.bg }};font-size:12px;color:#181d26;cursor:pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ n.icon }}"></path></svg>
+          <span>{{ n.label }}</span>
+        </div>
+      </sc-for>
+    </nav>
+
+    <main style="flex:1;min-width:0;background:#f8fafc">
+      <section style="background:#181d26;color:#ffffff;padding:28px 48px 32px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:16px;font-size:14px;font-weight:500;color:#e0e2e6"><span>Home</span><span>/</span><span>Account 216398276959213462</span></div>
+          <div style="display:flex;align-items:center;gap:14px;font-size:32px"><span style="font-weight:400">Account Owner</span><span style="color:#9297a0">|</span><span style="font-weight:500">Pamela Nix</span></div>
+          <div style="display:flex;gap:32px;font-size:14px;color:#e0e2e6"><span>6 Account Users</span><span>Account ID <span style="color:#ffffff;font-weight:500">216398276959213462</span></span></div>
+        </div>
+        <div style="display:flex;gap:12px;padding-top:40px">
+          <div style="border:1px solid #ffffff;border-radius:6px;padding:7px 14px;font-size:14px;font-weight:500">Copy ▾</div>
+          <div style="border:1px solid #ffffff;border-radius:6px;padding:7px 14px;font-size:14px;font-weight:500">Open In ▾</div>
+          <div style="border:1px solid #ffffff;border-radius:6px;padding:7px 14px;font-size:14px;font-weight:500">Follow</div>
+        </div>
+      </section>
+
+      <section style="padding:32px 48px 96px;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:16px;font-size:28px"><span style="font-weight:400">Playback</span><span style="width:1px;height:24px;background:#dddddd"></span><span style="font-weight:500">Playback Sessions</span></div>
+          <div style="display:flex;gap:28px;font-size:14px;font-weight:500"><span>Clear Active Streams</span><span>Refresh</span></div>
+        </div>
+
+        <div style="background:#ffffff;border:1px solid #dddddd;border-radius:10px">
+          <div style="display:flex;align-items:center;gap:16px;padding:16px;border-bottom:1px solid #dddddd">
+            <div style="width:300px;height:40px;border:1px solid #dddddd;border-radius:6px;display:flex;align-items:center;padding:0 14px;font-size:14px;color:#41454d">Select preset or custom dates</div>
+            <div style="flex:1;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+                <div onClick="{{ c.toggle }}" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:6px;background:{{ c.bg }};font-size:14px;font-weight:500;cursor:pointer;user-select:none">
+                  <div style="width:16px;height:16px;border-radius:4px;border:1px solid {{ c.border }};background:{{ c.box }};display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:11px">{{ c.mark }}</div>
+                  <span>{{ c.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="border:1px solid #dddddd;border-radius:6px;padding:8px 12px;font-size:14px;font-weight:500">Modify Columns</div>
+            <div style="border:1px solid #dddddd;border-radius:6px;padding:8px 12px;font-size:14px;font-weight:500">CSV</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:190px 210px 210px 120px 250px minmax(300px,1fr) 96px;font-size:14px;font-weight:500;color:#181d26;border-bottom:1px solid #dddddd;background:#f8fafc">
+            <div style="padding:16px">Start Time ↓</div><div style="padding:16px">Title</div><div style="padding:16px">Profile</div><div style="padding:16px">Badges</div><div style="padding:16px">Play Duration</div><div style="padding:16px">ESN</div><div style="padding:16px;text-align:center">Actions</div>
+          </div>
+
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:190px 210px 210px 120px 250px minmax(300px,1fr) 96px;align-items:center;min-height:88px;border-bottom:1px solid #dddddd;background:{{ r.bg }};position:relative;z-index:{{ r.z }}">
+              <div style="padding:12px 16px;display:flex;flex-direction:column;gap:4px;color:#1b61c9"><span style="font-size:16px">{{ r.date }}</span><span style="font-size:13px;font-weight:600">{{ r.time }}</span></div>
+              <div style="padding:12px 16px;font-size:16px">{{ r.title }}</div>
+              <div style="padding:12px 16px;display:flex;align-items:center;gap:12px">
+                <div style="width:36px;height:36px;border-radius:50%;background:{{ r.avatarBg }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#181d26;flex-shrink:0">{{ r.initial }}</div>
+                <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:16px">{{ r.profile }}</span><span style="font-size:13px;color:#41454d">{{ r.pid }}</span></div>
+              </div>
+              <div style="padding:12px 16px;display:flex;gap:12px;align-items:center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="1.8"><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="6" r="2.5"></circle><circle cx="18" cy="18" r="2.5"></circle><path d="M8.2 11l7.6-4M8.2 13l7.6 4"></path></svg>
+                <div style="border:1.5px solid #181d26;border-radius:3px;font-size:9px;font-weight:600;padding:1px 4px">4K</div>
+              </div>
+              <div style="padding:12px 16px;font-size:13px;line-height:1.5;display:flex;flex-direction:column">
+                <span><b style="font-weight:600">Server</b> Total: {{ r.server }}</span>
+                <sc-if value="{{ r.client }}" hint-placeholder-val="{{ true }}">
+                  <span><b style="font-weight:600">Client</b>: Start Slate: 00:00:00</span>
+                  <span style="padding-left:58px">Live Edge: 00:00:00</span>
+                </sc-if>
+              </div>
+              <div style="padding:12px 16px;display:flex;align-items:center;gap:10px">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path></svg>
+                <span style="font-size:15px;text-decoration:underline;color:#181d26">{{ r.esn }}</span>
+              </div>
+              <div style="display:flex;justify-content:center;position:relative">
+                <div onClick="{{ r.toggle }}" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ r.kebabBg }}" style-hover="background:#e0e2e6">
+                  <svg width="4" height="16" viewBox="0 0 4 16" fill="#181d26"><circle cx="2" cy="2" r="1.8"></circle><circle cx="2" cy="8" r="1.8"></circle><circle cx="2" cy="14" r="1.8"></circle></svg>
+                </div>
+                <sc-if value="{{ r.menuOpen }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ stop }}" style="position:absolute;right:52px;top:6px;width:320px;background:#ffffff;border:1px solid #dddddd;border-radius:10px;box-shadow:0 8px 28px rgba(24,29,38,.14);padding:6px;display:flex;flex-direction:column;animation:dcfade .14s ease-out">
+                    <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="3">
+                      <div onClick="{{ m.onClick }}" style="padding:12px 14px;border-radius:6px;cursor:pointer;display:flex;flex-direction:column;gap:3px" style-hover="background:#f8fafc">
+                        <span style="font-size:16px;font-weight:500;color:#181d26">{{ m.label }}</span>
+                        <span style="font-size:13px;color:#41454d">{{ m.desc }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <aside style="position:fixed;top:0;right:0;bottom:0;width:440px;background:#ffffff;border-left:1px solid #dddddd;box-shadow:-12px 0 40px rgba(24,29,38,.12);display:flex;flex-direction:column;z-index:40;transition:transform .32s cubic-bezier(.2,.8,.2,1);transform:{{ panelTransform }}">
+    <div style="background:#181d26;color:#ffffff;padding:18px 20px;display:flex;align-items:center;gap:12px">
+      <div style="width:28px;height:28px;border-radius:6px;background:#ffffff;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px">A</div>
+      <div style="flex:1;font-size:20px;font-weight:400">How Can I Help You?</div>
+      <div onClick="{{ closePanel }}" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#1d1f25">
+        <svg width="16" height="16" viewBox="0 0 16 16" stroke="#ffffff" stroke-width="1.8"><path d="M3 3l10 10M13 3L3 13"></path></svg>
+      </div>
+    </div>
+    <div style="padding:12px 20px;border-bottom:1px solid #dddddd;background:#f8fafc;display:flex;flex-direction:column;gap:2px">
+      <span style="font-size:12px;font-weight:500;color:#41454d;letter-spacing:.16px">SESSION CONTEXT</span>
+      <span style="font-size:14px;color:#181d26">{{ ctx.title }} · {{ ctx.profile }} · {{ ctx.date }} {{ ctx.time }}</span>
+    </div>
+
+    <div ref="{{ scrollRef }}" style="flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="align-self:flex-end;max-width:85%;background:#181d26;color:#ffffff;padding:12px 16px;border-radius:12px 12px 2px 12px;font-size:15px">Provide context for this session</div>
+
+      <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+        <div style="align-self:flex-start;border:1px solid #dddddd;border-radius:12px;padding:14px 18px">{{ dots }}</div>
+      </sc-if>
+
+      <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:16px;animation:dcfade .3s ease-out">
+          <div style="border:1px solid #dddddd;border-radius:12px 12px 12px 2px;padding:16px 18px;font-size:15px;line-height:1.5;color:#333840;text-wrap:pretty">Here’s the context I found for what happened 3 hours before and 3 hours after, as well as a short summary.</div>
+
+          <div style="border:1px solid #dddddd;border-radius:10px;padding:14px 12px 8px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#41454d;padding:0 4px 6px"><span>Active Streams</span><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:#fcab79;border-radius:2px"></span>{{ ctx.windowLabel }}</span></div>
+            <svg viewBox="0 0 400 230" width="100%" style="display:block">
+              <rect x="{{ chart.bandX }}" y="10" width="{{ chart.bandW }}" height="180" fill="#fcab79" opacity=".35"></rect>
+              <g stroke="#dddddd" stroke-width="1">
+                <line x1="40" y1="10" x2="390" y2="10"></line><line x1="40" y1="55" x2="390" y2="55"></line><line x1="40" y1="100" x2="390" y2="100"></line><line x1="40" y1="145" x2="390" y2="145"></line>
+              </g>
+              <line x1="40" y1="190" x2="390" y2="190" stroke="#9297a0"></line>
+              <line x1="215" y1="10" x2="215" y2="190" stroke="#181d26" stroke-dasharray="3 3"></line>
+              <text x="219" y="22" font-size="10" fill="#181d26">Session start</text>
+              <path d="{{ chart.path }}" fill="none" stroke="#1b61c9" stroke-width="2" stroke-linejoin="round"></path>
+              <g font-size="10" fill="#41454d" text-anchor="end">
+                <text x="34" y="14">100</text><text x="34" y="59">75</text><text x="34" y="104">50</text><text x="34" y="149">25</text><text x="34" y="194">0</text>
+              </g>
+              <g font-size="10" fill="#41454d" text-anchor="middle">
+                <text x="40" y="206">-3h</text><text x="98" y="206">-2h</text><text x="157" y="206">-1h</text><text x="215" y="206">0</text><text x="273" y="206">+1h</text><text x="332" y="206">+2h</text><text x="390" y="206">+3h</text>
+                <text x="215" y="224" fill="#181d26">Time (hours)</text>
+              </g>
+            </svg>
+          </div>
+
+          <div style="border:1px solid #dddddd;border-radius:12px 12px 12px 2px;padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+            <div style="font-size:15px;line-height:1.5;color:#333840;text-wrap:pretty">{{ ctx.summary }}</div>
+            <div onClick="{{ saveSession }}" style="align-self:flex-start;display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid #dddddd;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:{{ saveBg }}">
+              <span>{{ saveLabel }}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+            </div>
+          </div>
+
+          <sc-for list="{{ thread }}" as="t" hint-placeholder-count="0">
+            <div style="align-self:{{ t.align }};max-width:85%;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }};padding:12px 16px;border-radius:12px;font-size:15px;line-height:1.5;animation:dcfade .25s ease-out">{{ t.text }}</div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="padding:16px 20px;border-top:1px solid #dddddd;display:flex;gap:8px">
+      <input value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" placeholder="Enter a reply" style="flex:1;height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 14px;font-size:15px;font-family:inherit;color:#181d26;outline:none" style-focus="border-color:#458fff"></input>
+      <div onClick="{{ send }}" style="height:44px;padding:0 18px;border-radius:12px;background:#181d26;color:#ffffff;display:flex;align-items:center;font-size:15px;font-weight:500;cursor:pointer" style-active="background:#0d1218">Send</div>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;loadingDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1200,&quot;min&quot;:0,&quot;max&quot;:4000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;showMenuDescriptions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;highlightSourceRow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { menuRow: null, panelRow: null, phase: 'idle', saved: false, thread: [], draft: '', chips: { active: false, missing: true, start: true, play: false, end: false } };
+  scrollRef = React.createRef();
+
+  componentDidMount() {
+    this._close = () => this.state.menuRow !== null && this.setState({ menuRow: null });
+    document.addEventListener('click', this._close);
+  }
+  componentWillUnmount() { document.removeEventListener('click', this._close); clearTimeout(this._t); }
+  componentDidUpdate() { const el = this.scrollRef.current; if (el && this._scroll) { el.scrollTop = el.scrollHeight; this._scroll = false; } }
+
+  rows() {
+    return [
+      { title: 'The Diplomat', profile: 'Pamela', pid: '1827276363782', client: true, tone: 'none', dip: [1.6, 0.15], window: '1:40pm - 1:49pm', summary: 'Playback was stable for most of the window. A short rebuffer between 1:40pm - 1:49pm came from a bitrate step-down on the device, and the session recovered without user action.' },
+      { title: 'Leo', profile: 'Bill', pid: '1827276363782', client: true, tone: 'none', dip: [3.2, 0.12], window: '2:05pm - 2:09pm', summary: 'Bill’s session waited on a license renewal for about 4 minutes (between 2:05pm - 2:09pm). Streams resumed once the license server responded.' },
+      { title: 'The Waterfront', profile: 'Pamela', pid: '18272763637…', client: true, tone: 'none', dip: [4.1, 0.18], window: '11:50am - 11:56am', summary: 'A CDN edge switch caused a bitrate downgrade for approximately 6 minutes, between 11:50am - 11:56am. No playback errors were recorded.' },
+      { title: 'Glass Onion', profile: 'Family Night', pid: '18272763637…', client: false, tone: 'grey', dip: [3.4, 0.6], window: '3:14pm onward', summary: 'The session ended without a stop_playback event. The device went offline at 3:14pm, most likely from a lost Wi-Fi connection.' },
+      { title: 'Seaspiracy', profile: 'Pamela', pid: '18272763637…', client: false, tone: 'peach', dip: [2.2, 0.17], window: '6:20pm - 6:30pm', summary: 'The drop in service was due to network activity that momentarily created high latency (for approximately 10 minutes, between 6:20pm - 6:30pm).' },
+    ].map((r, i) => ({ ...r, i, date: '2025-12-12', time: '12:37:00,000 PST', server: '02:13:57', esn: 'NFAPPL-01-IPAD16-3-106C15F' }));
+  }
+
+  chart(r) {
+    const pts = [], n = 90, seed = r.i * 1.7 + 0.4;
+    for (let k = 0; k <= n; k++) {
+      const t = (k / n) * 6;
+      let v = 58 + 18 * Math.sin(t * 2.1 + seed) + 10 * Math.sin(t * 4.7 + seed * 2) + 5 * Math.sin(t * 9.3);
+      const d = Math.abs(t - r.dip[0]) / Math.max(r.dip[1], 0.1);
+      if (d < 1.4) v -= 42 * Math.exp(-d * d);
+      v = Math.max(4, Math.min(98, v));
+      pts.push([40 + (t / 6) * 350, 190 - (v / 100) * 180]);
+    }
+    const path = pts.map((p, k) => (k ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const bx = 40 + ((r.dip[0] - r.dip[1]) / 6) * 350;
+    return { path, bandX: bx.toFixed(1), bandW: ((r.dip[1] * 2) / 6 * 350).toFixed(1) };
+  }
+
+  openContext(i) {
+    clearTimeout(this._t);
+    const delay = this.props.loadingDelay ?? 1200;
+    this.setState({ menuRow: null, panelRow: i, phase: 'typing', saved: false, thread: [], draft: '' });
+    this._t = setTimeout(() => { this._scroll = false; this.setState({ phase: 'done' }); }, delay);
+  }
+
+  send = () => {
+    const text = this.state.draft.trim();
+    if (!text) return;
+    this._scroll = true;
+    this.setState(s => ({ draft: '', thread: [...s.thread, { me: true, text }] }));
+    setTimeout(() => { this._scroll = true; this.setState(s => ({ thread: [...s.thread, { me: false, text: 'Pulling more detail for this session from the trace logs. I’ll add it to this thread when it’s ready.' }] })); }, 900);
+  };
+
+  renderVals() {
+    const s = this.state, rows = this.rows();
+    const avatar = { Pamela: '#a8d8c4', Bill: '#f4d35e', 'Family Night': '#fcab79' };
+    const navDefs = [
+      ['Account', 'M4 6h16v10H4zM8 20h8M12 16v4'], ['Households', 'M3 11l9-7 9 7M5 10v10h14V10'], ['Devices', 'M3 5h14v10H3zM17 9h4v10h-6'],
+      ['Users', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c1-4 4-6 8-6s7 2 8 6'], ['Profiles', 'M8 3h12v12H8zM4 7v14h12'], ['Playback', 'M3 5h18v14H3zM10 9l5 3-5 3z'],
+      ['Offline', 'M12 4v11M7 10l5 5 5-5M5 20h14'], ['Gaming', 'M6 8h12a3 3 0 0 1 3 3v3a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-3a3 3 0 0 1 3-3zM8 11v3M6.5 12.5h3'], ['Logs', 'M4 4h16v16H4zM4 9h16M9 9v11']
+    ];
+    const chipDefs = [['active', 'Active Stream', '#e3f2eb'], ['missing', 'Missing Stop_Playback', '#eef0f3'], ['start', 'Start Error', '#fde2d2'], ['play', 'Play Error', '#fbeee6'], ['end', 'End Error', '#efeaf6']];
+    const pr = s.panelRow !== null ? rows[s.panelRow] : rows[4];
+    const showMenuDesc = this.props.showMenuDescriptions ?? true;
+    const menuFor = (i) => [
+      { label: 'Title Info', desc: showMenuDesc ? 'Title-specific metadata and availability' : '', onClick: (e) => { e.stopPropagation(); this.setState({ menuRow: null }); } },
+      { label: 'Trace', desc: showMenuDesc ? 'Request/response and license summaries' : '', onClick: (e) => { e.stopPropagation(); this.setState({ menuRow: null }); } },
+      { label: 'Show Session Context', desc: showMenuDesc ? 'AI summary of playback session context' : '', onClick: (e) => { e.stopPropagation(); this.openContext(i); } },
+    ];
+    return {
+      navItems: navDefs.map(([label, icon]) => ({ label, icon, bg: label === 'Playback' ? '#e0e2e6' : 'transparent' })),
+      chips: chipDefs.map(([k, label, bg]) => ({ label, bg, mark: s.chips[k] ? '✓' : '', box: s.chips[k] ? '#1b61c9' : '#ffffff', border: s.chips[k] ? '#1b61c9' : '#9297a0', toggle: () => this.setState(st => ({ chips: { ...st.chips, [k]: !st.chips[k] } })) })),
+      rows: rows.map(r => ({
+        ...r, initial: r.profile[0], avatarBg: avatar[r.profile],
+        bg: s.panelRow === r.i && (this.props.highlightSourceRow ?? true) ? '#eef3fc' : r.tone === 'peach' ? '#fbe4d6' : r.tone === 'grey' ? '#f1f2f4' : '#ffffff',
+        z: s.menuRow === r.i ? 5 : 1,
+        menuOpen: s.menuRow === r.i,
+        kebabBg: s.menuRow === r.i ? '#e0e2e6' : 'transparent',
+        toggle: (e) => { e.stopPropagation(); this.setState(st => ({ menuRow: st.menuRow === r.i ? null : r.i })); },
+      })),
+      menuItems: s.menuRow !== null ? menuFor(s.menuRow) : [],
+      stop: (e) => e.stopPropagation(),
+      panelTransform: s.panelRow !== null ? 'translateX(0)' : 'translateX(105%)',
+      closePanel: () => { clearTimeout(this._t); this.setState({ panelRow: null, phase: 'idle' }); },
+      ctx: { title: pr.title, profile: pr.profile, date: pr.date, time: pr.time, summary: pr.summary, windowLabel: pr.window },
+      chart: this.chart(pr),
+      typing: s.phase === 'typing',
+      done: s.phase === 'done',
+      dots: React.createElement('div', { style: { display: 'flex', gap: 5 } }, [0, 1, 2].map(k => React.createElement('span', { key: k, style: { width: 7, height: 7, borderRadius: '50%', background: '#41454d', animation: `dcdot 1s ${k * 0.15}s infinite ease-in-out` } }))),
+      saveLabel: s.saved ? 'Session Saved' : 'Save Session',
+      saveBg: s.saved ? '#e3f2eb' : '#ffffff',
+      saveSession: () => this.setState({ saved: true }),
+      thread: s.thread.map(t => ({ text: t.text, align: t.me ? 'flex-end' : 'flex-start', bg: t.me ? '#181d26' : '#ffffff', color: t.me ? '#ffffff' : '#333840', border: t.me ? '#181d26' : '#dddddd' })),
+      draft: s.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      onKey: (e) => { if (e.key === 'Enter') this.send(); },
+      send: this.send,
+      scrollRef: this.scrollRef,
+    };
+  }
+}
+</script>
+</body>
+</html>

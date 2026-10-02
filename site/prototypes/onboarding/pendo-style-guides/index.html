@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div ref="{{ setContainer }}" style="position:relative;min-height:100vh;background:#ffffff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#181d26;display:flex;overflow:hidden">
+
+  <div style="width:220px;flex-shrink:0;border-right:1px solid #dddddd;padding:20px 12px;display:flex;flex-direction:column;gap:2px">
+    <div style="font-size:16px;font-weight:600;padding:8px 12px 20px">Flowline</div>
+    <div style="padding:10px 12px;border-radius:8px;font-size:14px;color:#41454d">Dashboard</div>
+    <div ref="{{ setOrdersNav }}" style="padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;background:#f8fafc">Orders</div>
+    <div style="padding:10px 12px;border-radius:8px;font-size:14px;color:#41454d">Shipments</div>
+    <div style="padding:10px 12px;border-radius:8px;font-size:14px;color:#41454d">Catalog</div>
+    <div style="padding:10px 12px;border-radius:8px;font-size:14px;color:#41454d">Payments</div>
+    <div style="padding:10px 12px;border-radius:8px;font-size:14px;color:#41454d">Settings</div>
+  </div>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <div style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0">
+      <div style="font-size:18px;font-weight:400">Orders</div>
+      <div ref="{{ setBanner }}" style="background:#181d26;color:#ffffff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:12px">Connect your ERP</div>
+    </div>
+
+    <div style="padding:28px;overflow:auto;flex:1">
+      <div style="display:flex;gap:16px;margin-bottom:28px">
+        <div style="flex:1;border:1px solid #dddddd;border-radius:10px;padding:18px">
+          <div style="font-size:12px;color:#41454d;margin-bottom:6px">Open POs</div>
+          <div style="font-size:24px;font-weight:500">32</div>
+        </div>
+        <div ref="{{ setStatCard }}" style="flex:1;border:1px solid #dddddd;border-radius:10px;padding:18px">
+          <div style="font-size:12px;color:#41454d;margin-bottom:6px">Pending confirmation</div>
+          <div style="font-size:24px;font-weight:500;color:#aa2d00">6</div>
+        </div>
+        <div style="flex:1;border:1px solid #dddddd;border-radius:10px;padding:18px">
+          <div style="font-size:12px;color:#41454d;margin-bottom:6px">Shipped this week</div>
+          <div style="font-size:24px;font-weight:500">118</div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;background:#f8fafc;padding:10px 20px;font-size:12px;font-weight:500;color:#41454d">
+          <div>PO number</div><div>Buyer</div><div>Ship date</div><div>Total</div><div>Action</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;align-items:center;padding:14px 20px;border-top:1px solid #dddddd;font-size:14px">
+          <div>PO-88213</div><div style="color:#333840">Midwest Retail Co.</div><div style="color:#333840">Sep 12</div><div style="color:#333840">$4,820</div>
+          <div ref="{{ setTableAction }}" style="background:#ffffff;border:1px solid #dddddd;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:500;text-align:center">Confirm</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;align-items:center;padding:14px 20px;border-top:1px solid #dddddd;font-size:14px;color:#9297a0">
+          <div>PO-88214</div><div>Northstar Foods</div><div>Sep 13</div><div>$1,205</div><div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 120px;align-items:center;padding:14px 20px;border-top:1px solid #dddddd;font-size:14px;color:#9297a0">
+          <div>PO-88215</div><div>Union Hardware</div><div>Sep 15</div><div>$980</div><div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ref="{{ setHelp }}" style="position:absolute;bottom:24px;right:24px;width:44px;height:44px;border-radius:9999px;background:#181d26;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500">?</div>
+
+  <sc-if value="{{ tourActive }}" hint-placeholder-val="{{ true }}">
+    <div style="{{ scrimTopStyle }}"></div>
+    <div style="{{ scrimBottomStyle }}"></div>
+    <div style="{{ scrimLeftStyle }}"></div>
+    <div style="{{ scrimRightStyle }}"></div>
+    <div style="{{ ringStyle }}"></div>
+
+    <div style="{{ tooltipStyle }}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div style="font-size:12px;color:#9297a0;font-weight:500">STEP {{ stepNum }} OF {{ stepTotal }}</div>
+        <div onClick="{{ endTour }}" style="cursor:pointer;color:#9297a0;font-size:14px">✕</div>
+      </div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px">{{ curTitle }}</div>
+      <div style="font-size:13px;color:#333840;line-height:1.5;margin-bottom:16px">{{ curDesc }}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div onClick="{{ endTour }}" style="font-size:13px;color:#41454d;cursor:pointer">Skip tour</div>
+        <div style="display:flex;gap:8px">
+          <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ back }}" style="background:#ffffff;color:#181d26;border:1px solid #dddddd;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit">Back</button>
+          </sc-if>
+          <button onClick="{{ next }}" style="background:#181d26;color:#ffffff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit">{{ nextLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showRelaunch }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ restart }}" style="position:absolute;top:24px;right:28px;background:#ffffff;border:1px solid #dddddd;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer">Restart tour</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 0, active: true, tick: 0 };
+  refs = {};
+
+  steps = [
+    { key: 'ordersNav', title: 'Track orders in real time', desc: 'See every purchase order the moment it\'s placed, with status updates as it moves through fulfillment.' },
+    { key: 'statCard', title: 'Keep an eye on pending POs', desc: 'This card shows purchase orders awaiting your confirmation — respond within 24 hours to stay in good standing.' },
+    { key: 'tableAction', title: 'Confirm orders inline', desc: 'Accept, adjust, or flag an order without leaving this table.' },
+    { key: 'banner', title: 'Automate this with an ERP connection', desc: 'Skip manual review entirely once your system is connected — orders confirm themselves.' },
+    { key: 'help', title: 'Get help anytime', desc: 'Reach your onboarding specialist or browse setup guides from here.' },
+  ];
+
+  setContainer = (el) => { this.refs.container = el; };
+  setOrdersNav = (el) => { this.refs.ordersNav = el; };
+  setStatCard = (el) => { this.refs.statCard = el; };
+  setTableAction = (el) => { this.refs.tableAction = el; };
+  setBanner = (el) => { this.refs.banner = el; };
+  setHelp = (el) => { this.refs.help = el; };
+
+  componentDidMount() {
+    this._onResize = () => this.forceUpdate();
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+  }
+
+  next = () => this.setState(s => s.step >= this.steps.length - 1 ? { active: false } : { step: s.step + 1 });
+  back = () => this.setState(s => ({ step: Math.max(0, s.step - 1) }));
+  endTour = () => this.setState({ active: false });
+  restart = () => this.setState({ step: 0, active: true });
+
+  renderVals() {
+    const step = this.state.step;
+    const cur = this.steps[step];
+    const container = this.refs.container;
+    const target = this.refs[cur.key];
+    const PAD = 8;
+    let rect = { top: 0, left: 0, width: 0, height: 0 };
+    let cw = 1200, ch = 800;
+    if (container) {
+      const cRect = container.getBoundingClientRect();
+      cw = cRect.width; ch = cRect.height;
+      if (target) {
+        const tRect = target.getBoundingClientRect();
+        rect = {
+          top: tRect.top - cRect.top - PAD,
+          left: tRect.left - cRect.left - PAD,
+          width: tRect.width + PAD * 2,
+          height: tRect.height + PAD * 2,
+        };
+      }
+    }
+    const scrim = 'rgba(24,29,38,0.55)';
+    const scrimTopStyle = `position:absolute;left:0;top:0;width:${cw}px;height:${Math.max(0, rect.top)}px;background:${scrim};pointer-events:none`;
+    const scrimBottomStyle = `position:absolute;left:0;top:${rect.top + rect.height}px;width:${cw}px;height:${Math.max(0, ch - rect.top - rect.height)}px;background:${scrim};pointer-events:none`;
+    const scrimLeftStyle = `position:absolute;left:0;top:${rect.top}px;width:${Math.max(0, rect.left)}px;height:${rect.height}px;background:${scrim};pointer-events:none`;
+    const scrimRightStyle = `position:absolute;left:${rect.left + rect.width}px;top:${rect.top}px;width:${Math.max(0, cw - rect.left - rect.width)}px;height:${rect.height}px;background:${scrim};pointer-events:none`;
+    const ringStyle = `position:absolute;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;height:${rect.height}px;border-radius:10px;box-shadow:0 0 0 2px #ffffff, 0 0 0 4px #181d26;pointer-events:none;transition:all .25s ease`;
+
+    let tipLeft = rect.left;
+    const tipWidth = 300;
+    if (tipLeft + tipWidth > cw - 20) tipLeft = Math.max(20, cw - tipWidth - 20);
+    let tipTop = rect.top + rect.height + 14;
+    if (tipTop + 160 > ch - 20) tipTop = Math.max(20, rect.top - 174);
+    const tooltipStyle = `position:absolute;left:${tipLeft}px;top:${tipTop}px;width:${tipWidth}px;background:#ffffff;border-radius:12px;padding:20px;box-shadow:0 8px 24px rgba(24,29,38,0.18);z-index:10;transition:all .25s ease`;
+
+    return {
+      tourActive: this.state.active,
+      showRelaunch: !this.state.active,
+      scrimTopStyle, scrimBottomStyle, scrimLeftStyle, scrimRightStyle, ringStyle, tooltipStyle,
+      stepNum: step + 1, stepTotal: this.steps.length,
+      curTitle: cur.title, curDesc: cur.desc,
+      showBack: step > 0,
+      nextLabel: step === this.steps.length - 1 ? 'Done' : 'Next',
+      next: this.next, back: this.back, endTour: this.endTour, restart: this.restart,
+      setContainer: this.setContainer, setOrdersNav: this.setOrdersNav, setStatCard: this.setStatCard,
+      setTableAction: this.setTableAction, setBanner: this.setBanner, setHelp: this.setHelp,
+    };
+  }
+}
+</script>
+</body>
+</html>

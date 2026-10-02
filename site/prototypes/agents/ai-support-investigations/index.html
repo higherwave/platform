@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f8fafc;font-family:Inter,system-ui,sans-serif;color:#181d26;-webkit-font-smoothing:antialiased}
+a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
+@keyframes dotPulse{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f8fafc;position:relative;overflow-x:hidden">
+  <header style="height:72px;background:#fff;border-bottom:1px solid #dddddd;display:flex;align-items:center;gap:24px;padding:0 24px">
+    <div style="display:flex;align-items:center;gap:12px;flex:0 0 auto">
+      <div style="width:26px;height:30px;background:#aa2d00;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:18px">A</div>
+      <span style="font-size:16px;font-weight:600">Argus</span>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;min-width:0">
+      <div style="display:flex;align-items:center;gap:12px;width:100%;max-width:320px;color:#9297a0;font-size:14px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <span>Find Anything</span>
+      </div>
+    </div>
+    <nav style="display:flex;align-items:center;gap:28px;font-size:12px;font-weight:500;flex:0 0 auto">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5M12 17h.01"></path></svg>
+      <span style="width:1px;height:18px;background:#dddddd"></span>
+      <span style="display:flex;align-items:center;gap:6px">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="#181d26"><rect x="0" y="0" width="3.5" height="3.5"></rect><rect x="5.25" y="0" width="3.5" height="3.5"></rect><rect x="10.5" y="0" width="3.5" height="3.5"></rect><rect x="0" y="5.25" width="3.5" height="3.5"></rect><rect x="5.25" y="5.25" width="3.5" height="3.5"></rect><rect x="10.5" y="5.25" width="3.5" height="3.5"></rect><rect x="0" y="10.5" width="3.5" height="3.5"></rect><rect x="5.25" y="10.5" width="3.5" height="3.5"></rect><rect x="10.5" y="10.5" width="3.5" height="3.5"></rect></svg>
+        CIA Platform</span>
+      <span style="display:flex;align-items:center;gap:6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"></path></svg>
+        Make Short URL</span>
+      <span style="display:flex;align-items:center;gap:6px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#181d26" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
+        Production
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="#181d26"><path d="M1 3h8L5 7z"></path></svg></span>
+      <div style="width:28px;height:28px;border-radius:50%;background:#e0e2e6;border:1px solid #dddddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#41454d">JD</div>
+    </nav>
+  </header>
+
+  <section style="background:#0d1218;position:relative;overflow:hidden;min-height:246px;display:flex;align-items:center">
+    <div style="position:absolute;top:0;right:0;bottom:0;width:42%">
+      <image-slot id="argus-hero" shape="rect" placeholder="Drop hero image"></image-slot>
+    </div>
+    <div style="position:relative;max-width:1140px;width:100%;margin:0 auto;padding:28px 48px;box-sizing:border-box;pointer-events:none">
+      <h1 style="margin:0;font-size:40px;font-weight:500;line-height:1.2;color:#fff;letter-spacing:-0.5px">Understand the <span style="color:#fcab79">Story</span><br>Behind Every Stream</h1>
+      <p style="margin:20px 0 32px;font-size:18px;color:#e0e2e6;font-weight:400">Find and troubleshoot account, user, device, and streaming issues fast.</p>
+      <a href="#" style="display:inline-flex;align-items:center;gap:8px;color:#fff;font-size:13px;font-weight:500;pointer-events:auto">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14 3h7v7M21 3l-9 9M19 14v6H4V5h6"></path></svg>
+        View all CIA Platform apps</a>
+    </div>
+  </section>
+
+  <main style="max-width:1140px;margin:0 auto;padding:40px 48px 96px;box-sizing:border-box;display:flex;flex-wrap:wrap;gap:48px 96px;align-items:flex-start">
+    <div style="flex:0 1 480px;min-width:0">
+      <h2 style="margin:0 0 18px;font-size:18px;font-weight:400">Where do you want to start?</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,150px));gap:13px">
+        <button onClick="{{ startPerformance }}" style="aspect-ratio:150/153;background:#aa2d00;color:#fff;border:0;border-radius:6px;padding:16px;text-align:left;display:flex;align-items:flex-end;font:inherit;font-size:15px;line-height:1.35;cursor:pointer;transition:transform .15s, box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(24,29,38,.2)" style-active="transform:translateY(0)">Performance Issues / Latency</button>
+        <div style="aspect-ratio:150/153;background:#0a2e0e;color:#fff;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Token Authentication Issue Reported</div>
+        <div style="aspect-ratio:150/153;background:#f5e9d4;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Game Crash Issue Reported</div>
+        <div style="aspect-ratio:150/153;background:#fcab79;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Reported Playback Issues</div>
+        <div style="aspect-ratio:150/153;background:#181d26;color:#fff;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Access Blocked</div>
+        <div style="aspect-ratio:150/153;background:#a8d8c4;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Login Issues</div>
+        <div style="aspect-ratio:150/153;background:#d9a441;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Error / Anomaly Detected</div>
+        <div style="aspect-ratio:150/153;background:#aa2d00;color:#fff;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Ad Delivery Problems</div>
+        <div style="aspect-ratio:150/153;background:#0a2e0e;color:#fff;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Game Save Blocked</div>
+      </div>
+    </div>
+
+    <div style="flex:1 1 420px;min-width:0;max-width:550px;display:flex;flex-direction:column;gap:16px">
+      <div style="background:#fff;border:1px solid #dddddd;border-radius:6px;padding:20px 24px;box-shadow:0 2px 4px rgba(24,29,38,.06)">
+        <h3 style="margin:0 0 14px;font-size:16px;font-weight:500">Saved Sessions</h3>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:12px 20px;font-size:12px;color:#254fad">
+          <span><b style="font-weight:600">CID:</b> ... 74637</span><span>7 Apr 2026 8:21AM PST</span>
+          <span><b style="font-weight:600">CID:</b> ... 483663</span><span>1 Apr 2026 11:06AM PST</span>
+          <span><b style="font-weight:600">CID:</b> ... 70393</span><span>22 Mar 2026 4:30PM PST</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #dddddd;border-radius:6px;padding:20px 24px;box-shadow:0 2px 4px rgba(24,29,38,.06)">
+        <h3 style="margin:0 0 14px;font-size:16px;font-weight:500">Followed Customers</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:12px;color:#254fad">
+          <span><b style="font-weight:600">CID:</b> ... 74637</span>
+          <span><b style="font-weight:600">CID:</b> ... 48366</span>
+          <span><b style="font-weight:600">CID:</b> ... 70393</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #dddddd;border-radius:6px;padding:20px 24px;box-shadow:0 2px 4px rgba(24,29,38,.06)">
+        <h3 style="margin:0 0 14px;font-size:16px;font-weight:500">Followed Devices</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:12px;color:#254fad">
+          <span><b style="font-weight:600">ESN:</b> ... 47363</span>
+          <span><b style="font-weight:600">ESN:</b> ... 47454</span>
+          <span><b style="font-weight:600">ESN:</b> ... 48364</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePanel }}" style="position:fixed;inset:0;background:rgba(24,29,38,.12);z-index:9"></div>
+  </sc-if>
+
+  <aside style="position:fixed;top:12px;right:12px;bottom:12px;width:404px;max-width:calc(100vw - 24px);background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(24,29,38,.22);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .42s cubic-bezier(.2,.8,.2,1);transform:{{ panelTransform }}">
+    <div style="height:72px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 20px;box-shadow:0 2px 6px rgba(24,29,38,.08);position:relative;z-index:1">
+      <span style="font-size:18px;font-weight:400">Investigation Assistant</span>
+      <button onClick="{{ closePanel }}" aria-label="Close" style="width:40px;height:40px;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#f8fafc">
+        <svg width="20" height="20" viewBox="0 0 20 20" stroke="#181d26" stroke-width="2"><path d="M2 2l16 16M18 2L2 18"></path></svg>
+      </button>
+    </div>
+
+    <div ref="{{ chatRef }}" style="flex:1;overflow-y:auto;background:#f9f8fd;padding:20px 16px;display:flex;flex-direction:column">
+      <div style="flex:1"></div>
+      <sc-for list="{{ messages }}" as="m" hint-placeholder-count="0">
+        <div style="animation:msgIn .28s ease-out both;margin-top:12px">
+          <sc-if value="{{ m.isUser }}">
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:#181d26;color:#fff;padding:10px 12px;border-radius:14px 14px 0 14px;font-size:15px;max-width:80%;word-break:break-all">{{ m.text }}</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ m.isBot }}">
+            <div style="display:flex;align-items:flex-end;gap:8px">
+              <div style="width:24px;height:24px;flex:0 0 24px;border-radius:50%;background:#181d26;display:flex;align-items:center;justify-content:center;color:#fcab79;font-size:12px;font-weight:600">A</div>
+              <div style="flex:1;min-width:0;background:#fff;border:1px solid #dddddd;border-radius:14px 14px 14px 0;padding:14px 16px 16px;font-size:13px;line-height:1.6;color:#181d26">
+                <sc-if value="{{ m.isTyping }}">
+                  <div style="display:flex;align-items:center;gap:8px;color:#41454d">
+                    <span style="display:flex;gap:4px">
+                      <span style="width:6px;height:6px;border-radius:50%;background:#41454d;animation:dotPulse 1.2s infinite"></span>
+                      <span style="width:6px;height:6px;border-radius:50%;background:#41454d;animation:dotPulse 1.2s .15s infinite"></span>
+                      <span style="width:6px;height:6px;border-radius:50%;background:#41454d;animation:dotPulse 1.2s .3s infinite"></span>
+                    </span>
+                    <span>{{ m.text }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.isText }}">
+                  <div style="white-space:pre-line">{{ m.text }}</div>
+                </sc-if>
+                <sc-if value="{{ m.isOptions }}">
+                  <div>
+                    <div style="margin-bottom:8px">Enter the time window</div>
+                    <div style="display:flex;flex-direction:column;gap:4px">
+                      <sc-for list="{{ m.options }}" as="o">
+                        <sc-if value="{{ o.selected }}">
+                          <button onClick="{{ o.onClick }}" style="align-self:flex-start;font:inherit;font-size:13px;font-weight:500;color:#181d26;background:#fff;border:1.5px solid #1b61c9;border-radius:4px;padding:5px 14px;cursor:default">{{ o.label }}</button>
+                        </sc-if>
+                        <sc-if value="{{ o.idle }}">
+                          <button onClick="{{ o.onClick }}" style="align-self:flex-start;font:inherit;font-size:13px;font-weight:500;color:#181d26;background:transparent;border:1.5px solid transparent;border-radius:4px;padding:5px 14px;cursor:pointer" style-hover="background:#f8fafc;border-color:#dddddd">{{ o.label }}</button>
+                        </sc-if>
+                        <sc-if value="{{ o.disabled }}">
+                          <span style="align-self:flex-start;font-size:13px;font-weight:500;color:#41454d;border:1.5px solid transparent;padding:5px 14px">{{ o.label }}</span>
+                        </sc-if>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.isRun }}">
+                  <div>
+                    <div>If you need to provide more context, please do so now. Otherwise, select <i>Run Investigation</i>.</div>
+                    <sc-if value="{{ m.runActive }}">
+                      <button onClick="{{ runInvestigation }}" style="margin-top:12px;font:inherit;font-size:13px;font-weight:500;color:#1b61c9;background:transparent;border:0;padding:0;cursor:pointer" style-hover="color:#1a3866;text-decoration:underline">Run Investigation</button>
+                    </sc-if>
+                    <sc-if value="{{ m.runInactive }}">
+                      <div style="margin-top:12px;font-size:13px;font-weight:500;color:#9297a0">Run Investigation</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.isResult }}">
+                  <div style="white-space:pre-line">{{ m.text }}</div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ m.isResult }}">
+            <div style="margin:12px 0 0 32px;display:flex;flex-direction:column;gap:12px">
+              <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;padding:12px 12px 8px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+                  <span style="font-size:12px;font-weight:500">Active streams</span>
+                  <span style="font-size:11px;color:#41454d">{{ chart.windowLabel }}</span>
+                </div>
+                <svg viewBox="0 0 300 150" style="width:100%;height:auto;display:block;overflow:visible">
+                  <line x1="28" y1="10" x2="296" y2="10" stroke="#eef0f3"></line>
+                  <line x1="28" y1="50" x2="296" y2="50" stroke="#eef0f3"></line>
+                  <line x1="28" y1="90" x2="296" y2="90" stroke="#eef0f3"></line>
+                  <line x1="28" y1="130" x2="296" y2="130" stroke="#9297a0"></line>
+                  <text x="22" y="13" font-size="9" fill="#41454d" text-anchor="end">100</text>
+                  <text x="22" y="53" font-size="9" fill="#41454d" text-anchor="end">70</text>
+                  <text x="22" y="93" font-size="9" fill="#41454d" text-anchor="end">40</text>
+                  <text x="22" y="133" font-size="9" fill="#41454d" text-anchor="end">10</text>
+                  <rect x="{{ chart.bandX }}" y="10" width="{{ chart.bandW }}" height="120" fill="#aa2d00" fill-opacity="0.12"></rect>
+                  <path d="{{ chart.area }}" fill="#1b61c9" fill-opacity="0.06"></path>
+                  <path d="{{ chart.line }}" fill="none" stroke="#1b61c9" stroke-width="1.6" stroke-linejoin="round"></path>
+                  <circle cx="{{ chart.dipX }}" cy="{{ chart.dipY }}" r="3" fill="#aa2d00"></circle>
+                  <text x="{{ chart.calloutX }}" y="22" font-size="9" fill="#aa2d00" text-anchor="{{ chart.calloutAnchor }}">High latency · 2:20–2:30pm</text>
+                  <text x="28" y="146" font-size="9" fill="#41454d">{{ chart.startLabel }}</text>
+                  <text x="162" y="146" font-size="9" fill="#41454d" text-anchor="middle">{{ chart.midLabel }}</text>
+                  <text x="296" y="146" font-size="9" fill="#41454d" text-anchor="end">{{ chart.endLabel }}</text>
+                </svg>
+              </div>
+
+              <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+                <div style="padding:14px 14px 12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <span style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#39bf45"></span>High confidence</span>
+                    <span style="font-size:14px;font-weight:500">94%</span>
+                  </div>
+                  <div style="height:6px;background:#e0e2e6;border-radius:3px;margin:10px 0 12px;overflow:hidden"><div style="width:94%;height:100%;background:#39bf45;border-radius:3px"></div></div>
+                  <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:12px;color:#333840">
+                    <span>Signal agreement</span><span>3 of 3</span>
+                    <span>Log recency</span><span>&lt; 30 min</span>
+                    <span>Alternative causes</span><span>1 ruled out</span>
+                  </div>
+                </div>
+                <div style="border-top:1px solid #dddddd;padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px">
+                  <span style="font-size:12px;font-weight:500;margin-bottom:2px">Source logs</span>
+                  <a href="#" style="display:block;border:1px solid #dddddd;border-radius:8px;padding:8px 10px" style-hover="border-color:#458fff">
+                    <div style="font-size:13px;color:#1b61c9">svc-entitlements · anomaly-4471</div>
+                    <div style="font-size:11px;color:#41454d;margin-top:2px">Metrics · 14:02–14:13 UTC</div>
+                  </a>
+                  <a href="#" style="display:block;border:1px solid #dddddd;border-radius:8px;padding:8px 10px" style-hover="border-color:#458fff">
+                    <div style="font-size:13px;color:#1b61c9">edge-eu-west-1 · token-validate</div>
+                    <div style="font-size:11px;color:#41454d;margin-top:2px">Trace · 41,208 retries</div>
+                  </a>
+                  <a href="#" style="display:block;border:1px solid #dddddd;border-radius:8px;padding:8px 10px;background:#f8fafc" style-hover="border-color:#458fff">
+                    <div style="font-size:13px;color:#1b61c9">deploy-9f2c · client 12.4.1</div>
+                    <div style="font-size:11px;color:#41454d;margin-top:2px">Change log · ruled out</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:0 0 auto;border-top:1px solid #dddddd;padding:12px 16px 14px;background:#fff">
+      <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #dddddd;border-radius:24px;padding:4px 6px 4px 16px;background:#fafafa">
+        <input ref="{{ inputRef }}" value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" disabled="{{ inputDisabled }}" placeholder="{{ placeholder }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:#181d26;height:36px">
+        <button onClick="{{ send }}" aria-label="Send" style="width:36px;height:36px;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b61c9" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><path d="M12 17V7M7.5 11.5L12 7l4.5 4.5"></path></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;botDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:900,&quot;min&quot;:200,&quot;max&quot;:2500,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Assistant&quot;},&quot;prefillAccount&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Assistant&quot;}}">
+class Component extends DCLogic {
+  state = { open: false, stage: 'idle', messages: [], input: '', time: null, account: '' };
+  chatRef = React.createRef();
+  inputRef = React.createRef();
+  timers = [];
+  uid = 0;
+
+  delay() { return this.props.botDelay ?? 900; }
+  later(fn, ms) { this.timers.push(setTimeout(fn, ms ?? this.delay())); }
+  push(...msgs) { this.setState(s => ({ messages: [...s.messages.filter(m => m.kind !== 'typing'), ...msgs.map(m => ({ id: ++this.uid, ...m }))] })); }
+  botReply(msg, typingText, ms) {
+    this.push({ kind: 'typing', text: typingText || '' });
+    this.later(() => this.push(msg), ms);
+  }
+
+  componentDidUpdate(_, prev) {
+    if (prev.messages !== this.state.messages) {
+      const el = this.chatRef.current;
+      if (el) {
+        const go = () => { el.scrollTop = el.scrollHeight; };
+        requestAnimationFrame(go);
+        setTimeout(go, 60);
+        setTimeout(go, 320);
+      }
+    }
+    if (prev.stage !== this.state.stage && (this.state.stage === 'account' || this.state.stage === 'context')) {
+      setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 50);
+    }
+  }
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+
+  startPerformance = () => {
+    this.timers.forEach(clearTimeout); this.timers = [];
+    this.setState({ open: true, stage: 'time', messages: [], input: '', time: null, account: '' });
+    this.later(() => {
+      this.push({ kind: 'user', text: 'Investigate Performance Issues' });
+      this.later(() => this.botReply({ kind: 'options' }), 300);
+    }, 450);
+  };
+  closePanel = () => { this.timers.forEach(clearTimeout); this.timers = []; this.setState({ open: false, stage: 'idle' }); };
+
+  pickTime = (label) => {
+    if (this.state.stage !== 'time') return;
+    this.setState({ time: label, stage: 'waiting' });
+    this.push({ kind: 'user', text: label });
+    this.later(() => this.botReply({ kind: 'text', text: 'Account ID?' }), 250);
+    this.later(() => this.setState({ stage: 'account', input: this.props.prefillAccount === false ? '' : '373764772883476' }), 250 + this.delay());
+  };
+
+  send = () => {
+    const v = this.state.input.trim();
+    if (!v) return;
+    const { stage } = this.state;
+    if (stage === 'account') {
+      this.setState({ account: v, input: '', stage: 'waiting' });
+      this.push({ kind: 'user', text: v });
+      this.later(() => this.botReply({ kind: 'run' }), 250);
+      this.later(() => this.setState({ stage: 'context' }), 250 + this.delay());
+    } else if (stage === 'context') {
+      this.setState({ input: '', stage: 'waiting' });
+      this.push({ kind: 'user', text: v });
+      this.later(() => this.botReply({ kind: 'run' }), 250);
+      this.later(() => this.setState({ stage: 'context' }), 250 + this.delay());
+    }
+  };
+  onInput = (e) => this.setState({ input: e.target.value });
+  onKey = (e) => { if (e.key === 'Enter') this.send(); };
+
+  runInvestigation = () => {
+    if (this.state.stage !== 'context') return;
+    this.setState({ stage: 'running', input: '' });
+    this.push({ kind: 'user', text: 'Run Investigation' });
+    this.later(() => this.botReply({ kind: 'result' }, 'Investigating stream logs, metrics and traces…', this.delay() * 2.6), 250);
+    this.later(() => this.setState({ stage: 'done' }), 250 + this.delay() * 2.6);
+  };
+
+  windowHours() { return { 'Past 3 hours': 3, 'Past 6 hours': 6, 'Past 24 hours': 24 }[this.state.time] || 6; }
+  windowPhrase() {
+    const t = this.state.time;
+    return t === 'Custom Range' ? 'within the selected range' : 'within the last ' + (t || 'Past 6 hours').replace('Past ', '');
+  }
+
+  buildChart() {
+    const h = this.windowHours(), end = 16, start = end - h; // 4:00pm end
+    const X0 = 28, X1 = 296, Y = v => 130 - ((v - 10) / 90) * 120;
+    const N = 140, pts = [];
+    const dipC = 14 + 25 / 60;
+    for (let i = 0; i <= N; i++) {
+      const t = start + (h * i) / N;
+      let v = 72 + 10 * Math.sin(t * 1.7) + 6 * Math.sin(t * 4.3 + 1) + 3 * Math.sin(t * 9.1);
+      const d = (t - dipC) / (h > 12 ? 0.15 : 0.07);
+      v -= 48 * Math.exp(-d * d);
+      pts.push([X0 + ((X1 - X0) * i) / N, Y(Math.max(12, Math.min(98, v)))]);
+    }
+    const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const area = line + ` L${X1} 130 L${X0} 130 Z`;
+    const xAt = t => X0 + ((t - start) / h) * (X1 - X0);
+    const bx = xAt(14 + 20 / 60), bw = Math.max(3, xAt(14.5) - bx);
+    let dip = pts[0];
+    pts.forEach(p => { if (p[1] > dip[1]) dip = p; });
+    const fmt = t => { const hh = ((t % 24) + 24) % 24, hr = Math.floor(hh), mi = Math.round((hh - hr) * 60); const ap = hr >= 12 ? 'pm' : 'am'; const h12 = hr % 12 || 12; return h12 + (mi ? ':' + String(mi).padStart(2, '0') : ':00') + ap; };
+    const calloutX = bx + bw / 2;
+    return {
+      line, area, bandX: bx, bandW: bw, dipX: dip[0], dipY: dip[1],
+      calloutX: calloutX > 200 ? bx - 4 : bx + bw + 4, calloutAnchor: calloutX > 200 ? 'end' : 'start',
+      startLabel: fmt(start), midLabel: fmt(start + h / 2), endLabel: fmt(end),
+      windowLabel: h + 'h window'
+    };
+  }
+
+  renderVals() {
+    const { open, stage, messages, input, time, account } = this.state;
+    const runIds = messages.filter(m => m.kind === 'run').map(m => m.id);
+    const lastRun = runIds[runIds.length - 1];
+    const resultText = `Here's what I found for account number ${account}, ${this.windowPhrase()}, related to performance.\n\nThe drop in service was due to network activity that momentarily created high latency (for approximately 10 minutes, between 2:20pm - 2:30pm).`;
+    const opts = ['Past 3 hours', 'Past 6 hours', 'Past 24 hours', 'Custom Range'];
+    const placeholder = { account: 'Enter an Account ID', context: 'Add context (optional)', time: 'Select a time window above', running: 'Investigating…' }[stage] || 'Enter a reply';
+    return {
+      panelOpen: open,
+      panelTransform: open ? 'translateX(0)' : 'translateX(calc(100% + 32px))',
+      startPerformance: this.startPerformance,
+      closePanel: this.closePanel,
+      chatRef: this.chatRef, inputRef: this.inputRef,
+      chart: this.buildChart(),
+      runInvestigation: this.runInvestigation,
+      input, onInput: this.onInput, onKey: this.onKey, send: this.send,
+      inputDisabled: !(stage === 'account' || stage === 'context' || stage === 'done'),
+      placeholder,
+      messages: messages.map(m => ({
+        ...m,
+        isUser: m.kind === 'user',
+        isBot: m.kind !== 'user',
+        isTyping: m.kind === 'typing',
+        isText: m.kind === 'text',
+        isOptions: m.kind === 'options',
+        isRun: m.kind === 'run',
+        runActive: m.kind === 'run' && m.id === lastRun && stage === 'context',
+        runInactive: m.kind === 'run' && !(m.id === lastRun && stage === 'context'),
+        isResult: m.kind === 'result',
+        text: m.kind === 'result' ? resultText : m.text,
+        options: m.kind === 'options' ? opts.map(l => ({
+          label: l,
+          selected: time === l,
+          idle: time !== l && stage === 'time',
+          disabled: time !== l && stage !== 'time',
+          onClick: () => this.pickTime(l)
+        })) : []
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
