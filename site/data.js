@@ -7,6 +7,10 @@ window.PROTOS = [
     why: 'Lets engineers move from a symptom to the log lines that explain it without writing raw queries.',
     principles: ['Recognition over recall through field-based filters', 'Flexibility and efficiency: saved queries for experts', 'User control: pause and resume the live tail'],
     extensions: ['Natural-language query input', 'Group repeated lines into patterns', 'Share a query as a link'] },
+  { id: 'obs-ai-dash', title: 'Dashboard with AI Assistant', category: 'Observability', description: 'A monitoring dashboard with an assistant panel that answers questions about the data on screen.', url: '',
+    why: 'Lets users ask why a metric changed and get an answer in context, instead of building queries or switching tools.',
+    principles: ['Visibility of the data the assistant used for each answer', 'User control: answers can be edited, pinned, or dismissed', 'Recognition over recall: suggested questions based on the current view'],
+    extensions: ['Turn an answer into a saved chart', 'Scheduled AI summaries of changes', 'Hand off findings to an incident or ticket'] },
   { id: 'obs-journey', title: 'Journey Map', category: 'Observability', description: 'Trace a user’s path across services and touchpoints, with drop-off and error points marked.', url: '',
     why: 'Shows where users drop off or hit errors across a multi-step path, connecting the product view and the technical view of the same problem.',
     principles: ['Match the real world: steps named in user terms', 'Visibility of status at each touchpoint', 'Minimalist design: only exceptions are highlighted'],
@@ -35,6 +39,10 @@ window.PROTOS = [
     why: 'Gets a user through required setup in a fixed order with few decisions per step.',
     principles: ['Error prevention: one decision at a time', 'Visibility of progress across steps', 'Sensible defaults from the user’s context'],
     extensions: ['Save and resume later', 'Branching steps based on answers', 'Review screen before finishing'] },
+  { id: 'onb-two-level', title: 'Two-Level Onboarding Flow', category: 'Onboarding', description: 'Onboarding split into two levels: account-wide setup first, then guidance for each user.', url: '',
+    why: 'Keeps setup for the whole organization apart from what each person needs to learn, so neither group sees steps meant for the other.',
+    principles: ['Match the real world: setup steps follow who is responsible', 'Visibility of progress at each level', 'Progressive disclosure: user steps unlock after the account is set up'],
+    extensions: ['Hand off admin steps to another teammate', 'Role-specific user tracks', 'Admin view of each user’s progress'] },
   { id: 'tg-tour', title: 'Pendo-style Guides', category: 'Onboarding', description: 'Step-by-step callouts that walk new users through key features.', url: '',
     why: 'Introduces key features in place, so users learn the interface while using it.',
     principles: ['Help in context', 'User control: skip, pause, and resume', 'Minimalist design: one idea per step'],
@@ -96,5 +104,13 @@ window.THUMBS = {
   'tg-help': 'thumbs/tg-help.webp',
   'notify-rules': 'thumbs/notify-rules.webp',
   'int-directory': 'thumbs/int-directory.webp',
-  'prod-kanban': 'thumbs/prod-kanban.webp'
+  'prod-kanban': 'thumbs/prod-kanban.webp',
+  'onb-two-level': 'thumbs/onb-two-level.png',
+  'obs-ai-dash': 'thumbs/obs-ai-dash.png'
+};
+
+// Optional detail-page images; falls back to THUMBS when absent.
+window.SHOTS = {
+  'onb-two-level': 'thumbs/onb-two-level-page.png',
+  'obs-ai-dash': 'thumbs/obs-ai-dash-page.png'
 };
