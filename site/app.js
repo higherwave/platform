@@ -78,16 +78,18 @@
     const training = location.hash === '#training';
     const m = location.hash.match(/^#p=(.+)$/);
     const p = !cases && !training && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
-    $('tab-patterns').classList.toggle('on', !cases && !training);
-    $('tab-cases').classList.toggle('on', cases);
-    $('tab-training').classList.toggle('on', training);
-    $('cases').hidden = !cases;
-    $('training').hidden = !training;
-    $('gallery').hidden = cases || training || !!p;
-    $('detail').hidden = cases || training || !p;
+    const tog = (id, cls, on) => { const el = $(id); if (el) el.classList.toggle(cls, on); };
+    const hide = (id, h) => { const el = $(id); if (el) el.hidden = h; };
+    tog('tab-patterns', 'on', !cases && !training);
+    tog('tab-cases', 'on', cases);
+    tog('tab-training', 'on', training);
+    hide('cases', !cases);
+    hide('training', !training);
+    hide('gallery', cases || training || !!p);
+    hide('detail', cases || training || !p);
     if (training) {
       const f = document.querySelector('.training-frame');
-      if (!f.src) f.src = 'training/onboarding/index.html';
+      if (f && !f.src) f.src = 'training/onboarding/index.html';
       document.title = 'Product Training · Knowledge Base';
     }
     else if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
