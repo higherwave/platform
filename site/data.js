@@ -67,11 +67,11 @@ window.PROTOS = [
     why: 'Makes hidden dependencies visible so teams can plan upgrades and migrations with less risk.',
     principles: ['Visibility of system relationships', 'Progressive disclosure: expand a node for detail', 'Error prevention: flag impact before a change'],
     extensions: ['Simulate the impact of retiring a system', 'Ownership and contact overlay', 'Change history over time'] },
-  { id: 'notify-rules', title: 'Platform-level Settings', category: 'Platform Core', description: 'Platform-level settings on both desktop and mobile (notification settings as the example).', url: 'prototypes/platform-core/platform-level-settings/',
+  { id: 'notify-rules', title: 'Platform-level Settings', category: 'Platform', description: 'Platform-level settings on both desktop and mobile (notification settings as the example).', url: 'prototypes/platform-core/platform-level-settings/',
     why: 'Gives users one consistent place to control platform-wide preferences across devices.',
     principles: ['Consistency between desktop and mobile', 'User control and freedom', 'Clear defaults with plain-language labels'],
     extensions: ['Quiet hours and digests', 'Per-workspace overrides', 'Admin-enforced policies'] },
-  { id: 'dt-bulk', title: 'Bulk row editing', category: 'Platform Core', description: 'Select many rows and apply one change, with undo.', url: 'prototypes/platform-core/bulk-row-editing/',
+  { id: 'dt-bulk', title: 'Bulk row editing', category: 'Platform', description: 'Select many rows and apply one change, with undo.', url: 'prototypes/platform-core/bulk-row-editing/',
     why: 'Saves time on repetitive edits across many records while keeping changes reversible.',
     principles: ['Error prevention: preview affected rows', 'User control: undo', 'Visibility of the selection count'],
     extensions: ['Bulk edit from a filtered view', 'Scheduled bulk changes', 'Audit log of bulk actions'] },
@@ -87,7 +87,7 @@ window.PROTOS = [
 
 window.THUMBS = {
   'wf-builder': 'thumbs/wf-builder.webp',
-  'wf-runs': 'thumbs/wf-runs.webp',
+  'wf-runs': 'thumbs/wf-runs.png',
   'onb-checklist': 'thumbs/onb-checklist.webp',
   'onb-setup': 'thumbs/onb-setup.webp',
   'obs-journey': 'thumbs/obs-journey.webp',
@@ -111,6 +111,10 @@ window.THUMBS = {
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'wf-runs': 'thumbs/wf-runs-page.png',
   'onb-two-level': 'thumbs/onb-two-level-page.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash-page.png'
 };
+
+// Cards shown under the Highlights filter (default view), in this order.
+window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard'];

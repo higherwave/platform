@@ -11,7 +11,9 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = id => document.getElementById(id);
 
-  let filter = 'All';
+  const HL = (window.HIGHLIGHTS || []).filter(id => PROTOS.some(p => p.id === id));
+  let filter = HL.length ? 'Highlights' : 'All';
+  const inFilter = p => filter === 'All' || (filter === 'Highlights' ? HL.includes(p.id) : p.category === filter);
   let pinned = [];
   try { const p = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(p)) pinned = p; } catch (e) {}
 
@@ -35,12 +37,13 @@
   function renderGallery() {
     const cats = [...new Set(PROTOS.map(p => p.category))];
     const pinnedItems = pinned.map(id => PROTOS.find(p => p.id === id)).filter(Boolean);
-    const items = PROTOS.filter(p => !pinned.includes(p.id) && (filter === 'All' || p.category === filter));
+    const pool = filter === 'Highlights' ? HL.map(id => PROTOS.find(p => p.id === id)) : PROTOS;
+    const items = pool.filter(p => !pinned.includes(p.id) && inFilter(p));
     $('pinned-section').hidden = pinnedItems.length === 0;
     $('pinned-count').textContent = pinnedItems.length || '';
     $('pinned-grid').innerHTML = pinnedItems.map(card).join('');
-    $('filters').innerHTML = ['All', ...cats].map(c => {
-      const n = c === 'All' ? PROTOS.length : PROTOS.filter(p => p.category === c).length;
+    $('filters').innerHTML = ['All', ...(HL.length ? ['Highlights'] : []), ...cats].map(c => {
+      const n = c === 'All' ? PROTOS.length : c === 'Highlights' ? HL.length : PROTOS.filter(p => p.category === c).length;
       return `<button class="chip" role="tab" data-filter="${esc(c)}" aria-selected="${c === filter}">${esc(c)}<span>${n}</span></button>`;
     }).join('');
     $('grid-title').textContent = filter === 'All' ? 'All prototypes' : filter;
@@ -90,7 +93,7 @@
     if (training) {
       const f = document.querySelector('.training-frame');
       if (f && !f.src) f.src = 'training/onboarding/index.html';
-      document.title = 'Product Training · Knowledge Base';
+      document.title = 'Whirl Academy · Knowledge Base';
     }
     else if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
     else if (p) { renderDetail(p); document.title = `${p.title} · Knowledge Base`; }
