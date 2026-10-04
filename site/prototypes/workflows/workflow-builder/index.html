@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#ffffff;}
+body{font-family:"Haas","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#181d26;-webkit-font-smoothing:antialiased;}
+a{color:#1b61c9;text-decoration:none;}a:hover{color:#1a3866;}
+input,select,textarea,button{font-family:inherit;}
+</style>
+</helmet>
+<div style="height:100vh; display:flex; flex-direction:column; background:#ffffff;">
+  <header style="height:60px; flex:none; display:flex; align-items:center; gap:16px; padding:0 20px; border-bottom:1px solid #dddddd; background:#ffffff; z-index:5;">
+    <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+      <div style="width:32px; height:32px; border-radius:8px; background:#181d26; display:flex; align-items:center; justify-content:center; flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" style="fill:none; stroke:#ffffff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 3v6M12 9l-6 6v6M12 9l6 6v6"></path></svg>
+      </div>
+      <div style="display:flex; flex-direction:column; min-width:0;">
+        <span style="font-size:12px; font-weight:500; color:#41454d; letter-spacing:0.16px;">GTM Plays / Mid-market</span>
+        <span style="font-size:16px; font-weight:500; color:#181d26; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Q4 webinar follow-up</span>
+      </div>
+      <span style="font-size:12px; font-weight:500; padding:3px 10px; border-radius:6px; background:{{ statusBg }}; color:{{ statusFg }};">{{ status }}</span>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:#333840;">
+      <span style="width:8px; height:8px; border-radius:50%; background:{{ validDot }};"></span>
+      <span>{{ validText }}</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button onClick="{{ saveDraft }}" style="height:40px; padding:0 18px; border-radius:12px; border:1px solid #dddddd; background:#ffffff; color:#181d26; font-size:15px; font-weight:500; cursor:pointer;">{{ saveLabel }}</button>
+      <button onClick="{{ publish }}" style="height:40px; padding:0 18px; border-radius:12px; border:none; background:#181d26; color:#ffffff; font-size:15px; font-weight:500; cursor:pointer;" style-active="background:#0d1218;">{{ publishLabel }}</button>
+    </div>
+  </header>
+
+  <div style="flex:1; display:flex; min-height:0;">
+    <aside style="width:256px; flex:none; border-right:1px solid #dddddd; background:#ffffff; overflow-y:auto; padding:20px 16px; box-sizing:border-box; display:flex; flex-direction:column; gap:24px;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <span style="font-size:18px; font-weight:500;">Blocks</span>
+        <span style="font-size:13px; color:#41454d; line-height:1.35;">Drag onto the canvas to add a step.</span>
+      </div>
+      <sc-for list="{{ palette }}" as="g" hint-placeholder-count="4">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <span style="font-size:12px; font-weight:500; color:#41454d; letter-spacing:0.16px; text-transform:uppercase;">{{ g.label }}</span>
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <div onMouseDown="{{ it.onMouseDown }}" style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:10px; border:1px solid #dddddd; background:#ffffff; cursor:grab; user-select:none;" style-hover="background:#f8fafc;">
+              <div style="width:30px; height:30px; flex:none; border-radius:6px; background:{{ it.bg }}; display:flex; align-items:center; justify-content:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:{{ it.fg }}; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ it.icon }}"></path></svg>
+              </div>
+              <div style="display:flex; flex-direction:column; min-width:0;">
+                <span style="font-size:14px; font-weight:500; color:#181d26;">{{ it.name }}</span>
+                <span style="font-size:12px; color:#41454d; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ it.desc }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </aside>
+
+    <main ref="{{ canvasRef }}" onMouseDown="{{ canvasDown }}" style="flex:1; position:relative; overflow:hidden; background-color:#f8fafc; background-image:radial-gradient(#cfd3da 1.2px, transparent 1.2px); background-size:{{ gridSize }}px {{ gridSize }}px; background-position:{{ panX }}px {{ panY }}px; cursor:{{ canvasCursor }};">
+      <div style="position:absolute; left:0; top:0; transform-origin:0 0; transform:translate({{ panX }}px, {{ panY }}px) scale({{ zoom }});">
+        <svg width="1" height="1" style="position:absolute; left:0; top:0; overflow:visible; pointer-events:none;">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="0">
+            <g>
+              <path d="{{ e.d }}" onMouseDown="{{ e.onMouseDown }}" style="fill:none; stroke:transparent; stroke-width:14; pointer-events:stroke; cursor:pointer;"></path>
+              <path d="{{ e.d }}" style="fill:none; stroke:{{ e.stroke }}; stroke-width:{{ e.width }}; pointer-events:none;"></path>
+            </g>
+          </sc-for>
+          <sc-if value="{{ linking }}" hint-placeholder-val="{{ false }}">
+            <path d="{{ linkD }}" style="fill:none; stroke:#458fff; stroke-width:2; stroke-dasharray:6 5;"></path>
+          </sc-if>
+        </svg>
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="0">
+          <div data-node-id="{{ n.id }}" onMouseDown="{{ n.onMouseDown }}" onDoubleClick="{{ n.onDoubleClick }}" style="position:absolute; left:{{ n.left }}px; top:{{ n.top }}px; width:248px; height:92px; box-sizing:border-box; background:#ffffff; border:1px solid {{ n.borderColor }}; box-shadow:{{ n.ring }}; border-radius:10px; padding:14px 16px; cursor:grab; user-select:none; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+              <div style="width:32px; height:32px; flex:none; border-radius:6px; background:{{ n.bg }}; display:flex; align-items:center; justify-content:center;">
+                <svg width="17" height="17" viewBox="0 0 24 24" style="fill:none; stroke:{{ n.fg }}; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ n.icon }}"></path></svg>
+              </div>
+              <div style="display:flex; flex-direction:column; min-width:0;">
+                <span style="font-size:12px; font-weight:500; color:#41454d; letter-spacing:0.16px;">{{ n.caption }}</span>
+                <span style="font-size:15px; font-weight:500; color:#181d26; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ n.title }}</span>
+              </div>
+            </div>
+            <span style="font-size:13px; color:#333840; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ n.summary }}</span>
+            <sc-if value="{{ n.hasInput }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; left:117px; top:-7px; width:12px; height:12px; border-radius:50%; background:#ffffff; border:1px solid {{ n.inputBorder }};"></div>
+            </sc-if>
+            <sc-for list="{{ n.outs }}" as="o" hint-placeholder-count="0">
+              <div onMouseDown="{{ o.onMouseDown }}" title="Drag to connect" style="position:absolute; left:{{ o.left }}px; bottom:-8px; width:14px; height:14px; box-sizing:border-box; border-radius:50%; background:{{ o.dotBg }}; border:2px solid #181d26; cursor:crosshair;"></div>
+              <sc-if value="{{ o.hasLabel }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute; left:{{ o.labelLeft }}px; top:98px; font-size:11px; font-weight:500; color:#181d26; background:#e0e2e6; padding:1px 7px; border-radius:6px; white-space:nowrap; pointer-events:none;">{{ o.label }}</span>
+              </sc-if>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;">
+            <span style="font-size:20px;">Start with a trigger</span>
+            <span style="font-size:14px; color:#41454d;">Drag an Audience entry, Form or Event block from the left.</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="position:absolute; left:16px; bottom:16px; max-width:calc(100% - {{ hintRight }}px - 16px); box-sizing:border-box; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:12px; color:#41454d; background:#ffffff; border:1px solid #dddddd; border-radius:6px; padding:6px 10px; pointer-events:none;">Double-click a step to configure · Drag from a port to connect · Delete removes selection</div>
+
+      <div onMouseDown="{{ stop }}" style="position:absolute; right:{{ zoomRight }}px; bottom:16px; display:flex; align-items:center; gap:2px; background:#ffffff; border:1px solid #dddddd; border-radius:10px; padding:3px;">
+        <button onClick="{{ zoomOut }}" style="width:32px; height:32px; border:none; background:transparent; border-radius:6px; cursor:pointer; font-size:18px; color:#181d26;" style-hover="background:#f8fafc;">−</button>
+        <span style="min-width:44px; text-align:center; font-size:13px; font-weight:500;">{{ zoomPct }}</span>
+        <button onClick="{{ zoomIn }}" style="width:32px; height:32px; border:none; background:transparent; border-radius:6px; cursor:pointer; font-size:18px; color:#181d26;" style-hover="background:#f8fafc;">+</button>
+        <div style="width:1px; height:20px; background:#dddddd; margin:0 4px;"></div>
+        <button onClick="{{ fit }}" style="height:32px; padding:0 10px; border:none; background:transparent; border-radius:6px; cursor:pointer; font-size:13px; font-weight:500; color:#181d26;" style-hover="background:#f8fafc;">Fit</button>
+      </div>
+
+      <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+        <section onMouseDown="{{ stop }}" style="position:absolute; top:0; right:0; bottom:0; width:360px; background:#ffffff; border-left:1px solid #dddddd; display:flex; flex-direction:column; z-index:4;">
+          <div style="display:flex; align-items:center; gap:12px; padding:20px 20px 16px; border-bottom:1px solid #dddddd;">
+            <div style="width:36px; height:36px; flex:none; border-radius:6px; background:{{ pBg }}; display:flex; align-items:center; justify-content:center;">
+              <svg width="19" height="19" viewBox="0 0 24 24" style="fill:none; stroke:{{ pFg }}; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ pIcon }}"></path></svg>
+            </div>
+            <div style="display:flex; flex-direction:column; flex:1; min-width:0;">
+              <span style="font-size:12px; font-weight:500; color:#41454d; letter-spacing:0.16px;">{{ pCat }}</span>
+              <span style="font-size:18px; font-weight:500;">{{ pType }}</span>
+            </div>
+            <button onClick="{{ closePanel }}" title="Close" style="width:36px; height:36px; border-radius:50%; border:1px solid #dddddd; background:#ffffff; cursor:pointer; font-size:16px; color:#181d26;">✕</button>
+          </div>
+          <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:18px;">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <span style="font-size:13px; font-weight:500; color:#41454d;">Step name</span>
+              <input value="{{ pTitle }}" onChange="{{ onTitle }}" placeholder="{{ pType }}" style="height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+            </div>
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font-size:13px; font-weight:500; color:#41454d;">{{ f.label }}</span>
+                <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}">
+                  <input value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+                </sc-if>
+                <sc-if value="{{ f.isTextarea }}" hint-placeholder-val="{{ false }}">
+                  <textarea value="{{ f.value }}" onChange="{{ f.onChange }}" rows="3" style="box-sizing:border-box; padding:12px 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; line-height:1.4; color:#181d26; outline:none; resize:vertical;" style-focus="border-color:#458fff;"></textarea>
+                </sc-if>
+                <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                  <select value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:44px; box-sizing:border-box; padding:0 10px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; background:#ffffff; outline:none;">
+                    <sc-for list="{{ f.options }}" as="op" hint-placeholder-count="0">
+                      <option value="{{ op.value }}">{{ op.value }}</option>
+                    </sc-for>
+                  </select>
+                </sc-if>
+                <sc-if value="{{ f.isNumber }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <input type="number" value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:110px; height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+                    <span style="font-size:14px; color:#41454d;">{{ f.unit }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ f.isSeg }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; gap:2px; padding:3px; background:#e0e2e6; border-radius:8px;">
+                    <sc-for list="{{ f.options }}" as="op" hint-placeholder-count="0">
+                      <button onClick="{{ op.onClick }}" style="flex:1; height:34px; border:none; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; background:{{ op.bg }}; color:#181d26; box-shadow:{{ op.shadow }};">{{ op.value }}</button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ hasBranches }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:8px; padding-top:18px; border-top:1px solid #dddddd;">
+                <span style="font-size:13px; font-weight:500; color:#41454d;">Branches</span>
+                <sc-for list="{{ branches }}" as="b" hint-placeholder-count="2">
+                  <div style="display:flex; align-items:center; gap:10px; font-size:14px;">
+                    <span style="font-size:12px; font-weight:500; background:#e0e2e6; padding:2px 8px; border-radius:6px; min-width:20px; text-align:center;">{{ b.label }}</span>
+                    <span style="color:#41454d;">→</span>
+                    <span style="color:{{ b.color }};">{{ b.target }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex; gap:8px; padding:16px 20px; border-top:1px solid #dddddd;">
+            <button onClick="{{ deleteOpen }}" style="height:44px; padding:0 18px; border-radius:12px; border:1px solid #dddddd; background:#ffffff; color:#aa2d00; font-size:15px; font-weight:500; cursor:pointer;">Delete step</button>
+            <div style="flex:1;"></div>
+            <button onClick="{{ closePanel }}" style="height:44px; padding:0 24px; border-radius:12px; border:none; background:#181d26; color:#ffffff; font-size:15px; font-weight:500; cursor:pointer;" style-active="background:#0d1218;">Done</button>
+          </div>
+        </section>
+      </sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ ghostOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; left:{{ ghostX }}px; top:{{ ghostY }}px; transform:translate(-50%,-50%); display:flex; align-items:center; gap:10px; padding:10px 14px; background:#ffffff; border:1px solid #181d26; border-radius:10px; pointer-events:none; z-index:50; opacity:0.95;">
+      <div style="width:28px; height:28px; border-radius:6px; background:{{ ghostBg }}; display:flex; align-items:center; justify-content:center;">
+        <svg width="15" height="15" viewBox="0 0 24 24" style="fill:none; stroke:{{ ghostFg }}; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ ghostIcon }}"></path></svg>
+      </div>
+      <span style="font-size:14px; font-weight:500;">{{ ghostName }}</span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;snapToGrid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;edgeStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;curved&quot;,&quot;orthogonal&quot;],&quot;default&quot;:&quot;curved&quot;,&quot;tsType&quot;:&quot;'curved'|'orthogonal'&quot;},&quot;openPanelOnDrop&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const W = 248, H = 92, GRID = 16;
+const CATS = {
+  trigger: { label: 'Trigger', bg: '#a8d8c4', fg: '#0a2e0e' },
+  decision: { label: 'Decision', bg: '#f4d35e', fg: '#181d26' },
+  action: { label: 'Action', bg: '#fcab79', fg: '#181d26' },
+  goal: { label: 'Goal', bg: '#0a2e0e', fg: '#ffffff' }
+};
+const IC = {
+  users: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2.5 3 5',
+  form: 'M6 3h12v18H6zM9 8h6M9 12h6M9 16h4',
+  cal: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  branch: 'M12 3v6M12 9l-6 6v6M12 9l6 6v6',
+  split: 'M4 12h6M10 12l8-6M10 12l8 6',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  mail: 'M3 6h18v12H3zM3 6l9 7 9-7',
+  target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  rep: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-4 3-6 7-6s7 2 7 6M16 11l2 2 4-4',
+  loop: 'M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4',
+  bell: 'M6 16v-5a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',
+  flag: 'M5 21V4M5 4h11l-2 4 2 4H5'
+};
+const TYPES = {
+  segment: { cat: 'trigger', name: 'Audience entry', desc: 'Contacts join a segment', icon: IC.users, outputs: [''],
+    fields: [{ k: 'segment', l: 'Segment', t: 'select', o: ['ICP — Mid-market SaaS', 'Enterprise target accounts', 'Trial sign-ups', 'Closed-lost opportunities'] }, { k: 'reentry', l: 'Re-entry', t: 'seg', o: ['Once', 'Recurring'] }],
+    def: { segment: 'ICP — Mid-market SaaS', reentry: 'Once' }, sum: c => `${c.segment} · ${c.reentry}` },
+  form: { cat: 'trigger', name: 'Form submitted', desc: 'A web form is completed', icon: IC.form, outputs: [''],
+    fields: [{ k: 'form', l: 'Form', t: 'select', o: ['Demo request', 'Pricing inquiry', 'Content download', 'Contact sales'] }, { k: 'source', l: 'Traffic source', t: 'select', o: ['Any', 'Paid search', 'Organic', 'Partner referral'] }],
+    def: { form: 'Demo request', source: 'Any' }, sum: c => `${c.form} · ${c.source} source` },
+  event: { cat: 'trigger', name: 'Event attended', desc: 'Webinar or field event', icon: IC.cal, outputs: [''],
+    fields: [{ k: 'event', l: 'Event', t: 'text' }, { k: 'status', l: 'Attendance', t: 'select', o: ['Attended', 'Registered, no-show', 'Watched on-demand'] }, { k: 'window', l: 'Entry window', t: 'seg', o: ['7 days', '30 days', 'Ongoing'] }],
+    def: { event: 'Q4 Product Webinar', status: 'Attended', window: 'Ongoing' }, sum: c => `${c.status} · ${c.event}` },
+  condition: { cat: 'decision', name: 'If / else', desc: 'Branch on a field value', icon: IC.branch, outputs: ['Yes', 'No'],
+    fields: [{ k: 'field', l: 'Field', t: 'select', o: ['Lead score', 'Company size', 'Industry', 'Region', 'Product usage'] }, { k: 'op', l: 'Operator', t: 'select', o: ['is at least', 'is less than', 'equals', 'contains'] }, { k: 'value', l: 'Value', t: 'text' }],
+    def: { field: 'Lead score', op: 'is at least', value: '60' }, sum: c => `${c.field} ${c.op} ${c.value}` },
+  split: { cat: 'decision', name: 'A/B split', desc: 'Test two paths', icon: IC.split, outputs: ['A', 'B'],
+    fields: [{ k: 'ratio', l: 'Share sent to path A', t: 'number', u: '%' }, { k: 'metric', l: 'Winning metric', t: 'select', o: ['Meetings booked', 'Reply rate', 'Click-through rate', 'Pipeline created'] }],
+    def: { ratio: 50, metric: 'Meetings booked' }, sum: c => `${c.ratio}/${100 - (+c.ratio || 0)} · ${String(c.metric).toLowerCase()}` },
+  wait: { cat: 'decision', name: 'Wait until', desc: 'Pause for a signal', icon: IC.clock, outputs: ['Met', 'Timed out'],
+    fields: [{ k: 'signal', l: 'Signal', t: 'select', o: ['Email opened', 'Link clicked', 'Pricing page visited', 'Meeting booked'] }, { k: 'timeout', l: 'Time out after', t: 'number', u: 'days' }],
+    def: { signal: 'Link clicked', timeout: 5 }, sum: c => `${c.signal} · ${c.timeout}d timeout` },
+  email: { cat: 'action', name: 'Send email', desc: 'Marketing email', icon: IC.mail, outputs: [''],
+    fields: [{ k: 'template', l: 'Template', t: 'select', o: ['Webinar recap', 'Case study', 'Product tour invite', 'Pricing overview'] }, { k: 'subject', l: 'Subject line', t: 'text' }, { k: 'send', l: 'Send time', t: 'seg', o: ['Now', 'Next day', 'Optimal'] }],
+    def: { template: 'Webinar recap', subject: 'Your recording + slides', send: 'Now' }, sum: c => `${c.template} · ${c.send}` },
+  ads: { cat: 'action', name: 'Ad audience', desc: 'Sync to paid channels', icon: IC.target, outputs: [''],
+    fields: [{ k: 'platform', l: 'Platform', t: 'seg', o: ['LinkedIn', 'Google', 'Meta'] }, { k: 'action', l: 'Audience action', t: 'select', o: ['Add to audience', 'Remove from audience'] }, { k: 'budget', l: 'Daily budget', t: 'number', u: 'USD / day' }],
+    def: { platform: 'LinkedIn', action: 'Add to audience', budget: 150 }, sum: c => `${c.action} · ${c.platform}` },
+  sdr: { cat: 'action', name: 'SDR task', desc: 'Hand off to sales', icon: IC.rep, outputs: [''],
+    fields: [{ k: 'task', l: 'Task', t: 'select', o: ['Call', 'LinkedIn message', 'Personal email'] }, { k: 'owner', l: 'Assign to', t: 'select', o: ['Round robin', 'Account owner', 'Territory team'] }, { k: 'priority', l: 'Priority', t: 'seg', o: ['Low', 'Medium', 'High'] }, { k: 'due', l: 'Due within', t: 'number', u: 'days' }],
+    def: { task: 'Call', owner: 'Account owner', priority: 'High', due: 1 }, sum: c => `${c.task} · ${c.owner} · ${c.priority}` },
+  nurture: { cat: 'action', name: 'Nurture track', desc: 'Enroll in a sequence', icon: IC.loop, outputs: [''],
+    fields: [{ k: 'track', l: 'Track', t: 'select', o: ['Product education', 'Industry insights', 'Customer stories'] }, { k: 'cadence', l: 'Cadence', t: 'seg', o: ['Weekly', 'Bi-weekly', 'Monthly'] }],
+    def: { track: 'Product education', cadence: 'Weekly' }, sum: c => `${c.track} · ${c.cadence}` },
+  alert: { cat: 'action', name: 'Team alert', desc: 'Notify a channel', icon: IC.bell, outputs: [''],
+    fields: [{ k: 'channel', l: 'Channel', t: 'text' }, { k: 'message', l: 'Message', t: 'textarea' }],
+    def: { channel: '#mm-pipeline', message: 'A webinar attendee just engaged with follow-up.' }, sum: c => `Notify ${c.channel}` },
+  goal: { cat: 'goal', name: 'Goal reached', desc: 'End of the play', icon: IC.flag, outputs: [],
+    fields: [{ k: 'goal', l: 'Goal', t: 'select', o: ['Meeting booked', 'Opportunity created', 'Closed won'] }, { k: 'attr', l: 'Attribution', t: 'seg', o: ['First touch', 'Last touch', 'Multi-touch'] }],
+    def: { goal: 'Meeting booked', attr: 'Multi-touch' }, sum: c => `${c.goal} · ${c.attr}` }
+};
+const GROUPS = [['Triggers', ['segment', 'form', 'event']], ['Decisions', ['condition', 'split', 'wait']], ['Actions', ['email', 'ads', 'sdr', 'nurture', 'alert']], ['End', ['goal']]];
+const mk = (id, type, x, y, title, cfg) => ({ id, type, x, y, title: title || '', config: Object.assign({}, TYPES[type].def, cfg || {}) });
+
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  seq = 100;
+  drag = null;
+  state = {
+    nodes: [
+      mk('n1', 'event', 416, 32, 'Q4 webinar attendees'),
+      mk('n2', 'condition', 416, 192, 'High intent?'),
+      mk('n3', 'sdr', 160, 352, 'Priority call'),
+      mk('n4', 'goal', 160, 512, '', {}),
+      mk('n5', 'email', 672, 352, 'Recap + case study', { template: 'Case study' }),
+      mk('n6', 'wait', 672, 512, 'Engaged with recap?'),
+      mk('n7', 'alert', 496, 688, 'Ping territory rep'),
+      mk('n8', 'ads', 848, 688, 'Retarget on LinkedIn')
+    ],
+    edges: [
+      { id: 'e1', from: 'n1', port: 0, to: 'n2' }, { id: 'e2', from: 'n2', port: 0, to: 'n3' },
+      { id: 'e3', from: 'n2', port: 1, to: 'n5' }, { id: 'e4', from: 'n3', port: 0, to: 'n4' },
+      { id: 'e5', from: 'n5', port: 0, to: 'n6' }, { id: 'e6', from: 'n6', port: 0, to: 'n7' },
+      { id: 'e7', from: 'n6', port: 1, to: 'n8' }
+    ],
+    panX: 0, panY: 0, zoom: 1, sel: null, open: null, hover: null, link: null, ghost: null, panning: false,
+    status: 'Draft', saved: false
+  };
+
+  componentDidMount() {
+    this._move = e => this.onMove(e); this._up = e => this.onUp(e); this._key = e => this.onKey(e);
+    window.addEventListener('mousemove', this._move); window.addEventListener('mouseup', this._up); window.addEventListener('keydown', this._key);
+    this._wheel = e => this.onWheel(e);
+    const attach = () => { const c = this.canvasRef.current; if (!c) return setTimeout(attach, 50); c.addEventListener('wheel', this._wheel, { passive: false });
+      this._ro = new ResizeObserver(() => { if (!this.userMoved) this.fit(); });
+      this._ro.observe(c); };
+    [100, 300, 700].forEach(t => setTimeout(() => { if (!this.userMoved) this.fit(); }, t));
+    attach();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this._move); window.removeEventListener('mouseup', this._up); window.removeEventListener('keydown', this._key);
+    const c = this.canvasRef.current; if (c) c.removeEventListener('wheel', this._wheel);
+  }
+  rect() { return this.canvasRef.current.getBoundingClientRect(); }
+  toWorld(e) { const r = this.rect(), s = this.state; return { x: (e.clientX - r.left - s.panX) / s.zoom, y: (e.clientY - r.top - s.panY) / s.zoom }; }
+  snap(v) { return (this.props.snapToGrid ?? true) ? Math.round(v / GRID) * GRID : Math.round(v); }
+  fit() {
+    const c = this.canvasRef.current; if (!c) return;
+    const ns = this.state.nodes; const r = c.getBoundingClientRect();
+    if (!ns.length) return this.setState({ panX: r.width / 2, panY: 80, zoom: 1 });
+    const x0 = Math.min(...ns.map(n => n.x)), y0 = Math.min(...ns.map(n => n.y));
+    const x1 = Math.max(...ns.map(n => n.x + W)), y1 = Math.max(...ns.map(n => n.y + H + 24));
+    const aw = r.width - (this.state.open ? 360 : 0);
+    const z = Math.max(0.35, Math.min(1, (aw - 96) / (x1 - x0), (r.height - 120) / (y1 - y0)));
+    this.setState({ zoom: z, panX: (aw - (x1 - x0) * z) / 2 - x0 * z, panY: (r.height - (y1 - y0) * z) / 2 - y0 * z });
+  }
+  zoomAt(f, cx, cy) {
+    this.userMoved = true; const s = this.state; const z = Math.max(0.3, Math.min(2, s.zoom * f));
+    const wx = (cx - s.panX) / s.zoom, wy = (cy - s.panY) / s.zoom;
+    this.setState({ zoom: z, panX: cx - wx * z, panY: cy - wy * z });
+  }
+  zoomCenter(f) { const r = this.rect(); this.zoomAt(f, r.width / 2, r.height / 2); }
+  onWheel(e) {
+    e.preventDefault();
+    if (e.ctrlKey || e.metaKey) { const r = this.rect(); this.zoomAt(Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top); }
+    else this.userMoved = true, this.setState(s => ({ panX: s.panX - e.deltaX, panY: s.panY - e.deltaY }));
+  }
+  onKey(e) {
+    const t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT') return;
+    if (e.key === 'Escape') this.setState({ open: null });
+    if ((e.key === 'Delete' || e.key === 'Backspace') && this.state.sel) {
+      e.preventDefault(); const sel = this.state.sel;
+      if (sel.type === 'node') this.removeNode(sel.id);
+      else this.setState(s => ({ edges: s.edges.filter(x => x.id !== sel.id), sel: null }));
+    }
+  }
+  removeNode(id) {
+    this.setState(s => ({ nodes: s.nodes.filter(n => n.id !== id), edges: s.edges.filter(e => e.from !== id && e.to !== id), sel: null, open: s.open === id ? null : s.open }));
+  }
+  nodeDown(id, e) {
+    if (e.button !== 0) return; e.stopPropagation();
+    const p = this.toWorld(e); const n = this.state.nodes.find(x => x.id === id);
+    this.drag = { kind: 'node', id, dx: p.x - n.x, dy: p.y - n.y };
+    this.setState({ sel: { type: 'node', id } });
+  }
+  portDown(id, port, e) {
+    e.stopPropagation(); e.preventDefault();
+    const p = this.toWorld(e); this.drag = { kind: 'link', from: id, port };
+    this.setState({ link: { from: id, port, x: p.x, y: p.y } });
+  }
+  canvasDown(e) {
+    if (e.button !== 0) return;
+    this.drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, px: this.state.panX, py: this.state.panY };
+    this.setState({ sel: null, panning: true });
+  }
+  paletteDown(type, e) {
+    if (e.button !== 0) return; e.preventDefault();
+    this.drag = { kind: 'palette', type };
+    this.setState({ ghost: { type, x: e.clientX, y: e.clientY } });
+  }
+  onMove(e) {
+    const d = this.drag; if (!d) return;
+    if (d.kind === 'node') {
+      const p = this.toWorld(e); const x = this.snap(p.x - d.dx), y = this.snap(p.y - d.dy);
+      this.setState(s => ({ nodes: s.nodes.map(n => n.id === d.id ? Object.assign({}, n, { x, y }) : n) }));
+    } else if (d.kind === 'link') {
+      const p = this.toWorld(e); const el = document.elementFromPoint(e.clientX, e.clientY);
+      const t = el && el.closest && el.closest('[data-node-id]'); let hid = t ? t.getAttribute('data-node-id') : null;
+      if (hid === d.from || (hid && TYPES[this.state.nodes.find(n => n.id === hid).type].cat === 'trigger')) hid = null;
+      this.setState({ link: { from: d.from, port: d.port, x: p.x, y: p.y }, hover: hid });
+    } else if (d.kind === 'pan') {
+      this.userMoved = true; this.setState({ panX: d.px + e.clientX - d.sx, panY: d.py + e.clientY - d.sy });
+    } else if (d.kind === 'palette') {
+      this.setState({ ghost: { type: d.type, x: e.clientX, y: e.clientY } });
+    }
+  }
+  onUp(e) {
+    const d = this.drag; this.drag = null; if (!d) return;
+    if (d.kind === 'link') {
+      const to = this.state.hover;
+      if (to) this.setState(s => ({ edges: s.edges.filter(x => !(x.from === d.from && x.port === d.port)).concat({ id: 'e' + (++this.seq), from: d.from, port: d.port, to }) }));
+      this.setState({ link: null, hover: null });
+    } else if (d.kind === 'palette') {
+      const r = this.rect(); const inside = e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom;
+      if (inside) {
+        const p = this.toWorld(e); const id = 'n' + (++this.seq);
+        const node = mk(id, d.type, this.snap(p.x - W / 2), this.snap(p.y - H / 2));
+        const autoOpen = this.props.openPanelOnDrop ?? false;
+        this.setState(s => ({ nodes: s.nodes.concat(node), sel: { type: 'node', id }, open: autoOpen ? id : s.open }));
+      }
+      this.setState({ ghost: null });
+    } else if (d.kind === 'pan') this.setState({ panning: false });
+  }
+  setCfg(id, k, v) { this.setState(s => ({ nodes: s.nodes.map(n => n.id === id ? Object.assign({}, n, { config: Object.assign({}, n.config, { [k]: v }) }) : n), saved: false })); }
+  setTitle(id, v) { this.setState(s => ({ nodes: s.nodes.map(n => n.id === id ? Object.assign({}, n, { title: v }) : n), saved: false })); }
+  path(a, b) {
+    if ((this.props.edgeStyle ?? 'curved') === 'orthogonal') {
+      const my = b.y > a.y + 32 ? a.y + (b.y - a.y) / 2 : a.y + 24;
+      return `M${a.x} ${a.y} V${my} H${b.x} V${b.y}`;
+    }
+    const dy = Math.max(48, Math.abs(b.y - a.y) / 2);
+    return `M${a.x} ${a.y} C${a.x} ${a.y + dy} ${b.x} ${b.y - dy} ${b.x} ${b.y}`;
+  }
+  renderVals() {
+    const s = this.state; const byId = {}; s.nodes.forEach(n => byId[n.id] = n);
+    const outPos = (n, i) => ({ x: n.x + W * (i + 1) / (TYPES[n.type].outputs.length + 1), y: n.y + H });
+    let open = 0;
+    const nodes = s.nodes.map(n => {
+      const T = TYPES[n.type], C = CATS[T.cat];
+      const sel = s.sel && s.sel.type === 'node' && s.sel.id === n.id;
+      const tgt = s.hover === n.id; const act = sel || s.open === n.id;
+      const outs = T.outputs.map((lab, i) => {
+        const conn = s.edges.some(e => e.from === n.id && e.port === i); if (!conn) open++;
+        const px = W * (i + 1) / (T.outputs.length + 1);
+        return { label: lab, hasLabel: !!lab, left: px - 7, labelLeft: px + 10, dotBg: conn ? '#181d26' : '#ffffff', onMouseDown: ev => this.portDown(n.id, i, ev) };
+      });
+      return {
+        id: n.id, left: n.x, top: n.y, title: n.title || T.name, caption: n.title ? T.name : C.label, summary: T.sum(n.config),
+        bg: C.bg, fg: C.fg, icon: T.icon, hasInput: T.cat !== 'trigger', outs,
+        borderColor: tgt ? '#458fff' : act ? '#181d26' : '#dddddd',
+        ring: tgt ? '0 0 0 2px #458fff' : act ? '0 0 0 1px #181d26' : 'none',
+        inputBorder: tgt ? '#458fff' : '#9297a0',
+        onMouseDown: e => this.nodeDown(n.id, e), onDoubleClick: e => { e.stopPropagation(); this.setState({ open: n.id, sel: { type: 'node', id: n.id } }); }
+      };
+    });
+    const edges = s.edges.filter(e => byId[e.from] && byId[e.to]).map(e => {
+      const a = outPos(byId[e.from], e.port), t = byId[e.to];
+      const sel = s.sel && s.sel.type === 'edge' && s.sel.id === e.id;
+      return { d: this.path(a, { x: t.x + W / 2, y: t.y - 6 }), stroke: sel ? '#181d26' : '#9297a0', width: sel ? 3 : 2,
+        onMouseDown: ev => { ev.stopPropagation(); this.setState({ sel: { type: 'edge', id: e.id } }); } };
+    });
+    let linkD = '';
+    if (s.link && byId[s.link.from]) {
+      const a = outPos(byId[s.link.from], s.link.port); const h = s.hover && byId[s.hover];
+      linkD = this.path(a, h ? { x: h.x + W / 2, y: h.y - 6 } : { x: s.link.x, y: s.link.y });
+    }
+    const palette = GROUPS.map(([label, keys]) => ({ label, items: keys.map(k => {
+      const T = TYPES[k], C = CATS[T.cat];
+      return { name: T.name, desc: T.desc, icon: T.icon, bg: C.bg, fg: C.fg, onMouseDown: e => this.paletteDown(k, e) };
+    }) }));
+    const on = s.open && byId[s.open]; const pv = {};
+    if (on) {
+      const T = TYPES[on.type], C = CATS[T.cat];
+      Object.assign(pv, {
+        pBg: C.bg, pFg: C.fg, pIcon: T.icon, pCat: C.label, pType: T.name, pTitle: on.title,
+        onTitle: e => this.setTitle(on.id, e.target.value),
+        fields: T.fields.map(f => {
+          const v = on.config[f.k];
+          return { label: f.l, value: v, unit: f.u || '', isText: f.t === 'text', isTextarea: f.t === 'textarea', isSelect: f.t === 'select', isNumber: f.t === 'number', isSeg: f.t === 'seg',
+            onChange: e => this.setCfg(on.id, f.k, f.t === 'number' ? e.target.value : e.target.value),
+            options: (f.o || []).map(o => ({ value: o, bg: o === v ? '#ffffff' : 'transparent', shadow: o === v ? '0 1px 2px rgba(24,29,38,0.12)' : 'none', onClick: () => this.setCfg(on.id, f.k, o) })) };
+        }),
+        hasBranches: T.cat === 'decision',
+        branches: T.outputs.map((lab, i) => { const e = s.edges.find(x => x.from === on.id && x.port === i); const t = e && byId[e.to];
+          return { label: lab, target: t ? (t.title || TYPES[t.type].name) : 'Not connected', color: t ? '#181d26' : '#aa2d00' }; }),
+        deleteOpen: () => this.removeNode(on.id)
+      });
+    }
+    const g = s.ghost && TYPES[s.ghost.type];
+    return Object.assign({
+      canvasRef: this.canvasRef, nodes, edges, palette, linking: !!s.link, linkD,
+      panX: s.panX, panY: s.panY, zoom: s.zoom, gridSize: 20 * s.zoom, zoomPct: Math.round(s.zoom * 100) + '%',
+      canvasCursor: s.panning ? 'grabbing' : 'default', isEmpty: s.nodes.length === 0,
+      panelOpen: !!on, zoomRight: on ? 376 : 16, hintRight: (on ? 376 : 16) + 200,
+      stop: e => e.stopPropagation(), closePanel: () => this.setState({ open: null }),
+      zoomIn: () => this.zoomCenter(1.2), zoomOut: () => this.zoomCenter(1 / 1.2), fit: () => this.fit(),
+      canvasDown: e => this.canvasDown(e),
+      validText: open ? `${open} open branch${open > 1 ? 'es' : ''}` : 'All branches connected',
+      validDot: open ? '#d9a441' : '#39bf45',
+      status: s.status, statusBg: s.status === 'Live' ? '#a8d8c4' : '#e0e2e6', statusFg: s.status === 'Live' ? '#0a2e0e' : '#181d26',
+      saveLabel: s.saved ? 'Saved' : 'Save draft', publishLabel: s.status === 'Live' ? 'Unpublish' : 'Publish play',
+      saveDraft: () => this.setState({ saved: true }),
+      publish: () => this.setState(st => ({ status: st.status === 'Live' ? 'Draft' : 'Live' })),
+      ghostOn: !!g, ghostX: s.ghost ? s.ghost.x : 0, ghostY: s.ghost ? s.ghost.y : 0,
+      ghostName: g ? g.name : '', ghostIcon: g ? g.icon : '', ghostBg: g ? CATS[g.cat].bg : '', ghostFg: g ? CATS[g.cat].fg : ''
+    }, pv);
+  }
+}
+</script>
+</body>
+</html>

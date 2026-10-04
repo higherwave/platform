@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; }
+  ::placeholder { color: #9297a0; }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#ffffff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#181d26;display:flex;flex-direction:column">
+  <div style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center;justify-content:space-between;padding:0 32px;flex-shrink:0">
+    <div style="font-size:18px;font-weight:600;letter-spacing:-0.2px">Flowline <span style="color:#41454d;font-weight:400;font-size:14px;margin-left:8px">Supplier Portal</span></div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <div style="font-size:14px;color:#1b61c9;cursor:pointer">Save &amp; exit</div>
+      <div style="width:32px;height:32px;border-radius:9999px;background:#f8fafc;border:1px solid #dddddd;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500">AM</div>
+    </div>
+  </div>
+
+  <div style="padding:32px 32px 24px;border-bottom:1px solid #dddddd">
+    <div style="font-size:24px;font-weight:400;line-height:1.35;letter-spacing:0.12px">Set up your supplier account</div>
+    <div style="font-size:14px;color:#41454d;margin-top:6px;max-width:560px">Complete each section to get approved and start receiving purchase orders. You can do these in any order and pick up where you left off.</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:20px;max-width:480px">
+      <div style="flex:1;height:6px;background:#e0e2e6;border-radius:9999px;overflow:hidden">
+        <div style="height:100%;background:#181d26;border-radius:9999px;width:{{ progressPct }}%;transition:width .3s"></div>
+      </div>
+      <div style="font-size:13px;color:#41454d;white-space:nowrap;font-weight:500">{{ doneCount }} of {{ totalCount }} complete</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex:1;min-height:0">
+    <div style="width:280px;flex-shrink:0;border-right:1px solid #dddddd;padding:24px 16px;overflow:auto">
+      <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="6">
+        <div onClick="{{ selectSection }}" data-id="{{ sec.id }}" style="{{ sec.rowStyle }}">
+          <div style="{{ sec.iconStyle }}">
+            <sc-if value="{{ sec.done }}" hint-placeholder-val="{{ false }}">
+              <span style="color:#ffffff;font-size:12px;font-weight:700">✓</span>
+            </sc-if>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:500;color:#181d26">{{ sec.name }}</div>
+            <div style="font-size:12px;color:#41454d;margin-top:2px">{{ sec.meta }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;padding:32px;overflow:auto;min-width:0">
+      <div style="max-width:640px;border:1px solid #dddddd;border-radius:12px;padding:32px">
+        <div style="font-size:20px;font-weight:400;margin-bottom:4px">{{ activeSection.name }}</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px">{{ activeSection.desc }}</div>
+
+        <sc-for list="{{ activeSection.fields }}" as="field" hint-placeholder-count="4">
+          <div style="margin-bottom:20px">
+            <div style="font-size:13px;font-weight:500;color:#181d26;margin-bottom:6px">{{ field.label }}</div>
+            <sc-if value="{{ field.isCheckbox }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#333840">
+                <div style="width:18px;height:18px;border:1px solid #9297a0;border-radius:4px"></div>
+                {{ field.label2 }}
+              </div>
+            </sc-if>
+            <sc-if value="{{ field.isSelect }}" hint-placeholder-val="{{ false }}">
+              <div style="height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:#9297a0;max-width:360px">
+                {{ field.placeholder }}
+                <span style="color:#9297a0">▾</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ field.isUpload }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px dashed #9297a0;border-radius:6px;padding:16px;font-size:13px;color:#41454d;max-width:360px;text-align:center">
+                Drop file or <span style="color:#1b61c9">browse</span> — {{ field.placeholder }}
+              </div>
+            </sc-if>
+            <sc-if value="{{ field.isPlain }}" hint-placeholder-val="{{ true }}">
+              <input placeholder="{{ field.placeholder }}" style="height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 16px;font-size:14px;max-width:360px;width:100%;box-sizing:border-box;font-family:inherit" />
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <div style="display:flex;gap:12px;margin-top:8px">
+          <button onClick="{{ completeActive }}" style="background:#181d26;color:#ffffff;border:none;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">
+            {{ activeSection.ctaLabel }}
+          </button>
+          <button style="background:#ffffff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Save for later</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="width:280px;flex-shrink:0;border-left:1px solid #dddddd;padding:24px;overflow:auto">
+      <div style="background:#f5e9d4;border-radius:10px;padding:24px;margin-bottom:16px">
+        <div style="font-size:14px;font-weight:500;margin-bottom:12px">Resources</div>
+        <div style="font-size:13px;color:#333840;line-height:1.6">
+          <div style="margin-bottom:10px;color:#1b61c9;cursor:pointer">Guide: preparing your W-9</div>
+          <div style="margin-bottom:10px;color:#1b61c9;cursor:pointer">Connecting your ERP via EDI</div>
+          <div style="color:#1b61c9;cursor:pointer">Catalog CSV template</div>
+        </div>
+      </div>
+      <div style="border:1px solid #dddddd;border-radius:10px;padding:20px">
+        <div style="font-size:13px;font-weight:500;margin-bottom:6px">Need help?</div>
+        <div style="font-size:13px;color:#41454d;margin-bottom:12px">Your onboarding specialist, Priya, is available for setup calls.</div>
+        <button style="background:#ffffff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer;width:100%;font-family:inherit">Book a call</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    activeId: 'company-profile',
+    status: {
+      'company-profile': 'in-progress',
+      'tax-compliance': 'not-started',
+      'banking-payments': 'not-started',
+      'catalog-pricing': 'not-started',
+      'integrations': 'not-started',
+      'review-submit': 'not-started',
+    },
+  };
+
+  defs = [
+    { id: 'company-profile', name: 'Company profile', meta: '~3 min', desc: 'Tell us about your business.',
+      fields: [
+        { label: 'Legal business name', placeholder: 'Acme Manufacturing LLC', isPlain: true },
+        { label: 'DBA (if different)', placeholder: 'Optional', isPlain: true },
+        { label: 'Business type', placeholder: 'Select business type', isSelect: true },
+        { label: 'Primary contact email', placeholder: 'contact@acme.com', isPlain: true },
+      ] },
+    { id: 'tax-compliance', name: 'Tax & compliance', meta: '~5 min', desc: 'Required for U.S. tax reporting and vendor qualification.',
+      fields: [
+        { label: 'Tax ID / EIN', placeholder: '12-3456789', isPlain: true },
+        { label: 'W-9 form', placeholder: 'PDF, under 10MB', isUpload: true },
+        { label: 'Certificate of insurance', placeholder: 'PDF, under 10MB', isUpload: true },
+        { label: 'Compliance', label2: 'I attest this information is accurate', isCheckbox: true },
+      ] },
+    { id: 'banking-payments', name: 'Banking & payments', meta: '~4 min', desc: 'Where we send your payments.',
+      fields: [
+        { label: 'Bank name', placeholder: 'Chase', isPlain: true },
+        { label: 'Account number', placeholder: '••••••1234', isPlain: true },
+        { label: 'Routing number', placeholder: '021000021', isPlain: true },
+        { label: 'Payment terms', placeholder: 'Select terms (e.g. Net 30)', isSelect: true },
+      ] },
+    { id: 'catalog-pricing', name: 'Catalog & pricing', meta: '~6 min', desc: 'Upload the products you supply and your pricing.',
+      fields: [
+        { label: 'Product catalog', placeholder: 'CSV using our template', isUpload: true },
+        { label: 'Currency', placeholder: 'Select currency', isSelect: true },
+        { label: 'Standard lead time (days)', placeholder: '14', isPlain: true },
+        { label: 'Minimum order quantity', placeholder: '100', isPlain: true },
+      ] },
+    { id: 'integrations', name: 'Integrations', meta: '~8 min', desc: 'Connect your ERP or EDI system so orders sync automatically.',
+      fields: [
+        { label: 'Connection method', placeholder: 'EDI / ERP / Manual upload', isSelect: true },
+        { label: 'ERP system', placeholder: 'e.g. SAP, Oracle, NetSuite', isSelect: true },
+        { label: 'API key', placeholder: 'Paste your API key', isPlain: true },
+      ] },
+    { id: 'review-submit', name: 'Review & submit', meta: '~2 min', desc: 'Confirm everything looks right before you submit for approval.',
+      fields: [
+        { label: 'Status', placeholder: 'All sections must be complete to submit', isPlain: true },
+      ] },
+  ];
+
+  selectSection = (e) => {
+    const id = e.currentTarget.getAttribute('data-id');
+    this.setState({ activeId: id });
+  };
+
+  completeActive = () => {
+    const order = this.defs.map(d => d.id);
+    const idx = order.indexOf(this.state.activeId);
+    const nextStatus = { ...this.state.status, [this.state.activeId]: 'done' };
+    let nextActive = this.state.activeId;
+    for (let i = 1; i <= order.length; i++) {
+      const cand = order[(idx + i) % order.length];
+      if (nextStatus[cand] !== 'done') { nextActive = cand; break; }
+    }
+    this.setState({ status: nextStatus, activeId: nextActive });
+  };
+
+  renderVals() {
+    const status = this.state.status;
+    const sections = this.defs.map(d => {
+      const st = status[d.id];
+      const done = st === 'done';
+      const active = d.id === this.state.activeId;
+      return {
+        id: d.id, name: d.name, meta: st === 'done' ? 'Complete' : (st === 'in-progress' ? d.meta + ' left' : d.meta),
+        done,
+        rowStyle: `display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:2px;background:${active ? '#f8fafc' : 'transparent'}`,
+        iconStyle: `width:20px;height:20px;border-radius:9999px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:${done ? '#006400' : 'transparent'};border:${done ? 'none' : '1.5px solid #9297a0'}`,
+      };
+    });
+    const doneCount = sections.filter(s => s.done).length;
+    const activeDef = this.defs.find(d => d.id === this.state.activeId);
+    const activeSection = {
+      name: activeDef.name, desc: activeDef.desc, fields: activeDef.fields,
+      ctaLabel: status[activeDef.id] === 'done' ? 'Marked complete' : 'Mark complete & continue',
+    };
+    return {
+      sections, doneCount, totalCount: this.defs.length,
+      progressPct: Math.round((doneCount / this.defs.length) * 100),
+      activeSection, selectSection: this.selectSection, completeActive: this.completeActive,
+    };
+  }
+}
+</script>
+</body>
+</html>

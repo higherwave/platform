@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>body{margin:0}::placeholder{color:#9297a0}</style>
+</helmet>
+<div style="min-height:100vh;background:#ffffff;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#181d26;display:flex;flex-direction:column">
+  <div style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center;justify-content:space-between;padding:0 32px;flex-shrink:0">
+    <div style="font-size:18px;font-weight:600">Flowline <span style="color:#41454d;font-weight:400;font-size:14px;margin-left:8px">Connect your system</span></div>
+    <div style="font-size:14px;color:#41454d;cursor:pointer">Exit setup</div>
+  </div>
+
+  <div style="padding:24px 32px;border-bottom:1px solid #dddddd">
+    <div style="display:flex;align-items:center;gap:8px;max-width:720px;margin:0 auto">
+      <sc-for list="{{ steps }}" as="step" hint-placeholder-count="5">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+          <div style="{{ step.dotStyle }}">
+            <sc-if value="{{ step.done }}" hint-placeholder-val="{{ false }}">
+              <span style="color:#ffffff;font-size:12px;font-weight:700">✓</span>
+            </sc-if>
+            <sc-if value="{{ step.showNum }}" hint-placeholder-val="{{ true }}">
+              {{ step.num }}
+            </sc-if>
+          </div>
+          <div style="{{ step.labelStyle }}">{{ step.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;align-items:flex-start;justify-content:center;padding:56px 32px;overflow:auto">
+    <div style="width:100%;max-width:640px">
+
+      <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:32px;font-weight:400;line-height:1.2;margin-bottom:12px">Connect your ordering system</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:32px;max-width:480px">Orders, ASNs, and invoices will sync automatically once connected. This takes about 10 minutes — you can also do it manually and connect later.</div>
+      </sc-if>
+
+      <sc-if value="{{ isMethod }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:24px;font-weight:400;margin-bottom:8px">How do you want to connect?</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px">Choose the method that matches your systems.</div>
+        <sc-for list="{{ methods }}" as="m" hint-placeholder-count="4">
+          <div onClick="{{ selectMethod }}" data-id="{{ m.id }}" style="{{ m.cardStyle }}">
+            <div style="{{ m.radioStyle }}"></div>
+            <div>
+              <div style="font-size:14px;font-weight:500">{{ m.name }}</div>
+              <div style="font-size:13px;color:#41454d;margin-top:2px">{{ m.desc }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </sc-if>
+
+      <sc-if value="{{ isCredentials }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:24px;font-weight:400;margin-bottom:8px">Connect to {{ selectedMethodName }}</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px">Enter your connection details. We'll test the connection before continuing.</div>
+        <div style="margin-bottom:20px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:6px">Host / endpoint URL</div>
+          <input placeholder="https://erp.acme.com/api/v2" style="height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 16px;font-size:14px;width:100%;box-sizing:border-box;font-family:inherit" />
+        </div>
+        <div style="margin-bottom:20px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:6px">API key</div>
+          <input placeholder="Paste your API key" style="height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 16px;font-size:14px;width:100%;box-sizing:border-box;font-family:inherit" />
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:6px">Trading partner ID</div>
+          <input placeholder="ACME-9921" style="height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 16px;font-size:14px;width:100%;box-sizing:border-box;font-family:inherit" />
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMapping }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:24px;font-weight:400;margin-bottom:8px">Map your fields</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px">We matched most fields automatically from your file headers. Review the rest.</div>
+        <div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1fr 24px 1fr;background:#f8fafc;padding:10px 16px;font-size:12px;font-weight:500;color:#41454d">
+            <div>Your column</div><div></div><div>Flowline field</div>
+          </div>
+          <sc-for list="{{ mappings }}" as="row" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;padding:12px 16px;border-top:1px solid #dddddd;font-size:14px">
+              <div style="color:#333840">{{ row.source }}</div>
+              <div style="color:#9297a0;text-align:center">→</div>
+              <div style="{{ row.targetStyle }}">{{ row.target }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPreview }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:24px;font-weight:400;margin-bottom:8px">Review before import</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px">248 records found. 3 rows need attention.</div>
+        <div style="display:flex;gap:12px;margin-bottom:20px">
+          <div style="flex:1;background:#f8fafc;border-radius:10px;padding:16px;text-align:center">
+            <div style="font-size:24px;font-weight:500">245</div>
+            <div style="font-size:12px;color:#41454d">Ready to import</div>
+          </div>
+          <div style="flex:1;background:#f5e9d4;border-radius:10px;padding:16px;text-align:center">
+            <div style="font-size:24px;font-weight:500">3</div>
+            <div style="font-size:12px;color:#41454d">Need review</div>
+          </div>
+        </div>
+        <div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 90px;background:#f8fafc;padding:10px 16px;font-size:12px;font-weight:500;color:#41454d">
+            <div>SKU / part</div><div>Qty</div><div>Unit price</div><div>Status</div>
+          </div>
+          <sc-for list="{{ previewRows }}" as="row" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 90px;align-items:center;padding:12px 16px;border-top:1px solid #dddddd;font-size:13px">
+              <div style="color:#333840">{{ row.sku }}</div>
+              <div style="color:#333840">{{ row.qty }}</div>
+              <div style="color:#333840">{{ row.price }}</div>
+              <div style="{{ row.badgeStyle }}">{{ row.badgeText }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+        <div style="width:56px;height:56px;border-radius:9999px;background:#006400;display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+          <span style="color:#ffffff;font-size:24px">✓</span>
+        </div>
+        <div style="font-size:32px;font-weight:400;margin-bottom:12px">You're connected</div>
+        <div style="font-size:14px;color:#41454d;margin-bottom:24px;max-width:480px">245 SKUs imported and your system is syncing live. New purchase orders will now flow automatically into your ERP.</div>
+        <div style="background:#f8fafc;border-radius:10px;padding:20px;max-width:400px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:8px">Next steps</div>
+          <div style="font-size:13px;color:#41454d;line-height:1.7">Go to your dashboard to see incoming orders, or invite teammates to help manage the account.</div>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;gap:12px;margin-top:36px">
+        <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ back }}" style="background:#ffffff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">Back</button>
+        </sc-if>
+        <button onClick="{{ next }}" style="background:#181d26;color:#ffffff;border:none;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">{{ nextLabel }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 0, methodId: 'erp' };
+
+  stepDefs = ['welcome','method','credentials','mapping','preview','done'];
+  stepLabels = ['Welcome','Method','Connect','Map fields','Review','Done'];
+
+  methods = [
+    { id: 'erp', name: 'ERP integration', desc: 'SAP, Oracle NetSuite, Microsoft Dynamics, and others' },
+    { id: 'edi', name: 'EDI / VAN', desc: 'Connect through your existing EDI trading network' },
+    { id: 'csv', name: 'CSV upload', desc: 'Upload orders and catalog files manually' },
+    { id: 'manual', name: "I'll set this up later", desc: 'Skip for now — you can connect at any time' },
+  ];
+
+  next = () => this.setState(s => ({ step: Math.min(s.step + 1, this.stepDefs.length - 1) }));
+  back = () => this.setState(s => ({ step: Math.max(s.step - 1, 0) }));
+  selectMethod = (e) => this.setState({ methodId: e.currentTarget.getAttribute('data-id') });
+
+  renderVals() {
+    const step = this.state.step;
+    const cur = this.stepDefs[step];
+    const methodNameMap = { erp: 'your ERP', edi: 'your EDI network', csv: 'CSV import', manual: 'manual setup' };
+    const steps = this.stepDefs.map((id, i) => {
+      const done = i < step;
+      const active = i === step;
+      return {
+        num: i + 1, label: this.stepLabels[i], done, showNum: !done,
+        dotStyle: `width:28px;height:28px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;background:${done ? '#006400' : (active ? '#181d26' : '#e0e2e6')};color:${active || done ? '#ffffff' : '#41454d'}`,
+        labelStyle: `font-size:12px;color:${active ? '#181d26' : '#9297a0'};font-weight:${active ? '500' : '400'}`,
+      };
+    });
+    const methods = this.methods.map(m => {
+      const sel = m.id === this.state.methodId;
+      return {
+        ...m,
+        cardStyle: `display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid ${sel ? '#181d26' : '#dddddd'};border-radius:10px;margin-bottom:12px;cursor:pointer`,
+        radioStyle: `width:18px;height:18px;border-radius:9999px;border:1.5px solid ${sel ? '#181d26' : '#9297a0'};margin-top:2px;flex-shrink:0;background:${sel ? 'radial-gradient(circle,#181d26 40%,transparent 44%)' : 'transparent'}`,
+      };
+    });
+    const mappings = [
+      { source: 'item_code', target: 'SKU', ok: true },
+      { source: 'qty_ordered', target: 'Quantity', ok: true },
+      { source: 'unit_cost', target: 'Unit price', ok: true },
+      { source: 'ship_date', target: 'Ship date', ok: true },
+      { source: 'whs_id', target: '⚠ Select a match', ok: false },
+    ].map(r => ({ ...r, targetStyle: r.ok ? 'color:#333840' : 'color:#aa2d00;font-weight:500' }));
+    const previewRows = [
+      { sku: 'AX-1042 Steel bracket', qty: '500', price: '$1.20', badgeText: 'Ready', ok: true },
+      { sku: 'AX-1043 Steel bracket L', qty: '250', price: '$1.85', badgeText: 'Ready', ok: true },
+      { sku: 'BR-2210 Gasket seal', qty: '—', price: '$0.42', badgeText: 'Missing qty', ok: false },
+      { sku: 'BR-2211 Gasket seal XL', qty: '1200', price: '$0.51', badgeText: 'Ready', ok: true },
+      { sku: 'CX-9001 Valve assembly', qty: '80', price: '—', badgeText: 'Missing price', ok: false },
+    ].map(r => ({ ...r, badgeStyle: `font-size:11px;font-weight:500;padding:4px 8px;border-radius:9999px;display:inline-block;text-align:center;background:${r.ok ? '#a8d8c4' : '#f5e9d4'};color:${r.ok ? '#0a2e0e' : '#aa2d00'}` }));
+
+    return {
+      steps,
+      isWelcome: cur === 'welcome', isMethod: cur === 'method', isCredentials: cur === 'credentials',
+      isMapping: cur === 'mapping', isPreview: cur === 'preview', isDone: cur === 'done',
+      methods, selectMethod: this.selectMethod, selectedMethodName: methodNameMap[this.state.methodId],
+      mappings, previewRows,
+      showBack: step > 0 && step < this.stepDefs.length - 1,
+      nextLabel: cur === 'welcome' ? 'Get started' : cur === 'preview' ? 'Import 245 records' : cur === 'done' ? 'Go to dashboard' : 'Continue',
+      next: this.next, back: this.back,
+    };
+  }
+}
+</script>
+</body>
+</html>
