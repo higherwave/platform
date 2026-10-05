@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./lightbox.js"></script>
+<script src="./band-motion.js"></script>
+<style>
+body{margin:0;background:#ffffff;font-family:Inter,-apple-system,"Segoe UI",sans-serif;color:#333840;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+a{color:#1b61c9;text-decoration:none}
+a:hover{color:#1a3866}
+p,h1,h2,h3,ul,ol{margin:0}
+li{margin:6px 0}
+strong{font-weight:500;color:#181d26}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;overflow-x:clip">
+<dc-import name="SiteNav" active="approach" hint-size="100%,64px" style="position:sticky;top:0;z-index:100"></dc-import>
+<div style="max-width:1280px;width:100%;margin:0 auto;flex:1">
+<div style="position:relative;isolation:isolate;padding:96px 48px 48px;display:flex;flex-direction:column;gap:24px">
+<div aria-hidden="true" style="position:absolute;z-index:-1;top:0;bottom:0;left:780px;right:calc(min(0px, 640px - 50vw));pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);mask-composite:intersect">
+<div data-ribbon="" style="position:absolute;top:-40%;left:10%;width:34%;height:180%;background:linear-gradient(180deg,#a8d8c4 0%,#1b61c9 70%,#a8d8c4 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:38%;width:34%;height:180%;background:linear-gradient(180deg,#8ec5f0 0%,#7c5cd6 50%,#1b61c9 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:64%;width:30%;height:180%;background:linear-gradient(180deg,#c3b5f2 0%,#2a9d8f 55%,#a8d8c4 100%);transform:rotate(-28deg);border-radius:50%;filter:blur(12px);opacity:0.7"></div>
+</div>
+<div style="display:flex;flex-wrap:wrap-reverse;align-items:center;gap:48px">
+<div style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<h1 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:48px;line-height:1.12;color:#181d26;max-width:720px;text-wrap:balance">What Changes with AI … and What Keeps Us Grounded</h1>
+<p style="font-size:17px;line-height:1.55;max-width:700px;text-wrap:pretty">The following best practice principles are still relevant (and should even be more valuable) in the era of AI and automation. This content also covers methods of leveraging AI to greatly improve productivity and automate previous designer &gt; developer process bottlenecks.</p>
+</div>
+<a href="https://thehigherwave.com" target="_blank" rel="noopener" aria-label="View Patterns &amp; Prototypes created with Claude Design (opens thehigherwave.com)" style="display:block;text-decoration:none;color:inherit;transition:transform .2s ease;flex:0 0 auto;margin:0 auto;padding:7px;border-radius:50%;background:conic-gradient(from 200deg,#a8d8c4,#1b61c9,#7c5cd6,#c3b5f2,#2a9d8f,#a8d8c4);box-shadow:0 24px 60px rgba(27,97,201,0.22)">
+<div style="padding:6px;border-radius:50%;background:#ffffff">
+<div style="width:min(220px,56vw);height:min(220px,56vw);border-radius:50%;background:#181d26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;box-sizing:border-box;text-align:center">
+<img src="assets/logos/claude-mark.png" alt="" style="display:block;width:30px;height:30px">
+<p style="margin:0;font-family:'Inter Tight',sans-serif;font-size:17px;font-weight:500;line-height:1.3;color:#ffffff;text-wrap:balance">View Patterns &amp; Prototypes</p>
+<p style="margin:0;font-size:13px;line-height:1.4;color:#c9ced6">created with Claude Design</p>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div style="padding:0 48px 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+<a href="#principles" style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;color:inherit" style-hover="border-color:#181d26">
+<span style="font-size:16px;font-weight:500;color:#181d26">Staying Grounded in Core Principles</span>
+<span style="font-size:14px;line-height:1.45;flex:1">This section covers best practices, principles, and OKRs that can be used across products and teams - and provides orientation at the platform and project levels.</span>
+<span style="font-size:14px;color:#1b61c9">View</span>
+</a>
+<a href="#ai" style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;color:inherit" style-hover="border-color:#181d26">
+<span style="font-size:16px;font-weight:500;color:#181d26">Design Opportunities with AI</span>
+<span style="font-size:14px;line-height:1.45;flex:1">AI provides a number of opportunities to improve user research and measurement, as well as opportunities to simplify interactions and workflows with assistants and agents.</span>
+<span style="font-size:14px;color:#1b61c9">View</span>
+</a>
+<a href="#process" style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;color:inherit" style-hover="border-color:#181d26">
+<span style="font-size:16px;font-weight:500;color:#181d26">Figma, Claude, &amp; MCP</span>
+<span style="font-size:14px;line-height:1.45;flex:1">We have an opportunity with AI tools like Claude Design and MCP servers to greatly improve processes, including the hand-off, design system management, and practical pattern development.</span>
+<span style="font-size:14px;color:#1b61c9">View</span>
+</a>
+</div>
+
+<!-- CORE PRINCIPLES -->
+<div id="principles" style="padding:0 48px 96px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Core Principles</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:40px;line-height:1.2;color:#181d26">Product, Business, and Engineering Alignment</h2>
+</div>
+<div style="border-top:1px solid #dddddd;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Design the Meaningful</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The following are simple guidelines that I use as a reference (and to help the team) understand user needs, clarify outcomes, and measure quality.</p><p><strong>Design critique tends to fail when it has no frame of reference. So I give it one.</strong></p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Ground the Team Before Design Begins</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>I take into account the <strong>objective</strong> , the <strong>system around it</strong> , its <strong>constraints and tradeoffs</strong> , and a <strong>scalable, incremental path forward</strong> — grounded in evidence and shared context, so we solve the right problem.</p><p>From platform-level journey maps, information architecture, accessibility checklists, terminology references, and more, we can maintain a system mindset and more easily see connection points, dependencies, and overlap across products.</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Deeper Questions to Answer</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The following list is a living artifact of key questions for designers, product managers, engineers, and executive stakeholders.</p><p>The usability criteria is only meant to be a high-level reference of the most impactful categories.</p><div style="aspect-ratio:16/8"><image-slot id="ap-questions" src="assets/slots/ap-questions.webp" placeholder="Key questions + usability criteria" radius="10"></image-slot></div></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Understand the “Why“</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The PM heard "I want mobile" from customers, worked with engineers to make the desktop app responsive to mobile, checked the box, and moved on.</p><p>I requested that we touch base with customers to dig into the “why“ behind this - which was related to receiving network alerts on mobile.</p><p>So, I had the team play out the scenario. With a mobile site , customers would never hear the alert coming in (no bell ringing in their pocket).</p><p>A native app would accomplish this, but timing was a factor.</p><p>So, I recommended a trade-off of allowing users to leverage existing native apps (Outlook, Slack, etc.) for notifications. That will free up real estate on the desktop experience - to improve patterns and interactions there - where most users spend most of their time.</p><p>We can make a dedicated native app a future goal in the roadmap.</p><p><strong>Solving one problem (with design thinking) solved several.</strong></p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Improve the Experience and Monetization</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>As the sole designer, working across 4 PMs and 20+ Engineers, I helped bring a tool to market that allows DemandGen and MarketingOps users the ability to stitch together multiple marketing campaigns into one coherent strategy (view, edit, and automate in one place).</p><p>The monetization model stands to be an important money maker for the company since every action a user takes uses "credits" that customers purchase.</p><p>Because it's an automation feature (running daily), it stands to make the company more money over time (more credits consumed).</p><p>The tool itself, however, is offered free - removing barriers to adoption. Customers have the flexibility to start small and scale as needed.</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Solve the Right Problem</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>I nudged the team toward a change in product strategy to fit what large enterprise customers actually wanted for GDPR workflows - full automation - based on a series of user research sessions.</p><p>PMs were wanting to take the "sticky app" approach.</p><p>Going down the wrong path would have meant low adoption (lost opportunities) and turning back from the path of a complex new feature would have been very difficult later.</p><p>Helping PMs see this from another perspective (giving customers what they actually want and need and improving adoption) would present a major value ad to the cloud platform - and the team's contribution could be SMEs for data privacy.</p><p>Secondary value-ads could have been offered, such as ServiceNow templates.</p></div>
+</div>
+</div>
+</div>
+
+<!-- DESIGNING WITH AI -->
+<div id="ai" style="padding:0 48px 96px">
+<div style="background:#f8fafc;border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Designing with AI</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:40px;line-height:1.2;color:#181d26">Discovery, measurement, assistants, and agents</h2>
+</div>
+<div style="border-top:1px solid #dddddd;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">AI-Assisted Research, Discovery and Measurement</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>Let AI do the repetitive and time-consuming footwork for discovery - turning one-off research projects into standing signals and strong starting points.</p>
+<ul style="padding-left:20px"><li>Gemini or Zoom meeting transcriptions for user research sessions</li><li>ChatGPT for finding categorized themes from user feedback</li><li>Claude and ChatGPT for company, persona, and market research</li><li>Claude Design for generating 2-3 design options for early design ideation</li><li>ChatGPT/Claude for summarizing CSV data from win/loss reports, customer support logs, Slack conversations on CSM channels, etc.</li></ul></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Agents Change the Paradigm</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p><strong>The human sets goals, approves high-impact changes, and measures outcomes. Agents do the rest.</strong></p><p>In some business processes, the goal can be embedded and the workflow completely event-driven; only flagging high impact items for human approval.</p><p>When designing for multi-agent orchestration, are we considering … ?</p>
+<ul style="padding-left:20px"><li>If we’re matching the right model to the right task</li><li>How permissions, state, and error handling affect error-free operation</li><li>When humans should be in the loop</li><li>Agent lifecycle management (versioning, ownership, rollbacks, etc.)</li><li>Business outcome measurement</li><li>Operational visibility and cost awareness</li><li>Drift management</li></ul></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Assistants and Agents Working Together</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>This is an example of a design for a Netflix observability tool.</p><p>Common, repetitive workflows were mapped ahead of time to provide the AI (in JSON files), the deterministic data needed to run investigations. Users choose a use case from a prompt library in an assistant (along with account ID, and time window) and the agent runs the actual investigation.</p><div style="aspect-ratio:16/8"><image-slot id="ap-assistants" src="assets/slots/ap-assistants.webp" placeholder="Netflix assistant + agent design" radius="10"></image-slot></div></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Ground the AI with Deterministic Data</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The following are the investigation workflows used as deterministic data for the automated investigation project mentioned above - mapped with Claude initially - and then validated with users.</p><div style="aspect-ratio:16/8"><image-slot id="ap-deterministic" src="assets/slots/ap-deterministic.webp" placeholder="Investigation workflows" radius="10"></image-slot></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- PROCESS IMPROVEMENTS -->
+<div id="process" style="padding:0 48px 96px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Process Improvements with AI and MCP</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:40px;line-height:1.2;color:#181d26">Design System Governance, Patterns, and Improved Hand-offs</h2>
+</div>
+<div style="border-top:1px solid #dddddd;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">The Bottlenecks of Translation and Multiple Reviews</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The current process of managing design system implementation and updates, handling designer-developer handoffs with multiple questions and reviews, and guideline creation has always been time-consuming.</p><p>We labeled it as a ‘means to an end‘ and repeated the same laborious process for years. We now have an opportunity to improve several processes at once - with one new simple format.</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">MCP as the Governance Layer</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p><strong>The Source of Truth</strong></p><p>If we could leverage the power of AI design tools like Claude and a MCP server (acting as the governance and design system management layer) we could go from completely probabilistic AI to AI that’s more grounded in deterministic rules.</p><p>Designers and developers would be working off of the same source of truth.</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">A Fast, Streamlined Process</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>If the process were redesigned with 3 core parts, we may be able to implement multiple improvements at once.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5"><strong>The design</strong><span>(Figma file, screenshot, or prompt in Claude Design)</span></div>
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5"><strong>The MCP Server</strong><span>(maintains and understands how to apply the design system and can process any designs sent to it with the correct tokens, components, layouts, behaviors, accessibility, etc.)</span></div>
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5"><strong>The Staging Server</strong><span>(The endpoint of the process for designers. With an engineer’s help, designers can go from idea to production-ready React pages very fast).</span></div>
+</div>
+<p>The team would review on a real, production-ready page, instead of a Figma simulation.</p><p>Managing the design system would be done directly on the MCP Server, instead of the traditional Figma &gt; Storybook &gt; Production flow. Figma won't disappear. Its role will shrink from "where the product is designed" to "where humans resolve ambiguity that agents can't efficiently resolve."</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Moving Out of the Weeds</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>The time saved could be spent creating reusable design patterns at a higher level than components only. Guidelines at the component (atom or molecule) level are typically designer-created documentation for other designers.</p><p><strong>Patterns become much more valuable when they’re created in a format that matches the way we all think.</strong></p><div style="aspect-ratio:16/8"><image-slot id="ap-weeds" placeholder="Moving out of the weeds" radius="10"></image-slot></div></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Design for Where We Live</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>Higher-level patterns match the way we all think and work.</p>
+<ul style="padding-left:20px"><li><strong>Product</strong> (Thinking in features and flows)</li><li><strong>Engineers</strong> (Thinking in pages, flows, and seeing components as a means)</li><li><strong>End Users</strong> (Thinking in terms of tasks and flows)</li><li><strong>Designers</strong> (Matching the mindset of the user with tasks and flows)</li></ul></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Platform Level Patterns</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>An example of a use case (or platform-level) pattern would be a simple wizard that the design team wants to present in a modal. That one pattern is not a component. It’s a collection of pages and components, organized into a flow.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:14px;font-weight:500;color:#181d26"><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Modal window</span><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Layout spacing</span><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Form fields and labels</span><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Typography for title and subtitles</span><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Progress Bar</span><span style="border:1px solid #dddddd;border-radius:6px;padding:6px 10px">Buttons</span></div>
+<p>If patterns were approached from this perspective, they would be much more understandable, practical in terms of how we think about solutions, could provide more deterministic data for the MCP Server, and may help the team move faster without compromising quality.</p><div style="aspect-ratio:16/8"><image-slot id="ap-patterns" src="assets/slots/ap-patterns.webp" placeholder="Wizard pattern example" radius="10"></image-slot></div></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px 48px;padding:32px 0;border-bottom:1px solid #dddddd">
+<h3 style="flex:1 1 260px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:24px;line-height:1.3;color:#181d26">Start Where You Are</h3>
+<div style="flex:2 1 480px;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6;min-width:0"><p>If there are enough skills to set up a pilot MCP Server - teams can partner at least one designer and developer to run a pilot project for one project for one release.</p><p>Review accuracy - and the additional work on the Engineers side. Despite the potential need to start slow, I believe teams will see immediate productivity enhancements.</p><p>For the embedded MCP design system, start with a pre-existing design system (eg. AirTable, Material Design, etc.) to test with. These frameworks are fully featured, vetted in many ways, will simplify setup, and - with needed branding additions - could become the production design system (post pilot).</p></div>
+</div>
+</div>
+<div style="background:#181d26;color:#ffffff;border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2">Improving Both Strategy and Execution</h3>
+<p style="font-size:16px;line-height:1.6">Everything mentioned above comes back to 3 core areas:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;font-size:15px;line-height:1.55">
+<div style="background:#1d1f25;border-radius:10px;padding:24px">A more <strong style="color:#ffffff">informed strategy</strong> , grounded in data and communicated clearly to the team.</div>
+<div style="background:#1d1f25;border-radius:10px;padding:24px">A <strong style="color:#ffffff">streamlined AI process</strong> that automates repetitive work, provides automatic governance, and allows the team to shift more time toward strategy and validation.</div>
+<div style="background:#1d1f25;border-radius:10px;padding:24px"><strong style="color:#ffffff">Practical Patterns</strong> that provide a much richer and more practical match to the way we approach projects.</div>
+</div>
+</div>
+</div>
+</div>
+<dc-import name="SiteFooter" hint-size="100%,90px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>
