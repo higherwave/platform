@@ -67,6 +67,10 @@ window.PROTOS = [
     why: 'Shows how one marketplace serves the different needs of customers, partners, and admins.',
     principles: ['Consistency across user perspectives', 'Recognition over recall: categories and search', 'Trust signals before connecting'],
     extensions: ['Partner analytics view', 'Admin approval for new installs', 'Recommendations based on usage'] },
+  { id: 'int-partner', title: 'Partner and Supplier Visibility', category: 'Integrations', description: 'Shared view of partner and supplier status, performance, and risk.', url: 'prototypes/integrations/partner-supplier-risk-mgmt/',
+    why: 'Brings partner and supplier data into one place so teams can spot risk early and act before it affects operations.',
+    principles: ['Visibility of status and risk at a glance', 'Progressive disclosure: drill into a partner for detail', 'Error prevention: flag issues before they escalate'],
+    extensions: ['Risk alerts and thresholds', 'Shared scorecards with partners', 'Contract and compliance tracking'] },
   { id: 'int-mapping', title: 'Dependency Graph for Operations', category: 'Integrations', description: 'View operational systems dependencies during upgrades or digital transformation projects', url: 'prototypes/integrations/ops-dependency-graph/',
     why: 'Makes hidden dependencies visible so teams can plan upgrades and migrations with less risk.',
     principles: ['Visibility of system relationships', 'Progressive disclosure: expand a node for detail', 'Error prevention: flag impact before a change'],
@@ -111,11 +115,13 @@ window.THUMBS = {
   'prod-kanban': 'thumbs/prod-kanban.webp',
   'onb-two-level': 'thumbs/onb-two-level.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash.png',
-  'prod-comms': 'thumbs/prod-comms.png'
+  'prod-comms': 'thumbs/prod-comms.png',
+  'int-partner': 'thumbs/int-partner.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'int-partner': 'thumbs/int-partner-page.png',
   'prod-comms': 'thumbs/prod-comms-page.png',
   'wf-runs': 'thumbs/wf-runs-page.png',
   'onb-two-level': 'thumbs/onb-two-level-page.png',
