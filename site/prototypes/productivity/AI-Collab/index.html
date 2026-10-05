@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#ffffff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#181d26;-webkit-font-smoothing:antialiased}
+a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
+textarea,input,button{font-family:inherit}
+textarea:focus,input:focus{outline:none}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="display:grid;grid-template-columns:{{ cols }};height:100vh;min-height:420px;overflow:hidden;position:relative;">
+
+  <aside style="background:#4a154b;color:#ffffff;display:{{ sideDisplay }};flex-direction:column;min-width:0;">
+    <div style="height:64px;display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid #3a0f3b;">
+      <div style="width:28px;height:28px;border-radius:6px;background:#aa2d00;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;">K</div>
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:15px;font-weight:500;">Northwind</span>
+        <span style="font-size:12px;color:#e0e2e6;">Keel workspace</span>
+      </div>
+    </div>
+    <div style="padding:20px 12px 8px;font-size:12px;font-weight:500;letter-spacing:0.16px;color:#e0e2e6;padding-left:20px;">Channels</div>
+    <nav style="display:flex;flex-direction:column;gap:2px;padding:0 8px;">
+      <sc-for list="{{ channels }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;cursor:pointer;text-align:left;padding:8px 12px;border-radius:6px;font-size:14px;background:{{ c.bg }};color:{{ c.fg }};">
+          <span># {{ c.name }}</span>
+          <sc-if value="{{ c.hasUnread }}"><span style="font-size:12px;font-weight:500;background:#ffffff;color:#181d26;border-radius:9999px;padding:1px 7px;">{{ c.unread }}</span></sc-if>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="margin-top:auto;padding:16px 20px;border-top:1px solid #3a0f3b;display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;border-radius:10px;background:#f5e9d4;color:#181d26;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;">AR</div>
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:14px;">Alex Rivera</span>
+        <span style="font-size:12px;color:#e0e2e6;">Design lead</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;">
+    <header style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;border-bottom:1px solid #dddddd;">
+      <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
+        <span style="font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"># {{ ch.name }}</span>
+        <span style="font-size:13px;color:#41454d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ ch.topic }}</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex:none;">
+        <button onClick="{{ openLedger }}" style="display:flex;align-items:center;gap:8px;border:1px solid #dddddd;background:#ffffff;color:#181d26;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:500;cursor:pointer;" style-hover="background:#f8fafc;">Ledger <span style="font-size:12px;background:#181d26;color:#ffffff;border-radius:9999px;padding:1px 7px;">{{ ledgerCount }}</span></button>
+      </div>
+    </header>
+
+    <div ref="{{ msgsRef }}" style="flex:1;min-height:0;overflow-y:auto;position:relative;padding:16px 0 8px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 24px;font-size:12px;font-weight:500;color:#41454d;">
+        <div style="flex:1;height:1px;background:#dddddd;"></div><span>Monday, October 5</span><div style="flex:1;height:1px;background:#dddddd;"></div>
+      </div>
+
+      <sc-for list="{{ preMsgs }}" as="m" hint-placeholder-count="4">
+        <div id="{{ m.domId }}" style="display:flex;gap:12px;padding:14px 24px;background:{{ m.bg }};transition:background 0.6s;">
+          <div style="width:36px;height:36px;flex:none;border-radius:10px;background:{{ m.avBg }};color:{{ m.avFg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;">{{ m.initials }}</div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;gap:8px;align-items:baseline;">
+              <span style="font-size:14px;font-weight:500;">{{ m.name }}</span>
+              <sc-if value="{{ m.isAi }}"><span style="font-size:11px;font-weight:500;background:#f5e9d4;border-radius:6px;padding:1px 6px;">AI</span></sc-if>
+              <span style="font-size:12px;color:#41454d;">{{ m.time }}</span>
+            </div>
+            <div style="font-size:14px;line-height:1.5;color:#333840;text-wrap:pretty;max-width:680px;">{{ m.text }}</div>
+            <sc-if value="{{ m.hasThread }}">
+              <button onClick="{{ m.openThread }}" style="align-self:flex-start;display:flex;align-items:center;gap:10px;margin-top:4px;border:1px solid #dddddd;background:#ffffff;border-radius:10px;padding:6px 12px 6px 8px;cursor:pointer;font-size:13px;color:#181d26;" style-hover="background:#f8fafc;">
+                <span style="display:flex;gap:2px;"><span style="width:18px;height:18px;border-radius:6px;background:#a8d8c4;"></span><span style="width:18px;height:18px;border-radius:6px;background:#f4d35e;"></span><span style="width:18px;height:18px;border-radius:6px;background:#fcab79;"></span></span>
+                <span style="font-weight:500;color:#1b61c9;">{{ m.threadCount }} replies</span>
+                <span style="color:#41454d;">{{ m.threadStatus }}</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ m.hasMemory }}">
+              <div style="align-self:stretch;max-width:680px;margin-top:6px;background:#a8d8c4;border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                  <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+                    <sc-if value="{{ m.showNotes }}"><span style="width:18px;height:18px;flex:none;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;">4</span></sc-if>
+                    <span style="font-weight:500;">Decided before</span>
+                    <span style="color:#181d26;">Mar 18 in #product-v2: keep CSV export</span>
+                  </div>
+                  <button onClick="{{ m.toggleMem }}" style="border:0;background:transparent;font-size:13px;font-weight:500;color:#181d26;cursor:pointer;text-decoration:underline;">{{ m.memLabel }}</button>
+                </div>
+                <sc-if value="{{ m.memOpen }}">
+                  <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.5;color:#181d26;border-top:1px solid #181d26;padding-top:8px;">
+                    <div><span style="font-weight:500;">Why:</span> Acme, Halvorsen, and Tidewater use CSV for month-end finance close. It is referenced in Acme’s renewal terms.</div>
+                    <div><span style="font-weight:500;">What changed since:</span> the estimate. It was 4 days on the old chart engine, now about 2 weeks.</div>
+                    <div style="color:#181d26;">Decided by Maya Chen · agreed by Priya Nair, Sam Okafor · 22-message thread</div>
+                    <div style="display:flex;gap:8px;">
+                      <button onClick="{{ m.shareMemory }}" style="border:0;background:#181d26;color:#ffffff;border-radius:10px;padding:7px 12px;font-size:13px;font-weight:500;cursor:pointer;">{{ m.shareLabel }}</button>
+                      <button onClick="{{ m.toggleMem }}" style="border:1px solid #181d26;background:transparent;color:#181d26;border-radius:10px;padding:7px 12px;font-size:13px;font-weight:500;cursor:pointer;">Keep to myself</button>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ showHuddle }}" hint-placeholder-val="{{ true }}">
+        <div id="msg-hud" style="padding:14px 24px;display:flex;flex-direction:column;gap:10px;background:{{ hudBg }};transition:background 0.6s;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#41454d;padding-left:48px;">
+            <span style="width:8px;height:8px;border-radius:9999px;background:#9297a0;"></span>
+            <span><span style="font-weight:500;color:#181d26;">Huddle ended</span> · 14 min · Maya, Priya, Dev, Alex · 10:32 AM</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <div style="width:36px;height:36px;flex:none;border-radius:10px;background:#aa2d00;color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">K</div>
+            <div style="flex:1;min-width:0;max-width:720px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;gap:8px;align-items:baseline;">
+                <span style="font-size:14px;font-weight:500;">Keel</span>
+                <span style="font-size:11px;font-weight:500;background:#f5e9d4;border-radius:6px;padding:1px 6px;">AI</span>
+                <span style="font-size:12px;color:#41454d;">10:33 AM</span>
+                <sc-if value="{{ showNotes }}"><span style="width:18px;height:18px;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;align-self:center;">3</span></sc-if>
+              </div>
+              <div style="border:1px solid #dddddd;border-radius:12px;overflow:hidden;">
+                <div style="background:#f5e9d4;padding:14px 16px;display:flex;flex-direction:column;gap:2px;">
+                  <span style="font-size:15px;font-weight:500;">{{ hudTitle }}</span>
+                  <span style="font-size:13px;color:#333840;">{{ hudSub }}</span>
+                </div>
+                <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="4">
+                  <div style="display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 16px;border-top:1px solid #dddddd;opacity:{{ t.opacity }};">
+                    <button onClick="{{ t.toggle }}" style="width:20px;height:20px;margin-top:1px;border-radius:6px;border:1px solid #181d26;background:{{ t.boxBg }};color:#ffffff;font-size:12px;line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;">{{ t.mark }}</button>
+                    <div style="display:flex;flex-direction:column;gap:3px;min-width:0;">
+                      <span style="font-size:14px;font-weight:500;">{{ t.title }}</span>
+                      <span style="font-size:12px;color:#41454d;">{{ t.said }}</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;">
+                      <span style="color:#181d26;">{{ t.owner }} · {{ t.due }}</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:{{ t.tagBg }};border-radius:6px;padding:2px 6px;color:#181d26;">{{ t.tag }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+                <div style="padding:12px 16px;border-top:1px solid #dddddd;background:#f8fafc;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;">
+                  <span style="color:#333840;">Unowned: <span style="color:#181d26;font-weight:500;">“Who tells Support about the density change?”</span></span>
+                  <button onClick="{{ assignQ }}" style="flex:none;border:1px solid #dddddd;background:#ffffff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:500;cursor:pointer;color:#181d26;">{{ assignLabel }}</button>
+                </div>
+                <sc-if value="{{ notCreated }}">
+                  <div style="padding:12px 16px;border-top:1px solid #dddddd;display:flex;flex-wrap:wrap;gap:8px;">
+                    <button onClick="{{ createTasks }}" style="border:0;background:#181d26;color:#ffffff;border-radius:12px;padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;" style-active="background:#0d1218;">{{ createLabel }}</button>
+                    <button onClick="{{ openLedger }}" style="border:1px solid #dddddd;background:#ffffff;color:#181d26;border-radius:12px;padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;">See full ledger</button>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ postMsgs }}" as="m" hint-placeholder-count="2">
+        <div id="{{ m.domId }}" style="display:flex;gap:12px;padding:14px 24px;background:{{ m.bg }};transition:background 0.6s;">
+          <div style="width:36px;height:36px;flex:none;border-radius:10px;background:{{ m.avBg }};color:{{ m.avFg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;">{{ m.initials }}</div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;gap:8px;align-items:baseline;">
+              <span style="font-size:14px;font-weight:500;">{{ m.name }}</span>
+              <sc-if value="{{ m.isAi }}"><span style="font-size:11px;font-weight:500;background:#f5e9d4;border-radius:6px;padding:1px 6px;">AI</span></sc-if>
+              <span style="font-size:12px;color:#41454d;">{{ m.time }}</span>
+            </div>
+            <div style="font-size:14px;line-height:1.5;color:#333840;text-wrap:pretty;max-width:680px;">{{ m.text }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:none;padding:8px 24px 20px;">
+      <div style="border:1px solid #dddddd;border-radius:12px;overflow:hidden;background:#ffffff;">
+        <textarea ref="{{ compRef }}" value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" rows="2" placeholder="Message #{{ ch.name }}" style="display:block;width:100%;box-sizing:border-box;border:0;resize:none;padding:12px 16px 4px;font-size:14px;line-height:1.5;color:#181d26;"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px 10px 16px;">
+          <span style="font-size:12px;color:#41454d;">Enter to send · Shift+Enter for new line</span>
+          <button onClick="{{ send }}" style="border:0;background:#181d26;color:#ffffff;border-radius:10px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ drawer }}">
+      <div style="position:absolute;top:72px;right:16px;width:440px;max-width:calc(100% - 32px);max-height:calc(100% - 96px);overflow-y:auto;background:#ffffff;border:1px solid #dddddd;border-radius:12px;box-shadow:0 12px 40px rgba(24,29,38,0.16);z-index:10;">
+        <div style="padding:20px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:20px;">Four patterns, four volumes</span>
+            <span style="font-size:13px;color:#41454d;line-height:1.4;">Each feature speaks only as loud as its job needs.</span>
+          </div>
+          <button onClick="{{ toggleDrawer }}" style="width:32px;height:32px;flex:none;border-radius:9999px;border:1px solid #dddddd;background:#ffffff;cursor:pointer;font-size:14px;color:#181d26;">✕</button>
+        </div>
+        <div style="padding:4px 20px 16px;">
+          <div style="position:relative;height:40px;">
+            <div style="position:absolute;left:9px;right:9px;top:9px;height:1px;background:#9297a0;"></div>
+            <div style="position:absolute;inset:0;display:flex;justify-content:space-between;">
+              <sc-for list="{{ stops }}" as="s" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <span style="height:18px;padding:0 6px;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:11px;font-weight:600;display:flex;align-items:center;">{{ s.nums }}</span>
+                  <span style="font-size:11px;color:#41454d;">{{ s.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <sc-for list="{{ patterns }}" as="p" hint-placeholder-count="5">
+          <div style="padding:14px 20px;border-top:1px solid #dddddd;display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:12px;align-items:start;">
+            <span style="width:20px;height:20px;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ p.n }}</span>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;">
+                <span style="font-size:15px;font-weight:500;">{{ p.name }}</span>
+                <span style="font-size:12px;color:#41454d;">{{ p.presence }}</span>
+              </div>
+              <span style="font-size:13px;line-height:1.45;color:#333840;text-wrap:pretty;">{{ p.why }}</span>
+            </div>
+            <button onClick="{{ p.show }}" style="border:1px solid #dddddd;background:#ffffff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:500;cursor:pointer;color:#181d26;" style-hover="background:#f8fafc;">Show</button>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+    <aside style="background:#f8fafc;border-left:1px solid #dddddd;display:flex;flex-direction:column;min-width:0;min-height:0;position:{{ panelPos }};top:0;right:0;bottom:0;width:{{ panelW }};z-index:20;box-shadow:{{ panelShadow }};">
+      <div style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #dddddd;">
+        <div style="display:flex;gap:4px;background:#e0e2e6;border-radius:10px;padding:3px;">
+          <button onClick="{{ tabThread }}" style="border:0;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;background:{{ tabThreadBg }};color:#181d26;">Thread</button>
+          <button onClick="{{ tabLedger }}" style="border:0;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;background:{{ tabLedgerBg }};color:#181d26;display:flex;gap:6px;align-items:center;">Ledger<sc-if value="{{ showNotes }}"><span style="width:16px;height:16px;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;">2</span></sc-if></button>
+        </div>
+        <button onClick="{{ closePanel }}" style="width:32px;height:32px;border-radius:9999px;border:1px solid #dddddd;background:#ffffff;cursor:pointer;font-size:14px;color:#181d26;">✕</button>
+      </div>
+
+      <sc-if value="{{ isThread }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:{{ sumBg }};border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:background 0.6s;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <sc-if value="{{ showNotes }}"><span style="width:18px;height:18px;border-radius:9999px;background:#aa2d00;color:#ffffff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;">1</span></sc-if>
+                <span style="font-size:15px;font-weight:500;">Current state</span>
+              </div>
+              <span style="font-size:12px;color:#333840;">{{ sumUpdated }}</span>
+            </div>
+            <span style="align-self:flex-start;font-size:12px;font-weight:500;background:{{ statusBg }};color:{{ statusFg }};border-radius:6px;padding:3px 8px;">{{ threadStatus }}</span>
+            <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:84px minmax(0,1fr);gap:8px;font-size:13px;line-height:1.45;">
+                <span style="font-weight:500;color:#181d26;">{{ s.k }}</span>
+                <div style="display:flex;flex-direction:column;gap:2px;">
+                  <span style="color:#181d26;text-wrap:pretty;">{{ s.t }}</span>
+                  <span style="color:#41454d;font-size:12px;">{{ s.who }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <div style="width:32px;height:32px;flex:none;border-radius:10px;background:#fcab79;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;">MC</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-size:13px;font-weight:500;">Maya Chen <span style="font-weight:400;color:#41454d;font-size:12px;">9:02 AM</span></span>
+              <span style="font-size:13px;line-height:1.45;color:#333840;">Density: compact or comfortable as the default? Need this locked before beta.</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:#41454d;"><div style="flex:1;height:1px;background:#dddddd;"></div><span>13 earlier replies, covered above</span><div style="flex:1;height:1px;background:#dddddd;"></div></div>
+
+          <sc-for list="{{ replies }}" as="r" hint-placeholder-count="5">
+            <div style="display:flex;gap:10px;">
+              <div style="width:32px;height:32px;flex:none;border-radius:10px;background:{{ r.avBg }};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#181d26;">{{ r.initials }}</div>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+                <span style="font-size:13px;font-weight:500;">{{ r.name }} <span style="font-weight:400;color:#41454d;font-size:12px;">{{ r.time }}</span></span>
+                <span style="font-size:13px;line-height:1.45;color:#333840;text-wrap:pretty;">{{ r.text }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex:none;padding:12px 16px 16px;border-top:1px solid #dddddd;display:flex;flex-direction:column;gap:8px;">
+          <sc-if value="{{ showSuggest }}">
+            <button onClick="{{ useSuggest }}" style="text-align:left;border:1px dashed #9297a0;background:#ffffff;border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;color:#181d26;">
+              <span style="font-size:11px;font-weight:500;color:#41454d;">Draft from your Fri post in #design-review</span>
+              <span style="font-size:13px;line-height:1.4;">{{ suggestText }}</span>
+            </button>
+          </sc-if>
+          <div style="display:flex;gap:8px;">
+            <input value="{{ threadText }}" onChange="{{ onThreadText }}" onKeyDown="{{ onThreadKey }}" placeholder="Reply in thread" style="flex:1;min-width:0;height:40px;box-sizing:border-box;border:1px solid #dddddd;border-radius:6px;padding:0 12px;font-size:13px;background:#ffffff;color:#181d26;">
+            <button onClick="{{ sendThread }}" style="border:0;background:#181d26;color:#ffffff;border-radius:10px;padding:0 14px;font-size:13px;font-weight:500;cursor:pointer;">Reply</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLedger }}">
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:20px;">Launch ledger</span>
+            <span style="font-size:13px;color:#41454d;line-height:1.4;">Pulled from 4 channels and 1 huddle. Every line links to where it was said.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ ledgerRows }}" as="it" hint-placeholder-count="8">
+            <sc-if value="{{ it.isHeader }}">
+              <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:#41454d;letter-spacing:0.16px;padding-top:12px;"><span>{{ it.title }}</span><span>{{ it.count }}</span></div>
+            </sc-if>
+            <sc-if value="{{ it.isItem }}">
+              <div style="background:{{ it.bg }};border:1px solid {{ it.border }};border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;">
+                <span style="font-size:14px;font-weight:500;line-height:1.35;color:#181d26;text-decoration:{{ it.strike }};">{{ it.t }}</span>
+                <sc-if value="{{ it.hasD }}"><span style="font-size:13px;line-height:1.45;color:#181d26;">{{ it.d }}</span></sc-if>
+                <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;color:#41454d;">
+                  <span>{{ it.meta }}</span>
+                  <sc-if value="{{ it.hasS1 }}"><a href="#" onClick="{{ it.s1Go }}" style="color:#1b61c9;font-weight:500;">{{ it.s1Label }} ↗</a></sc-if>
+                  <sc-if value="{{ it.hasS2 }}"><a href="#" onClick="{{ it.s2Go }}" style="color:#1b61c9;font-weight:500;">{{ it.s2Label }} ↗</a></sc-if>
+                </div>
+              </div>
+            </sc-if>
+          </sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype&quot;},&quot;defaultPanel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;thread&quot;,&quot;ledger&quot;,&quot;none&quot;],&quot;default&quot;:&quot;thread&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype&quot;}}">
+const P = {
+  maya: { name: 'Maya Chen', av: '#fcab79' },
+  priya: { name: 'Priya Nair', av: '#a8d8c4' },
+  dev: { name: 'Dev Patel', av: '#f4d35e' },
+  sam: { name: 'Sam Okafor', av: '#d9a441' },
+  jordan: { name: 'Jordan Lee', av: '#e0e2e6' },
+  alex: { name: 'Alex Rivera', av: '#f5e9d4' },
+  keel: { name: 'Keel', av: '#aa2d00', fg: '#ffffff', ai: true }
+};
+const CH = {
+  launch: { name: 'launch-dashboards', topic: 'Dashboards 2.0 · beta to design partners Wed Oct 14 · GA Nov 12', huddle: true, pre: [
+    { id: 'l1', who: 'maya', time: '9:02 AM', text: 'Morning. Beta to 20 design partners is Wed Oct 14. Three calls still open: default chart density, CSV export scope, and the perf budget. Density is in the thread.', thread: true },
+    { id: 'l2', who: 'jordan', time: '9:20 AM', text: 'Pulled feedback from 41 waitlist accounts. Top asks: faster load on big workspaces (23), compact density (17), CSV export (12).' },
+    { id: 'l3', who: 'dev', time: '9:41 AM', text: 'Should we drop CSV export for v1? With the new chart engine it is closer to two weeks of work, and it competes with perf.', memory: true },
+    { id: 'l4', who: 'sam', time: '9:48 AM', text: 'Acme and Halvorsen both brought up CSV on calls last week. Acme’s finance team uses it for month-end close.' }
+  ], post: [
+    { id: 'l5', who: 'priya', time: '10:40 AM', text: 'Perf: p95 load is 2.8s on large workspaces, target is 1.5s. Virtualizing the grid gets us to ~1.6s. Lazy-loading charts closes the gap but touches the density work.' },
+    { id: 'l6', who: 'maya', time: '10:44 AM', text: '@Alex when does the new chart export land? Sam needs a date for Acme today.' }
+  ] },
+  eng: { name: 'eng-platform', topic: 'Platform, rendering, performance', unread: 2, pre: [
+    { id: 'e1', who: 'priya', time: 'Fri 4:15 PM', text: 'Export API fix (chart-render v2) will be merged by Fri Oct 9. Chart export in the dashboards UI is blocked on it.' },
+    { id: 'e2', who: 'priya', time: '8:52 AM', text: 'Grid virtualization spike: p95 2.8s → 1.6s on a 400-widget workspace. Writing it up.' }
+  ], post: [] },
+  design: { name: 'design-review', topic: 'Crits Tue and Thu', unread: 1, pre: [
+    { id: 'd1', who: 'alex', time: 'Fri 2:30 PM', text: 'Density spec v3 is up. Compact and comfortable both pass the 44px touch target audit on tablet.' },
+    { id: 'd2', who: 'dev', time: 'Fri 4:02 PM', text: 'Chart export UI matches the spec. Eng side probably lands next sprint.' }
+  ], post: [] },
+  feedback: { name: 'customer-feedback', topic: 'Calls, tickets, and weekly digests', pre: [
+    { id: 'f1', who: 'sam', time: 'Thu 11:10 AM', text: 'Acme (420 seats): CSV export is a must-have for finance’s month-end close. Renewal is in January.' },
+    { id: 'f2', who: 'jordan', time: 'Fri 9:00 AM', text: 'Weekly digest, 41 accounts. Load-time complaints up 18% since the August release, mostly workspaces over 200 widgets.' }
+  ], post: [] }
+};
+const REPLIES = [
+  { who: 'jordan', time: '9:31 AM', text: 'In the alpha, 62% of users with 10+ dashboards switched to compact within a week. Under 10, most stayed on comfortable.' },
+  { who: 'maya', time: '9:35 AM', text: 'So compact by default for 10+ dashboards, comfortable otherwise?' },
+  { who: 'dev', time: '9:38 AM', text: 'Easy. It’s already a workspace-level setting.' },
+  { who: 'priya', time: '10:12 AM', text: 'Heads up: lazy-loading charts changes row heights in compact. Let’s lock density before I start that.' },
+  { who: 'maya', time: '10:20 AM', text: '@Alex does compact pass the touch target audit? That’s the last blocker.' }
+];
+const TASKS = [
+  { id: 't1', title: 'Scope CSV export to table views only', owner: 'Dev', due: 'Tue Oct 13', dest: 'Linear', key: 'DASH-412', said: '“Dev, can you cut it to tables only?” Maya, 6:10 in' },
+  { id: 't2', title: 'Virtualize dashboard grid before beta', owner: 'Priya', due: 'Fri Oct 9', dest: 'Linear', key: 'DASH-413', said: '“I’ll take virtualization this week.” Priya, 8:42 in' },
+  { id: 't3', title: 'Email Acme and Halvorsen: CSV confirmed for beta', owner: 'Sam', due: 'Wed Oct 7', dest: 'HubSpot', key: 'Email drafted', said: '“Someone should tell Acme.” Maya, 11:05 in · no owner named, suggested Sam' },
+  { id: 't4', title: 'Acme opportunity: mark “CSV in v1” requirement met', owner: 'Sam', due: 'Today', dest: 'HubSpot', key: 'Field updated', said: 'Follows from the CSV decision at 6:10 in' }
+];
+const DRAFT = '';
+const AMB = /(end of (next|this) week|next week|next sprint|soon|asap|by eod)/i;
+const AMB_DATE = { 'end of next week': 'Fri Oct 16', 'end of this week': 'Fri Oct 9', 'next week': 'the week of Oct 12', 'next sprint': 'Oct 19 or later', 'soon': 'no date at all', 'asap': 'no date at all', 'by eod': 'today' };
+const SUGGEST = 'Audit is done: compact passes 44px targets. Let’s ship compact as the default for workspaces with 10+ dashboards.';
+const MEMO = 'Context on Dev’s CSV question: on Mar 18 the team kept CSV export because Acme, Halvorsen, and Tidewater rely on it for month-end close. What has changed since is the estimate (4 days → ~2 weeks).';
+
+class Component extends DCLogic {
+  state = {
+    channel: 'launch', panel: this.props.defaultPanel === 'none' ? null : (this.props.defaultPanel || 'thread'),
+    draft: DRAFT, ackAmb: false, sent: [], tasksOn: { t1: true, t2: true, t3: true, t4: true }, created: false,
+    memOpen: false, shared: false, threadReplies: [], threadText: '', resolved: false, assignedQ: false,
+    highlight: null, drawer: false, flashSum: false, alexDone: false, flagged: null, compFocus: false
+  };
+  msgsRef = React.createRef();
+  compRef = React.createRef();
+  n = 0;
+
+  rootRef = React.createRef();
+  componentDidMount() {
+    this.scrollBottom();
+    this._prev = { highlight: this.state.highlight, channel: this.state.channel, sent: this.state.sent };
+    const el = this.rootRef.current;
+    if (el && window.ResizeObserver) {
+      const bucket = w => w < 900 ? 600 : w < 1200 ? 1000 : 1440;
+      let first = true;
+      this.ro = new ResizeObserver(([e]) => {
+        const b = bucket(e.contentRect.width);
+        requestAnimationFrame(() => {
+          const st = {};
+          if (b !== this.state.w) st.w = b;
+          if (first && b < 1440) st.panel = null;
+          first = false;
+          if (Object.keys(st).length) this.setState(st);
+        });
+      });
+      this.ro.observe(el);
+    }
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); }
+  componentDidUpdate() {
+    const ps = this._prev || {};
+    this._prev = { highlight: this.state.highlight, channel: this.state.channel, sent: this.state.sent };
+    if (!ps.sent) return;
+    if (this.state.highlight) return;
+    if (ps.channel !== this.state.channel || ps.sent.length !== this.state.sent.length) {
+      if (!this.state.highlight) this.scrollBottom();
+    }
+  }
+  scrollBottom() { requestAnimationFrame(() => { const b = this.msgsRef.current; if (b) b.scrollTop = b.scrollHeight; }); }
+  go(ch, id, extra) {
+    clearTimeout(this.ht);
+    this.setState({ channel: ch, highlight: id, drawer: false, ...(extra || {}) });
+    const tryScroll = (n) => {
+      const el = document.getElementById('msg-' + id), box = this.msgsRef.current;
+      if (el && box) {
+        box.scrollTop = Math.max(0, box.scrollTop + el.getBoundingClientRect().top - box.getBoundingClientRect().top - 80);
+        if (this.state.highlight !== id) this.setState({ highlight: id });
+      } else if (n < 20) setTimeout(() => tryScroll(n + 1), 50);
+    };
+    setTimeout(() => tryScroll(0), 80);
+    this.ht = setTimeout(() => this.setState({ highlight: null }), 2600);
+  }
+  shareMemory() { if (this.state.shared) return; this.setState(x => ({ shared: true, memOpen: false, sent: [...x.sent, { id: 'k' + Date.now(), ch: 'launch', who: 'keel', time: this.now(), text: MEMO }] })); }
+  now() { return '10:5' + Math.min(9, 2 + this.n++) + ' AM'; }
+
+  mk(m) {
+    const p = P[m.who], s = this.state;
+    return {
+      ...m, domId: 'msg-' + m.id, name: p.name, avBg: p.av, avFg: p.fg || '#181d26', isAi: !!p.ai,
+      initials: p.ai ? 'K' : p.name.split(' ').map(w => w[0]).join(''),
+      bg: s.highlight === m.id ? '#f5e9d4' : 'transparent',
+      showNotes: this.props.showNotes ?? true, threadCount: 18 + s.threadReplies.length, threadStatus: s.resolved ? 'Decided' : 'Converging · 1 blocker',
+      shareLabel: s.shared ? 'Shared in channel' : 'Share in channel', shareMemory: () => this.shareMemory(),
+      hasThread: !!m.thread, hasMemory: !!m.memory, memOpen: s.memOpen, memLabel: s.memOpen ? 'Hide' : 'Show decision',
+      toggleMem: () => this.setState(x => ({ memOpen: !x.memOpen })),
+      openThread: () => this.setState({ panel: 'thread' })
+    };
+  }
+
+  send(textArg, opts = {}) {
+    const text = (textArg ?? this.state.draft).trim();
+    if (!text) return;
+    const m = AMB.exec(text);
+    const id = 's' + Date.now();
+    const st = { sent: [...this.state.sent, { id, ch: this.state.channel, who: 'alex', time: this.now(), text }], draft: '', ackAmb: false };
+    if (/oct 9/i.test(text)) st.alexDone = true;
+    this.setState(st);
+  }
+
+  sendThread(t) {
+    const text = (t ?? this.state.threadText).trim();
+    if (!text) return;
+    const res = /compact/i.test(text) && /(default|ship)/i.test(text);
+    this.setState(s => ({ threadReplies: [...s.threadReplies, { who: 'alex', time: this.now(), text }], threadText: '', resolved: s.resolved || res, flashSum: true }));
+    clearTimeout(this.ft); this.ft = setTimeout(() => this.setState({ flashSum: false }), 1600);
+  }
+
+  renderVals() {
+    const s = this.state, showNotes = this.props.showNotes ?? true;
+    const ch = CH[s.channel];
+    const sentHere = s.sent.filter(x => x.ch === s.channel);
+    const preMsgs = ch.pre.map(m => this.mk(m));
+    const postMsgs = [...ch.post, ...sentHere].map(m => this.mk(m));
+    const ambM = AMB.exec(s.draft);
+    const showAmb = !!ambM && !s.ackAmb && s.channel === 'launch';
+    const ambMatch = ambM ? ambM[0] : '';
+
+    const tasks = TASKS.map(t => {
+      const on = s.tasksOn[t.id];
+      return {
+        ...t, boxBg: on ? '#181d26' : '#ffffff', mark: on ? '✓' : '', opacity: s.created && !on ? 0.4 : 1,
+        tag: s.created && on ? t.key : t.dest, tagBg: s.created && on ? '#a8d8c4' : '#e0e2e6',
+        toggle: () => { if (!s.created) this.setState(x => ({ tasksOn: { ...x.tasksOn, [t.id]: !x.tasksOn[t.id] } })); }
+      };
+    });
+    const nOn = TASKS.filter(t => s.tasksOn[t.id]).length;
+
+    const threadReplies = [...REPLIES, ...s.threadReplies];
+    const replies = threadReplies.map(r => { const p = P[r.who]; return { ...r, name: p.name, avBg: p.av, initials: p.name.split(' ').map(w => w[0]).join('') }; });
+    const extra = s.threadReplies.filter(r => !(/compact/i.test(r.text) && /(default|ship)/i.test(r.text)));
+    const summary = s.resolved ? [
+      { k: 'Decided', t: 'Compact by default for workspaces with 10+ dashboards; comfortable for the rest.', who: 'Alex confirmed the audit · just now' },
+      { k: 'Evidence', t: '62% of alpha users with 10+ dashboards switched to compact within a week.', who: 'Jordan' },
+      { k: 'Unblocked', t: 'Priya can start lazy-loading charts now that density is locked.', who: 'Priya was waiting on this' }
+    ] : [
+      { k: 'Proposal', t: 'Compact by default for workspaces with 10+ dashboards; comfortable for the rest.', who: 'Maya proposed · Dev agreed' },
+      { k: 'Evidence', t: '62% of alpha users with 10+ dashboards switched to compact within a week.', who: 'Jordan' },
+      { k: 'Blocker', t: 'Does compact pass the 44px touch target audit?', who: 'Waiting on you' },
+      { k: 'Depends', t: 'Priya starts lazy-loading only after density is locked.', who: 'Priya' }
+    ];
+    extra.forEach(r => summary.push({ k: 'New', t: r.text.length > 90 ? r.text.slice(0, 88) + '…' : r.text, who: 'You · just now' }));
+
+    const src = (label, chn, id) => ({ label, go: e => { e.preventDefault(); this.go(chn, id); } });
+    const item = (o) => ({ hasD: !!o.d, d: o.d || '', meta: o.meta || '', srcs: o.srcs || [], bg: o.bg || '#ffffff', border: o.border || '#dddddd', strike: o.done ? 'line-through' : 'none', t: o.t });
+    const conflicts = [item({ t: 'Two dates for the export API fix', d: 'Priya: “merged by Fri Oct 9.” Dev: “probably next sprint.” Chart export and Sam’s Acme date depend on which is right.', bg: '#fcab79', border: '#fcab79', srcs: [src('#eng-platform', 'eng', 'e1'), src('#design-review', 'design', 'd2')] })];
+    if (s.flagged) conflicts.push(item({ t: 'Vague date sent: “' + s.flagged.phrase + '”', d: 'Sam may pass this to Acme as Fri Oct 16, two days after beta.', bg: '#fcab79', border: '#fcab79', srcs: [src('#launch-dashboards', s.flagged.ch, s.flagged.id)] }));
+    const decisions = [
+      item({ t: 'Beta to 20 design partners on Wed Oct 14', meta: 'Maya · Sep 28', srcs: [src('#launch-dashboards', 'launch', 'l1')] }),
+      item({ t: 'Keep CSV export in v1, scoped to table views', meta: 'Huddle · today', srcs: [src('Huddle', 'launch', 'hud')] }),
+      item({ t: 'Virtualize grid before beta; lazy-load charts after', meta: 'Priya · today', srcs: [src('#launch-dashboards', 'launch', 'l5')] })
+    ];
+    if (s.resolved) decisions.unshift(item({ t: 'Compact density default for 10+ dashboards', meta: 'Thread · just now', bg: '#f5e9d4', border: '#f5e9d4', srcs: [src('Thread', 'launch', 'l1')] }));
+    const commits = [
+      item({ t: 'Alex: give Sam a chart export date for Acme', meta: s.alexDone ? 'Done · just now' : 'Due today', done: s.alexDone, srcs: [src('#launch-dashboards', 'launch', 'l6')] }),
+      item({ t: 'Priya: export API fix merged', meta: 'Fri Oct 9', srcs: [src('#eng-platform', 'eng', 'e1')] }),
+      item({ t: 'Jordan: beta success metrics dashboard', meta: 'Thu Oct 8', srcs: [src('#launch-dashboards', 'launch', 'l2')] })
+    ];
+    if (s.created) TASKS.filter(t => s.tasksOn[t.id]).forEach(t => commits.push(item({ t: t.owner + ': ' + t.title, meta: t.due + ' · ' + t.key, srcs: [src('Huddle', 'launch', 'hud')] })));
+    const questions = [];
+    if (!s.resolved) questions.push(item({ t: 'Does compact density pass the 44px audit?', meta: 'Owner: Alex', srcs: [src('Thread', 'launch', 'l1')] }));
+    questions.push(item({ t: 'Who tells Support about the density change?', meta: s.assignedQ ? 'Owner: Sam' : 'No owner', bg: s.assignedQ ? '#ffffff' : '#f4d35e', border: s.assignedQ ? '#dddddd' : '#f4d35e', srcs: [src('Huddle', 'launch', 'hud')] }));
+    questions.push(item({ t: 'Does Halvorsen need PDF export, or only CSV?', meta: 'Owner: Sam', srcs: [src('#launch-dashboards', 'launch', 'l4')] }));
+    const ledger = [
+      { title: 'Conflicts', items: conflicts }, { title: 'Decisions', items: decisions },
+      { title: 'Commitments', items: commits }, { title: 'Open questions', items: questions }
+    ].map(x => ({ ...x, count: x.items.length }));
+    const ledgerRows = [];
+    ledger.forEach(sec => {
+      ledgerRows.push({ isHeader: true, isItem: false, title: sec.title, count: sec.count });
+      sec.items.forEach(it => {
+        const a = it.srcs[0], b = it.srcs[1];
+        ledgerRows.push({ ...it, isHeader: false, isItem: true, hasS1: !!a, s1Label: a ? a.label : '', s1Go: a ? a.go : null, hasS2: !!b, s2Label: b ? b.label : '', s2Go: b ? b.go : null });
+      });
+    });
+
+    const show = (fn) => () => { fn(); };
+    const patterns = [
+      { n: 1, name: 'Thread summarizer', presence: 'Side panel · always current', why: 'Late joiners read 18 replies to learn four facts; a living summary makes the state the default view and the thread the evidence.', show: show(() => { this.setState({ channel: 'launch', panel: 'thread', drawer: false, flashSum: true }); setTimeout(() => this.setState({ flashSum: false }), 1600); }) },
+      { n: 2, name: 'Decision extractor', presence: 'Side panel · on demand', why: 'Decisions and owners get buried in scrollback; a sourced ledger gives the team a record without anyone filling in a form.', show: show(() => this.setState({ panel: 'ledger', drawer: false })) },
+      { n: 3, name: 'Meeting-to-work', presence: 'Posts in channel · needs approval', why: 'Huddles produce work nobody writes down; drafting tickets in front of the team, with the quote that created each one, keeps people in control of what ships.', show: show(() => this.go('launch', 'hud')) },
+      { n: 4, name: 'Institutional memory', presence: 'Margin note · visible to everyone', why: 'Teams re-argue settled questions; showing the old decision, its reason, and what changed lets them revisit it on purpose.', show: show(() => this.go('launch', 'l3', { memOpen: true })) },
+    ];
+    const stops = [{ nums: '1 · 2', label: 'Your panel' }, { nums: '4', label: 'Margin' }, { nums: '3', label: 'In channel' }];
+
+    const unreadMap = { eng: 2, design: 1 };
+    const channels = Object.keys(CH).map(k => ({
+      name: CH[k].name, bg: k === s.channel ? '#ffffff' : 'transparent', fg: k === s.channel ? '#181d26' : '#e0e2e6',
+      hasUnread: !!unreadMap[k] && k !== s.channel, unread: unreadMap[k] || 0, go: () => this.setState({ channel: k })
+    }));
+
+    return {
+      showNotes, ch, channels, preMsgs, postMsgs, showHuddle: !!ch.huddle,
+      hudBg: s.highlight === 'hud' ? '#f5e9d4' : 'transparent',
+      ...(() => {
+        const w = s.w || 1440, overlay = w < 1200, noSide = w < 900;
+        const side = noSide ? '' : (overlay ? '200px ' : '248px ');
+        return {
+          cols: side + 'minmax(0,1fr)' + (s.panel && !overlay ? ' 400px' : ''),
+          sideDisplay: noSide ? 'none' : 'flex',
+          panelPos: overlay ? 'absolute' : 'relative', panelW: overlay ? 'min(400px, 92%)' : 'auto',
+          panelShadow: overlay ? '-12px 0 40px rgba(24,29,38,0.16)' : 'none'
+        };
+      })(),
+      rootRef: this.rootRef, msgsRef: this.msgsRef, compRef: this.compRef,
+      threadCount: 18 + s.threadReplies.length,
+      threadStatus: s.resolved ? 'Decided' : 'Converging · 1 blocker',
+      statusBg: s.resolved ? '#006400' : '#181d26', statusFg: '#ffffff',
+      tasks, notCreated: !s.created,
+      hudTitle: s.created ? nOn + ' follow-ups created' : '4 follow-ups from the huddle',
+      hudSub: s.created ? 'Approved by Alex Rivera · Linear and HubSpot updated' : 'Drafted from the transcript. Nothing is created until someone approves.',
+      createLabel: nOn ? 'Create ' + nOn : 'Select items',
+      createTasks: () => nOn && this.setState({ created: true }),
+      assignLabel: s.assignedQ ? 'Assigned to Sam' : 'Assign',
+      assignQ: () => this.setState({ assignedQ: true }),
+      shareLabel: s.shared ? 'Shared in channel' : 'Share in channel',
+      shareMemory: () => this.shareMemory(),
+      _unused: () => { if (s.shared) return; this.setState(x => ({ shared: true, memOpen: false, sent: [...x.sent, { id: 'k' + Date.now(), ch: 'launch', who: 'keel', time: this.now(), text: MEMO }] })); },
+      draft: s.draft, showAmb, ambMatch, ambDate: AMB_DATE[ambMatch.toLowerCase()] || 'an unclear date',
+      compBorder: showAmb ? '#fcab79' : '#dddddd',
+      onDraft: e => this.setState({ draft: e.target.value, ackAmb: false }),
+      onKey: e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.send(); } },
+      send: () => this.send(),
+      useDate: () => this.setState({ draft: 'Chart export lands Fri Oct 9, right after Priya’s API fix merges, so it’s in the Oct 14 beta. Sam, that date is safe to give Acme.' }),
+      askPriya: () => this.setState({ draft: '@Priya is Fri Oct 9 still solid for the export API fix? Dev mentioned next sprint. Once you confirm I’ll give Sam the date for Acme.' }),
+      ignoreAmb: () => this.send(undefined, { force: true }),
+      drawer: s.drawer, toggleDrawer: () => this.setState(x => ({ drawer: !x.drawer })), patterns, stops,
+      panelOpen: !!s.panel, isThread: s.panel === 'thread', isLedger: s.panel === 'ledger',
+      tabThread: () => this.setState({ panel: 'thread' }), tabLedger: () => this.setState({ panel: 'ledger' }),
+      tabThreadBg: s.panel === 'thread' ? '#ffffff' : 'transparent', tabLedgerBg: s.panel === 'ledger' ? '#ffffff' : 'transparent',
+      closePanel: () => this.setState({ panel: null }), openLedger: () => this.setState({ panel: 'ledger' }),
+      ledgerRows, ledgerCount: ledger.reduce((a, x) => a + x.count, 0),
+      sumBg: s.flashSum ? '#f4d35e' : '#f5e9d4', sumUpdated: s.threadReplies.length ? 'Updated just now' : 'Updated 10:20 AM',
+      summary, replies, showSuggest: !s.resolved, suggestText: SUGGEST,
+      useSuggest: () => this.setState({ threadText: SUGGEST }),
+      threadText: s.threadText, onThreadText: e => this.setState({ threadText: e.target.value }),
+      onThreadKey: e => { if (e.key === 'Enter') { e.preventDefault(); this.sendThread(); } },
+      sendThread: () => this.sendThread()
+    };
+  }
+}
+</script>
+</body>
+</html>
