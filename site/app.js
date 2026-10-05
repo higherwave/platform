@@ -65,11 +65,11 @@
         </div>
         <div class="actions">
           <button class="btn${on ? ' on' : ''}" data-pin="${p.id}">${pinSvg(14)}${on ? 'Pinned' : 'Pin'}</button>
-          <button class="btn primary" data-open="${p.id}">${p.url ? 'Open prototype' : 'Prototype coming soon'}${extSvg}</button>
+          <button class="btn primary" data-open="${p.id}">${p.url ? 'Open Prototype' : 'Prototype coming soon'}${extSvg}</button>
         </div>
       </div>
       <div class="meta">
-        <section class="panel"><h2>Why it's useful</h2><p>${esc(p.why || '')}</p></section>
+        <section class="panel"><h2>Why it's useful</h2>${Array.isArray(p.why) ? `<ul>${list(p.why)}</ul>` : `<p>${esc(p.why || '')}</p>`}</section>
         <section class="panel"><h2>Usability principles</h2><ul>${list(p.principles)}</ul></section>
         <section class="panel ext"><h2>Ways to extend</h2><ul>${list(p.extensions)}</ul></section>
       </div>

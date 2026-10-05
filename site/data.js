@@ -55,6 +55,10 @@ window.PROTOS = [
     why: 'Turns a blank-page task into a guided sequence of questions, producing a structured PRD faster.',
     principles: ['Recognition over recall: preset questions', 'User control: edit any generated section', 'Visibility of the inputs the AI used'],
     extensions: ['Team-specific templates', 'Pull context from tickets or research notes', 'Export to document tools'] },
+  { id: 'prod-comms', title: 'AI-enhanced Communication', category: 'Productivity', description: 'AI integrated into Slack or Teams for enhanced productivity', url: 'prototypes/productivity/AI-Collab/',
+    why: ['Summarized threads for fast context', 'Auto summary of decisions and blockers', 'Automated Action List from Meetings', 'Auto highlight of previously answered questions to avoid re-litigation'],
+    principles: ['Recognition over recall: summaries replace rereading long threads', 'Visibility of decisions and open blockers', 'User control: summaries and action items can be edited or dismissed'],
+    extensions: ['Assign action items to owners with due dates', 'Weekly digest across channels', 'Link decisions to tickets or docs'] },
   { id: 'prod-kanban', title: 'Kanban Project Management', category: 'Productivity', description: 'Move work items across status columns, with work-in-progress limits and quick filters by owner.', url: 'prototypes/productivity/kanban-project-management/',
     why: 'Shows the state of every work item at a glance, so teams can spot blocked work and balance load.',
     principles: ['Visibility of status through column position', 'Direct manipulation: drag cards between columns', 'Error prevention: warn when a WIP limit is exceeded'],
@@ -106,15 +110,17 @@ window.THUMBS = {
   'int-directory': 'thumbs/int-directory.webp',
   'prod-kanban': 'thumbs/prod-kanban.webp',
   'onb-two-level': 'thumbs/onb-two-level.png',
-  'obs-ai-dash': 'thumbs/obs-ai-dash.png'
+  'obs-ai-dash': 'thumbs/obs-ai-dash.png',
+  'prod-comms': 'thumbs/prod-comms.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'prod-comms': 'thumbs/prod-comms-page.png',
   'wf-runs': 'thumbs/wf-runs-page.png',
   'onb-two-level': 'thumbs/onb-two-level-page.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash-page.png'
 };
 
 // Cards shown under the Highlights filter (default view), in this order.
-window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard'];
+window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard', 'prod-comms'];
