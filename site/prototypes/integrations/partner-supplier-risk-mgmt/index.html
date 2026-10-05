@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #ffffff; -webkit-font-smoothing: antialiased; }
+  a { color: #1b61c9; text-decoration: none; }
+  a:hover { color: #1a3866; }
+  select, input, button { font-family: Inter, system-ui, sans-serif; }
+</style>
+</helmet>
+
+<div style="font-family: Inter, system-ui, sans-serif; color: #333840; background: #ffffff; min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column">
+
+  <div style="height: 64px; flex: none; border-bottom: 1px solid #dddddd; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 32px">
+    <div style="display: flex; align-items: center; gap: 32px">
+      <div style="display: flex; align-items: baseline; gap: 10px">
+        <span style="font-size: 18px; font-weight: 500; color: #181d26">Threadline</span>
+        <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Patagonia · fiber to point of sale</span>
+      </div>
+      <div style="display: flex; gap: 4px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <sc-if value="{{ t.on }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ t.pick }}" style="font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 6px; border: 1px solid #181d26; background: #181d26; color: #ffffff; cursor: pointer">{{ t.label }}</button>
+          </sc-if>
+          <sc-if value="{{ t.off }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ t.pick }}" style="font-size: 14px; font-weight: 400; padding: 8px 14px; border-radius: 6px; border: 1px solid transparent; background: #ffffff; color: #333840; cursor: pointer">{{ t.label }}</button>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px">
+      <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ nodeCount }} nodes · {{ edgeCount }} edges · Fall 26 season</span>
+      <sc-if value="{{ alertBadge }}" hint-placeholder-val="{{ true }}">
+        <span style="font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 9999px; background: #aa2d00; color: #ffffff">{{ openAlerts }} open alerts</span>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ isGraph }}" hint-placeholder-val="{{ true }}">
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 340px; align-items: start">
+      <div style="padding: 24px 24px 48px 32px; min-width: 0">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px; margin-bottom: 20px">
+          <div style="max-width: 520px">
+            <h1 style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26; margin: 0 0 8px">Multi-tier graph</h1>
+            <p style="font-size: 14px; line-height: 1.5; margin: 0; text-wrap: pretty">Farms and recyclers through spinning and dyeing, cut-and-sew, and finished SKUs. Click any node for its metadata, certificates, and downstream products.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Ad-hoc query · trace a material</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{ materials }}" as="m" hint-placeholder-count="5">
+                <sc-if value="{{ m.on }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ m.pick }}" style="font-size: 14px; font-weight: 500; padding: 7px 13px; border-radius: 6px; border: 1px solid #aa2d00; background: #aa2d00; color: #ffffff; cursor: pointer">{{ m.label }}</button>
+                </sc-if>
+                <sc-if value="{{ m.off }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ m.pick }}" style="font-size: 14px; font-weight: 400; padding: 7px 13px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #333840; cursor: pointer">{{ m.label }}</button>
+                </sc-if>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ queryNote }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #f5e9d4; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+            <span style="font-size: 14px; line-height: 1.4; color: #181d26; text-wrap: pretty">{{ queryText }}</span>
+            <button onClick="{{ clearQuery }}" style="font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 6px; border: 1px solid #181d26; background: #ffffff; color: #181d26; cursor: pointer">Clear</button>
+          </div>
+        </sc-if>
+
+        <div style="overflow-x: auto; padding-bottom: 12px">
+          <div style="position: relative; width: 1200px; height: 520px">
+            <svg width="1200" height="520" style="position: absolute; left: 0; top: 0; pointer-events: none">
+              <sc-for list="{{ edges }}" as="e" hint-placeholder-count="16">
+                <path d="{{ e.d }}" fill="none" stroke="{{ e.stroke }}" strokeWidth="{{ e.w }}" strokeDasharray="{{ e.dash }}" opacity="{{ e.op }}"></path>
+              </sc-for>
+            </svg>
+            <div style="position: absolute; left: 0; top: 0; width: 1200px; display: grid; grid-template-columns: repeat(4, 240px); gap: 80px">
+              <sc-for list="{{ columns }}" as="col" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; gap: 14px">
+                  <div style="height: 34px; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #181d26">{{ col.tier }}</span>
+                    <span style="font-size: 13px; color: #41454d">{{ col.kind }}</span>
+                  </div>
+                  <sc-for list="{{ col.nodes }}" as="n" hint-placeholder-count="4">
+                    <button onClick="{{ n.pick }}" style="{{ n.style }}">
+                      <span style="font-size: 14px; font-weight: 500; line-height: 1.25; text-align: left">{{ n.name }}</span>
+                      <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%">
+                        <span style="font-size: 13px; line-height: 1.3; text-align: left; opacity: 0.8">{{ n.sub }}</span>
+                        <span style="{{ n.pill }}">{{ n.risk }}</span>
+                      </span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 24px; margin-top: 8px; font-size: 13px; color: #41454d">
+          <span>Risk band: 0–29 low · 30–54 watch · 55+ elevated</span>
+          <span>Dashed edge = chain-of-custody gap (no transaction certificate)</span>
+        </div>
+      </div>
+
+      <div style="border-left: 1px solid #dddddd; padding: 24px; min-height: calc(100vh - 64px); box-sizing: border-box">
+        <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <span style="font-size: 16px; font-weight: 500; color: #181d26">Inspector</span>
+            <p style="font-size: 14px; line-height: 1.5; margin: 0; text-wrap: pretty">Select a node to read its certificates, metrics, inbound links, and downstream products.</p>
+            <div style="border-top: 1px solid #dddddd; padding-top: 16px; display: flex; flex-direction: column; gap: 12px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Graph coverage</span>
+              <sc-for list="{{ coverage }}" as="c" hint-placeholder-count="4">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+                  <span style="font-size: 14px; color: #333840">{{ c.label }}</span>
+                  <span style="font-size: 14px; font-weight: 500; color: #181d26">{{ c.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 20px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ sel.tier }} · {{ sel.kind }}</span>
+              <span style="font-size: 20px; font-weight: 500; line-height: 1.25; color: #181d26">{{ sel.name }}</span>
+              <span style="font-size: 14px; color: #333840">{{ sel.sub }}</span>
+            </div>
+
+            <div style="display: flex; gap: 8px">
+              <sc-if value="{{ isolateOff }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ toggleIsolate }}" style="font-size: 14px; font-weight: 500; padding: 10px 16px; border-radius: 12px; border: none; background: #181d26; color: #ffffff; cursor: pointer">Impact analysis</button>
+              </sc-if>
+              <sc-if value="{{ isolateOn }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ toggleIsolate }}" style="font-size: 14px; font-weight: 500; padding: 10px 16px; border-radius: 12px; border: 1px solid #181d26; background: #ffffff; color: #181d26; cursor: pointer">Show full graph</button>
+              </sc-if>
+              <button onClick="{{ clearSel }}" style="font-size: 14px; font-weight: 400; padding: 10px 16px; border-radius: 12px; border: 1px solid #dddddd; background: #ffffff; color: #333840; cursor: pointer">Deselect</button>
+            </div>
+
+            <div style="background: #f8fafc; border-radius: 10px; padding: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+              <sc-for list="{{ sel.metrics }}" as="m" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; gap: 3px">
+                  <span style="font-size: 13px; color: #41454d">{{ m.label }}</span>
+                  <span style="font-size: 16px; font-weight: 500; color: #181d26">{{ m.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Certificates</span>
+              <sc-for list="{{ sel.certs }}" as="c" hint-placeholder-count="2">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #dddddd; padding-bottom: 8px">
+                  <span style="font-size: 14px; color: #181d26">{{ c.name }}</span>
+                  <span style="{{ c.style }}">{{ c.status }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ sel.noCerts }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 14px; line-height: 1.4; color: #aa2d00; text-wrap: pretty">No certificate on file for this node.</span>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ sel.hasFlags }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #181d26; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+                <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #fcab79">Model flags</span>
+                <sc-for list="{{ sel.flags }}" as="f" hint-placeholder-count="2">
+                  <div style="display: flex; flex-direction: column; gap: 3px">
+                    <span style="font-size: 14px; font-weight: 500; color: #ffffff">{{ f.label }}</span>
+                    <span style="font-size: 13px; line-height: 1.4; color: #e0e2e6; text-wrap: pretty">{{ f.detail }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Inbound links</span>
+              <sc-for list="{{ sel.inbound }}" as="l" hint-placeholder-count="2">
+                <div style="border: 1px solid #dddddd; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px">
+                  <span style="font-size: 14px; font-weight: 500; color: #181d26">{{ l.from }}</span>
+                  <span style="font-size: 13px; line-height: 1.4; color: #333840">{{ l.meta }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ sel.noInbound }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 14px; color: #41454d">Origin node — nothing upstream.</span>
+              </sc-if>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Downstream products ({{ sel.downCount }})</span>
+              <sc-for list="{{ sel.downstream }}" as="d" hint-placeholder-count="3">
+                <button onClick="{{ d.pick }}" style="font-size: 14px; text-align: left; padding: 10px 12px; border: 1px solid #dddddd; border-radius: 10px; background: #ffffff; color: #181d26; cursor: pointer">{{ d.name }}</button>
+              </sc-for>
+              <sc-if value="{{ sel.noDown }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 14px; color: #41454d">This is a finished SKU — end of the chain.</span>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isRisk }}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 24px 32px 64px; display: flex; flex-direction: column; gap: 24px">
+      <div style="max-width: 640px">
+        <h1 style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26; margin: 0 0 8px">Risk &amp; insights</h1>
+        <p style="font-size: 14px; line-height: 1.5; margin: 0; text-wrap: pretty">Composite scores are re-fit nightly on country indicators, audit history, certificate state, and chain-of-custody completeness. Ask in plain English; every answer cites the nodes it read.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 24px; align-items: start">
+        <div style="border: 1px solid #dddddd; border-radius: 10px; overflow: hidden">
+          <div style="display: grid; grid-template-columns: minmax(0, 2.2fr) 1fr 1fr 1.6fr 0.8fr; gap: 12px; padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #dddddd">
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Supplier</span>
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Tier</span>
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Country</span>
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Model flags</span>
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d; text-align: right">Risk</span>
+          </div>
+          <sc-for list="{{ riskRows }}" as="r" hint-placeholder-count="12">
+            <div style="display: grid; grid-template-columns: minmax(0, 2.2fr) 1fr 1fr 1.6fr 0.8fr; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #dddddd; align-items: center">
+              <button onClick="{{ r.open }}" style="font-size: 14px; font-weight: 500; text-align: left; padding: 0; border: none; background: transparent; color: #1b61c9; cursor: pointer">{{ r.name }}</button>
+              <span style="font-size: 14px">{{ r.tier }}</span>
+              <span style="font-size: 14px">{{ r.country }}</span>
+              <span style="font-size: 13px; line-height: 1.35; color: #333840">{{ r.flagText }}</span>
+              <span style="display: flex; justify-content: flex-end"><span style="{{ r.pill }}">{{ r.risk }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #0a2e0e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #a8d8c4">Ask the graph</span>
+            <input value="{{ askText }}" onChange="{{ onAsk }}" onKeyDown="{{ onAskKey }}" placeholder="Which products use uncertified polyester?" style="font-size: 14px; padding: 12px 16px; height: 44px; box-sizing: border-box; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #181d26" />
+            <div style="display: flex; gap: 8px">
+              <button onClick="{{ runAsk }}" style="font-size: 14px; font-weight: 500; padding: 10px 16px; border-radius: 12px; border: none; background: #ffffff; color: #181d26; cursor: pointer">Answer</button>
+              <button onClick="{{ clearAsk }}" style="font-size: 14px; font-weight: 400; padding: 10px 16px; border-radius: 12px; border: 1px solid #a8d8c4; background: transparent; color: #ffffff; cursor: pointer">Reset</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; color: #a8d8c4">Try</span>
+              <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+                <button onClick="{{ s.pick }}" style="font-size: 13px; line-height: 1.35; text-align: left; padding: 8px 10px; border-radius: 6px; border: 1px solid #41454d; background: transparent; color: #ffffff; cursor: pointer">{{ s.q }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ hasAnswer }}" hint-placeholder-val="{{ false }}">
+            <div style="border: 1px solid #dddddd; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">{{ answer.head }}</span>
+              <span style="font-size: 16px; font-weight: 500; line-height: 1.4; color: #181d26; text-wrap: pretty">{{ answer.headline }}</span>
+              <span style="font-size: 14px; line-height: 1.5; color: #333840; text-wrap: pretty">{{ answer.body }}</span>
+              <div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #dddddd; padding-top: 14px">
+                <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Citations</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                  <sc-for list="{{ answer.cites }}" as="c" hint-placeholder-count="3">
+                    <button onClick="{{ c.open }}" style="font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #1b61c9; cursor: pointer">{{ c.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isAlerts }}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 24px 32px 64px; display: flex; flex-direction: column; gap: 24px">
+      <div style="max-width: 640px">
+        <h1 style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26; margin: 0 0 8px">Traceability &amp; alerts</h1>
+        <p style="font-size: 14px; line-height: 1.5; margin: 0; text-wrap: pretty">The compliance checker runs against certificate expiry, chain-of-custody completeness, and open audit findings. Simulate a supplier swap before you commit the season.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="border: 1px solid #dddddd; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 32px; font-weight: 400; line-height: 1.1; color: #181d26">{{ s.value }}</span>
+            <span style="font-size: 14px; font-weight: 500; color: #181d26">{{ s.label }}</span>
+            <span style="font-size: 13px; line-height: 1.35; color: #41454d; text-wrap: pretty">{{ s.detail }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 16px; font-weight: 500; color: #181d26">Alert feed</span>
+          <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="5">
+            <div style="{{ a.style }}">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px">
+                <div style="display: flex; align-items: flex-start; gap: 12px; min-width: 0">
+                  <span style="{{ a.dot }}"></span>
+                  <div style="display: flex; flex-direction: column; gap: 5px; min-width: 0">
+                    <span style="font-size: 14px; font-weight: 500; line-height: 1.35; color: #181d26; text-wrap: pretty">{{ a.title }}</span>
+                    <span style="font-size: 13px; line-height: 1.45; color: #333840; text-wrap: pretty">{{ a.detail }}</span>
+                    <span style="font-size: 13px; color: #41454d">{{ a.meta }}</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; flex: none">
+                  <button onClick="{{ a.open }}" style="font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #181d26; cursor: pointer">Open in graph</button>
+                  <sc-if value="{{ a.openState }}" hint-placeholder-val="{{ true }}">
+                    <button onClick="{{ a.ack }}" style="font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: 6px; border: 1px solid #181d26; background: #181d26; color: #ffffff; cursor: pointer">Acknowledge</button>
+                  </sc-if>
+                  <sc-if value="{{ a.ackState }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size: 13px; font-weight: 500; padding: 7px 12px; color: #006400; text-align: center">Acknowledged</span>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #f5e9d4; border-radius: 10px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+            <span style="font-size: 20px; font-weight: 500; line-height: 1.25; color: #181d26">What-if: swap a supplier</span>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Remove from the chain</span>
+              <select value="{{ simOut }}" onChange="{{ pickOut }}" style="font-size: 14px; padding: 12px 16px; height: 44px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #181d26">
+                <sc-for list="{{ simOutOptions }}" as="o" hint-placeholder-count="6">
+                  <option value="{{ o.id }}">{{ o.name }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Replace with</span>
+              <select value="{{ simIn }}" onChange="{{ pickIn }}" style="font-size: 14px; padding: 12px 16px; height: 44px; border-radius: 6px; border: 1px solid #dddddd; background: #ffffff; color: #181d26">
+                <sc-for list="{{ simInOptions }}" as="o" hint-placeholder-count="4">
+                  <option value="{{ o.id }}">{{ o.name }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <span style="font-size: 13px; line-height: 1.45; color: #41454d; text-wrap: pretty">{{ simNote }}</span>
+          </div>
+
+          <div style="border: 1px solid #dddddd; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+            <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">Simulated impact</span>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+              <sc-for list="{{ simDeltas }}" as="d" hint-placeholder-count="4">
+                <div style="display: flex; flex-direction: column; gap: 3px">
+                  <span style="font-size: 13px; color: #41454d">{{ d.label }}</span>
+                  <span style="{{ d.style }}">{{ d.value }}</span>
+                  <span style="font-size: 13px; color: #41454d">{{ d.from }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="border-top: 1px solid #dddddd; padding-top: 14px; display: flex; flex-direction: column; gap: 10px">
+              <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.16px; color: #41454d">SKUs touched by this swap ({{ simSkuCount }})</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{ simSkus }}" as="s" hint-placeholder-count="3">
+                  <span style="font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 6px; background: #f8fafc; color: #181d26">{{ s.name }}</span>
+                </sc-for>
+              </div>
+              <span style="font-size: 13px; line-height: 1.45; color: #333840; text-wrap: pretty">{{ simRequal }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;riskThreshold&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:55,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:20,&quot;max&quot;:80,&quot;step&quot;:5,&quot;unit&quot;:&quot;&quot;,&quot;section&quot;:&quot;Risk model&quot;},&quot;showChainGaps&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Graph&quot;},&quot;assistantTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Analyst&quot;,&quot;options&quot;:[&quot;Analyst&quot;,&quot;Executive&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Assistant&quot;}}">
+const COL_W = 240, COL_GAP = 80, NODE_H = 78, NODE_GAP = 14, HEAD = 48;
+
+const NODES = [
+  { id: "f1", col: 0, name: "Cerro Verde Cotton Co-op", kind: "Farm co-operative", tier: "Tier 4", country: "Peru", material: "Organic cotton", risk: 18, esg: 84, water: 2100, lead: 0, cost: 100,
+    certs: [{ name: "Regenerative Organic Certified", status: "Valid to Mar 2027", ok: 1 }, { name: "Fair Trade USA", status: "Valid to Nov 2026", ok: 1 }], flags: [] },
+  { id: "f2", col: 0, name: "Anatolia Cotton Union", kind: "Grower union", tier: "Tier 4", country: "Türkiye", material: "Organic cotton", risk: 34, esg: 68, water: 3400, lead: 0, cost: 96,
+    certs: [{ name: "GOTS scope certificate", status: "Expires in 39 days", ok: 0 }], flags: [{ label: "Water stress", detail: "Basin-level scarcity index in the top quartile; irrigation draw unverified for the 2026 crop." }] },
+  { id: "f3", col: 0, name: "PolyRenew Bottle Recyclers", kind: "Recycler", tier: "Tier 4", country: "Taiwan", material: "Recycled polyester", risk: 22, esg: 79, water: 900, lead: 0, cost: 100,
+    certs: [{ name: "Global Recycled Standard", status: "Valid to Jan 2027", ok: 1 }], flags: [] },
+  { id: "f4", col: 0, name: "Kaspian Fibre Traders", kind: "Trader", tier: "Tier 4", country: "Uzbekistan", material: "Conventional cotton", risk: 71, esg: 38, water: 4800, lead: 0, cost: 88,
+    certs: [], flags: [
+      { label: "Forced-labour exposure", detail: "Country indicator raised to severe in the July index; recruitment practice at farm level is asserted, not audited." },
+      { label: "Origin opacity", detail: "Volume enters as a blended trader lot, so no single farm can be named for 41 t of the season's cotton." }] },
+  { id: "f5", col: 0, name: "Estancia Ventana Wool", kind: "Wool grower", tier: "Tier 4", country: "Argentina", material: "Merino wool", risk: 41, esg: 64, water: 1500, lead: 0, cost: 104,
+    certs: [{ name: "Responsible Wool Standard", status: "Valid to Dec 2026", ok: 1 }], flags: [{ label: "Land conversion", detail: "Two of five paddocks sit inside a grassland-conversion watch area; satellite check is quarterly, not live." }] },
+
+  { id: "m1", col: 1, name: "Tehuacán Spinning", kind: "Spinner", tier: "Tier 3", country: "Mexico", material: "Ring-spun yarn", risk: 26, esg: 76, water: 1800, lead: 34, cost: 100,
+    certs: [{ name: "bluesign system partner", status: "Valid to May 2027", ok: 1 }], flags: [] },
+  { id: "m2", col: 1, name: "Lien Fa Knit & Dye", kind: "Mill + dyehouse", tier: "Tier 2", country: "Taiwan", material: "Knit fabric", risk: 31, esg: 72, water: 2600, lead: 41, cost: 102,
+    certs: [{ name: "bluesign system partner", status: "Expires in 25 days", ok: 0 }, { name: "ZDHC wastewater", status: "Valid to Apr 2027", ok: 1 }], flags: [] },
+  { id: "m3", col: 1, name: "Kaya Dyehouse", kind: "Dyehouse", tier: "Tier 2", country: "Türkiye", material: "Piece-dyed fabric", risk: 58, esg: 49, water: 5200, lead: 29, cost: 94,
+    certs: [{ name: "ZDHC wastewater", status: "Lapsed 20 Aug 2026", ok: 0 }, { name: "GOTS transaction certificate", status: "Not filed for 3 lots", ok: 0 }],
+    flags: [{ label: "Chemical management", detail: "Wastewater treatment fell out of ZDHC conformance at the August test; two parameters over limit." }] },
+  { id: "m4", col: 1, name: "Hokkaido Fine Spinners", kind: "Wool spinner", tier: "Tier 3", country: "Japan", material: "Worsted yarn", risk: 19, esg: 86, water: 1200, lead: 38, cost: 112,
+    certs: [{ name: "RWS chain of custody", status: "Valid to Feb 2027", ok: 1 }], flags: [] },
+
+  { id: "p1", col: 2, name: "Tecnotex Vietnam", kind: "Cut & sew", tier: "Tier 1", country: "Vietnam", material: "Finished goods", risk: 24, esg: 81, water: 700, lead: 74, cost: 100,
+    certs: [{ name: "Fair Trade Certified factory", status: "Valid to Sep 2027", ok: 1 }, { name: "Social audit (SMETA)", status: "Closed, no findings", ok: 1 }], flags: [] },
+  { id: "p2", col: 2, name: "Sri Sai Apparel", kind: "Cut & sew", tier: "Tier 1", country: "India", material: "Finished goods", risk: 47, esg: 58, water: 900, lead: 68, cost: 92,
+    certs: [{ name: "Social audit (SMETA)", status: "4 findings open", ok: 0 }], flags: [{ label: "Working hours", detail: "Overtime above 60 h/week in 3 of 12 sampled weeks; corrective action plan due 30 Sep." }] },
+  { id: "p3", col: 2, name: "Maquila Textil Nicaragua", kind: "Cut & sew", tier: "Tier 1", country: "Nicaragua", material: "Finished goods", risk: 28, esg: 77, water: 800, lead: 61, cost: 103,
+    certs: [{ name: "Fair Trade Certified factory", status: "Valid to Jun 2027", ok: 1 }], flags: [] },
+
+  { id: "k1", col: 3, name: "Nano Puff Jacket", kind: "SKU · 84212", tier: "Product", country: "Global", material: "Recycled polyester shell", risk: 27, esg: 78, water: 0, lead: 0, cost: 0, certs: [{ name: "Fair Trade sewn", status: "Yes", ok: 1 }], flags: [] },
+  { id: "k2", col: 3, name: "Better Sweater 1/4-Zip", kind: "SKU · 25523", tier: "Product", country: "Global", material: "Wool / recycled poly", risk: 31, esg: 74, water: 0, lead: 0, cost: 0, certs: [{ name: "Fair Trade sewn", status: "Yes", ok: 1 }], flags: [] },
+  { id: "k3", col: 3, name: "Capilene Cool Daily Tee", kind: "SKU · 45215", tier: "Product", country: "Global", material: "Recycled polyester", risk: 56, esg: 51, water: 0, lead: 0, cost: 0, certs: [{ name: "GRS transaction certificate", status: "Gap at dye stage", ok: 0 }],
+    flags: [{ label: "Uncertified content", detail: "Polyester passes through Kaya Dyehouse without a GRS transaction certificate, so the recycled claim breaks at Tier 2." }] },
+  { id: "k4", col: 3, name: "Baggies 5\" Shorts", kind: "SKU · 57021", tier: "Product", country: "Global", material: "Recycled polyester", risk: 54, esg: 53, water: 0, lead: 0, cost: 0, certs: [{ name: "GRS transaction certificate", status: "Gap at dye stage", ok: 0 }],
+    flags: [{ label: "Uncertified content", detail: "Shares the Kaya dye lot with Capilene Cool Daily; same missing transaction certificate." }] },
+  { id: "k5", col: 3, name: "Houdini Windbreaker", kind: "SKU · 24142", tier: "Product", country: "Global", material: "Recycled nylon", risk: 25, esg: 80, water: 0, lead: 0, cost: 0, certs: [{ name: "Fair Trade sewn", status: "Yes", ok: 1 }], flags: [] }
+];
+
+const EDGES = [
+  { from: "f1", to: "m1", material: "Organic cotton", volume: "126 t", coc: 1, tc: "TC-4471" },
+  { from: "f2", to: "m1", material: "Organic cotton", volume: "84 t", coc: 1, tc: "TC-4489" },
+  { from: "f2", to: "m3", material: "Organic cotton", volume: "37 t", coc: 1, tc: "TC-4502" },
+  { from: "f3", to: "m2", material: "Recycled polyester chip", volume: "310 t", coc: 1, tc: "TC-8810" },
+  { from: "f3", to: "m3", material: "Recycled polyester yarn", volume: "148 t", coc: 0, tc: "not filed" },
+  { from: "f4", to: "m3", material: "Conventional cotton", volume: "41 t", coc: 0, tc: "not filed" },
+  { from: "f5", to: "m4", material: "Merino greasy wool", volume: "62 t", coc: 1, tc: "TC-2205" },
+  { from: "m1", to: "p1", material: "Ring-spun yarn", volume: "94 t", coc: 1, tc: "TC-5510" },
+  { from: "m1", to: "p3", material: "Ring-spun yarn", volume: "58 t", coc: 1, tc: "TC-5513" },
+  { from: "m2", to: "p1", material: "Knit fabric", volume: "240k m", coc: 1, tc: "TC-9120" },
+  { from: "m2", to: "p2", material: "Knit fabric", volume: "96k m", coc: 1, tc: "TC-9134" },
+  { from: "m3", to: "p2", material: "Piece-dyed fabric", volume: "180k m", coc: 0, tc: "not filed" },
+  { from: "m4", to: "p3", material: "Worsted yarn", volume: "44 t", coc: 1, tc: "TC-3301" },
+  { from: "p1", to: "k1", material: "Assembly", volume: "68k units", coc: 1, tc: "WO-1180" },
+  { from: "p1", to: "k5", material: "Assembly", volume: "31k units", coc: 1, tc: "WO-1194" },
+  { from: "p2", to: "k3", material: "Assembly", volume: "112k units", coc: 1, tc: "WO-2240" },
+  { from: "p2", to: "k4", material: "Assembly", volume: "77k units", coc: 1, tc: "WO-2263" },
+  { from: "p3", to: "k2", material: "Assembly", volume: "54k units", coc: 1, tc: "WO-3310" }
+];
+
+const ALERTS = [
+  { id: "a1", sev: 2, node: "m3", title: "Kaya Dyehouse water treatment is now non-compliant", detail: "ZDHC wastewater conformance lapsed on 20 Aug 2026 with two parameters over limit. 180k m of piece-dyed fabric already shipped against the lapsed period.", meta: "Compliance checker · 4 h ago · 2 SKUs exposed" },
+  { id: "a2", sev: 2, node: "f4", title: "Forced-labour indicator raised to severe for Kaspian Fibre Traders", detail: "Country risk model moved Uzbekistan trader lots to severe. No chain-of-custody certificate exists for the 41 t entering Kaya Dyehouse.", meta: "Risk model · yesterday · escalated to SER" },
+  { id: "a3", sev: 1, node: "f2", title: "GOTS scope certificate expires in 39 days", detail: "Anatolia Cotton Union renewal has not been submitted. Fabric booked past the expiry date would ship without valid scope.", meta: "Certificate monitor · 2 days ago" },
+  { id: "a4", sev: 1, node: "p2", title: "Sri Sai Apparel — 4 audit findings open", detail: "Overtime above 60 h/week in 3 of 12 sampled weeks. Corrective action plan due 30 Sep; two findings are repeat.", meta: "Audit tracker · 5 days ago" },
+  { id: "a5", sev: 0, node: "m2", title: "bluesign partnership for Lien Fa expires in 25 days", detail: "Renewal audit is booked for 18 Sep. No action needed unless the audit slips.", meta: "Certificate monitor · 1 week ago" }
+];
+
+const ANSWERS = [
+  { keys: ["uncertified polyester", "polyester", "grs", "recycled claim"], head: "2 SKUs · 1 tier-2 supplier",
+    headline: "Capilene Cool Daily Tee and Baggies 5\" Shorts carry polyester with no valid transaction certificate.",
+    body: "Both draw recycled polyester that routes through Kaya Dyehouse, which has not filed GRS transaction certificates for three lots. The chain of custody is intact from PolyRenew to the dyehouse and breaks after it, so the recycled claim cannot be substantiated at finished-goods level for 189k units.",
+    cites: ["k3", "k4", "m3", "f3"] },
+  { keys: ["forced labour", "forced labor", "human rights", "labour risk", "labor"], head: "1 tier-4 supplier · 2 SKUs downstream",
+    headline: "Kaspian Fibre Traders is the only node scoring severe on forced-labour exposure.",
+    body: "The country indicator for Uzbekistan trader lots moved to severe in July, and the volume arrives blended, so no farm can be named for 41 t of cotton. It feeds Kaya Dyehouse, then Sri Sai Apparel, reaching Capilene Cool Daily and Baggies. Sri Sai also holds four open audit findings on working hours, which raises composite exposure on the same path.",
+    cites: ["f4", "m3", "p2", "k3"] },
+  { keys: ["kaya", "suspend", "what breaks", "downstream"], head: "Impact analysis · Kaya Dyehouse",
+    headline: "Suspending Kaya Dyehouse removes 180k m of fabric and stops two SKUs.",
+    body: "Kaya is the sole dye route for Sri Sai Apparel, so Capilene Cool Daily and Baggies lose their fabric supply. Lien Fa can absorb the volume at a 27-point risk improvement, but adds roughly 12 days of lead time and needs six weeks of requalification on the shade band.",
+    cites: ["m3", "p2", "k3", "k4"] },
+  { keys: ["expiring", "expiry", "certificate", "60 days", "renewal"], head: "3 certificates inside 60 days",
+    headline: "Two certificates expire inside 40 days and one has already lapsed.",
+    body: "Anatolia Cotton Union's GOTS scope certificate expires in 39 days with no renewal filed. Lien Fa's bluesign partnership expires in 25 days with the audit booked. Kaya Dyehouse's ZDHC conformance lapsed on 20 Aug and is the only one already out of compliance.",
+    cites: ["f2", "m2", "m3"] },
+  { keys: ["water", "deforestation", "land", "conversion"], head: "2 environmental flags",
+    headline: "Water intensity concentrates at Kaya Dyehouse; land conversion sits with Estancia Ventana.",
+    body: "Kaya runs at 5,200 L/kg against a 2,600 L/kg system median, and its treatment is currently out of conformance. Estancia Ventana Wool has two paddocks inside a grassland-conversion watch area, checked quarterly rather than continuously.",
+    cites: ["m3", "f5", "f2"] }
+];
+
+const MATERIALS = ["Organic cotton", "Recycled polyester", "Conventional cotton", "Merino wool"];
+
+function band(r) { return r >= 55 ? "#aa2d00" : r >= 30 ? "#d9a441" : "#0a2e0e"; }
+
+class Component extends DCLogic {
+  state = { tab: "graph", sel: null, isolate: false, material: null, ask: "", answer: null, acked: {}, simOut: "m3", simIn: "m2" };
+
+  node(id) { return NODES.find(n => n.id === id); }
+
+  down(id, acc) {
+    acc = acc || new Set();
+    EDGES.filter(e => e.from === id).forEach(e => { if (!acc.has(e.to)) { acc.add(e.to); this.down(e.to, acc); } });
+    return acc;
+  }
+  up(id, acc) {
+    acc = acc || new Set();
+    EDGES.filter(e => e.to === id).forEach(e => { if (!acc.has(e.from)) { acc.add(e.from); this.up(e.from, acc); } });
+    return acc;
+  }
+
+  materialSet(mat) {
+    const seeds = NODES.filter(n => n.material === mat).map(n => n.id);
+    const set = new Set(seeds);
+    seeds.forEach(id => { this.down(id).forEach(x => set.add(x)); this.up(id).forEach(x => set.add(x)); });
+    EDGES.filter(e => e.material.indexOf(mat.split(" ")[mat.split(" ").length - 1]) >= 0).forEach(e => { set.add(e.from); set.add(e.to); });
+    return set;
+  }
+
+  litSet() {
+    const s = this.state;
+    if (s.material) return this.materialSet(s.material);
+    if (s.sel && s.isolate) {
+      const set = new Set([s.sel]);
+      this.down(s.sel).forEach(x => set.add(x));
+      this.up(s.sel).forEach(x => set.add(x));
+      return set;
+    }
+    return null;
+  }
+
+  goTo(id) { this.setState({ tab: "graph", sel: id, isolate: false, material: null }); }
+
+  runAsk(text) {
+    const q = (text || "").toLowerCase().trim();
+    if (!q) return this.setState({ answer: null });
+    const hit = ANSWERS.find(a => a.keys.some(k => q.indexOf(k) >= 0));
+    this.setState({ answer: hit || { head: "No indexed answer", headline: "Nothing in the graph matches that question yet.", body: "The assistant reads node metadata, certificates, edge chain-of-custody state, and audit records. Try asking about certificates, forced-labour exposure, uncertified material, or the impact of suspending a supplier.", cites: [] } });
+  }
+
+  band(r) {
+    const hi = this.props.riskThreshold ?? 55;
+    return r >= hi ? "#aa2d00" : r >= Math.max(12, hi - 25) ? "#d9a441" : "#0a2e0e";
+  }
+  pillInk(r) {
+    const hi = this.props.riskThreshold ?? 55;
+    const mid = Math.max(12, hi - 25);
+    return (r >= mid && r < hi) ? "#181d26" : "#ffffff";
+  }
+
+  nodeStyle(n, lit) {
+    const selected = this.state.sel === n.id;
+    const dim = lit && !lit.has(n.id);
+    return {
+      height: NODE_H + "px", boxSizing: "border-box", padding: "12px", borderRadius: "10px", cursor: "pointer",
+      display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "6px", textAlign: "left",
+      background: selected ? "#181d26" : "#ffffff",
+      color: selected ? "#ffffff" : "#181d26",
+      border: "1px solid " + (selected ? "#181d26" : "#dddddd"),
+      borderTop: "3px solid " + this.band(n.risk),
+      opacity: dim ? 0.22 : 1
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const lit = this.litSet();
+    const yOf = {};
+    [0, 1, 2, 3].forEach(c => NODES.filter(n => n.col === c).forEach((n, i) => { yOf[n.id] = HEAD + i * (NODE_H + NODE_GAP) + NODE_H / 2; }));
+
+    const columns = [
+      { tier: "Tier 4", kind: "Farms, recyclers, traders" },
+      { tier: "Tier 3–2", kind: "Spinning, knitting, dyeing" },
+      { tier: "Tier 1", kind: "Cut, sew & assembly" },
+      { tier: "Product", kind: "Finished SKUs" }
+    ].map((c, i) => ({
+      ...c,
+      nodes: NODES.filter(n => n.col === i).map(n => ({
+        name: n.name, risk: n.risk, sub: n.country + " · " + n.material,
+        style: this.nodeStyle(n, lit),
+        pill: { fontSize: "13px", fontWeight: 500, padding: "3px 8px", borderRadius: "6px", flex: "none", background: this.band(n.risk), color: this.pillInk(n.risk) },
+        pick: () => this.setState({ sel: s.sel === n.id ? null : n.id, isolate: false })
+      }))
+    }));
+
+    const gaps = this.props.showChainGaps ?? true;
+    const edges = EDGES.map(e => {
+      const a = this.node(e.from), b = this.node(e.to);
+      const x1 = a.col * (COL_W + COL_GAP) + COL_W, x2 = b.col * (COL_W + COL_GAP);
+      const y1 = yOf[e.from], y2 = yOf[e.to];
+      const on = !lit || (lit.has(e.from) && lit.has(e.to));
+      return {
+        d: "M" + x1 + " " + y1 + " C" + (x1 + 44) + " " + y1 + ", " + (x2 - 44) + " " + y2 + ", " + x2 + " " + y2,
+        stroke: e.coc || !gaps ? "#9297a0" : "#aa2d00", w: e.coc || !gaps ? 1.5 : 2,
+        dash: e.coc || !gaps ? "0" : "5 4", op: on ? (e.coc ? 0.8 : 1) : 0.12
+      };
+    });
+
+    const sel = s.sel ? this.node(s.sel) : null;
+    let selVals = {};
+    if (sel) {
+      const downIds = [...this.down(sel.id)].filter(id => this.node(id).col === 3);
+      const inbound = EDGES.filter(e => e.to === sel.id).map(e => ({
+        from: this.node(e.from).name,
+        meta: e.material + " · " + e.volume + " · " + (e.coc ? "chain of custody verified · " + e.tc : "chain-of-custody gap · transaction certificate " + e.tc)
+      }));
+      selVals = {
+        tier: sel.tier, kind: sel.kind, name: sel.name, sub: sel.country + " · " + sel.material,
+        metrics: [
+          { label: "Composite risk", value: sel.risk + " / 100" },
+          { label: "ESG score", value: sel.esg },
+          { label: "Water intensity", value: sel.water ? sel.water.toLocaleString() + " L/kg" : "n/a" },
+          { label: "Lead time", value: sel.lead ? sel.lead + " days" : "n/a" }
+        ],
+        certs: sel.certs.map(c => ({ name: c.name, status: c.status, style: { fontSize: "13px", fontWeight: 500, flex: "none", color: c.ok ? "#006400" : "#aa2d00" } })),
+        noCerts: sel.certs.length === 0,
+        flags: sel.flags, hasFlags: sel.flags.length > 0,
+        inbound, noInbound: inbound.length === 0,
+        downstream: downIds.map(id => ({ name: this.node(id).name, pick: () => this.setState({ sel: id }) })),
+        downCount: downIds.length, noDown: downIds.length === 0
+      };
+    }
+
+    const riskRows = NODES.filter(n => n.col < 3).slice().sort((a, b) => b.risk - a.risk).map(n => ({
+      name: n.name, tier: n.tier, country: n.country, risk: n.risk,
+      flagText: n.flags.length ? n.flags.map(f => f.label).join(" · ") : (n.certs.some(c => !c.ok) ? "Certificate attention" : "None"),
+      pill: { fontSize: "13px", fontWeight: 500, padding: "4px 10px", borderRadius: "6px", background: this.band(n.risk), color: this.pillInk(n.risk) },
+      open: () => this.goTo(n.id)
+    }));
+
+    const ans = s.answer;
+    const outIds = ["m3", "f4", "p2", "f2", "m2", "p1"];
+    const outNode = this.node(s.simOut) || this.node("m3");
+    const inCandidates = NODES.filter(n => n.id !== outNode.id && n.col === outNode.col);
+    const inNode = this.node(s.simIn) && this.node(s.simIn).col === outNode.col ? this.node(s.simIn) : inCandidates[0];
+    const simDownIds = [...this.down(outNode.id)].filter(id => this.node(id).col === 3);
+    const dRisk = inNode.risk - outNode.risk;
+    const hasLead = outNode.lead > 0 || inNode.lead > 0;
+    const hasWater = outNode.water > 0 || inNode.water > 0;
+    const dLead = inNode.lead - outNode.lead;
+    const dCost = inNode.cost - outNode.cost;
+    const dWater = outNode.water ? Math.round(((inNode.water - outNode.water) / outNode.water) * 100) : 0;
+    const good = v => ({ fontSize: "20px", fontWeight: 500, color: v <= 0 ? "#006400" : "#aa2d00" });
+    const neutral = { fontSize: "20px", fontWeight: 500, color: "#41454d" };
+
+    return {
+      tabs: [{ key: "graph", label: "Graph" }, { key: "risk", label: "Risk & insights" }, { key: "alerts", label: "Alerts & simulation" }].map(t => ({
+        label: t.label, on: s.tab === t.key, off: s.tab !== t.key, pick: () => this.setState({ tab: t.key })
+      })),
+      isGraph: s.tab === "graph", isRisk: s.tab === "risk", isAlerts: s.tab === "alerts",
+      nodeCount: NODES.length, edgeCount: EDGES.length,
+      openAlerts: ALERTS.filter(a => !s.acked[a.id]).length,
+      alertBadge: ALERTS.filter(a => !s.acked[a.id]).length > 0,
+
+      columns, edges,
+      materials: MATERIALS.map(m => ({ label: m, on: s.material === m, off: s.material !== m, pick: () => this.setState({ material: s.material === m ? null : m, sel: null, isolate: false }) })),
+      queryNote: !!s.material || (!!sel && s.isolate),
+      queryText: s.material
+        ? "Suppliers and products on the " + s.material.toLowerCase() + " path: " + [...(lit || [])].length + " nodes lit, everything else dimmed."
+        : (sel ? "Impact analysis from " + sel.name + ": " + [...this.up(sel.id)].length + " upstream nodes, " + [...this.down(sel.id)].length + " downstream nodes." : ""),
+      clearQuery: () => this.setState({ material: null, isolate: false }),
+
+      hasSel: !!sel, noSel: !sel, sel: selVals,
+      isolateOn: s.isolate, isolateOff: !s.isolate,
+      toggleIsolate: () => this.setState({ isolate: !s.isolate, material: null }),
+      clearSel: () => this.setState({ sel: null, isolate: false }),
+      coverage: [
+        { label: "Tier 1 factories mapped", value: "3 of 3" },
+        { label: "Tier 2–3 mills mapped", value: "4 of 6" },
+        { label: "Tier 4 origin named", value: "78% of volume" },
+        { label: "Edges with transaction cert", value: "15 of 18" }
+      ],
+
+      riskRows,
+      askText: s.ask,
+      onAsk: e => this.setState({ ask: e.target.value }),
+      onAskKey: e => { if (e.key === "Enter") this.runAsk(s.ask); },
+      runAsk: () => this.runAsk(s.ask),
+      clearAsk: () => this.setState({ ask: "", answer: null }),
+      suggestions: ANSWERS.slice(0, 4).map((a, i) => ({
+        q: ["Which products use uncertified polyester?", "Where do we carry forced-labour risk?", "What breaks if we suspend Kaya Dyehouse?", "Which certificates expire in the next 60 days?"][i],
+        pick: () => { const q = ["Which products use uncertified polyester?", "Where do we carry forced-labour risk?", "What breaks if we suspend Kaya Dyehouse?", "Which certificates expire in the next 60 days?"][i]; this.setState({ ask: q }); this.runAsk(q); }
+      })),
+      hasAnswer: !!ans,
+      answer: ans ? { head: ans.head, headline: ans.headline, body: (this.props.assistantTone === "Executive" ? ans.body.split(". ")[0] + "." : ans.body), cites: ans.cites.map(id => ({ label: this.node(id).name, open: () => this.goTo(id) })) } : {},
+
+      stats: [
+        { value: "3", label: "Certificates inside 60 days", detail: "One already lapsed at Kaya Dyehouse" },
+        { value: "3", label: "Chain-of-custody gaps", detail: "41 t cotton and 148 t polyester unmatched" },
+        { value: "4", label: "Open audit findings", detail: "All at Sri Sai Apparel, two repeat" },
+        { value: "4", label: "SKUs exposed", detail: "189k units with a broken material claim" }
+      ],
+      alerts: ALERTS.map(a => {
+        const acked = !!s.acked[a.id];
+        const c = a.sev === 2 ? "#aa2d00" : a.sev === 1 ? "#d9a441" : "#9297a0";
+        return {
+          title: a.title, detail: a.detail, meta: a.meta,
+          style: { border: "1px solid #dddddd", borderLeft: "3px solid " + c, borderRadius: "10px", padding: "16px", background: acked ? "#f8fafc" : "#ffffff", opacity: acked ? 0.65 : 1 },
+          dot: { width: "8px", height: "8px", borderRadius: "9999px", background: c, flex: "none", marginTop: "6px", display: "block" },
+          openState: !acked, ackState: acked,
+          open: () => this.goTo(a.node),
+          ack: () => this.setState({ acked: { ...s.acked, [a.id]: true } })
+        };
+      }),
+
+      simOut: outNode.id, simIn: inNode.id,
+      simOutOptions: outIds.map(id => ({ id, name: this.node(id).name + " · " + this.node(id).tier })),
+      simInOptions: inCandidates.map(n => ({ id: n.id, name: n.name + " · " + n.country })),
+      pickOut: e => { const id = e.target.value; const c = NODES.filter(n => n.col === this.node(id).col && n.id !== id); this.setState({ simOut: id, simIn: c[0].id }); },
+      pickIn: e => this.setState({ simIn: e.target.value }),
+      simNote: "Replacements are limited to nodes at the same tier. Volumes rebase onto the replacement at current booked quantities; lead time and cost move with the new node's own metrics.",
+      simDeltas: [
+        { label: "Composite risk", value: (dRisk > 0 ? "+" : "") + dRisk, from: outNode.risk + " → " + inNode.risk, style: good(dRisk) },
+        hasLead
+          ? { label: "Lead time", value: (dLead > 0 ? "+" : "") + dLead + " days", from: outNode.lead + " → " + inNode.lead + " days", style: good(dLead) }
+          : { label: "Lead time", value: "n/a", from: "not tracked at this tier", style: neutral },
+        { label: "Unit cost index", value: (dCost > 0 ? "+" : "") + dCost + "%", from: outNode.cost + " → " + inNode.cost, style: good(dCost) },
+        hasWater
+          ? { label: "Water intensity", value: (dWater > 0 ? "+" : "") + dWater + "%", from: outNode.water.toLocaleString() + " → " + inNode.water.toLocaleString() + " L/kg", style: good(dWater) }
+          : { label: "Water intensity", value: "n/a", from: "not tracked at this tier", style: neutral }
+      ],
+      simSkus: simDownIds.map(id => ({ name: this.node(id).name })),
+      simSkuCount: simDownIds.length,
+      simRequal: "Requalification: " + (outNode.col === 1 ? "6 weeks of shade-band and durability testing before first bulk" : outNode.col === 0 ? "one harvest cycle to verify origin claims" : "8 weeks of line qualification and a social audit before first bulk") + "."
+    };
+  }
+}
+</script>
+</body>
+</html>
