@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./lightbox.js"></script>
+<script src="./band-motion.js"></script>
+<style>
+body{margin:0;background:#ffffff;font-family:Inter,-apple-system,"Segoe UI",sans-serif;color:#333840;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#1b61c9;text-decoration:none}
+a:hover{color:#1a3866}
+p,h1,h2,h3,ul,ol{margin:0}
+li{margin:4px 0}
+strong{font-weight:500;color:#181d26}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;overflow-x:clip">
+<dc-import name="SiteNav" active="cv" hint-size="100%,64px" style="position:sticky;top:0;z-index:100"></dc-import>
+<div style="max-width:1280px;width:100%;margin:0 auto;flex:1">
+<div style="position:relative;isolation:isolate;padding:96px 48px 64px;display:flex;flex-direction:column;gap:24px">
+<div aria-hidden="true" style="position:absolute;z-index:-1;top:0;bottom:0;left:780px;right:calc(min(0px, 640px - 50vw));pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);mask-composite:intersect">
+<div data-ribbon="" style="position:absolute;top:-40%;left:10%;width:34%;height:180%;background:linear-gradient(180deg,#a8d8c4 0%,#1b61c9 70%,#a8d8c4 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:38%;width:34%;height:180%;background:linear-gradient(180deg,#8ec5f0 0%,#7c5cd6 50%,#1b61c9 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:64%;width:30%;height:180%;background:linear-gradient(180deg,#c3b5f2 0%,#2a9d8f 55%,#a8d8c4 100%);transform:rotate(-28deg);border-radius:50%;filter:blur(12px);opacity:0.7"></div>
+</div>
+<div style="display:flex;flex-wrap:wrap-reverse;align-items:center;gap:48px">
+<div style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<h1 style="max-width:720px;font-family:'Inter Tight',sans-serif;font-weight:400;font-size:48px;line-height:1.12;color:#181d26;text-wrap:balance">The intersection of strategy, systems thinking, and execution</h1>
+<p style="max-width:700px;font-size:17px;line-height:1.55;text-wrap:pretty">I’m a systems-oriented product designer with 25+ years of experience helping teams turn operational complexity into actionable clarity. My background, starting out in web design and development, spans AI platforms, observability systems, cloud infrastructure, enterprise workflows, and large-scale design ecosystems. I enjoy working at the intersection of strategy, systems thinking, and execution.</p>
+</div>
+<div style="flex:0 0 auto;margin:0 auto;padding:7px;border-radius:50%;background:conic-gradient(from 200deg,#a8d8c4,#1b61c9,#7c5cd6,#c3b5f2,#2a9d8f,#a8d8c4);box-shadow:0 24px 60px rgba(27,97,201,0.22)">
+<div style="padding:6px;border-radius:50%;background:#ffffff">
+<image-slot id="cv-portrait" shape="circle" src="assets/david-portrait.png" placeholder="Portrait" style="display:block;width:min(220px,56vw);height:min(220px,56vw);aspect-ratio:1/1"></image-slot>
+</div>
+</div>
+</div>
+</div>
+
+<div style="padding:0 48px 64px;display:flex">
+<a href="Home.dc.html#case-studies" style="background:#ffffff;color:#181d26;font-size:16px;font-weight:500;padding:14px 22px;border-radius:12px;border:1px solid #dddddd;white-space:nowrap">Case Studies</a>
+</div>
+
+<div style="padding:0 48px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px">
+<div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;align-items:center;gap:16px"><image-slot id="cv-badge-aws-ai" shape="rect" fit="contain" bare="" src="https://images.credly.com/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png" placeholder="Badge" style="width:88px;height:88px;flex-shrink:0"></image-slot><span style="font-size:15px;font-weight:500;line-height:1.35;color:#181d26">AWS Certified AI Practitioner</span></div>
+<div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;align-items:center;gap:16px"><image-slot id="cv-badge-aws-cloud" shape="rect" fit="contain" bare="" src="https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png" placeholder="Badge" style="width:88px;height:88px;flex-shrink:0"></image-slot><span style="font-size:15px;font-weight:500;line-height:1.35;color:#181d26">AWS Certified Cloud Practitioner</span></div>
+<div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;align-items:center;gap:16px"><image-slot id="cv-badge-sf-designer" shape="rect" fit="contain" bare="" src="https://image.mail.salesforce.com/lib/fe961c727460077877/m/1/2025-03_Badge_SF-Certified_Plat-Strat-Dsgn_High-Res.png" placeholder="Badge" style="width:88px;height:88px;flex-shrink:0"></image-slot><span style="font-size:15px;font-weight:500;line-height:1.35;color:#181d26">Salesforce Platform Strategy Designer</span></div>
+<div style="background:#f8fafc;border-radius:10px;padding:20px;display:flex;align-items:center;gap:16px"><image-slot id="cv-badge-sf-admin" shape="rect" fit="contain" bare="" src="https://image.mail.salesforce.com/lib/fe961c727460077877/m/1/2025-03_Badge_SF-Certified_Platform-Admin_High-Res.png" placeholder="Badge" style="width:88px;height:88px;flex-shrink:0"></image-slot><span style="font-size:15px;font-weight:500;line-height:1.35;color:#181d26">Salesforce Certified Platform Administrator</span></div>
+</div>
+
+<!-- CASE STUDY SUMMARY -->
+<div style="padding:48px 48px 96px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px">
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2;color:#181d26">Case Study Summary</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:500">
+<div onClick="{{ setAll }}" style="padding:8px 14px;border-radius:6px;border:1px solid #dddddd;cursor:pointer;white-space:nowrap;background:{{ fAllBg }};color:{{ fAllFg }}">All</div>
+<div onClick="{{ setAi }}" style="padding:8px 14px;border-radius:6px;border:1px solid #dddddd;cursor:pointer;white-space:nowrap;background:{{ fAiBg }};color:{{ fAiFg }}">AI-driven Operational Intelligence</div>
+<div onClick="{{ setDev }}" style="padding:8px 14px;border-radius:6px;border:1px solid #dddddd;cursor:pointer;white-space:nowrap;background:{{ fDevBg }};color:{{ fDevFg }}">Developer and Data Platforms</div>
+</div>
+</div>
+
+<sc-if value="{{ showAi }}" hint-placeholder-val="{{ true }}">
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">Netflix Customer Service Observability</span><span style="background:#fcab79;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Netflix</span></div><a href="AI-Operational-Intelligence.dc.html#netflix" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">Users of a Netflix streaming observability tool were reporting difficultly in navigation and fragmentation when running investigations. The team supporting the system needed to prepare for both platform scale and the addition of AI for productivity enhancements.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd"><ul style="padding-left:18px"><li><strong>Find the Right Balance.</strong> We preserved the most frequently used navigation items in the their existing locations and avoided disorienting experienced users, while reorganizing lower visibility logs and utilities into more logical groupings.</li><li><strong>Approach to AI.</strong> Assistant features were designed progressively as Engineers and Data Scientists had more tested functionality to offer: (1) RAG-style help (2) context-aware searches (3) automated investigations.</li></ul></div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">The overall outcome was a cleaner, more understandable experience with reduced cognitive load that still supported advanced workflows across multiple teams.</div>
+</div>
+</div>
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">6sense Marketing Automation</span><span style="background:#f4d35e;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">6sense</span></div><a href="AI-Operational-Intelligence.dc.html#sixsense" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">The existing product provided simple wizards to allow any platform user the ability to automate marketing-related tasks on a daily or weekly cadence but the product’s adoption and engagement was much lower than expected.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd"><ul style="padding-left:18px"><li>The decision tree canvas format would provide many benefits over other formats (users can start simple, scale as needed, and can branch logic in multiple ways).</li><li>The model removes barriers toward adoption and allows customers to start small and scale as they become more comfortable with the app.</li><li>I started minimalist with visual design until we had customer feedback telling us otherwise.</li></ul></div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">It provided a path toward better adoption, increased revenue, allowed users to start small and scale as needed, and came with the added benefit of simplifying the overall platform experience .</div>
+</div>
+</div>
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">Oracle New Platform for Ops &amp; CSMs</span><span style="background:#a8d8c4;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Oracle</span></div><a href="AI-Operational-Intelligence.dc.html#oracle" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">The primary focus of CSMs was related to monitoring customer usage and helping them throughout the contract period. However, their primary tools were spreadsheets and half a dozen other internal tools. They needed one system to bring it all together, prevent churn, and help Oracle compete against Amazon, Microsoft, and Google.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd"><ul style="padding-left:18px"><li>Leverage existing tools and patterns where possible, before creating your own (Oracle JET javascript framework, which included responsive components, and ALTA UI visual libraries).</li><li>Focus on simple default views that can be accessed with very few clicks.</li><li>Moved to a horizontal nav to gain width for tablets (landscape orientation)</li></ul></div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26"><ul style="padding-left:18px"><li><strong>Adoption of 4000 users in one year</strong></li><li>One source of truth for all data (no more spreadsheets)</li><li>Reduced time to onboard</li></ul></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showDev }}" hint-placeholder-val="{{ true }}">
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">Netflix Developer Portal</span><span style="background:#fcab79;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Netflix</span></div><a href="Developer-Data-Platforms.dc.html#portal" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">Netflix engineers supporting common customer flows (sign up, account management, payment flow, etc.) found it difficult to find simple answers to questions related to the most recent version of APIs and docs related to the product context they were currently working in.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">We established an information architecture to match groups initially, which fit the current siloed ownership. Once most groups had begun to adopt and engage with the portal, we could plan an IA shift toward organizing the navigation around product context (more scalable for the future - and “reorg proof”).</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">The team created a brand new AI-driven developer API and doc portal to act as a front door to all other resources. This would provide curated APIs and content and reclaim countless hours of lost productivity time.</div>
+</div>
+</div>
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">CRM Data Workflows</span><span style="background:#f4d35e;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">6sense</span></div><a href="Developer-Data-Platforms.dc.html#crm" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">The Data Workflows product was developed to provide customers with the ability to identify and rectify those types of problems as they occurred through automation.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd"><ul style="padding-left:18px"><li>The decision tree pattern was the only format flexible enough to adapt to any customer scenario imaginable, from continual branching logic to enterprise scale.</li><li>Data Workflows was offered free with any platform package and only billed users on specific actions taken (credits).</li></ul></div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">Users loved the visual decision tree format and the ability to view, edit, and automate entire data strategies in one place.</div>
+</div>
+</div>
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">GDPR Compliance</span><span style="background:#d9a441;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Informatica</span></div><a href="Developer-Data-Platforms.dc.html#gdpr" style="font-weight:500">Case Study →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">In 2019, companies scrambled to figure out how to stay in GDPR compliance. We helped several large enterprise customers adapt.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">Most effort was placed on data privacy as a value ad to the cloud platform, the company’s best selling suite of products. Because of the speed that large enterprises would need to adapt, selling Professional Services hours for initial onboarding was critical.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">The data privacy solutions at Informatica are now embedded within Data Catalog functionality and workflows.</div>
+</div>
+</div>
+<div style="border:1px solid #dddddd;border-radius:10px;overflow:hidden;font-size:14px;line-height:1.5">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:16px 20px;border-bottom:1px solid #dddddd"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:17px;font-weight:500;color:#181d26">Data Visualization</span><span style="background:#f4d35e;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">6sense</span><span style="background:#a8d8c4;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Oracle</span></div><a href="Developer-Data-Platforms.dc.html#dataviz" style="font-weight:500">Starting Points →</a></div>
+<div style="display:grid;grid-template-columns:minmax(110px,180px) minmax(0,1fr)">
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Project summary</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">These examples from 6sense and Oracle show my approach to analytics and dashboards. Simplicity, relevance, and personalization are covered.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd">Decisions &amp; trade-offs</div><div style="padding:14px 20px;border-bottom:1px solid #dddddd">I suggested a default filtering and sorting (hiding the advanced filters by default) and used a simple, consistent format for drilling to deeper details.</div>
+<div style="padding:14px 20px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d">Outcomes</div><div style="padding:14px 20px;color:#181d26">Being able to launch a workflow directly from the dashboard helps users complete the circle from creating a flow &gt; to measuring success &gt; to creating or fine-tuning a flow for even better success in the next published run.</div>
+</div>
+</div>
+</sc-if>
+</div>
+
+<!-- EXPERIENCE -->
+<div style="padding:0 48px 96px;display:flex;flex-direction:column;gap:20px">
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2;color:#181d26">Experience</h2>
+<div style="border-top:1px solid #dddddd;display:flex;flex-direction:column;font-size:15px;line-height:1.55">
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">Netflix</span><span>Senior Product Design Consultant</span><span style="font-size:13px;font-weight:500;color:#41454d">2025-2026</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Leading cross-functional initiatives across engineering, product, and UX for observability and AI platforms.</li><li>Driving program alignment, scope, and execution for AI-driven developer tools.</li><li>Synthesizing research and operational data into strategic insights for platform direction across multiple Netflix teams (Customer Experience, Streaming, Ads, Partner and Client Services, Live Testing, Gaming. Commerce. and more)</li></ul></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">6sense</span><span>Principal Product Designer</span><span style="font-size:13px;font-weight:500;color:#41454d">2021-2025</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Led 0–1 platform initiative integrating AI workflows across marketing and data systems</li><li>Partnered with PMs and engineers to define roadmap, dependencies, and execution plans.</li><li>Established data visualization and metrics patterns supporting decision-making.</li></ul></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">Aryaka Networks</span><span>Senior UX Architect</span><span style="font-size:13px;font-weight:500;color:#41454d">2020-2021</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Helped establish a formal design department and design system for scale</li><li>Designed a complex workflow for network administrators to configure global IT networks</li><li>Helped PMs rethink a strategy for mobile support that solved the right problem for customers and improve desktop experiences</li></ul></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">Informatica</span><span>Senior User Experience Designer</span><span style="font-size:13px;font-weight:500;color:#41454d">2019</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Conducted onsite customer interviews and designed a new GDPR data privacy offering for the company’s cloud platform</li><li>Helped Product avoid a costly strategic mistake. PMs were pushing toward a “sticky app”, while customers wanted full automation</li><li>Assisted the Design System Lead and Program Manager in designing an improved process for DS audits and updates</li></ul></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">Oracle</span><span>Principal User Experience Designer</span><span style="font-size:13px;font-weight:500;color:#41454d">2013-2018</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Research, design, and collaboration on a new SaaS offering for universities (Student Cloud)</li><li>Lead the creation of a new app for Oracle’s CSMs in their Cloud Framework group. Adoption soared from 0-4000 less than a year.</li><li>Research in Romania and India to design the foundation of a new global workflow for Collections and Billing</li></ul></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 48px;padding:24px 0;border-bottom:1px solid #dddddd"><div style="flex:1 1 260px;display:flex;flex-direction:column;gap:4px"><span style="font-size:17px;font-weight:500;color:#181d26">Wells Fargo</span><span>Lead UX Consultant</span><span style="font-size:13px;font-weight:500;color:#41454d">2012-2013</span></div><ul style="flex:2 1 480px;padding-left:18px"><li>Worked with content strategists to migrate key online properties to a new CMS and helped to implement new design system.</li><li>Worked with the LOB content strategist to find the right layout and navigation model for Wells Fargo’s Private Bank</li></ul></div>
+</div>
+</div>
+
+<div style="padding:0 48px 96px;display:flex;flex-direction:column;gap:20px">
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2;color:#181d26">Prototyping</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+<div style="aspect-ratio:4/3"><image-slot id="cv-proto-1" src="assets/slots/cv-proto-1.webp" placeholder="Prototype" radius="10"></image-slot></div>
+<div style="aspect-ratio:4/3"><image-slot id="cv-proto-2" src="assets/slots/cv-proto-2.webp" placeholder="Prototype" radius="10"></image-slot></div>
+<div style="aspect-ratio:4/3"><image-slot id="cv-proto-3" src="assets/slots/cv-proto-3.webp" placeholder="Prototype" radius="10"></image-slot></div>
+</div>
+<p style="font-size:16px;line-height:1.6"><a href="https://thehigherwave.com" target="_blank" rel="noopener" style="color:#1b61c9;text-decoration:none" style-hover="color:#181d26">View more patterns and prototypes created with Claude Design from Anthropic</a></p>
+</div>
+
+<div style="padding:0 48px 96px">
+<div style="background:#f5e9d4;border-radius:12px;padding:48px;display:flex;flex-wrap:wrap;gap:24px 48px">
+<div style="flex:1 1 300px;display:flex;flex-direction:column;gap:16px">
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2;color:#181d26">Mentoring</h2>
+<p style="font-size:16px;line-height:1.6">I’ve been lucky enough to have worked with a number of talented designers over the years, seeing them grow from junior or senior level to lead or director levels.</p>
+</div>
+<div style="flex:1 1 400px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.6">
+<p><strong>I always attempt to lead with the following considerations in mind:</strong></p>
+<ul style="padding-left:20px"><li>Provide clarity in business needs, goals, and prioritization.</li><li>Create an ‘open door’ policy that provides a safe place to question anything at anytime.</li><li>Make sure designers have the information and resources they need to do their job effectively.</li><li>Help them to home in on the real problems we’re solving and not get lost in “shiny new toys” as we attempt to innovate.</li></ul>
+</div>
+</div>
+</div>
+
+<div style="padding:0 48px 96px;display:flex;flex-direction:column;gap:20px">
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:32px;line-height:1.2;color:#181d26">Additional Training</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+<div style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px"><span style="font-size:16px;font-weight:500;color:#181d26">Scaling AI: Strategies for Adoption and Expansion</span><span style="font-size:14px;line-height:1.5;flex:1">Team strategies, team roles, tracking adoption, and rethinking job roles</span><a href="#" style="font-size:14px;font-weight:500">Credential</a></div>
+<div style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px"><span style="font-size:16px;font-weight:500;color:#181d26">Systems-thinking for Product Designers</span><span style="font-size:14px;line-height:1.5;flex:1">Methods of thinking, organizing, and diagramming complex product scenarios</span><a href="#" style="font-size:14px;font-weight:500">Credential</a></div>
+<div style="border:1px solid #dddddd;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px"><span style="font-size:16px;font-weight:500;color:#181d26">Accessibility-first Design</span><span style="font-size:14px;line-height:1.5;flex:1">Methods of thinking through accessibility needs early in the product lifecycle</span><a href="#" style="font-size:14px;font-weight:500">Credential</a></div>
+</div>
+</div>
+</div>
+<dc-import name="SiteFooter" hint-size="100%,90px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filter: 'all' };
+  renderVals() {
+    const { filter } = this.state;
+    const f = (k) => filter === k ? { bg: '#181d26', fg: '#ffffff' } : { bg: '#ffffff', fg: '#181d26' };
+    return {
+      setAll: () => this.setState({ filter: 'all' }),
+      setAi: () => this.setState({ filter: 'ai' }),
+      setDev: () => this.setState({ filter: 'dev' }),
+      fAllBg: f('all').bg, fAllFg: f('all').fg, fAiBg: f('ai').bg, fAiFg: f('ai').fg, fDevBg: f('dev').bg, fDevFg: f('dev').fg,
+      showAi: filter !== 'dev', showDev: filter !== 'ai',
+    };
+  }
+}
+</script>
+</body>
+</html>

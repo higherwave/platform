@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./lightbox.js"></script>
+<script src="./band-motion.js"></script>
+<style>
+body{margin:0;background:#ffffff;font-family:Inter,-apple-system,"Segoe UI",sans-serif;color:#333840;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#1b61c9;text-decoration:none}
+a:hover{color:#1a3866}
+p,h1,h2,h3,ul{margin:0}
+li{margin:6px 0}
+strong{font-weight:500;color:#181d26}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;overflow-x:clip">
+<dc-import name="SiteNav" active="cases" hint-size="100%,64px" style="position:sticky;top:0;z-index:100"></dc-import>
+<div style="max-width:1280px;width:100%;margin:0 auto;flex:1">
+<div style="position:relative;isolation:isolate;padding:72px 48px 40px;display:flex;flex-direction:column;gap:12px">
+<div aria-hidden="true" style="position:absolute;z-index:-1;top:0;bottom:0;left:780px;right:calc(min(0px, 640px - 50vw));pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0%,#000 40%),linear-gradient(to bottom,#000 50%,transparent 100%);mask-composite:intersect">
+<div data-ribbon="" style="position:absolute;top:-40%;left:10%;width:34%;height:180%;background:linear-gradient(180deg,#a8d8c4 0%,#1b61c9 70%,#a8d8c4 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:38%;width:34%;height:180%;background:linear-gradient(180deg,#8ec5f0 0%,#7c5cd6 50%,#1b61c9 100%);transform:rotate(-32deg);border-radius:50%;filter:blur(12px);opacity:0.75"></div>
+<div data-ribbon="" style="position:absolute;top:-40%;left:64%;width:30%;height:180%;background:linear-gradient(180deg,#c3b5f2 0%,#2a9d8f 55%,#a8d8c4 100%);transform:rotate(-28deg);border-radius:50%;filter:blur(12px);opacity:0.7"></div>
+</div>
+<a href="Home.dc.html#case-studies" style="font-size:14px;font-weight:500;color:#41454d">← Case Studies by Business Theme</a>
+<h1 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:48px;line-height:1.12;color:#181d26;max-width:700px;text-wrap:balance">Developer &amp; Data Infrastructure Platforms</h1>
+<p style="font-size:18px;line-height:1.5;max-width:700px">These two case studies will look at CRM data cleaning, routing, and reporting at 6sense - and how we approached GDPR research and design for enterprise customers at Informatica.</p>
+</div>
+<div style="padding:0 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
+<div onClick="{{ pickA }}" style="cursor:pointer;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;background:{{ cardA }};border:1px solid {{ borderA }}">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:16px;font-weight:500;color:#181d26">Netflix Developer Portal</span><span style="background:#fcab79;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Netflix</span></div>
+<p style="font-size:14px;line-height:1.45">A new AI-driven developer API and doc portal that provided curated APIs and content and reclaimed countless hours of lost productivity.</p>
+</div>
+<div onClick="{{ pickB }}" style="cursor:pointer;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;background:{{ cardB }};border:1px solid {{ borderB }}">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:16px;font-weight:500;color:#181d26">CRM Data Workflows</span><span style="background:#f4d35e;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">6sense</span></div>
+<p style="font-size:14px;line-height:1.45">Canvas-based decision tree tool that allows Ops users the ability to keep their CRM records accurate through automated enrichment, de-duping, and more.</p>
+</div>
+<div onClick="{{ pickC }}" style="cursor:pointer;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;background:{{ cardC }};border:1px solid {{ borderC }}">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:16px;font-weight:500;color:#181d26">GDPR Compliance</span><span style="background:#d9a441;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Informatica</span></div>
+<p style="font-size:14px;line-height:1.45">In 2019, companies scrambled to figure out how to stay in GDPR compliance. We helped several large enterprise customers adapt.</p>
+</div>
+<div onClick="{{ pickD }}" style="cursor:pointer;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;background:{{ cardD }};border:1px solid {{ borderD }}">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:16px;font-weight:500;color:#181d26">Data Visualization</span><span style="display:flex;gap:4px"><span style="background:#f4d35e;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">6sense</span><span style="background:#a8d8c4;color:#181d26;border-radius:6px;padding:2px 8px;font-size:13px">Oracle</span></span></div>
+<p style="font-size:14px;line-height:1.45">These examples from 6sense and Oracle show my approach to analytics and dashboards. Simplicity, relevance, and personalization are covered.</p>
+</div>
+</div>
+
+<!-- ===== DEV PORTAL ===== -->
+<sc-if value="{{ csA }}" hint-placeholder-val="{{ true }}">
+<div style="padding:72px 48px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Case Study 1: Netflix Developer Portal</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:44px;line-height:1.12;color:#181d26">Agentic Curation and Automation of APIs and Docs</h2>
+</div>
+<div style="aspect-ratio:4/3"><image-slot auto-ratio="" id="dd-portal-hero" src="assets/slots/dd-portal-hero.webp" placeholder="Developer portal screenshot" radius="10"></image-slot></div>
+</div>
+<div style="margin:48px 48px 0;border:1px solid #dddddd;border-radius:10px;display:grid;grid-template-columns:minmax(120px,180px) minmax(0,1fr);font-size:15px;line-height:1.55">
+<div style="padding:20px;font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd;background:#f8fafc">Project Summary</div>
+<div style="padding:20px;border-bottom:1px solid #dddddd;color:#181d26">Netflix engineers supporting common customer flows (sign up, account management, payment flow, etc.) found it difficult to find simple answers to questions related to the most recent version of APIs and docs related to the product context they were currently working in. APIs, with no cross-platform owner and a few years of unchecked evolution, had become unworkable. Users spent as much time in Slack conversations, trying to track down information, as they did with code or architecture.</div>
+<div style="padding:20px;font-size:13px;font-weight:500;color:#41454d;background:#f8fafc">Outcome Summary</div>
+<div style="padding:20px;color:#181d26">The team created a brand new AI-driven developer API and doc portal to act as a front door to all other resources. This would provide curated APIs and content and reclaim countless hours of lost productivity time.</div>
+</div>
+<div style="padding:48px 48px 0">
+<div style="background:#f8fafc;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:32px">
+<div style="flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;gap:4px;position:sticky;top:24px;align-self:flex-start">
+<div style="font-size:13px;font-weight:500;color:#41454d;padding:0 14px 8px">Chapters</div>
+<div onClick="{{ go0 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k0 }};border:1px solid {{ d0 }}">The Knowledge Exists. Finding and Validating it is the Job.</div>
+<div onClick="{{ go1 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k1 }};border:1px solid {{ d1 }}">User Research Themes</div>
+<div onClick="{{ go2 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k2 }};border:1px solid {{ d2 }}">Process and Prioritization</div>
+<div onClick="{{ go3 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k3 }};border:1px solid {{ d3 }}">Mapping User Flows with Claude</div>
+<div onClick="{{ go4 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k4 }};border:1px solid {{ d4 }}">Grounded AI Automation</div>
+<div onClick="{{ go5 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k5 }};border:1px solid {{ d5 }}">A Curated, Scalable System</div>
+<div onClick="{{ go6 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k6 }};border:1px solid {{ d6 }}">Business Outcome</div>
+</div>
+<div style="flex:999 1 420px;background:#ffffff;border-radius:10px;padding:0 40px;display:flex;flex-direction:column">
+<div style="display:flex;flex-direction:column;font-size:16px;line-height:1.6">
+<div data-ch="0" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">The Knowledge Exists.<br>Finding and Validating it is the Job.</h3>
+<ul style="padding-left:20px">
+<li><strong>Over 800 APIs existed in the system.</strong> It’s difficult to know where an API already exist for a given use case. Redundancies and versioning debt have accumulated, and several repositories need aggregating.</li>
+<li>Docs for APIs, data models, and features are scattered or incomplete, with no single point of ownership. Engineers fall back on Slack threads or read Swagger directly.</li>
+<li>7 groups worked in parallel, many times with their own tooling, conventions, and tribal knowledge.</li>
+</ul>
+</div>
+<div data-ch="1" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">User Research Themes</h3>
+<p>Interviews included 1-on-1s and system walk-throughs across many groups - to get a sense for horizontal themes, behaviors, and pain points.</p>
+<div style="display:flex;flex-direction:column;border-top:1px solid #dddddd">
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Engineers rely on Slack threads or Swagger for information</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Tooling is fragmented</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">On-call and triage processes are inefficient</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Ownership has to fit the portal strategy</div>
+</div>
+</div>
+<div data-ch="2" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Process and Prioritization</h3>
+<p>I worked with the lead engineer on the team to establish basic expectations on process and time, and tradeoffs that may need to be made in the short-term to build momentum.</p>
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;color:#181d26;display:flex;flex-direction:column;gap:8px"><strong>Trade-off</strong><span>We established an information architecture to match groups initially, which fit the current siloed ownership. Once most groups had begun to adopt and engage with the portal, we could plan an IA shift toward organizing the navigation around product context (more scalable for the future - and “reorg proof”).</span></div>
+</div>
+<div data-ch="3" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Mapping User Flows with Claude</h3>
+<p>Primarily used as a solid starting point for conversation (with later validation from engineers), I leveraged Claude to help me map out common user flows to provide the basic context we would use to talk through how future APIs might be organized.</p>
+<p>It did this by searching through and analyzing github repositories, internal docs, Google docs, and publicly-available Slack channels.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-portal-flows" src="assets/slots/dd-portal-flows.webp" placeholder="User flows mapped with Claude" radius="10"></image-slot></div>
+</div>
+<div data-ch="4" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Grounded AI Automation</h3>
+<p>Groups agreed on proto file standards across groups, allowing a subset of attributes to be consistent horizontally. Claude agents would run daily and index the correct APIs based on creation and last updated dates, deprecation and version flag values, product category and subcategory, and description attributes.</p>
+<p>For the portal, the determinism that would build trust with engineers sat underneath while AI assistants allowed conversational searches based on product context.</p>
+</div>
+<div data-ch="5" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">A Curated, Scalable System</h3>
+<p>This process not only simplifies, automates, and improves productivity, the curation means the same API means the same thing in every group. While observability monitoring for drift is still necessary, proto files provide the deterministic grounding that make it much less likely.</p>
+<p>While the initial AI Assistant primarily allows searches through indexed APIs and description fields, this would later include other document repositories after appropriate strategies for integration had been decided upon.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-portal-system" src="assets/slots/dd-portal-system.webp" placeholder="Portal and AI assistant" radius="10"></image-slot></div>
+</div>
+<div data-ch="6" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Business Outcome</h3>
+<p>With most engineers relying on manual searches and lengthy Slack conversations on an average day, this was expected to reclaim massive amounts of unnecessary search and discovery time.</p>
+<p>Even conservative estimates using average engineer salaries and average time wasted in searches, could reach hundreds of thousands of dollars saved and more customer needs addressed faster.</p>
+</div>
+</div>
+<div style="padding:32px 0 40px;display:flex;justify-content:flex-end">
+<div onClick="{{ nextCase }}" style="cursor:pointer;background:#181d26;color:#ffffff;font-size:16px;font-weight:500;padding:14px 22px;border-radius:12px;white-space:nowrap">{{ nextCaseLabel }}</div>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== CRM DATA WORKFLOWS ===== -->
+<sc-if value="{{ csB }}" hint-placeholder-val="{{ false }}">
+<div style="padding:72px 48px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Case Study 2: CRM Data Workflows</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:44px;line-height:1.12;color:#181d26">Data Cleaning and Routing Automation</h2>
+</div>
+<div style="aspect-ratio:4/3"><image-slot auto-ratio="" id="dd-crm-hero" src="assets/slots/dd-crm-hero.webp" placeholder="Data Workflows canvas screenshot" radius="10"></image-slot></div>
+</div>
+<div style="margin:48px 48px 0;border:1px solid #dddddd;border-radius:10px;display:grid;grid-template-columns:minmax(120px,180px) minmax(0,1fr);font-size:15px;line-height:1.55">
+<div style="padding:20px;font-size:13px;font-weight:500;color:#41454d;background:#f8fafc">Project Summary</div>
+<div style="padding:20px;color:#181d26;display:flex;flex-direction:column;gap:10px"><span>6sense provides industry-leading predictive analytics that allow platform users to push “the right content to the right audience at the right time“. Most platform tools are aligned around that core benefit.</span><span style="color:#333840">However, those benefits are all based on accurate data in the CRM and 6sense database. CSMs continually shared customer reports of inaccuracies (duplicate records, missing data, stale data, etc.)</span><span>The Data Workflows product was developed to provide customers with the ability to identify and rectify those types of problems as they occurred through automation.</span></div>
+</div>
+<div style="padding:48px 48px 0">
+<div style="background:#f8fafc;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:32px">
+<div style="flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;gap:4px;position:sticky;top:24px;align-self:flex-start">
+<div style="font-size:13px;font-weight:500;color:#41454d;padding:0 14px 8px">Chapters</div>
+<div onClick="{{ go0 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k0 }};border:1px solid {{ d0 }}">Understanding Needs</div>
+<div onClick="{{ go1 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k1 }};border:1px solid {{ d1 }}">Deeper Dives</div>
+<div onClick="{{ go2 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k2 }};border:1px solid {{ d2 }}">Ideation</div>
+<div onClick="{{ go3 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k3 }};border:1px solid {{ d3 }}">Monetization Model</div>
+<div onClick="{{ go4 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k4 }};border:1px solid {{ d4 }}">Providing Clarity</div>
+<div onClick="{{ go5 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k5 }};border:1px solid {{ d5 }}">Alpha and Beta Testing</div>
+<div onClick="{{ go6 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k6 }};border:1px solid {{ d6 }}">Foundational Knowledge to Build On</div>
+<div onClick="{{ go7 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k7 }};border:1px solid {{ d7 }}">Next Steps</div>
+</div>
+<div style="flex:999 1 420px;background:#ffffff;border-radius:10px;padding:0 40px;display:flex;flex-direction:column">
+<div style="display:flex;flex-direction:column;font-size:16px;line-height:1.6">
+<div data-ch="0" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Understanding Needs</h3>
+<p>Through 1-on-1 meetings (virtual and our annual conference) and through CSM feedback, we learned from MarketingOps users that:</p>
+<ul style="padding-left:20px">
+<li><strong>Accurate data was a problem for most users</strong>, since the CSM was constantly being updated through different sources (including automated updates through opportunities).</li>
+<li>Most customers had some solution in place currently but were <strong>not satisfied with it</strong> .</li>
+<li>Most users highlighted the <strong>need to save money</strong> on data cleaning since it was a continual process. Licensing with existing solutions was becoming cost prohibitive.</li>
+</ul>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-crm-needs" src="assets/slots/dd-crm-needs.webp" placeholder="Understanding needs" radius="10"></image-slot></div>
+</div>
+<div data-ch="1" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Deeper Dives</h3>
+<p>Aggregation of all feedback led to high priority themes we could target for the first release - to begin laying a foundation for future enhancements.</p>
+<div style="display:flex;flex-direction:column;border-top:1px solid #dddddd">
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Enrichment (ie. filling in the blanks in the database where there are empty or outdated fields)</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Automated discovery of duplicates and associated merging logic</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">Constant visibility for users with notifications by email or Slack</div>
+<div style="padding:12px 0;border-bottom:1px solid #dddddd">The ability to test flows (with previews and approval workflows) when setting up a new strategy</div>
+</div>
+</div>
+<div data-ch="2" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Ideation</h3>
+<p>Side-by-side with our Audience Workflows product (omni-channel marketing automation) we explored different patterns that would provide a balance between simplicity, flexibility, and scale. The decision tree pattern was the only format flexible enough to adapt to any customer scenario imaginable, from continual branching logic to enterprise scale.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-crm-ideation" src="assets/slots/dd-crm-ideation.webp" placeholder="Decision tree pattern explorations" radius="10"></image-slot></div>
+</div>
+<div data-ch="3" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Monetization Model</h3>
+<p>Like Audience Workflows, Data Workflows was offered free with any platform package and only billed users on specific actions taken (credits). Many of the automation features within Data Workflows stood to be a new revenue stream for the company.</p>
+<p>Unlike Audience Workflows, which primarily focused its functionality around Marketing, Data Workflows was foundational to the entire platform and needed to work seamlessly with both Marketing and Sales Pillars.</p>
+</div>
+<div data-ch="4" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Providing Clarity</h3>
+<p><strong>Figma</strong></p>
+<p>After seeing the extent of features I would be designing, I organized Figma files based primarily on which logical groupings of features would grow over time (new nodes, integrations and templates).</p>
+<p>Everything else was divided by logical grouping to help other designers navigate through the team folders.</p>
+<p><strong>Mockup Libraries for PMs and Engineering</strong></p>
+<p>With so many moving parts (80+ nodes, 30+ templates, etc.), I kept the team organized by creating Figma libraries, each with a Table of Contents that was organized with a hierarchy that matched the app layout.</p>
+<p>Figma links became a defacto standard for each UI-related Jira ticket (so engineering would always have clear reference - and always from the latest version).</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-crm-figma" src="assets/slots/dd-crm-figma.webp" placeholder="Figma library table of contents" radius="10"></image-slot></div>
+</div>
+<div data-ch="5" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Alpha and Beta Testing</h3>
+<p>Through alpha, beta, and usability testing, we gained insights into how users thought about, and approached, workflow strategies - addressing pain points long before GA release.</p>
+<p>We were also able to better understand which personas typically performed different tasks and where certain tasks became more of a collaborative team activity.<br><br>The following were common themes across verticals:</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-crm-testing" src="assets/slots/dd-crm-testing.webp" placeholder="Alpha, beta, and usability testing" radius="10"></image-slot></div>
+</div>
+<div data-ch="6" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Foundational Knowledge to Build On</h3>
+<p><strong>Users loved:</strong></p>
+<ul style="padding-left:20px">
+<li>the visual decision tree format and the ability to view, edit, and automate entire data strategies in one place.</li>
+<li>the fact that the app laid a foundation for solving a platform-wide pain points around inaccurate data.</li>
+</ul>
+<p><strong>More attention was needed for:</strong></p>
+<ul style="padding-left:20px">
+<li>better guidance and visibility (eg. being able to see the underlying logic that drives certain tasks).</li>
+<li>“fast-follow” features, such as Push to Email, Push to Slack, and simplified setup for</li>
+</ul>
+</div>
+<div data-ch="7" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Next Steps</h3>
+<p>While a strong functional foundation was developed for the GA release, the team already had post-GA designs that help users visualize and manipulate complex workflows, including node groups, expand/collapse for subflows, and editing the flow with an AI assistant.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-crm-next" src="assets/slots/dd-crm-next.webp" placeholder="Post-GA workflow designs" radius="10"></image-slot></div>
+</div>
+</div>
+<div style="padding:32px 0 40px;display:flex;justify-content:flex-end">
+<div onClick="{{ nextCase }}" style="cursor:pointer;background:#181d26;color:#ffffff;font-size:16px;font-weight:500;padding:14px 22px;border-radius:12px;white-space:nowrap">{{ nextCaseLabel }}</div>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== GDPR ===== -->
+<sc-if value="{{ csC }}" hint-placeholder-val="{{ false }}">
+<div style="padding:72px 48px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Case Study 3: GDPR Compliance</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:44px;line-height:1.12;color:#181d26">Research and Approach</h2>
+</div>
+<div style="aspect-ratio:4/3"><image-slot auto-ratio="" id="dd-gdpr-hero" src="assets/slots/dd-gdpr-hero.webp" placeholder="GDPR workflow screenshot" radius="10"></image-slot></div>
+</div>
+<div style="margin:48px 48px 0;border:1px solid #dddddd;border-radius:10px;display:grid;grid-template-columns:minmax(120px,180px) minmax(0,1fr);font-size:15px;line-height:1.55">
+<div style="padding:20px;font-size:13px;font-weight:500;color:#41454d;background:#f8fafc">Project Summary</div>
+<div style="padding:20px;color:#181d26;display:flex;flex-direction:column;gap:10px"><span>I joined Informatica at the beginning of 2019 to help rethink their security product for better adoption and better integration to the cloud platform.</span><span style="color:#333840">Almost immediately after starting, product and business leaders saw that the deadlines for adhering to GDPR regulation was right around the corner - and many enterprise customers were not ready, asking Informatica for help with compliance.</span></div>
+</div>
+<div style="padding:48px 48px 0">
+<div style="background:#f8fafc;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:32px">
+<div style="flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;gap:4px;position:sticky;top:24px;align-self:flex-start">
+<div style="font-size:13px;font-weight:500;color:#41454d;padding:0 14px 8px">Chapters</div>
+<div onClick="{{ go0 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k0 }};border:1px solid {{ d0 }}">Discovery and Take-aways</div>
+<div onClick="{{ go1 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k1 }};border:1px solid {{ d1 }}">Team Collaboration</div>
+<div onClick="{{ go2 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k2 }};border:1px solid {{ d2 }}">Final Product Strategy</div>
+</div>
+<div style="flex:999 1 420px;background:#ffffff;border-radius:10px;padding:0 40px;display:flex;flex-direction:column">
+<div style="display:flex;flex-direction:column;font-size:16px;line-height:1.6">
+<div data-ch="0" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Discovery and Take-aways</h3>
+<p>With GDPR regulations being new to everyone, we needed three core pieces of information quickly:</p>
+<ol style="margin:0;padding-left:22px">
+<li>What exactly are the regulations calling for - and what do we need to know to help customers become compliant?</li>
+<li>Where are enterprise customers at in their journey to compliance?</li>
+<li>What users within an organization will be responsible for compliance?</li>
+</ol>
+<p>By talking with companies onsite, at the RSA security conference, and at virtual Zoom follow-up calls, we learned that:</p>
+<ul style="padding-left:20px">
+<li>Customers had some plan but most were behind in implementation.</li>
+<li>Most companies were establishing a Data Privacy Officer role or allowing leaders in existing roles to wear that hat, such as Data Analysts.</li>
+<li>Customers continually asked for automation. No new tools.</li>
+</ul>
+</div>
+<div data-ch="1" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Team Collaboration</h3>
+<p>The biggest challenge to the team, resolved through collaboration and workshops, was mapping out cross-product flows across different data governance products. Compliance is rarely relegated to one individual - and is typically part of a larger workflow - with multiple touchpoints.</p>
+<p>We also needed to consider how the functionality could be sold as a stand-alone solution, using ServiceNow templates and other third-party integrations.</p>
+<p>The data privacy solutions at Informatica are now embedded within Data Catalog functionality and workflows.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-gdpr-flows" src="assets/slots/dd-gdpr-flows.webp" placeholder="Cross-product compliance flows" radius="10"></image-slot></div>
+</div>
+<div data-ch="2" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Final Product Strategy</h3>
+<p>While we wanted to offer a third-party option for customers (or at least simple methods of API integration with workflow tools like ServiceNow) most effort was placed on data privacy as a value ad to the cloud platform, the company’s best selling suite of products.</p>
+<p>Because of the speed that large enterprises would need to adapt, selling Professional Services hours for initial onboarding was critical.</p>
+</div>
+</div>
+<div style="padding:32px 0 40px;display:flex;justify-content:flex-end">
+<div onClick="{{ nextCase }}" style="cursor:pointer;background:#181d26;color:#ffffff;font-size:16px;font-weight:500;padding:14px 22px;border-radius:12px;white-space:nowrap">{{ nextCaseLabel }}</div>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ===== DATA VIZ ===== -->
+<sc-if value="{{ csD }}" hint-placeholder-val="{{ false }}">
+<div style="padding:72px 48px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="font-size:14px;font-weight:500;color:#41454d">Data Visualization</div>
+<h2 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:44px;line-height:1.12;color:#181d26">Approach</h2>
+</div>
+<div style="aspect-ratio:4/3"><image-slot auto-ratio="" id="dd-viz-hero" src="assets/slots/dd-viz-hero.webp" placeholder="Dashboard screenshot" radius="10"></image-slot></div>
+</div>
+<div style="margin:48px 48px 0;border:1px solid #dddddd;border-radius:10px;display:grid;grid-template-columns:minmax(120px,180px) minmax(0,1fr);font-size:15px;line-height:1.55">
+<div style="padding:20px;font-size:13px;font-weight:500;color:#41454d;background:#f8fafc">Summary</div>
+<div style="padding:20px;color:#181d26">These examples from 6sense and Oracle show my approach to analytics and dashboards. Simplicity, relevance, and personalization are covered.</div>
+</div>
+<div style="padding:48px 48px 0">
+<div style="background:#f8fafc;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:32px">
+<div style="flex:1 1 220px;max-width:300px;display:flex;flex-direction:column;gap:4px;position:sticky;top:24px;align-self:flex-start">
+<div style="font-size:13px;font-weight:500;color:#41454d;padding:0 14px 8px">Chapters</div>
+<div onClick="{{ go0 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k0 }};border:1px solid {{ d0 }}">Simplicity and Relevance</div>
+<div onClick="{{ go1 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k1 }};border:1px solid {{ d1 }}">Actionable Data</div>
+<div onClick="{{ go2 }}" style="cursor:pointer;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.35;color:#181d26;background:{{ k2 }};border:1px solid {{ d2 }}">Simple Format. High Value.</div>
+</div>
+<div style="flex:999 1 420px;background:#ffffff;border-radius:10px;padding:0 40px;display:flex;flex-direction:column">
+<div style="display:flex;flex-direction:column;font-size:16px;line-height:1.6">
+<div data-ch="0" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Simplicity and Relevance</h3>
+<p>The success of our Customer Lifecycle Management app became a double-edge sword. That success had more leaders wanting to influence changes to the dashboard for their own department’s needs. With several Ops leaders adding to the mix, the end result became an experience that was visually overwhelming, inconsistent in format, and prevented at-a-glance insights.</p>
+<p>I setup a short series of meetings with PMs and Ops leaders to discuss a different approach. It would require users to make tough decisions on what metrics are actually needed immediately after login and whether charts are actually critical for this type of dashboard.</p>
+<p>Through those discussions, I was able to recommend groupings that better organized the main themes of the dashboard. I suggested a default filtering and sorting (hiding the advanced filters by default) and used a simple, consistent format for drilling to deeper details.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-viz-clm" src="assets/slots/dd-viz-clm.webp" placeholder="CLM dashboard before / after" radius="10"></image-slot></div>
+</div>
+<div data-ch="1" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Actionable Data</h3>
+<p>6sense Data Workflows dashboards needed to be able to accommodate two primary use cases. As a user, I can see what needs attention and</p>
+<ul style="padding-left:20px">
+<li>drill to research more record-level details, or</li>
+<li>immediately create a workflow that will automatically be oriented to that particular problem (de-duplication of accounts, enrichment of leads, etc.)</li>
+</ul>
+<p>Being able to launch a workflow directly from the dashboard helps users complete the circle from creating a flow &gt; to measuring success &gt; to creating or fine-tuning a flow for even better success in the next published run.</p>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-viz-6sense" src="assets/slots/dd-viz-6sense.webp" placeholder="Data Workflows dashboard" radius="10"></image-slot></div>
+</div>
+<div data-ch="2" style="display:flex;flex-direction:column;gap:16px;padding:40px 0;border-bottom:1px solid #dddddd">
+<h3 style="font-family:'Inter Tight',sans-serif;font-weight:400;font-size:28px;line-height:1.2;color:#181d26">Simple Format. High Value.</h3>
+<p>Oracle CSMs monitored customer usage from two perspectives:</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;color:#181d26;display:flex;flex-direction:column;gap:8px"><strong>What’s going on right now?</strong><ul style="padding-left:20px;color:#333840"><li>Current month usage?</li><li>Has the customer come close to (or exceeded) monthly limits?</li></ul></div>
+<div style="background:#f5e9d4;border-radius:10px;padding:20px;color:#181d26;display:flex;flex-direction:column;gap:8px"><strong>What are the trends I need to know when working a renewal?</strong><ul style="padding-left:20px;color:#333840"><li>What is the average usage (general trend)?</li><li>How often were they over 80% usage (upsell potential)?</li><li>Which services are getting the most usage?</li></ul></div>
+</div>
+<div style="aspect-ratio:16/8"><image-slot auto-ratio="" id="dd-viz-oracle" src="assets/slots/dd-viz-oracle.webp" placeholder="Oracle usage views" radius="10"></image-slot></div>
+</div>
+</div>
+<div style="padding:32px 0 40px;display:flex;justify-content:flex-end">
+<div onClick="{{ nextCase }}" style="cursor:pointer;background:#181d26;color:#ffffff;font-size:16px;font-weight:500;padding:14px 22px;border-radius:12px;white-space:nowrap">{{ nextCaseLabel }}</div>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+<div style="height:96px"></div>
+</div>
+<dc-import name="SiteFooter" hint-size="100%,90px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CS = {
+  portal: ['The Knowledge Exists','User Research Themes','Process and Prioritization','Mapping User Flows with Claude','Grounded AI Automation','A Curated, Scalable System','Business Outcome'],
+  crm: ['Understanding Needs','Deeper Dives','Ideation','Monetization Model','Providing Clarity','Alpha and Beta Testing','Foundational Knowledge to Build On','Next Steps'],
+  gdpr: ['Discovery and Take-aways','Team Collaboration','Final Product Strategy'],
+  dataviz: ['Simplicity and Relevance','Actionable Data','Simple Format. High Value.'],
+};
+const ORDER = ['portal','crm','gdpr','dataviz'];
+const TITLES = { portal: 'Netflix Developer Portal', crm: 'CRM Data Workflows', gdpr: 'GDPR Compliance', dataviz: 'Data Visualization' };
+class Component extends DCLogic {
+  state = { cs: 'portal', ch: 0 };
+  componentDidMount() {
+    this.readHash = () => { const h = location.hash.slice(1); if (CS[h]) this.setState({ cs: h, ch: 0 }); };
+    this.readHash();
+    window.addEventListener('hashchange', this.readHash);
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = 0;
+        let cur = 0;
+        document.querySelectorAll('[data-ch]').forEach(e => { if (e.getBoundingClientRect().top < 160) cur = +e.dataset.ch; });
+        if (cur !== this.state.ch) this.setState({ ch: cur });
+      });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+  }
+  jump(i) {
+    const e = document.querySelector('[data-ch="' + i + '"]');
+    if (e) window.scrollTo({ top: e.getBoundingClientRect().top + window.scrollY - 8, behavior: 'smooth' });
+  }
+  componentWillUnmount() { window.removeEventListener('hashchange', this.readHash); window.removeEventListener('scroll', this.onScroll); if (this.raf) cancelAnimationFrame(this.raf); }
+  pick(cs) { this.setState({ cs, ch: 0 }); history.replaceState(null, '', '#' + cs); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  renderVals() {
+    const { cs, ch } = this.state;
+    const names = CS[cs];
+    const last = ch >= names.length - 1;
+    const nextCs = ORDER[(ORDER.indexOf(cs) + 1) % ORDER.length];
+    const v = {
+      csA: cs === 'portal', csB: cs === 'crm', csC: cs === 'gdpr', csD: cs === 'dataviz',
+      pickA: () => this.pick('portal'), pickB: () => this.pick('crm'), pickC: () => this.pick('gdpr'), pickD: () => this.pick('dataviz'),
+      nextCase: () => this.pick(nextCs),
+      nextCaseLabel: 'Next case study: ' + TITLES[nextCs] + ' →',
+    };
+    ['A','B','C','D'].forEach((k, i) => {
+      const on = ORDER[i] === cs;
+      v['card' + k] = on ? '#ffffff' : '#f8fafc';
+      v['border' + k] = on ? '#181d26' : '#dddddd';
+    });
+    for (let i = 0; i < 9; i++) {
+      v['s' + i] = ch === i;
+      v['k' + i] = ch === i ? '#ffffff' : 'transparent';
+      v['d' + i] = ch === i ? '#dddddd' : 'transparent';
+      v['go' + i] = () => this.jump(i);
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>
