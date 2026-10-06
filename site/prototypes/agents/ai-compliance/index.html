@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    a { color: #3457d5; text-decoration: none; }
+    a:hover { color: #1f3a99; text-decoration: underline; }
+    ::placeholder { color: #9aa0a6; }
+    .scrollArea::-webkit-scrollbar { width: 8px; }
+    .scrollArea::-webkit-scrollbar-thumb { background: #d8d7d0; border-radius: 8px; }
+  </style>
+</helmet>
+
+<div style="display:flex;height:100vh;width:100%;background:#ffffff;color:#14171c;overflow:hidden;">
+
+  <!-- GLOBAL NAV -->
+  <div class="scrollArea" style="width:104px;flex-shrink:0;background:#12151a;display:flex;flex-direction:column;align-items:center;padding:24px 0;gap:20px;overflow-y:auto;">
+    <div style="width:36px;height:36px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#fff;"></div>
+    </div>
+    <div style="width:60px;height:1px;background:rgba(255,255,255,0.15);"></div>
+
+    <div onClick="{{ goPulse }}" style="cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border-radius:10px;width:80px;background:{{ pulseBg }};">
+      <sc-if value="{{ needsYou }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:-6px;right:6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#12151a;border:1px solid #3a3f47;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ needsYou }}</div>
+      </sc-if>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12h4l2 7 5-14 3 9 2-4h4" stroke="{{ pulseFg }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size:12px;font-weight:500;color:{{ pulseFg }};">Pulse</span>
+    </div>
+
+    <div onClick="{{ goRegulations }}" style="cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border-radius:10px;width:80px;background:{{ regsBg }};">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="{{ regsFg }}" stroke-width="2"/><path d="M8.5 12.5l2 2 4.5-4.5" stroke="{{ regsFg }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size:12px;font-weight:500;color:{{ regsFg }};">Regulations</span>
+    </div>
+
+    <div onClick="{{ goWorkspace }}" style="cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border-radius:10px;width:80px;background:{{ wsBg }};">
+      <sc-if value="{{ true }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:-6px;right:6px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#12151a;border:1px solid #3a3f47;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;">2</div>
+      </sc-if>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 7l2-3h14l2 3M3 7v12a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7M3 7h18" stroke="{{ wsFg }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size:12px;font-weight:500;color:{{ wsFg }};">Workspace</span>
+    </div>
+
+    <div onClick="{{ goPortfolio }}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border-radius:10px;width:80px;background:{{ portBg }};">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="12" rx="1.5" stroke="{{ portFg }}" stroke-width="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="{{ portFg }}" stroke-width="2"/></svg>
+      <span style="font-size:12px;font-weight:500;color:{{ portFg }};">Portfolio</span>
+    </div>
+
+    <div onClick="{{ goScope }}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border-radius:10px;width:80px;background:{{ scopeBg }};">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="{{ scopeFg }}" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="{{ scopeFg }}"/></svg>
+      <span style="font-size:12px;font-weight:500;color:{{ scopeFg }};">Scope</span>
+    </div>
+
+    <div style="flex:1;min-height:12px;"></div>
+    <div style="text-align:center;flex-shrink:0;">
+      <div style="font-size:10px;letter-spacing:0.08em;color:#6b6f76;">SWEPT</div>
+      <div style="font-size:12px;color:{{ accent }};font-weight:500;">14m ago</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div style="flex:1;display:flex;overflow:hidden;min-width:0;">
+
+    <!-- PULSE VIEW (decision queue) -->
+    <sc-if value="{{ isPulse }}" hint-placeholder-val="{{ true }}">
+      <div class="scrollArea" style="flex:1;overflow-y:auto;padding:40px 48px;min-width:0;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;">
+          <div>
+            <div style="font-size:12px;letter-spacing:0.08em;color:#767b82;font-weight:600;">TUESDAY, 14 APRIL</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:38px;margin-top:4px;">{{ headerText }}</div>
+          </div>
+          <button onClick="{{ openAri }}" style="flex-shrink:0;background:#fff;border:1px solid #d7d6cf;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:500;color:#14171c;cursor:pointer;">Ask Ari something else</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #e2e1db;border-radius:12px;margin-top:28px;overflow:hidden;">
+          <div style="padding:18px 20px;border-right:1px solid #e2e1db;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">PRODUCTS</div>
+            <div style="font-size:26px;font-weight:600;margin-top:4px;">2</div>
+            <div style="font-size:12px;color:#767b82;margin-top:2px;">both fully assessed</div>
+          </div>
+          <div style="padding:18px 20px;border-right:1px solid #e2e1db;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">IN SCOPE</div>
+            <div style="font-size:26px;font-weight:600;margin-top:4px;">34</div>
+            <div style="font-size:12px;color:#767b82;margin-top:2px;">16 after the first proposal</div>
+          </div>
+          <div style="padding:18px 20px;border-right:1px solid #e2e1db;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">NEEDS YOU</div>
+            <div style="font-size:26px;font-weight:600;margin-top:4px;">{{ needsYou }}</div>
+            <div style="font-size:12px;color:#767b82;margin-top:2px;">down from 11 last week</div>
+          </div>
+          <div style="padding:18px 20px;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">INSIDE 90 DAYS</div>
+            <div style="font-size:26px;font-weight:600;margin-top:4px;">3</div>
+            <div style="font-size:12px;color:#767b82;margin-top:2px;">earliest 17 July</div>
+          </div>
+        </div>
+
+        <sc-if value="{{ notice }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px;display:flex;align-items:center;justify-content:space-between;background:#f2f6ec;border-radius:10px;padding:14px 18px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#2c3a1c;">
+              <span style="color:#5c8a2f;font-weight:700;">✓</span>
+              <span>{{ notice }}</span>
+            </div>
+            <a href="#" onClick="{{ undo }}">Undo</a>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px;">
+          <sc-for list="{{ cards }}" as="card" hint-placeholder-count="3">
+            <div style="border:1px solid #e2e1db;border-radius:12px;padding:24px;">
+              <div style="display:flex;gap:14px;">
+                <div style="width:26px;height:26px;border-radius:8px;flex-shrink:0;margin-top:2px;background:linear-gradient(135deg,#1f6b5c,#0d2e29);"></div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:17px;font-weight:600;color:#14171c;">{{ card.title }}</div>
+                  <div style="font-size:14.5px;color:#3b3f45;line-height:1.5;margin-top:8px;">{{ card.desc }}</div>
+                  <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                    <sc-for list="{{ card.tags }}" as="tag" hint-placeholder-count="2">
+                      <span style="font-size:11px;letter-spacing:0.05em;font-weight:600;color:#3b3f45;border:1px solid #d7d6cf;border-radius:6px;padding:5px 10px;">{{ tag }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
+                    <button onClick="{{ card.onApprove }}" style="background:{{ accent }};border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:600;color:#14171c;cursor:pointer;">Approve</button>
+                    <button onClick="{{ card.onToggleAdjust }}" style="background:#fff;border:1.5px solid {{ card.adjustBorder }};border-radius:10px;padding:9px 20px;font-size:14px;font-weight:500;color:#14171c;cursor:pointer;">Adjust</button>
+                    <button onClick="{{ card.onNotNow }}" style="background:none;border:none;font-size:14px;color:#9aa0a6;cursor:pointer;">Not now</button>
+                    <div style="flex:1;"></div>
+                    <a href="#" onClick="{{ preventDefault }}" style="font-size:14px;">See what this changes</a>
+                  </div>
+                </div>
+              </div>
+
+              <sc-if value="{{ card.isOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#f6f5f0;border-radius:10px;padding:18px 20px;margin-top:16px;">
+                  <sc-if value="{{ card.isOptions }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:11px;letter-spacing:0.06em;font-weight:600;color:#767b82;margin-bottom:12px;">ADJUST — THE ONLY TWO KNOBS THAT MATTER HERE</div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                      <sc-for list="{{ card.options }}" as="opt" hint-placeholder-count="3">
+                        <button onClick="{{ opt.onSelect }}" style="background:#fff;border:1px solid #d7d6cf;border-radius:10px;padding:10px 18px;font-size:14px;color:#14171c;cursor:pointer;">{{ opt.label }}</button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ card.isMarkets }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:11px;letter-spacing:0.06em;font-weight:600;color:#767b82;margin-bottom:12px;">SEARCH AND SELECT MARKETS TO MONITOR</div>
+                    <div style="display:flex;gap:16px;">
+                      <div style="flex:1;border:1px solid #d7d6cf;border-radius:10px;overflow:hidden;background:#fff;">
+                        <div style="padding:10px 14px;border-bottom:1px solid #ececec;color:#9aa0a6;font-size:14px;">🔍 Search markets…</div>
+                        <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0ec;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:#c7c7c2;"><input type="checkbox" checked="{{ true }}" disabled="{{ true }}"/>Germany</label>
+                          <span style="font-size:12px;color:#9aa0a6;">already monitored</span>
+                        </div>
+                        <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0ec;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:#c7c7c2;"><input type="checkbox" checked="{{ true }}" disabled="{{ true }}"/>European Union</label>
+                          <span style="font-size:12px;color:#9aa0a6;">already monitored</span>
+                        </div>
+                        <div style="padding:12px 14px;border-bottom:1px solid #f0f0ec;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;"><input type="checkbox" checked="{{ isPolandSel }}" onChange="{{ togglePoland }}"/>Poland</label>
+                        </div>
+                        <div style="padding:12px 14px;border-bottom:1px solid #f0f0ec;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;"><input type="checkbox" checked="{{ isFranceSel }}" onChange="{{ toggleFrance }}"/>France</label>
+                        </div>
+                        <div style="padding:12px 14px;border-bottom:1px solid #f0f0ec;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;"><input type="checkbox" checked="{{ isNetherlandsSel }}" onChange="{{ toggleNetherlands }}"/>Netherlands</label>
+                        </div>
+                        <div style="padding:12px 14px;">
+                          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;"><input type="checkbox" checked="{{ isItalySel }}" onChange="{{ toggleItaly }}"/>Italy</label>
+                        </div>
+                      </div>
+                      <div style="width:200px;border:1px dashed #d7d6cf;border-radius:10px;padding:14px;flex-shrink:0;">
+                        <div style="font-size:11px;letter-spacing:0.06em;color:#767b82;font-weight:600;margin-bottom:10px;">SELECTED ({{ selectedList.length }})</div>
+                        <sc-for list="{{ selectedList }}" as="m" hint-placeholder-count="3">
+                          <div style="display:flex;align-items:center;gap:8px;font-size:14px;padding:4px 0;"><span style="width:6px;height:6px;border-radius:50%;background:#1f6b5c;"></span>{{ m }}</div>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <button onClick="{{ addMarkets }}" style="margin-top:14px;background:{{ accent }};border:none;border-radius:10px;padding:12px 22px;font-size:14px;font-weight:600;color:#14171c;cursor:pointer;">Add to monitored markets</button>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- RIGHT RAIL -->
+      <div class="scrollArea" style="width:300px;flex-shrink:0;border-left:1px solid #e2e1db;padding:32px 24px;overflow-y:auto;">
+        <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">PORTFOLIO EXPOSURE</div>
+        <div style="margin-top:14px;">
+          <div style="font-size:15px;font-weight:600;">Chain link children's hoodie</div>
+          <div style="display:flex;gap:4px;margin-top:10px;">
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+          </div>
+          <div style="font-size:12.5px;color:#767b82;margin-top:8px;">4 of 6 obligations open · 2 need design changes</div>
+        </div>
+        <div style="height:1px;background:#e2e1db;margin:20px 0;"></div>
+        <div>
+          <div style="font-size:15px;font-weight:600;">Enterprise-grade rack and tower server</div>
+          <div style="display:flex;gap:4px;margin-top:10px;">
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#12151a;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+            <div style="height:6px;flex:1;border-radius:3px;background:#ececec;"></div>
+          </div>
+          <div style="font-size:12.5px;color:#767b82;margin-top:8px;">2 of 6 open · both documentation</div>
+        </div>
+        <div style="height:1px;background:#e2e1db;margin:24px 0;"></div>
+        <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">HANDLED WITHOUT YOU</div>
+        <ul style="margin:12px 0 0;padding-left:16px;font-size:13.5px;color:#3b3f45;line-height:1.6;">
+          <li>94 regulation updates read; 3 reached your scope</li>
+          <li>EU PPWR recyclability file re-checked against new Annex II criteria</li>
+          <li>Two duplicate assessments merged on the server's packaging</li>
+        </ul>
+        <a href="#" onClick="{{ preventDefault }}" style="display:inline-block;margin-top:14px;font-size:14px;">Full sweep log</a>
+      </div>
+    </sc-if>
+
+    <!-- GENERIC QUESTION-RAIL / ANSWER VIEW: regulations, detail, workspace, portfolio, scope -->
+    <sc-if value="{{ isQA }}" hint-placeholder-val="{{ false }}">
+      <div class="scrollArea" style="flex:1;overflow-y:auto;padding:40px 48px;min-width:0;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;">
+          <div style="min-width:0;">
+            <sc-if value="{{ isDetailPage }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#767b82;margin-bottom:6px;">
+                <a href="#" onClick="{{ backToRegulations }}">Regulations</a><span>/</span><span>{{ page.crumb }}</span>
+              </div>
+            </sc-if>
+            <div style="font-family:'Source Serif 4',serif;font-size:32px;">{{ page.title }}</div>
+            <div style="font-size:14px;color:#767b82;margin-top:6px;">{{ page.context }}</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-shrink:0;">
+            <button onClick="{{ openAri }}" style="background:#fff;border:1px solid #d7d6cf;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:500;color:#14171c;cursor:pointer;">Ask Ari something else</button>
+            <sc-if value="{{ isDetailPage }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ toggleWorkspace }}" style="background:#12151a;border:none;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:500;color:#fff;cursor:pointer;">{{ workspaceLabel }}</button>
+            </sc-if>
+          </div>
+        </div>
+        <div style="height:1px;background:#e2e1db;margin-top:20px;"></div>
+
+        <div style="display:flex;gap:40px;margin-top:28px;">
+          <div style="width:270px;flex-shrink:0;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;margin-bottom:14px;">WHAT DO YOU NEED TO KNOW</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+                <div onClick="{{ q.pick }}" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:8px;background:{{ q.bg }};color:{{ q.fg }};font-size:14.5px;font-weight:{{ q.fw }};">
+                  <span>{{ q.label }}</span><span style="color:{{ q.hintColor }};font-weight:400;">{{ q.hint }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:32px;font-size:13.5px;color:#767b82;line-height:1.5;">Ask something this rail doesn't cover and Ari will add it here.</div>
+            <input type="text" placeholder="Ask about this page…" onKeyDown="{{ handleRailAsk }}" style="width:100%;margin-top:10px;padding:12px 14px;border:1px solid #d7d6cf;border-radius:10px;font-size:14px;"/>
+          </div>
+
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;">{{ sec.kicker }}</div>
+            <div style="font-family:'Source Serif 4',serif;font-size:30px;line-height:1.25;margin-top:8px;text-wrap:pretty;">{{ sec.verdict }}</div>
+            <p style="font-size:15px;line-height:1.6;color:#3b3f45;margin-top:16px;max-width:680px;">{{ sec.body }}</p>
+            <div style="font-size:13.5px;color:#767b82;margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+              <span>{{ sec.confidence }}</span>
+              <a href="#" onClick="{{ preventDefault }}">Wrong? Tell Ari why</a>
+              <sc-if value="{{ page.raw }}" hint-placeholder-val="{{ false }}">
+                <a href="#" onClick="{{ toggleRaw }}">Raw record</a>
+              </sc-if>
+            </div>
+
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;margin-top:32px;">{{ sec.listLabel }}</div>
+            <sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="3">
+              <div onClick="{{ it.click }}" style="border:1px solid #e2e1db;border-radius:12px;padding:20px;margin-top:14px;display:flex;justify-content:space-between;gap:16px;cursor:{{ it.cursor }};">
+                <div style="min-width:0;">
+                  <div style="font-size:16px;font-weight:600;">{{ it.name }}</div>
+                  <div style="font-size:14.5px;color:#3b3f45;margin-top:6px;line-height:1.5;">{{ it.detail }}</div>
+                </div>
+                <div style="flex-shrink:0;display:flex;align-items:center;gap:10px;height:fit-content;">
+                  <span style="font-size:11px;font-weight:600;letter-spacing:0.05em;border:{{ it.tagBorder }};background:{{ it.tagBg }};color:{{ it.tagFg }};border-radius:6px;padding:6px 10px;">{{ it.tag }}</span>
+                  <sc-if value="{{ it.linked }}" hint-placeholder-val="{{ false }}">
+                    <span style="color:#9aa0a6;font-size:16px;">›</span>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+
+            <div style="display:flex;gap:12px;background:#f6f5f0;border-radius:10px;padding:18px 20px;margin-top:20px;max-width:680px;">
+              <div style="width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,#a8d8c4,#1f6b5c);flex-shrink:0;margin-top:3px;"></div>
+              <div>
+                <div style="font-size:14.5px;color:#14171c;line-height:1.55;">{{ sec.next }}</div>
+                <a href="#" onClick="{{ preventDefault }}" style="display:inline-block;margin-top:8px;">{{ sec.nextAction }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ rawOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:fixed;inset:0;background:rgba(11,21,26,0.45);display:flex;align-items:flex-start;justify-content:center;padding-top:120px;z-index:60;" onClick="{{ toggleRaw }}">
+            <div style="width:480px;background:#fff;border-radius:14px;padding:28px;" onClick="{{ stopPropagation }}">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-family:'Source Serif 4',serif;font-size:22px;">The raw record</div>
+                <button onClick="{{ toggleRaw }}" style="background:none;border:none;font-size:20px;color:#767b82;cursor:pointer;">×</button>
+              </div>
+              <p style="font-size:14px;color:#3b3f45;line-height:1.55;margin-top:10px;">The nine original sections, unchanged, for when you want the source rather than a reading of it.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+                <sc-for list="{{ legacyTabs }}" as="t" hint-placeholder-count="9">
+                  <span style="font-size:13px;border:1px solid #d7d6cf;border-radius:7px;padding:6px 10px;">{{ t }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ARI PANEL -->
+    <sc-if value="{{ ariOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="width:360px;flex-shrink:0;border-left:1px solid #e2e1db;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:24px 24px 16px;border-bottom:1px solid #e2e1db;">
+          <div style="display:flex;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#1f6b5c,#0d2e29);flex-shrink:0;"></div>
+            <div>
+              <div style="font-size:16px;font-weight:600;">Ari</div>
+              <div style="font-size:13px;color:#767b82;">Reading this page with you</div>
+            </div>
+          </div>
+          <button onClick="{{ closeAri }}" style="background:none;border:none;font-size:18px;color:#9aa0a6;cursor:pointer;">×</button>
+        </div>
+
+        <div class="scrollArea" style="flex:1;overflow-y:auto;padding:20px 24px;">
+          <div style="font-size:14px;color:#3b3f45;line-height:1.55;">I can see what's on screen, so you don't have to repeat the context. Anything you ask here can stay on the page as a question.</div>
+
+          <sc-for list="{{ chatLog }}" as="m" hint-placeholder-count="0">
+            <div style="margin-top:20px;">
+              <div style="display:flex;justify-content:flex-end;">
+                <div style="max-width:88%;padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.45;background:#12151a;color:#fff;">{{ m.q }}</div>
+              </div>
+              <p style="font-size:14px;line-height:1.6;color:#14171c;margin:12px 0 0;">{{ m.a }}</p>
+              <div style="display:flex;flex-direction:column;gap:4px;margin-top:8px;">
+                <sc-for list="{{ m.sources }}" as="s" hint-placeholder-count="2">
+                  <span style="font-size:12.5px;color:#3457d5;">{{ s }}</span>
+                </sc-for>
+              </div>
+              <button onClick="{{ noop }}" style="margin-top:10px;background:#fff;border:1px solid #d7d6cf;border-radius:7px;padding:7px 11px;font-size:12.5px;font-weight:500;color:#14171c;cursor:pointer;">Keep this as a question on the page</button>
+            </div>
+          </sc-for>
+
+          <div style="margin-top:24px;">
+            <div style="font-size:11px;letter-spacing:0.08em;color:#767b82;font-weight:600;margin-bottom:10px;">{{ chatPromptLabel }}</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ chatSuggestions }}" as="s" hint-placeholder-count="3">
+                <button onClick="{{ s.ask }}" style="text-align:left;background:#fff;border:1px solid #d7d6cf;border-radius:10px;padding:12px 14px;font-size:14px;cursor:pointer;">{{ s.q }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;padding:16px 24px;border-top:1px solid #e2e1db;">
+          <input type="text" value="{{ ariInput }}" onInput="{{ setAriInput }}" onKeyDown="{{ handleAriKeyDown }}" placeholder="Ask Ari…" style="flex:1;padding:12px 14px;border:1px solid #d7d6cf;border-radius:10px;font-size:14px;"/>
+          <button onClick="{{ submitAri }}" style="background:{{ accent }};border:none;border-radius:10px;width:42px;flex-shrink:0;cursor:pointer;font-size:16px;">↑</button>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#12151a"/><rect x="30" y="30" width="40" height="40" rx="8" fill="#d7f24c"/><text x="50" y="55" font-size="14" text-anchor="middle" fill="#12151a" font-family="sans-serif">Ari</text></svg>
+</template>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;initialView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pulse&quot;,&quot;options&quot;:[&quot;pulse&quot;,&quot;regulations&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#d7f24c&quot;,&quot;options&quot;:[&quot;#d7f24c&quot;,&quot;#c8f2a0&quot;,&quot;#e6f27a&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  state = {
+    view: (this.props.initialView === 'regulations' ? 'qa' : 'pulse'),
+    qaPage: 'regulations',
+    cards: this.getInitialCards(),
+    lastRemoved: null,
+    notice: null,
+    openAdjustId: null,
+    marketSelected: ['Germany', 'European Union', 'Poland'],
+    ariOpen: false,
+    ariInput: '',
+    picked: {},
+    asked: [],
+    rawOpen: false,
+    workspaceAdded: false,
+  };
+
+  getInitialCards() {
+    return [
+      { id: 'topic', title: "Narrow your Packaging topic to exclude transport packaging", desc: "Eighteen of your 34 in-scope regulations reached you through transport packaging, which you don't place on the market. Removing it halves your Pulse volume without dropping a single obligation.", tags: ["SCOPE · TOPICS", "−18 REGULATIONS"], kind: 'options', options: ["Exclude transport packaging", "Keep transport packaging", "Ask Ari why"] },
+      { id: 'ca-sb54', title: "Mark California SB 54 as not applicable to the children's hoodie", desc: "The hoodie has shipped only to Germany and the EU for twelve months. No California placement is recorded, so the assessment is almost certainly a false positive.", tags: ["ASSESSMENT · 1 PRODUCT", "−1 OBLIGATION"], kind: 'options', options: ["Not applicable", "Not applicable until placement", "Keep monitoring"] },
+      { id: 'recyc-evidence', title: "Pull the recyclability evidence task forward to 12 June", desc: "The German deadline moved to 17 July and your lab turnaround averages 21 days. At the current task date you would file with two days of margin.", tags: ["WORKSPACE · 1 TASK", "+3 WEEKS MARGIN"], kind: 'options', options: ["Move to 12 June", "Move to 5 June", "Split into two tasks"] },
+      { id: 'poland', title: "Add Poland to your monitored markets", desc: "Your last three shipment records list Poland, but it isn't in scope — so six regulations that would apply are being filtered out of your Pulse before you ever see them.", tags: ["SCOPE · MARKETS", "+6 REGULATIONS"], kind: 'markets' },
+      { id: 'uk-ppt', title: "Stop tracking the UK Plastic Packaging Tax", desc: "You've reported below the ten-tonne threshold for four consecutive quarters. Ari will keep watching the volume and put this back if you cross it.", tags: ["PORTFOLIO · 1 REGULATION", "−1 REGULATION"], kind: 'options', options: ["Stop tracking", "Keep tracking", "Remind me next quarter"] },
+    ];
+  }
+
+  // ---- pages / question-rail content ----
+  P(kicker, label, hint, verdict, body, confidence, listLabel, items, next, nextAction) {
+    return { key: label, label, hint, sec: { kicker, verdict, body, confidence, listLabel, items, next, nextAction } };
+  }
+
+  data() {
+    const P = this.P.bind(this);
+    return {
+      regulations: {
+        title: "Regulations", crumb: null, raw: false,
+        context: "34 in scope · 16 applicable · 3 moved this week",
+        questions: [
+          P("Which apply to me", "Which ones apply to me?", "16",
+            "Sixteen, once transport packaging comes out.",
+            "Thirty-four regulations reach your scope, but eighteen arrived through transport packaging you don't place on the market. Ari has separated the set that genuinely applies from the set that only looks like it does.",
+            "34 assessed · 16 applicable · 18 questionable",
+            "The set that genuinely applies",
+            [
+              ["Prüfung gestaltungsbedingter Wertstoffverluste", "Germany, proposal stage. Both products in scope through packaging. Nearest date 17 July.", "Open", true, true],
+              ["EU Packaging and Packaging Waste Regulation", "European Union, in force. Satisfied by your January recyclability file.", "Satisfied"],
+              ["German Packaging Act registration", "Germany, in force. Registration current until March 2027.", "Satisfied"],
+              ["California SB 54", "California, in force. Server only, and only on placement. Probably a false positive.", "Question"]
+            ],
+            "The eighteen transport-packaging matches all trace to one scope setting. Removing it halves your Pulse without dropping an obligation.", "Review that setting"),
+          P("Which need work", "Which need work from me?", "1",
+            "One. The German packaging rule.",
+            "Everything else is either satisfied by evidence you already hold or waiting on a date rather than on you. The German rule carries four obligations, two of which are tests that gate the other two.",
+            "4 open obligations across 16 applicable regulations",
+            "Where the work actually is",
+            [
+              ["Prüfung gestaltungsbedingter Wertstoffverluste", "Four obligations: two recyclability tests, then two documents that cite them.", "4 open", true],
+              ["EU PPWR", "Nothing open. The shared recyclability test means work here counts twice.", "0 open"],
+              ["German Packaging Act registration", "Renews automatically in March 2027 unless your volumes change.", "0 open"]
+            ],
+            "The two recyclability tests can run against the same material family, so one lab booking closes both.", "Combine the bookings"),
+          P("What's coming", "What's coming, and when?", "3",
+            "Three dates in the next twelve months. One binds you.",
+            "Ari separates dates that create an obligation from dates that are only worth watching. Consultation windows and expected entry-into-force dates are informational until a proposal is adopted.",
+            "12 dates in the window · 1 binding",
+            "The next twelve months",
+            [
+              ["17 July 2026 — evidence filing", "Binding. This is the date your tasks are planned against.", "94 days", true],
+              ["30 September 2026 — consultation closes", "Optional. You could submit a position through your trade body.", "Optional"],
+              ["1 January 2027 — expected entry into force", "Informational until the German proposal is adopted.", "Watch"]
+            ],
+            "Ari can hold the consultation date quietly and raise it four weeks out, rather than listing it beside your obligations.", "Move it out of the way"),
+          P("What I can drop", "Which can I stop tracking?", "2",
+            "Two, on your own evidence.",
+            "Both have been non-applicable for four consecutive quarters on data you already report. Ari keeps watching the thresholds and will restore either one the moment you cross it.",
+            "2 candidates · both reversible",
+            "Candidates to archive",
+            [
+              ["UK Plastic Packaging Tax", "Below the ten-tonne threshold for four quarters running.", "Archive", true],
+              ["Nordic Swan packaging criteria", "Voluntary, and no Nordic market in your scope.", "Archive"],
+              ["California SB 54", "Keep for now — the server could ship to California next quarter.", "Keep"]
+            ],
+            "Archiving both removes two regulations from every list, every export and every Pulse sweep, and Ari will restore them on threshold.", "Archive both")
+        ]
+      },
+      detail: {
+        title: "Prüfung gestaltungsbedingter Wertstoffverluste", crumb: "Prüfung gestaltungsbedingter Wertstoffverluste", raw: true,
+        context: "Germany · Proposal stage · Applies to 2 of 2 monitored products · Nearest date 17 July 2026",
+        questions: [
+          P("Does it apply to me", "Does it apply to me?", "Yes",
+            "Yes — to both products, through their flexible plastic packaging.",
+            "Neither product is regulated directly. Both are pulled in by packaging that falls within the regulation's scope of packaging requiring recyclability testing and single-case evidence documentation, is intended for the German market, and qualifies for none of the exemptions.",
+            "High confidence · assessed 2 days ago from the 2 April draft",
+            "Why each product is in scope",
+            [
+              ["Chain link children's hoodie", "Flexible plastic mailer, German market, no mono-collection route recorded. No exemption applies.", "In scope"],
+              ["Enterprise-grade rack and tower server", "Flexible plastic wrap inside a corrugated outer. The wrap is in scope; the outer is not.", "In scope"]
+            ],
+            "Both assessments rest on the same exemption test. If you disagree with the mono-collection finding, correcting it once updates both.", "Review the exemption test"),
+          P("What must I do", "What must I do?", "4",
+            "Four obligations. Two are tests, two are documents.",
+            "The tests gate the documents: recyclability testing produces the result the evidence file has to cite. Ari has ordered them by dependency rather than by the order the regulation lists them in.",
+            "Derived from Articles 4 and 6 and Annex II · 3 requirement types",
+            "In the order they have to happen",
+            [
+              ["Recyclability testing — hoodie mailer", "Accredited lab, result valid 24 months. Booked for 28 May.", "Test"],
+              ["Recyclability testing — server wrap", "Same material family, so it can reuse the mailer result.", "Test"],
+              ["Single-case evidence documentation", "Cites both results. Not started, no owner — the critical path.", "Document", true],
+              ["Design-change declaration", "Only required if the mailer changes material before the deadline.", "Conditional"]
+            ],
+            "Ari can draft the evidence documentation from your existing EU recyclability file and leave you the review.", "Draft it"),
+          P("By when", "By when?", "94d",
+            "17 July 2026 — six weeks earlier than when you last looked.",
+            "The date moved with the 2 April revision. It is the nearest of four dates on this regulation and the only one that binds you; the other three are consultation and review milestones with no obligation on your side.",
+            "Confirmed against the 2 April revision · 94 days out",
+            "All four dates, and whether they bind you",
+            [
+              ["17 July 2026 — evidence filing", "Binding. Your tasks are planned against this date.", "Binds you", true],
+              ["30 September 2026 — consultation closes", "Optional. A position could go through your trade body.", "Optional"],
+              ["1 January 2027 — expected entry into force", "Informational until the proposal is adopted.", "Watch"],
+              ["1 January 2028 — enforcement begins", "Informational.", "Watch"]
+            ],
+            "Your lab turnaround averages 21 days, so the current task date leaves two days of margin. Ari has proposed moving it to 12 June.", "See that proposal"),
+          P("What changed", "What changed?", "1",
+            "One material change since you last opened this: the filing date.",
+            "The 2 April revision pulled the evidence deadline forward six weeks and clarified the mono-collection exemption. Nine other edits landed in the same revision; none touch what you are obliged to do, so Ari has kept them out of the way.",
+            "Diffed against the 14 February draft",
+            "Changes that reach you",
+            [
+              ["Evidence deadline: 28 August → 17 July 2026", "Reduces your margin from ten weeks to four. Already reflected in your tasks.", "Affects you", true],
+              ["Mono-collection exemption clarified", "The clarification confirms neither product qualifies. No change to your assessment.", "Confirms"],
+              ["9 further edits", "Definitions, numbering, and two annex cross-references.", "Filtered out"]
+            ],
+            "Ari can watch this regulation and interrupt you only when a change reaches your obligations, as it did here.", "Watch on those terms"),
+          P("Where the evidence is", "Where's the evidence?", "12",
+            "Every claim above traces to one of three sources.",
+            "This is not a summary of a summary. Each finding is anchored to a clause in the published draft, a record in your own product data, or a decision your team already made — and each is one click from here.",
+            "12 citations · no unsourced claims",
+            "Sources behind this assessment",
+            [
+              ["Published draft, 2 April 2026 revision", "Articles 4 and 6, Annex II. Eight of the twelve citations.", "Primary"],
+              ["Your product records", "Packaging material, format and market data for both products.", "Your data"],
+              ["Your team's prior decisions", "The EU PPWR recyclability finding from January, reused here.", "Precedent"]
+            ],
+            "If a source is wrong, correcting it re-runs the assessment rather than leaving you to edit the conclusion by hand.", "Correct a source"),
+          P("Who else is affected", "Who else is affected?", "2",
+            "Two people, one adjacent regulation.",
+            "This regulation shares its recyclability test with EU PPWR, so the result you produce here satisfies both. Ari surfaced the overlap rather than letting the same test be commissioned twice.",
+            "1 shared requirement · 1 duplicate avoided",
+            "Overlaps and owners",
+            [
+              ["EU PPWR — shared recyclability test", "Same accredited method. One result closes a requirement in both.", "Reuse"],
+              ["M. Halvorsen — packaging engineering", "Owns the mailer specification and the lab relationship.", "Owner"],
+              ["Compliance team — documentation", "Unassigned. The evidence file needs a name against it.", "Unassigned", true]
+            ],
+            "Assigning the evidence file is the one open decision on this regulation.", "Assign it")
+        ]
+      },
+      workspace: {
+        title: "My Workspace", crumb: null, raw: false,
+        context: "2 items on you this week · 1 waiting on someone else · nothing overdue",
+        questions: [
+          P("On me this week", "What's on me this week?", "2",
+            "Two items, about four hours between them.",
+            "Both belong to the German packaging rule. Neither needs the lab result to start, which is why Ari has put them this week rather than after 4 June.",
+            "Estimated from your last twelve similar tasks",
+            "This week",
+            [
+              ["Assign an owner to the evidence file", "Five minutes. It is the only unowned item on your critical path.", "Today", true],
+              ["Approve the combined lab booking", "One booking covers both products' recyclability tests.", "By Thursday"],
+              ["Review Ari's draft of the evidence file", "Ari can have a draft ready before you assign it.", "Optional"]
+            ],
+            "Ari can draft the evidence file now, so whoever you assign it to starts from a document rather than a blank page.", "Draft it first"),
+          P("What's blocked", "What's blocked?", "0",
+            "Nothing is blocked. One thing is unowned.",
+            "There is a difference worth keeping: blocked means someone else has to move first, unowned means nobody has picked it up. You have none of the first and one of the second.",
+            "0 blocked · 1 unowned · 1 waiting",
+            "The distinction, item by item",
+            [
+              ["Single-case evidence documentation", "Unowned. Can start today; does not need the lab result.", "Unowned", true],
+              ["Recyclability test — hoodie mailer", "Waiting on the lab until 4 June. Nothing you can do to speed it.", "Waiting"],
+              ["Design-change declaration", "Not required unless the mailer material changes.", "Dormant"]
+            ],
+            "Ari flags unowned items on the critical path after 48 hours. This one has been unowned for six days.", "Change that threshold"),
+          P("Waiting on others", "What's waiting on someone else?", "1",
+            "One thing, and the lab is on schedule.",
+            "The recyclability test result is due 4 June against a 21-day average turnaround. Ari is watching the booking and will tell you if the lab slips more than three days, which is the point at which your July date starts to move.",
+            "1 external dependency · watched daily",
+            "Outside your control",
+            [
+              ["Accredited lab — recyclability test", "Booked 28 May, result expected 4 June. On schedule.", "On track"],
+              ["M. Halvorsen — mailer specification", "Provided. No longer blocking anything.", "Done"],
+              ["Trade body — consultation position", "Optional, and not on your critical path.", "Optional"]
+            ],
+            "Ari will alert you at a three-day lab slip rather than on every status change.", "Keep that rule")
+        ]
+      },
+      portfolio: {
+        title: "Portfolio", crumb: null, raw: false,
+        context: "2 products · 6 obligations · exposure concentrated in one market",
+        questions: [
+          P("Where I'm exposed", "Where am I exposed?", "DE",
+            "Germany, through one product's packaging.",
+            "Four of your six open obligations sit on the children's hoodie in the German market, and two of those need design changes rather than paperwork. Everything in the EU set is either satisfied or shares evidence with something that is.",
+            "6 open obligations across 2 products and 2 markets",
+            "Exposure by market",
+            [
+              ["Germany", "4 of 6 open obligations. Two need design changes. Earliest date 17 July.", "Concentrated", true],
+              ["European Union", "2 of 6 open, both documentation, both sharing evidence with the German set.", "Contained"],
+              ["California", "1 assessment, probably a false positive. No placement recorded.", "Unconfirmed"]
+            ],
+            "Because Germany and the EU share a recyclability test, closing the German set closes most of the EU set with it.", "See the overlap"),
+          P("Least prepared", "Which product is least prepared?", "1",
+            "The children's hoodie, by a factor of two.",
+            "It carries four open obligations against the server's two, and two of the four need design changes rather than documentation — the difference between a three-week task and a three-month one.",
+            "Scored on open obligations, requirement type and time remaining",
+            "Both products, least prepared first",
+            [
+              ["Chain link children's hoodie", "4 open. Recyclability testing and a mono-material redesign both sit upstream of the July date.", "Least prepared", true],
+              ["Enterprise-grade rack and tower server", "2 open, both evidence documents against packaging you already test.", "On track"]
+            ],
+            "The hoodie's two design-change obligations disappear if the mailer moves to mono-material PE, which packaging engineering has already costed.", "Model that change"),
+          P("If I add a market", "What would change if I added Poland?", "+6",
+            "Six regulations, one of them with a June deadline.",
+            "Poland appears in your last three shipment records but is not in your monitoring scope, so Ari is filtering those six out before they reach you. One has an evidence deadline in June — earlier than anything you are currently planning for.",
+            "Modelled against your current products and topics",
+            "What would arrive",
+            [
+              ["Polish packaging recyclability decree", "Evidence deadline 30 June. Would become your earliest date.", "Earliest", true],
+              ["4 further packaging regulations", "Two satisfied by your existing EU evidence, two needing review.", "Assess"],
+              ["1 extended producer responsibility registration", "Administrative. Roughly two hours.", "Register"]
+            ],
+            "Adding Poland is reversible, and Ari will assess all six before putting anything in your Pulse.", "Add Poland")
+        ]
+      },
+      scope: {
+        title: "Monitoring scope", crumb: null, raw: false,
+        context: "2 products · 2 markets · 11 topics · last reviewed in January",
+        questions: [
+          P("What I'm monitoring", "What am I monitoring?", "3",
+            "Two products, two markets, eleven topics — three of which do the work.",
+            "Your scope has grown by accretion. Three topics account for 31 of your 34 in-scope regulations; the remaining eight contribute three between them and have produced no obligation in a year.",
+            "34 regulations traced back to their scope settings",
+            "What each setting is actually producing",
+            [
+              ["Packaging · recyclability", "22 regulations, 6 obligations. The reason you're here.", "Working"],
+              ["Packaging · extended producer responsibility", "9 regulations, 2 obligations.", "Working"],
+              ["8 further topics", "3 regulations, 0 obligations in twelve months.", "Dormant"]
+            ],
+            "Ari can retire the eight dormant topics and keep watching them quietly, restoring any one that produces a real obligation.", "Retire them quietly"),
+          P("What I'm missing", "What am I missing?", "2",
+            "Poland, and one product line.",
+            "Ari cross-read your shipment records and product catalogue against your scope. Two things you clearly deal with are not being monitored, so regulations touching them are filtered out before they reach your Pulse.",
+            "Inferred from shipment records and your product catalogue",
+            "Outside your scope, inside your business",
+            [
+              ["Poland", "Named in your last three shipment records. Six regulations being filtered out, one with a June deadline.", "Add", true],
+              ["Textile accessories line", "Twelve SKUs in your catalogue, none monitored.", "Review"],
+              ["Corrugated transport packaging", "Correctly excluded — you don't place it on the market.", "Correct"]
+            ],
+            "Ari can add Poland and assess all six regulations before any of them appear in your Pulse.", "Add Poland"),
+          P("What's creating noise", "What's creating noise?", "18",
+            "Transport packaging. It's half your Pulse.",
+            "Eighteen of your 34 in-scope regulations arrived through transport packaging you don't place on the market. They have produced no obligation and no decision in twelve months, but they've been in every list you've read.",
+            "18 regulations · 0 obligations · 0 decisions in 12 months",
+            "Where the volume comes from",
+            [
+              ["Transport packaging", "18 regulations, 0 obligations. One setting, half your volume.", "Remove", true],
+              ["Jurisdiction overlap", "6 regulations appearing in both the German and EU sets.", "Merge"],
+              ["Consultation milestones", "11 dates listed beside your obligations that create none.", "Demote"]
+            ],
+            "Fixing all three cuts your Pulse volume by roughly two thirds without dropping a single obligation.", "Fix all three")
+        ]
+      }
+    };
+  }
+
+  chatData() {
+    return {
+      pulse: [
+        ["Why are you proposing all five at once?", "Because they're independent — approving or rejecting any one doesn't change the reasoning behind the others. Where proposals do depend on each other I hold the second one back until the first is decided, so you never approve something on stale ground.", ["Proposal dependency rules"]],
+        ["What happens if I ignore this queue for a week?", "Nothing breaks. Four of the five are housekeeping and will still be here. The third one — moving the evidence task to 12 June — expires as useful around 20 May, because after that the earlier date no longer buys you margin.", ["Task margin model", "Lab turnaround average"]],
+        ["Which of these would you do first?", "The transport packaging one. It's reversible, it removes eighteen regulations from every list you read, and it makes the other four easier to judge because the noise is gone.", ["Volume attribution report"]]
+      ],
+      detail: [
+        ["Why is the wrap in scope but not the corrugated outer?", "Annex II scopes packaging by material and function. The flexible plastic wrap is primary packaging in direct contact with the product, which is in scope. The corrugated outer is classed as transport packaging, which the regulation excludes in Article 2(3). Your product record lists both separately, which is why the distinction is possible here.", ["Annex II · material scope", "Article 2(3) · exclusions", "Server packaging record"]],
+        ["What happens if we miss 17 July?", "At proposal stage there is no penalty — the obligation isn't enforceable until adoption, expected 1 January 2027. The practical risk is that the evidence file becomes a prerequisite for your German packaging register renewal in March 2027, so a miss now becomes a blocker then.", ["Adoption timetable", "VerpackG renewal conditions"]],
+        ["Can you draft the evidence file?", "Yes. Your January EU PPWR recyclability file covers seven of the nine required sections; the two remaining need the German test result and a mono-collection statement. I can draft it with those two marked as gaps, and fill them when the lab result arrives on 4 June.", ["EU PPWR file, January", "Required sections · Annex II"]]
+      ],
+      regulations: [
+        ["Why is transport packaging in my scope at all?", "It came in with the January onboarding, when Packaging was selected as a whole topic rather than by sub-category. Nobody has changed it since. It has matched 18 regulations and produced no obligation, because you don't place transport packaging on the market.", ["Scope history, 12 January", "Match log · transport packaging"]],
+        ["Which of these would survive an audit?", "Fourteen of the sixteen applicable regulations have a complete evidence chain. Two don't: the German rule is waiting on its test result, and the SB 54 assessment is based on absence of placement rather than positive evidence, which an auditor may want documented rather than inferred.", ["Evidence completeness report", "SB 54 assessment record"]],
+        ["Show me only what a lawyer would call binding.", "Eleven of the sixteen. The other five are voluntary standards or registrations you already hold. I can make that the default reading of this page if it's the one you want.", ["Requirement type breakdown"]]
+      ],
+      workspace: [
+        ["Who should own the evidence file?", "M. Halvorsen has filed the last four of these and owns the lab relationship, but is already carrying the mailer redesign through June. The alternative is J. Okonjo, who has filed two and has capacity. Given the July date, splitting it — Halvorsen on the technical sections, Okonjo on assembly — is the safer option.", ["Filing history by owner", "Team capacity, June"]],
+        ["What can I safely ignore this week?", "The consultation position and the design-change declaration. Neither is on the critical path, and the declaration only becomes required if the mailer material changes before July, which the redesign schedule puts in August.", ["Critical path model", "Mailer redesign schedule"]],
+        ["Tell me if the lab slips.", "Set. I'll raise it at a three-day slip and stay quiet below that. Below three days your July margin absorbs it without changing anything you'd do.", ["Alert rules · lab dependencies"]]
+      ],
+      portfolio: [
+        ["What's our single biggest exposure?", "The hoodie's mailer material. It carries two design-change obligations in Germany, and the same material choice is what would pull in four of the six Polish regulations if you add that market. One material decision resolves a disproportionate amount.", ["Hoodie packaging record", "Poland scope model"]],
+        ["If we changed the mailer to mono-material PE, what happens?", "Two of the four German obligations fall away, the recyclability test becomes a formality rather than a risk, and the Polish set — if you add it — drops from six regulations to two. Packaging engineering has costed the change at €0.04 per unit.", ["Mono-material PE assessment", "Engineering cost note, March"]],
+        ["Are we more or less exposed than in January?", "Less, in obligations — nine down to six. More, in time pressure: your earliest deadline has moved from October to July, so the same work now has half the runway.", ["Portfolio snapshot, January"]]
+      ],
+      scope: [
+        ["What would you remove if it were up to you?", "Transport packaging, the eight dormant topics, and the jurisdiction overlap between the German and EU sets. That's roughly two thirds of your volume and none of your obligations. I'd keep California, because a single shipment would make it live.", ["Volume attribution report"]],
+        ["How do I know you're not filtering out something that matters?", "Every filtered item is in the sweep log with the setting that filtered it and the reason. I also re-test filtered regulations monthly against your current products, which is how Poland surfaced. If a filtered regulation would create an obligation, it comes back regardless of scope.", ["Sweep log", "Monthly re-test policy"]],
+        ["Who last changed this scope?", "You did, on 12 January, during onboarding. Nothing has changed since — which is most of why eleven topics are still here.", ["Scope history"]]
+      ]
+    };
+  }
+
+  // ---- nav / view ----
+  goPulse = () => this.setState({ view: 'pulse' });
+  goRegulations = () => this.setState({ view: 'qa', qaPage: 'regulations' });
+  goWorkspace = () => this.setState({ view: 'qa', qaPage: 'workspace' });
+  goPortfolio = () => this.setState({ view: 'qa', qaPage: 'portfolio' });
+  goScope = () => this.setState({ view: 'qa', qaPage: 'scope' });
+  goDetail = () => this.setState({ view: 'qa', qaPage: 'detail' });
+  backToRegulations = (e) => { if (e) e.preventDefault(); this.setState({ qaPage: 'regulations' }); };
+  pick = (pageKey, qKey) => this.setState(s => ({ picked: { ...s.picked, [pageKey]: qKey } }));
+  preventDefault = (e) => e.preventDefault();
+  stopPropagation = (e) => e.stopPropagation();
+  noop = () => {};
+  toggleRaw = (e) => { if (e) e.preventDefault(); this.setState(s => ({ rawOpen: !s.rawOpen })); };
+  toggleWorkspace = () => this.setState(s => ({ workspaceAdded: !s.workspaceAdded }));
+
+  // ---- pulse card logic ----
+  toggleAdjust = (id) => this.setState(s => ({ openAdjustId: s.openAdjustId === id ? null : id }));
+  removeCard(id, noticeText) {
+    this.setState(s => {
+      const idx = s.cards.findIndex(c => c.id === id);
+      if (idx === -1) return null;
+      const removed = s.cards[idx];
+      const cards = s.cards.filter(c => c.id !== id);
+      return { cards, lastRemoved: { card: removed, idx }, notice: noticeText, openAdjustId: s.openAdjustId === id ? null : s.openAdjustId };
+    });
+  }
+  approve = (id) => { const c = this.state.cards.find(c => c.id === id); if (c) this.removeCard(id, `${c.title} — approved.`); };
+  notNow = (id) => { this.removeCard(id, null); };
+  selectOption = (id, label) => { this.removeCard(id, `${label} — done.`); };
+  undo = (e) => {
+    if (e) e.preventDefault();
+    this.setState(s => {
+      if (!s.lastRemoved) return null;
+      const cards = [...s.cards];
+      cards.splice(s.lastRemoved.idx, 0, s.lastRemoved.card);
+      return { cards, lastRemoved: null, notice: null };
+    });
+  };
+  toggleMarket = (name) => {
+    this.setState(s => {
+      const sel = s.marketSelected.includes(name) ? s.marketSelected.filter(m => m !== name) : [...s.marketSelected, name];
+      return { marketSelected: sel };
+    });
+  };
+  togglePoland = () => this.toggleMarket('Poland');
+  toggleFrance = () => this.toggleMarket('France');
+  toggleNetherlands = () => this.toggleMarket('Netherlands');
+  toggleItaly = () => this.toggleMarket('Italy');
+  addMarkets = () => {
+    const added = this.state.marketSelected.filter(m => !['Germany', 'European Union'].includes(m));
+    this.removeCard('poland', `Added ${added.join(', ') || 'no new markets'} to monitored markets.`);
+  };
+
+  // ---- Ari chat ----
+  currentScope() { return this.state.view === 'pulse' ? 'pulse' : this.state.qaPage; }
+  openAri = () => this.setState({ ariOpen: true });
+  closeAri = () => this.setState({ ariOpen: false });
+  setAriInput = (e) => this.setState({ ariInput: e.target.value });
+  askByIndex = (scope, i) => this.setState(s => ({ asked: [...s.asked, { scope, i }], ariOpen: true }));
+  handleAriKeyDown = (e) => { if (e.key === 'Enter') this.submitCustom(); };
+  handleRailAsk = (e) => { if (e.key === 'Enter' && e.target.value.trim()) { this.submitCustom(e.target.value.trim()); e.target.value = ''; } };
+  submitAri = () => this.submitCustom();
+  submitCustom = (text) => {
+    const q = (text || this.state.ariInput).trim();
+    if (!q) return;
+    this.setState(s => ({
+      asked: [...s.asked, { scope: this.currentScope(), custom: true, q, a: "This prototype doesn't have a live answer wired up for a typed question — try one of the suggestions below, which carry real sourced answers.", sources: [] }],
+      ariInput: '', ariOpen: true,
+    }));
+  };
+
+  renderVals() {
+    const accent = this.props.accentColor || '#d7f24c';
+    const isPulse = this.state.view === 'pulse';
+    const isQA = this.state.view === 'qa';
+    const isDetailPage = isQA && this.state.qaPage === 'detail';
+
+    // pulse cards
+    const cards = this.state.cards.map(c => {
+      const isOpen = this.state.openAdjustId === c.id;
+      const options = (c.options || []).map(label => ({ label, onSelect: () => this.selectOption(c.id, label) }));
+      return {
+        ...c, isOpen, isOptions: c.kind === 'options', isMarkets: c.kind === 'markets',
+        adjustBorder: isOpen ? '#3457d5' : '#d7d6cf', options,
+        onApprove: () => this.approve(c.id), onToggleAdjust: () => this.toggleAdjust(c.id), onNotNow: () => this.notNow(c.id),
+      };
+    });
+    const needsYou = cards.length;
+
+    // nav highlighting
+    const navPair = (active) => ({ bg: active ? accent : 'transparent', fg: active ? '#12151a' : '#fff' });
+    const pulseNav = navPair(isPulse);
+    const regsNav = navPair(isQA && (this.state.qaPage === 'regulations' || this.state.qaPage === 'detail'));
+    const wsNav = navPair(isQA && this.state.qaPage === 'workspace');
+    const portNav = navPair(isQA && this.state.qaPage === 'portfolio');
+    const scopeNav = navPair(isQA && this.state.qaPage === 'scope');
+
+    // QA page data
+    const pages = this.data();
+    const page = isQA ? pages[this.state.qaPage] : pages.regulations;
+    const qList = page.questions;
+    const activeKey = this.state.picked[this.state.qaPage] || qList[0].key;
+    const active = qList.find(q => q.key === activeKey) || qList[0];
+    const questions = qList.map(q => {
+      const on = q.key === activeKey;
+      return { label: q.label, hint: q.hint, hintColor: on ? 'rgba(255,255,255,0.75)' : '#9aa0a6', bg: on ? '#12151a' : 'transparent', fg: on ? '#fff' : '#14171c', fw: on ? '600' : '400', pick: () => this.pick(this.state.qaPage, q.key) };
+    });
+    const items = active.sec.items.map(([name, detail, tag, strong, linked]) => ({
+      name, detail, tag,
+      tagBg: strong ? '#12151a' : 'transparent', tagFg: strong ? '#fff' : '#3b3f45', tagBorder: strong ? 'none' : '1px solid #d7d6cf',
+      linked: !!linked, cursor: linked ? 'pointer' : 'default',
+      click: linked ? this.goDetail : this.noop,
+    }));
+    const sec = { ...active.sec, items };
+
+    // chat
+    const scope = this.currentScope();
+    const pool = this.chatData()[scope] || [];
+    const asked = this.state.asked.filter(a => a.scope === scope);
+    const chatLog = asked.map(a => a.custom ? { q: a.q, a: a.a, sources: a.sources } : { q: pool[a.i][0], a: pool[a.i][1], sources: pool[a.i][2] });
+    const chatSuggestions = pool
+      .map((row, i) => ({ q: row[0], i }))
+      .filter(s => !asked.some(a => !a.custom && a.i === s.i))
+      .map(s => ({ q: s.q, ask: () => this.askByIndex(scope, s.i) }));
+
+    return {
+      accent, isPulse, isQA, isDetailPage,
+      pulseBg: pulseNav.bg, pulseFg: pulseNav.fg,
+      regsBg: regsNav.bg, regsFg: regsNav.fg,
+      wsBg: wsNav.bg, wsFg: wsNav.fg,
+      portBg: portNav.bg, portFg: portNav.fg,
+      scopeBg: scopeNav.bg, scopeFg: scopeNav.fg,
+      goPulse: this.goPulse, goRegulations: this.goRegulations, goWorkspace: this.goWorkspace, goPortfolio: this.goPortfolio, goScope: this.goScope,
+      backToRegulations: this.backToRegulations, preventDefault: this.preventDefault, stopPropagation: this.stopPropagation, noop: this.noop,
+      cards, needsYou,
+      headerText: cards.length > 0 ? `${cards.length} decision${cards.length !== 1 ? 's' : ''}, then you're clear.` : `You're clear.`,
+      notice: this.state.notice, undo: this.undo,
+      marketSelected: this.state.marketSelected, selectedList: this.state.marketSelected,
+      togglePoland: this.togglePoland, toggleFrance: this.toggleFrance, toggleNetherlands: this.toggleNetherlands, toggleItaly: this.toggleItaly,
+      addMarkets: this.addMarkets,
+      isPolandSel: this.state.marketSelected.includes('Poland'),
+      isFranceSel: this.state.marketSelected.includes('France'),
+      isNetherlandsSel: this.state.marketSelected.includes('Netherlands'),
+      isItalySel: this.state.marketSelected.includes('Italy'),
+      page, questions, sec,
+      rawOpen: this.state.rawOpen, toggleRaw: this.toggleRaw,
+      legacyTabs: ["Summary", "Actions", "News & Analysis", "Scope", "References", "Dates", "Relationships", "Attachments", "Document"],
+      workspaceLabel: this.state.workspaceAdded ? 'Added ✓' : 'Add to Workspace', toggleWorkspace: this.toggleWorkspace,
+      handleRailAsk: this.handleRailAsk,
+      ariOpen: this.state.ariOpen, openAri: this.openAri, closeAri: this.closeAri,
+      ariInput: this.state.ariInput, setAriInput: this.setAriInput, submitAri: this.submitAri, handleAriKeyDown: this.handleAriKeyDown,
+      chatLog, chatSuggestions, chatPromptLabel: chatLog.length ? "Also worth asking here" : "People here usually ask",
+    };
+  }
+}
+</script>
+</body>
+</html>
