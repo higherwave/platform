@@ -27,6 +27,10 @@ window.PROTOS = [
     why: 'Helps teams see where time is lost in a process before deciding what to automate.',
     principles: ['Match the real world: steps mirror how work actually happens', 'Recognition over recall: bottlenecks highlighted visually', 'Minimalist design: detail on demand'],
     extensions: ['Import event logs for process mining', 'Estimate time saved per automation', 'Compare a process before and after changes'] },
+  { id: 'wf-compliance', title: 'Agent-driven Compliance Workflow', category: 'Workflows', description: 'Human-in-the-loop workflows that leverages AI  to stay on top of regulatory changes.', url: 'prototypes/agents/ai-compliance/',
+    why: 'AI agents monitor regulatory changes and draft updates, while people review and approve each change before it takes effect.',
+    principles: ['User control: every agent action needs human approval', 'Visibility of what changed and why', 'Error prevention: flag high-risk changes for extra review'],
+    extensions: ['Audit trail for regulators', 'Assign reviews by jurisdiction', 'Impact analysis across affected policies'] },
   { id: 'obs-task-dash', title: 'Task-driven Dashboard', category: 'Workflows', description: 'A dashboard organized around the tasks a user needs to complete, surfacing only the metrics relevant to each.', url: 'prototypes/workflows/task-driven-dashboard/',
     why: 'Reduces dashboard noise by grouping metrics around the decisions a user has to make.',
     principles: ['Minimalist design: only task-relevant metrics', 'Match the real world: organized by job, not by data source', 'Progressive disclosure'],
@@ -116,11 +120,13 @@ window.THUMBS = {
   'onb-two-level': 'thumbs/onb-two-level.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash.png',
   'prod-comms': 'thumbs/prod-comms.png',
-  'int-partner': 'thumbs/int-partner.png'
+  'int-partner': 'thumbs/int-partner.png',
+  'wf-compliance': 'thumbs/wf-compliance.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'wf-compliance': 'thumbs/wf-compliance-page.png',
   'int-partner': 'thumbs/int-partner-page.png',
   'prod-comms': 'thumbs/prod-comms-page.png',
   'wf-runs': 'thumbs/wf-runs-page.png',
