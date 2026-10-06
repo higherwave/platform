@@ -11,7 +11,7 @@ window.PROTOS = [
     why: 'Lets users ask why a metric changed and get an answer in context, instead of building queries or switching tools.',
     principles: ['Visibility of the data the assistant used for each answer', 'User control: answers can be edited, pinned, or dismissed', 'Recognition over recall: suggested questions based on the current view'],
     extensions: ['Turn an answer into a saved chart', 'Scheduled AI summaries of changes', 'Hand off findings to an incident or ticket'] },
-  { id: 'obs-journey', title: 'Journey Map', category: 'Observability', description: 'Trace a user’s path across services and touchpoints, with drop-off and error points marked.', url: 'prototypes/observability/journey-map/',
+  { id: 'obs-journey', title: 'Journey Map', category: 'Productivity', description: 'Trace a user’s path across services and touchpoints, with drop-off and error points marked.', url: 'prototypes/observability/journey-map/',
     why: 'Shows where users drop off or hit errors across a multi-step path, connecting the product view and the technical view of the same problem.',
     principles: ['Match the real world: steps named in user terms', 'Visibility of status at each touchpoint', 'Minimalist design: only exceptions are highlighted'],
     extensions: ['Compare journeys by user segment', 'Overlay release markers', 'Jump from a drop-off point to related logs'] },
