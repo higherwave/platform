@@ -31,6 +31,10 @@ window.PROTOS = [
     why: 'AI agents monitor regulatory changes and draft updates, while people review and approve each change before it takes effect.',
     principles: ['User control: every agent action needs human approval', 'Visibility of what changed and why', 'Error prevention: flag high-risk changes for extra review'],
     extensions: ['Audit trail for regulators', 'Assign reviews by jurisdiction', 'Impact analysis across affected policies'] },
+  { id: 'wf-mapping', title: 'Workflow Mapping', category: 'Workflows', description: 'A flow format that clearly shows where AI, humans, and UI interactions appear within the flow.', url: 'prototypes/workflows/workflow-mapping/index.html',
+    why: 'Shows in one flow which steps are handled by AI, which by people, and where the user interface comes in, so teams can see how responsibility is shared.',
+    principles: ['Visibility of who or what acts at each step', 'Recognition over recall: consistent markers for AI, human, and UI', 'Match the real world: steps follow the actual process'],
+    extensions: ['Filter the flow by AI, human, or UI steps', 'Mark steps that need human approval', 'Export the flow for documentation'] },
   { id: 'obs-task-dash', title: 'Task-driven Dashboard', category: 'Workflows', description: 'A dashboard organized around the tasks a user needs to complete, surfacing only the metrics relevant to each.', url: 'prototypes/workflows/task-driven-dashboard/',
     why: 'Reduces dashboard noise by grouping metrics around the decisions a user has to make.',
     principles: ['Minimalist design: only task-relevant metrics', 'Match the real world: organized by job, not by data source', 'Progressive disclosure'],
@@ -121,11 +125,13 @@ window.THUMBS = {
   'obs-ai-dash': 'thumbs/obs-ai-dash.png',
   'prod-comms': 'thumbs/prod-comms.png',
   'int-partner': 'thumbs/int-partner.png',
-  'wf-compliance': 'thumbs/wf-compliance.png'
+  'wf-compliance': 'thumbs/wf-compliance.png',
+  'wf-mapping': 'thumbs/wf-mapping.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'wf-mapping': 'thumbs/wf-mapping-page.png',
   'wf-compliance': 'thumbs/wf-compliance-page.png',
   'int-partner': 'thumbs/int-partner-page.png',
   'prod-comms': 'thumbs/prod-comms-page.png',
