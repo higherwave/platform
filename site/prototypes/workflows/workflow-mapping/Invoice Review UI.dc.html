@@ -9,13 +9,13 @@
 <x-dc>
 <helmet><style>body{margin:0;background:#f8fafc;font-family:Haas,"Helvetica Neue",-apple-system,"Segoe UI",sans-serif;color:#181d26}a{color:#1b61c9;text-decoration:none}</style></helmet>
 <div style="max-width:880px;margin:0 auto;padding:32px 24px;box-sizing:border-box">
-  <a href="Invoice Workflow.dc.html" style="font-size:14px">← Back to workflow</a>
+  <a href="index.html" style="font-size:14px">← Back to workflow</a>
   <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
     <div style="margin-top:24px;background:#0a2e0e;color:#fff;border-radius:12px;padding:48px">
       <div style="font-size:14px;font-weight:500;letter-spacing:.16px">{{ doneStep }}</div>
       <h1 style="font-size:32px;font-weight:400;line-height:1.2;margin:8px 0 12px">{{ doneTitle }}</h1>
       <p style="font-size:16px;line-height:1.5;margin:0 0 24px">{{ doneBody }}</p>
-      <a href="Invoice Workflow.dc.html" style="display:inline-block;background:#fff;color:#181d26;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500">Return to workflow</a>
+      <a href="index.html" style="display:inline-block;background:#fff;color:#181d26;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500">Return to workflow</a>
     </div>
   </sc-if>
   <sc-if value="{{ isException }}" hint-placeholder-val="{{ true }}">
