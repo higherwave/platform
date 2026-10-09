@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f8fafc}</style></helmet>
+<div id="sheet" style="width:1600px;height:1000px;box-sizing:border-box;padding:56px 64px;background:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#181d26;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end">
+    <div>
+      <div style="font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#1b61c9">Problem Framing Template</div>
+      <div style="font-size:44px;font-weight:700;margin-top:6px">5W1H Canvas</div>
+    </div>
+  </div>
+  <div style="padding:20px 0;display:flex;flex-direction:column;gap:10px;height:132px;box-sizing:border-box">
+    <div style="font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5b6270">Problem summary</div>
+    <div style="font-size:24px;line-height:1.4;color:#8b92a0">[Who] needs a way to [What] because [Why]. Today this happens at [Where/When], and we could address it by [How].</div>
+  </div>
+  <div style="border:1px solid #d5dae3;border-radius:12px;padding:20px 28px;height:150px;box-sizing:border-box;background:#f3f6fc">
+    <div style="display:flex;align-items:baseline;gap:14px"><span style="font-size:26px;font-weight:700;color:#1b61c9">Why</span><span style="font-size:18px;color:#5b6270">Why does this problem matter? What is the impact or goal?</span></div>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px">
+    <div style="border:1px solid #d5dae3;border-radius:12px;padding:20px 24px">
+      <div style="font-size:26px;font-weight:700;color:#1b61c9">Who</div>
+      <div style="font-size:18px;color:#5b6270;margin-top:6px;line-height:1.4">Who is affected? Who are the users and stakeholders?</div>
+    </div>
+    <div style="border:1px solid #d5dae3;border-radius:12px;padding:20px 24px">
+      <div style="font-size:26px;font-weight:700;color:#1b61c9">Where / When</div>
+      <div style="font-size:18px;color:#5b6270;margin-top:6px;line-height:1.4">In which context, place, or moment does it occur? How often?</div>
+    </div>
+    <div style="border:1px solid #d5dae3;border-radius:12px;padding:20px 24px">
+      <div style="font-size:26px;font-weight:700;color:#1b61c9">What</div>
+      <div style="font-size:18px;color:#5b6270;margin-top:6px;line-height:1.4">What is the problem? What happens today, and what is missing?</div>
+    </div>
+    <div style="border:1px solid #d5dae3;border-radius:12px;padding:20px 24px">
+      <div style="font-size:26px;font-weight:700;color:#1b61c9">How</div>
+      <div style="font-size:18px;color:#5b6270;margin-top:6px;line-height:1.4">How might we solve it? What approaches, constraints, and measures of success?</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
