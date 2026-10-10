@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#333840;-webkit-font-smoothing:antialiased}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}button,select,input{font-family:inherit}</style>
+</helmet>
+<div style="min-height:100vh;background:#fff;color:#333840;font-size:14px">
+  <div style="height:64px;border-bottom:1px solid #dddddd;display:flex;align-items:center;padding:0 48px;gap:40px;background:#fff;position:sticky;top:0;z-index:5">
+    <div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26">
+      <div style="width:26px;height:26px;border-radius:6px;background:#181d26;display:flex;align-items:center;justify-content:center"><div style="width:14px;height:14px;border:2px solid #fff;border-radius:50%;border-right-color:transparent"></div></div>Interchange
+    </div>
+    <div style="display:flex;gap:28px;flex:1">
+      <span style="color:#41454d;display:flex;gap:6px">Browse</span>
+      <span style="color:#41454d;display:flex;gap:6px">Installed<span style="color:#9297a0">8</span></span>
+      <span onClick="{{ goList }}" style="color:#181d26;font-weight:500;display:flex;gap:6px;cursor:pointer;border-bottom:2px solid #181d26;padding:21px 0 19px;margin:-22px 0">Connections<span style="color:#9297a0;font-weight:400">{{ connCount }}</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="text-align:right"><div style="color:#181d26;font-weight:500">Maya Chen</div><div style="font-size:12px;color:#41454d">Workspace admin · Acme Logistics</div></div>
+      <div style="width:36px;height:36px;border-radius:50%;background:#f5e9d4;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">MC</div>
+      <a style="font-size:13px;margin-left:4px;cursor:pointer">Switch account</a>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:48px 48px 96px">
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+      <div style="max-width:640px">
+        <div style="font-size:14px;font-weight:500;color:#41454d;letter-spacing:.16px;margin-bottom:12px">Workspace · Acme Logistics</div>
+        <h1 style="margin:0;font-size:40px;line-height:1.2;font-weight:400;color:#181d26">Connect your installed systems</h1>
+        <p style="margin:16px 0 0;font-size:16px;line-height:1.5;color:#333840">Route data between integrations you have already installed. Each connection has a trigger, field mapping, and governance rules that an admin approves before it runs.</p>
+      </div>
+      <button onClick="{{ newConn }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer">New connection</button>
+    </div>
+
+    <div style="margin-top:48px;background:#aa2d00;color:#fff;border-radius:12px;padding:32px 48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="max-width:720px">
+        <div style="font-size:24px;line-height:1.35">NetSuite → Snowflake needs attention</div>
+        <div style="margin-top:8px;font-size:16px;line-height:1.5">A schema change in NetSuite removed two mapped fields. Runs are paused for those records until the mapping is reviewed.</div>
+      </div>
+      <button onClick="{{ openAttention }}" style="background:#fff;color:#181d26;border:0;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer">Review mapping</button>
+    </div>
+
+    <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px">
+      <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+        <div style="border:1px solid #dddddd;border-radius:10px;padding:24px">
+          <div style="color:#41454d">{{ st.label }}</div>
+          <div style="font-size:32px;line-height:1.2;color:#181d26;margin-top:8px">{{ st.value }}</div>
+          <div style="font-size:13px;color:#41454d;margin-top:4px">{{ st.note }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="font-size:24px;color:#181d26">All connections</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+          <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;border:1px solid #dddddd;border-radius:12px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:minmax(300px,3fr) 1.4fr 1fr 1fr 1fr 1fr;gap:16px;padding:12px 24px;background:#f8fafc;color:#41454d;font-weight:500;font-size:13px;border-bottom:1px solid #dddddd">
+        <div>Connection</div><div>Trigger</div><div>Environment</div><div>Runs / week</div><div>Success</div><div>Status</div>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+        <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:minmax(300px,3fr) 1.4fr 1fr 1fr 1fr 1fr;gap:16px;padding:16px 24px;align-items:center;border-bottom:1px solid #eeeeee;cursor:pointer;background:#fff">
+          <div style="display:flex;align-items:center;gap:14px;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;flex:none">
+              <div style="{{ r.srcStyle }}">{{ r.srcInit }}</div><div style="color:#9297a0">→</div><div style="{{ r.dstStyle }}">{{ r.dstInit }}</div>
+            </div>
+            <div style="min-width:0"><div style="color:#181d26;font-weight:500;font-size:15px">{{ r.name }}</div><div style="font-size:13px;color:#41454d;margin-top:2px">{{ r.src }} to {{ r.dst }}</div></div>
+          </div>
+          <div>{{ r.trigger }}</div><div>{{ r.env }}</div><div>{{ r.runs }}</div><div>{{ r.rate }}</div>
+          <div><span style="{{ r.badge }}">{{ r.status }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+    <a onClick="{{ goList }}" style="cursor:pointer;font-size:14px;color:#1b61c9">← Connections</a>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-top:16px">
+      <div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><h1 style="margin:0;font-size:32px;line-height:1.2;font-weight:400;color:#181d26">{{ c.name }}</h1><span style="{{ c.badge }}">{{ c.status }}</span></div>
+        <div style="margin-top:8px;color:#41454d">Last changed by Maya Chen · {{ c.changed }}</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button onClick="{{ testRun }}" style="background:#fff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:12px 20px;font-size:16px;font-weight:500;cursor:pointer">Run test</button>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;background:#f8fafc;border-radius:12px;padding:32px;display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);align-items:center;gap:16px">
+      <div style="background:#fff;border-radius:10px;border:1px solid #dddddd;padding:20px;display:flex;gap:16px;align-items:center">
+        <div style="{{ c.srcStyle }}">{{ c.srcInit }}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:12px;color:#41454d;letter-spacing:.16px;font-weight:500">SOURCE</div>
+          <select value="{{ c.srcId }}" onChange="{{ setSrc }}" style="margin-top:4px;width:100%;height:36px;border:1px solid #dddddd;border-radius:6px;padding:0 8px;font-size:15px;color:#181d26;background:#fff">
+            <sc-for list="{{ systems }}" as="s" hint-placeholder-count="8"><option value="{{ s.id }}">{{ s.name }}</option></sc-for>
+          </select></div>
+      </div>
+      <div style="text-align:center;color:#41454d"><div style="height:1px;background:#9297a0;position:relative;margin:0 8px"><div style="position:absolute;right:-2px;top:-4px;width:8px;height:8px;border-top:1px solid #9297a0;border-right:1px solid #9297a0;transform:rotate(45deg)"></div></div><div style="font-size:12px;margin-top:8px">{{ c.freq }}</div></div>
+      <div style="background:#fff;border-radius:10px;border:1px solid #dddddd;padding:20px;display:flex;gap:16px;align-items:center">
+        <div style="{{ c.dstStyle }}">{{ c.dstInit }}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:12px;color:#41454d;letter-spacing:.16px;font-weight:500">DESTINATION</div>
+          <select value="{{ c.dstId }}" onChange="{{ setDst }}" style="margin-top:4px;width:100%;height:36px;border:1px solid #dddddd;border-radius:6px;padding:0 8px;font-size:15px;color:#181d26;background:#fff">
+            <sc-for list="{{ systems }}" as="s" hint-placeholder-count="8"><option value="{{ s.id }}">{{ s.name }}</option></sc-for>
+          </select></div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:32px;align-items:start">
+      <div>
+        <div style="display:flex;gap:28px;border-bottom:1px solid #dddddd">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><div onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</div></sc-for>
+        </div>
+
+        <sc-if value="{{ isMap }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:24px;color:#41454d;line-height:1.5">Match each source field to a destination field. Required fields must be mapped before activation.</div>
+          <div style="margin-top:16px;border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1.2fr 1.1fr 1.2fr 90px;gap:12px;padding:10px 16px;background:#f8fafc;font-size:13px;font-weight:500;color:#41454d"><div>Source field</div><div>Transform</div><div>Destination field</div><div>Status</div></div>
+            <sc-for list="{{ mapRows }}" as="m" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:1.2fr 1.1fr 1.2fr 90px;gap:12px;padding:12px 16px;align-items:center;border-top:1px solid #eeeeee">
+                <div><div style="color:#181d26;font-weight:500">{{ m.s }}</div><div style="font-size:12px;color:#41454d">{{ m.req }}</div></div>
+                <select value="{{ m.t }}" onChange="{{ m.onT }}" style="height:36px;border:1px solid #dddddd;border-radius:6px;padding:0 8px;background:#fff;color:#181d26;font-size:14px">
+                  <sc-for list="{{ transforms }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <select value="{{ m.d }}" onChange="{{ m.onD }}" style="{{ m.dStyle }}">
+                  <option value="">Select field</option>
+                  <sc-for list="{{ dopts }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <div><span style="{{ m.badge }}">{{ m.label }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+            <label style="display:block"><div style="font-weight:500;color:#181d26;margin-bottom:8px">Trigger event</div>
+              <select value="{{ c.trigger }}" onChange="{{ setTrigger }}" style="width:100%;height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 12px;font-size:14px;background:#fff;color:#181d26">
+                <sc-for list="{{ triggers }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select></label>
+            <label style="display:block"><div style="font-weight:500;color:#181d26;margin-bottom:8px">Frequency</div>
+              <select value="{{ c.freq }}" onChange="{{ setFreq }}" style="width:100%;height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 12px;font-size:14px;background:#fff;color:#181d26">
+                <sc-for list="{{ freqs }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select></label>
+          </div>
+          <div style="margin-top:32px;display:flex;justify-content:space-between;align-items:center"><div style="font-weight:500;color:#181d26">Only send records where</div><button onClick="{{ addFilter }}" style="background:#fff;border:1px solid #dddddd;border-radius:6px;padding:8px 14px;font-size:14px;font-weight:500;color:#181d26;cursor:pointer">Add condition</button></div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ filterRows }}" as="f" hint-placeholder-count="2">
+              <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid #dddddd;border-radius:6px;padding:10px 14px"><span style="color:#181d26">{{ f.text }}</span><span onClick="{{ f.remove }}" style="color:#1b61c9;cursor:pointer">Remove</span></div>
+            </sc-for>
+          </div>
+          <div style="margin-top:32px;font-weight:500;color:#181d26">If a run fails</div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ failOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isGov }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px;font-weight:500;color:#181d26">Environment</div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <sc-for list="{{ envOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for>
+          </div>
+          <div style="margin-top:32px;font-weight:500;color:#181d26">Data classes in this connection</div>
+          <div style="margin-top:4px;color:#41454d">Detected from mapped fields. Classes marked elevated need an approver.</div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ classes }}" as="k" hint-placeholder-count="3"><span style="{{ k.style }}">{{ k.label }}</span></sc-for>
+          </div>
+          <div style="margin-top:32px;border:1px solid #dddddd;border-radius:10px">
+            <sc-for list="{{ toggles }}" as="g" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid #eeeeee">
+                <div><div style="color:#181d26;font-weight:500">{{ g.label }}</div><div style="font-size:13px;color:#41454d;margin-top:2px">{{ g.note }}</div></div>
+                <div onClick="{{ g.onClick }}" style="{{ g.track }}"><div style="{{ g.knob }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+          <label style="display:block;margin-top:24px;max-width:360px"><div style="font-weight:500;color:#181d26;margin-bottom:8px">Approver</div>
+            <select value="{{ c.approver }}" onChange="{{ setApprover }}" style="width:100%;height:44px;border:1px solid #dddddd;border-radius:6px;padding:0 12px;font-size:14px;background:#fff;color:#181d26">
+              <option value="">Not assigned</option><option value="Priya Raman · Data governance">Priya Raman · Data governance</option><option value="Tomas Weber · Security">Tomas Weber · Security</option><option value="Lena Ortiz · Finance systems">Lena Ortiz · Finance systems</option>
+            </select></label>
+        </sc-if>
+
+        <sc-if value="{{ isAct }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px;border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:150px 1fr 90px;gap:12px;padding:14px 20px;border-bottom:1px solid #eeeeee;align-items:center"><div style="color:#41454d">{{ a.time }}</div><div style="color:#181d26">{{ a.text }}</div><div><span style="{{ a.badge }}">{{ a.label }}</span></div></div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="background:#181d26;color:#fff;border-radius:12px;padding:32px;position:sticky;top:96px">
+        <div style="font-size:24px;line-height:1.35">Ready to activate</div>
+        <div style="margin-top:8px;color:#fff;line-height:1.5;font-size:14px">{{ readyNote }}</div>
+        <div style="margin-top:24px;display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ checks }}" as="k" hint-placeholder-count="5">
+            <div style="display:flex;gap:12px;align-items:center"><div style="{{ k.dot }}">{{ k.mark }}</div><div style="color:#fff">{{ k.label }}</div></div>
+          </sc-for>
+        </div>
+        <button onClick="{{ activate }}" style="{{ actStyle }}">{{ actLabel }}</button>
+        <div style="margin-top:12px;font-size:13px;color:#fff;opacity:1">Changes to Production connections are logged and visible to your approver.</div>
+      </div>
+    </div>
+  </sc-if>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#181d26;color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;z-index:9">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'list', sel: null, tab: 'map', filter: 'All', toast: '', conns: [
+    { id: 1, name: 'Closed-won deals to sales orders', src: 'sf', dst: 'sap', status: 'Live', trigger: 'Opportunity moves to Closed Won', freq: 'Real-time', runs: '12,410', rate: '99.8%', env: 'Production', changed: '3 days ago', fail: 'Retry 3 times', approver: 'Lena Ortiz · Finance systems', mask: true, appr: true, region: true, filters: ['Amount is greater than 5,000', 'Region is not Internal'], dopts: ['NetAmount','SoldToParty','DocumentDate','SalesPerson','PurchaseOrderRef'], rows: [['Opportunity.Amount','Currency to USD','NetAmount','Required'],['Account.Id','Lookup table','SoldToParty','Required'],['CloseDate','Date to ISO 8601','DocumentDate','Required'],['Owner.Email','Lookup table','SalesPerson','Optional']], cls: [['Financial',1],['Customer contact',0]] },
+    { id: 2, name: 'New hires to identity provisioning', src: 'wd', dst: 'okta', status: 'Live', trigger: 'Worker hired', freq: 'Every 15 min', runs: '1,086', rate: '99.9%', env: 'Production', changed: '2 weeks ago', fail: 'Pause connection', approver: 'Tomas Weber · Security', mask: true, appr: true, region: true, filters: ['Worker type is Employee'], dopts: ['login','firstName','lastName','department','manager'], rows: [['Worker.Email','Direct','login','Required'],['Worker.LegalName','Direct','firstName','Required'],['Worker.Org','Lookup table','department','Optional']], cls: [['Personal data',1],['Credentials',1]] },
+    { id: 3, name: 'P1 incidents to war room', src: 'now', dst: 'slack', status: 'Live', trigger: 'Incident created', freq: 'Real-time', runs: '342', rate: '100%', env: 'Production', changed: '1 month ago', fail: 'Alert only', approver: 'Priya Raman · Data governance', mask: false, appr: false, region: true, filters: ['Priority is P1'], dopts: ['message','channel','mentions'], rows: [['Incident.Number','Direct','message','Required'],['Incident.AssignmentGroup','Lookup table','channel','Required']], cls: [['Operational',0]] },
+    { id: 4, name: 'Invoices to finance warehouse', src: 'ns', dst: 'snow', status: 'Attention', trigger: 'Invoice posted', freq: 'Hourly', runs: '8,902', rate: '94.1%', env: 'Production', changed: '6 hours ago', fail: 'Retry 3 times', approver: 'Lena Ortiz · Finance systems', mask: true, appr: true, region: true, filters: ['Status is Posted'], dopts: ['INVOICE_ID','AMOUNT_USD','VENDOR_KEY','POSTED_AT','COST_CENTER'], rows: [['Invoice.Id','Direct','INVOICE_ID','Required'],['Invoice.Total','Currency to USD','AMOUNT_USD','Required'],['Invoice.CostCenter (removed)','Direct','','Required'],['Invoice.PostedDate','Date to ISO 8601','','Required']], cls: [['Financial',1]] },
+    { id: 5, name: 'Asset changes to service records', src: 'sap', dst: 'now', status: 'Draft', trigger: 'Asset updated', freq: 'Hourly', runs: '0', rate: 'n/a', env: 'Sandbox', changed: 'Yesterday', fail: 'Retry 3 times', approver: '', mask: false, appr: false, region: false, filters: [], dopts: ['ci_name','serial_number','location','owner'], rows: [['Asset.Description','Direct','','Required'],['Asset.SerialNo','Direct','','Required'],['Asset.Plant','Lookup table','','Optional']], cls: [['Operational',0]] },
+    { id: 6, name: 'Pipeline snapshots to warehouse', src: 'sf', dst: 'snow', status: 'Paused', trigger: 'Daily snapshot', freq: 'Daily', runs: '0', rate: '98.7%', env: 'Production', changed: '5 days ago', fail: 'Alert only', approver: 'Priya Raman · Data governance', mask: true, appr: true, region: true, filters: ['Stage is not Closed Lost'], dopts: ['OPP_ID','STAGE','AMOUNT_USD','SNAPSHOT_DATE'], rows: [['Opportunity.Id','Direct','OPP_ID','Required'],['Opportunity.Stage','Direct','STAGE','Required'],['Opportunity.Amount','Currency to USD','AMOUNT_USD','Required']], cls: [['Financial',1],['Customer contact',0]] }
+  ] };
+  SYS = [
+    { id: 'sf', name: 'Salesforce', init: 'SF', bg: '#fcab79', fg: '#181d26' },
+    { id: 'sap', name: 'SAP S/4HANA', init: 'SA', bg: '#181d26', fg: '#fff' },
+    { id: 'wd', name: 'Workday', init: 'WD', bg: '#f4d35e', fg: '#181d26' },
+    { id: 'okta', name: 'Okta', init: 'OK', bg: '#0a2e0e', fg: '#fff' },
+    { id: 'now', name: 'ServiceNow', init: 'SN', bg: '#a8d8c4', fg: '#181d26' },
+    { id: 'slack', name: 'Slack', init: 'SL', bg: '#f5e9d4', fg: '#181d26' },
+    { id: 'ns', name: 'NetSuite', init: 'NS', bg: '#d9a441', fg: '#181d26' },
+    { id: 'snow', name: 'Snowflake', init: 'SK', bg: '#aa2d00', fg: '#fff' }
+  ];
+  sys(id) { return this.SYS.find(s => s.id === id); }
+  tile(s, sz) { return `width:${sz}px;height:${sz}px;border-radius:${sz > 40 ? 12 : 8}px;background:${s.bg};color:${s.fg};display:flex;align-items:center;justify-content:center;font-weight:500;font-size:${sz > 40 ? 16 : 12}px;flex:none`; }
+  badge(st) {
+    const m = { Live: ['#e8f3e8', '#006400'], Attention: ['#aa2d00', '#fff'], Draft: ['#e0e2e6', '#181d26'], Paused: ['#f4d35e', '#181d26'], Mapped: ['#e8f3e8', '#006400'], Unmapped: ['#aa2d00', '#fff'], Success: ['#e8f3e8', '#006400'], Failed: ['#aa2d00', '#fff'] }[st] || ['#e0e2e6', '#181d26'];
+    return `background:${m[0]};color:${m[1]};padding:3px 10px;border-radius:6px;font-size:13px;font-weight:500;display:inline-block`;
+  }
+  chip(on) { return `border:1px solid ${on ? '#181d26' : '#dddddd'};background:${on ? '#181d26' : '#fff'};color:${on ? '#fff' : '#181d26'};border-radius:6px;padding:8px 14px;font-size:14px;font-weight:500;cursor:pointer`; }
+  flash(t) { this.setState({ toast: t }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  cur() { return this.state.conns.find(c => c.id === this.state.sel); }
+  upd(p) { this.setState(s => ({ conns: s.conns.map(c => c.id === s.sel ? { ...c, ...p, changed: 'Just now' } : c) })); }
+  updRow(i, k, v) { this.setState(s => ({ conns: s.conns.map(c => c.id === s.sel ? { ...c, changed: 'Just now', rows: c.rows.map((r, j) => j === i ? { ...r, [k]: v } : r) } : c) })); }
+  readiness(c) {
+    const unm = c.rows.filter(r => !r.d).length;
+    const hasCls = c.cls.some(k => k.on);
+    return [
+      { label: unm ? unm + ' required field' + (unm > 1 ? 's' : '') + ' unmapped' : 'All fields mapped', ok: !unm },
+      { label: 'Source and destination differ', ok: c.src !== c.dst },
+      { label: 'Trigger and frequency set', ok: !!c.trigger && !!c.freq },
+      { label: hasCls ? 'Approver assigned for elevated data' : 'Approver not required', ok: !hasCls || !!c.approver },
+      { label: c.env === 'Production' ? 'Test run passed in Sandbox' : 'Running in Sandbox', ok: c.env !== 'Production' || c.tested || c.status === 'Live' }
+    ];
+  }
+  renderVals() {
+    const S = this.state, st = this;
+    const live = S.conns.filter(c => c.status === 'Live').length;
+    const stats = [
+      { label: 'Active connections', value: String(live), note: 'of ' + S.conns.length + ' configured' },
+      { label: 'Records moved this week', value: '23.4k', note: 'across all connections' },
+      { label: 'Overall success rate', value: '98.9%', note: 'last 7 days' },
+      { label: 'Awaiting approval', value: '1', note: 'Asset changes to service records' }
+    ];
+    const fl = ['All', 'Live', 'Attention', 'Draft', 'Paused'];
+    const filters = fl.map(f => ({ label: f, style: this.chip(S.filter === f), onClick: () => this.setState({ filter: f }) }));
+    const rows = S.conns.filter(c => S.filter === 'All' || c.status === S.filter).map(c => {
+      const a = this.sys(c.src), b = this.sys(c.dst);
+      return { name: c.name, src: a.name, dst: b.name, srcInit: a.init, dstInit: b.init, srcStyle: this.tile(a, 32), dstStyle: this.tile(b, 32), trigger: c.trigger, env: c.env, runs: c.runs, rate: c.rate, status: c.status, badge: this.badge(c.status), open: () => this.setState({ view: 'edit', sel: c.id, tab: 'map' }) };
+    });
+    const out = { isList: S.view === 'list', isEdit: S.view === 'edit', connCount: S.conns.length, goList: () => this.setState({ view: 'list' }),
+      stats, filters, rows, hasToast: !!S.toast, toast: S.toast, systems: this.SYS,
+      newConn: () => { const id = Math.max(...S.conns.map(c => c.id)) + 1; this.setState(s => ({ view: 'edit', sel: id, tab: 'map', conns: [{ id, name: 'Untitled connection', src: 'sf', dst: 'snow', status: 'Draft', trigger: 'Record created', freq: 'Hourly', runs: '0', rate: 'n/a', env: 'Sandbox', changed: 'Just now', fail: 'Retry 3 times', approver: '', mask: true, appr: false, region: true, filters: [], dopts: ['ID','NAME','AMOUNT','OWNER','CREATED_AT'], rows: [['Record.Id','Direct','','Required'],['Record.Name','Direct','','Required'],['Record.Owner','Lookup table','','Optional']], cls: [['Customer contact', 0]] }, ...s.conns] })); },
+      openAttention: () => this.setState({ view: 'edit', sel: 4, tab: 'map' }) };
+    const c = this.cur();
+    if (S.view === 'edit' && c) {
+      const a = this.sys(c.src), b = this.sys(c.dst);
+      const rowsM = c.rows.map(r => ({ s: r[0], t: r[1], d: r[2], req: r[3] }));
+      const rd = this.readiness({ ...c, rows: rowsM, cls: c.cls.map(k => ({ on: k[1] })) });
+      c.rows.forEach((r, i) => { if (typeof r[0] !== 'string') return; });
+      out.c = { ...c, badge: this.badge(c.status), srcId: c.src, dstId: c.dst, srcInit: a.init, dstInit: b.init, srcStyle: this.tile(a, 52), dstStyle: this.tile(b, 52) };
+      out.setSrc = e => this.upd({ src: e.target.value });
+      out.setDst = e => this.upd({ dst: e.target.value });
+      out.setTrigger = e => this.upd({ trigger: e.target.value });
+      out.setFreq = e => this.upd({ freq: e.target.value });
+      out.setApprover = e => this.upd({ approver: e.target.value });
+      const tabs = [['map', 'Field mapping'], ['rules', 'Rules'], ['gov', 'Governance'], ['act', 'Activity']];
+      out.tabs = tabs.map(t => ({ label: t[1], onClick: () => this.setState({ tab: t[0] }), style: `padding:12px 0;cursor:pointer;font-weight:500;color:${S.tab === t[0] ? '#181d26' : '#41454d'};border-bottom:2px solid ${S.tab === t[0] ? '#181d26' : 'transparent'};margin-bottom:-1px` }));
+      out.isMap = S.tab === 'map'; out.isRules = S.tab === 'rules'; out.isGov = S.tab === 'gov'; out.isAct = S.tab === 'act';
+      out.transforms = ['Direct', 'Uppercase', 'Currency to USD', 'Date to ISO 8601', 'Lookup table', 'Hash (SHA-256)'];
+      out.dopts = c.dopts;
+      out.mapRows = c.rows.map((r, i) => ({ s: r[0], t: r[1], d: r[2], req: r[3], label: r[2] ? 'Mapped' : 'Unmapped', badge: this.badge(r[2] ? 'Mapped' : 'Unmapped'),
+        dStyle: `height:36px;border:1px solid ${r[2] ? '#dddddd' : '#aa2d00'};border-radius:6px;padding:0 8px;background:#fff;color:#181d26;font-size:14px`,
+        onT: e => { const v = e.target.value; this.setState(s => ({ conns: s.conns.map(x => x.id === s.sel ? { ...x, rows: x.rows.map((q, j) => j === i ? [q[0], v, q[2], q[3]] : q) } : x) })); },
+        onD: e => { const v = e.target.value; this.setState(s => ({ conns: s.conns.map(x => x.id === s.sel ? { ...x, status: x.status === 'Attention' && x.rows.every((q, j) => j === i ? v : q[2]) ? 'Live' : x.status, rows: x.rows.map((q, j) => j === i ? [q[0], q[1], v, q[3]] : q) } : x) })); } }));
+      out.triggers = ['Record created', 'Record updated', 'Opportunity moves to Closed Won', 'Worker hired', 'Incident created', 'Invoice posted', 'Asset updated', 'Daily snapshot'];
+      if (!out.triggers.includes(c.trigger)) out.triggers.push(c.trigger);
+      out.freqs = ['Real-time', 'Every 15 min', 'Hourly', 'Daily'];
+      out.filterRows = c.filters.map((f, i) => ({ text: f, remove: () => this.upd({ filters: c.filters.filter((_, j) => j !== i) }) }));
+      out.addFilter = () => this.upd({ filters: [...c.filters, ['Country is US', 'Owner is active', 'Currency is USD'][c.filters.length % 3]] });
+      out.failOpts = ['Retry 3 times', 'Alert only', 'Pause connection'].map(o => ({ label: o, style: this.chip(c.fail === o), onClick: () => this.upd({ fail: o }) }));
+      out.envOpts = ['Sandbox', 'Production'].map(o => ({ label: o, style: this.chip(c.env === o), onClick: () => this.upd({ env: o }) }));
+      out.classes = c.cls.map(k => ({ label: k[0] + (k[1] ? ' · elevated' : ''), style: `background:${k[1] ? '#f5e9d4' : '#f8fafc'};border:1px solid ${k[1] ? '#d9a441' : '#dddddd'};color:#181d26;border-radius:6px;padding:6px 12px;font-size:14px` }));
+      const tg = (key, label, note) => ({ label, note, onClick: () => this.upd({ [key]: !c[key] }), track: `width:40px;height:24px;border-radius:12px;background:${c[key] ? '#181d26' : '#9297a0'};position:relative;cursor:pointer;flex:none`, knob: `position:absolute;top:2px;left:${c[key] ? 18 : 2}px;width:20px;height:20px;border-radius:50%;background:#fff` });
+      out.toggles = [tg('appr', 'Require approval for mapping changes', 'An approver signs off before edits go live.'), tg('mask', 'Mask personal data in run logs', 'Field values are redacted in Activity.'), tg('region', 'Keep data in its home region', 'Blocks routing to destinations outside the source region.')];
+      out.activity = [['Today 09:42', '214 records sent', 'Success'], ['Today 08:42', '198 records sent', 'Success'], ['Today 07:42', '203 records sent', 'Success'], ['Yesterday 17:42', '187 records sent', 'Success']].map((x, i) => { const bad = c.status === 'Attention' && i < 2; return { time: x[0], text: bad ? '2 mapped fields not found in source. 41 records held.' : x[1], label: bad ? 'Failed' : x[2], badge: this.badge(bad ? 'Failed' : x[2]) }; });
+      if (c.status === 'Draft') out.activity = [{ time: 'No runs yet', text: 'Run a test to preview the first records.', label: 'Draft', badge: this.badge('Draft') }];
+      out.checks = rd.map(k => ({ label: k.label, mark: k.ok ? '✓' : '', dot: `width:20px;height:20px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;${k.ok ? 'background:#a8d8c4;color:#181d26' : 'border:1.5px solid #fff;color:#fff'}` }));
+      const ready = rd.every(k => k.ok), isLive = c.status === 'Live';
+      out.readyNote = isLive ? 'This connection is running. Pause it to make changes safely.' : ready ? 'All checks passed. Activating starts the first run on the next trigger.' : 'Resolve the open items to activate this connection.';
+      out.actLabel = isLive ? 'Pause connection' : c.status === 'Paused' ? 'Resume connection' : 'Activate connection';
+      out.actStyle = `margin-top:24px;width:100%;border:0;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;background:#fff;color:#181d26;cursor:${isLive || ready ? 'pointer' : 'not-allowed'};opacity:${isLive || ready ? 1 : .4}`;
+      out.activate = () => { if (isLive) { this.upd({ status: 'Paused' }); this.flash('Connection paused'); } else if (ready) { this.upd({ status: 'Live' }); this.flash('Connection is live'); } };
+      out.testRun = () => { this.upd({ tested: true }); this.flash('Test run sent 25 sample records to ' + b.name + ' Sandbox'); };
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>
