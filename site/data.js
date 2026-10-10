@@ -71,6 +71,10 @@ window.PROTOS = [
     why: ['Summarized threads for fast context', 'Auto summary of decisions and blockers', 'Automated Action List from Meetings', 'Auto highlight of previously answered questions to avoid re-litigation'],
     principles: ['Recognition over recall: summaries replace rereading long threads', 'Visibility of decisions and open blockers', 'User control: summaries and action items can be edited or dismissed'],
     extensions: ['Assign action items to owners with due dates', 'Weekly digest across channels', 'Link decisions to tickets or docs'] },
+  { id: 'prod-decision-guides', title: 'Decision Guides', category: 'Productivity', description: 'Guides product, design, and engineering teams through complex decision-making', url: 'prototypes/productivity/decision-guides/index.html',
+    why: 'Walks cross-functional teams through a structured path to a decision, so options, trade-offs, and reasoning are laid out the same way each time.',
+    principles: ['Progressive disclosure: one decision step at a time', 'Visibility of options and trade-offs side by side', 'Recognition over recall: prompts replace remembering the process'],
+    extensions: ['Save and share the decision record', 'Templates for common decision types', 'Link decisions to tickets or specs'] },
   { id: 'prod-kanban', title: 'Kanban Project Management', category: 'Productivity', description: 'Move work items across status columns, with work-in-progress limits and quick filters by owner.', url: 'prototypes/productivity/kanban-project-management/',
     why: 'Shows the state of every work item at a glance, so teams can spot blocked work and balance load.',
     principles: ['Visibility of status through column position', 'Direct manipulation: drag cards between columns', 'Error prevention: warn when a WIP limit is exceeded'],
@@ -131,11 +135,13 @@ window.THUMBS = {
   'int-partner': 'thumbs/int-partner.png',
   'wf-compliance': 'thumbs/wf-compliance.png',
   'wf-mapping': 'thumbs/wf-mapping.png',
-  'obs-process-impact': 'thumbs/obs-process-impact.png'
+  'obs-process-impact': 'thumbs/obs-process-impact.png',
+  'prod-decision-guides': 'thumbs/prod-decision-guides.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'prod-decision-guides': 'thumbs/prod-decision-guides-page.png',
   'obs-process-impact': 'thumbs/obs-process-impact-page.png',
   'wf-mapping': 'thumbs/wf-mapping-page.png',
   'wf-compliance': 'thumbs/wf-compliance-page.png',
