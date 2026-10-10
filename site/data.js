@@ -39,6 +39,10 @@ window.PROTOS = [
     why: 'Shows in one flow which steps are handled by AI, which by people, and where the user interface comes in, so teams can see how responsibility is shared.',
     principles: ['Visibility of who or what acts at each step', 'Recognition over recall: consistent markers for AI, human, and UI', 'Match the real world: steps follow the actual process'],
     extensions: ['Filter the flow by AI, human, or UI steps', 'Mark steps that need human approval', 'Export the flow for documentation'] },
+  { id: 'wf-validate-docs', title: 'Validating AI-generated Documents', category: 'Workflows', description: 'A simple approval list of AI-generated content, with the ability to edit before approval', url: 'prototypes/workflows/agent-outcomes/index.html',
+    why: 'Gives reviewers one list of everything the AI produced, so each item can be checked, edited, and approved before it is used.',
+    principles: ['User control: edit any item before approving it', 'Visibility of status for each item in the list', 'Error prevention: nothing is final until a person approves it'],
+    extensions: ['Bulk approve low-risk items', 'Show what changed between the AI draft and the edit', 'Route items to the right reviewer'] },
   { id: 'obs-task-dash', title: 'Task-driven Dashboard', category: 'Workflows', description: 'A dashboard organized around the tasks a user needs to complete, surfacing only the metrics relevant to each.', url: 'prototypes/workflows/task-driven-dashboard/',
     why: 'Reduces dashboard noise by grouping metrics around the decisions a user has to make.',
     principles: ['Minimalist design: only task-relevant metrics', 'Match the real world: organized by job, not by data source', 'Progressive disclosure'],
@@ -136,11 +140,13 @@ window.THUMBS = {
   'wf-compliance': 'thumbs/wf-compliance.png',
   'wf-mapping': 'thumbs/wf-mapping.png',
   'obs-process-impact': 'thumbs/obs-process-impact.png',
-  'prod-decision-guides': 'thumbs/prod-decision-guides.png'
+  'prod-decision-guides': 'thumbs/prod-decision-guides.png',
+  'wf-validate-docs': 'thumbs/wf-validate-docs.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'wf-validate-docs': 'thumbs/wf-validate-docs-page.png',
   'prod-decision-guides': 'thumbs/prod-decision-guides-page.png',
   'obs-process-impact': 'thumbs/obs-process-impact-page.png',
   'wf-mapping': 'thumbs/wf-mapping-page.png',
