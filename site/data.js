@@ -91,6 +91,10 @@ window.PROTOS = [
     why: 'Brings partner and supplier data into one place so teams can spot risk early and act before it affects operations.',
     principles: ['Visibility of status and risk at a glance', 'Progressive disclosure: drill into a partner for detail', 'Error prevention: flag issues before they escalate'],
     extensions: ['Risk alerts and thresholds', 'Shared scorecards with partners', 'Contract and compliance tracking'] },
+  { id: 'int-connect', title: 'Connect Business Systems', category: 'Integrations', description: 'Provides a simple tool to connect operational systems with basic field mappings', url: 'prototypes/integrations/connecting-systems/',
+    why: 'Lets teams connect operational systems and map fields between them in one simple tool, without custom integration work.',
+    principles: ['Recognition over recall: suggested field matches', 'Visibility of connection status', 'Error prevention: validate mappings before connecting'],
+    extensions: ['Auto-suggest mappings with AI', 'Test a connection with sample data', 'Sync history and error log'] },
   { id: 'int-mapping', title: 'Dependency Graph for Operations', category: 'Integrations', description: 'View operational systems dependencies during upgrades or digital transformation projects', url: 'prototypes/integrations/ops-dependency-graph/',
     why: 'Makes hidden dependencies visible so teams can plan upgrades and migrations with less risk.',
     principles: ['Visibility of system relationships', 'Progressive disclosure: expand a node for detail', 'Error prevention: flag impact before a change'],
@@ -141,11 +145,13 @@ window.THUMBS = {
   'wf-mapping': 'thumbs/wf-mapping.png',
   'obs-process-impact': 'thumbs/obs-process-impact.png',
   'prod-decision-guides': 'thumbs/prod-decision-guides.png',
-  'wf-validate-docs': 'thumbs/wf-validate-docs.png'
+  'wf-validate-docs': 'thumbs/wf-validate-docs.png',
+  'int-connect': 'thumbs/int-connect.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'int-connect': 'thumbs/int-connect-page.png',
   'wf-validate-docs': 'thumbs/wf-validate-docs-page.png',
   'prod-decision-guides': 'thumbs/prod-decision-guides-page.png',
   'obs-process-impact': 'thumbs/obs-process-impact-page.png',
