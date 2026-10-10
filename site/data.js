@@ -11,6 +11,10 @@ window.PROTOS = [
     why: 'Lets users ask why a metric changed and get an answer in context, instead of building queries or switching tools.',
     principles: ['Visibility of the data the assistant used for each answer', 'User control: answers can be edited, pinned, or dismissed', 'Recognition over recall: suggested questions based on the current view'],
     extensions: ['Turn an answer into a saved chart', 'Scheduled AI summaries of changes', 'Hand off findings to an incident or ticket'] },
+  { id: 'obs-process-impact', title: 'Process Change Impact Visibility', category: 'Observability', description: 'End-to-end visibility, connections, and impact', url: 'prototypes/observability/business-process-visibility/index.html',
+    why: 'Shows how a change to one step in a process connects to the steps, teams, and systems around it, so impact is clear before the change is made.',
+    principles: ['Visibility of connections between steps and systems', 'Progressive disclosure: drill from the whole process into one step', 'Error prevention: surface downstream impact before a change'],
+    extensions: ['Simulate a change and preview its impact', 'Notify owners of affected steps', 'Track change history per process'] },
   { id: 'obs-journey', title: 'Journey Map', category: 'Productivity', description: 'Trace a user’s path across services and touchpoints, with drop-off and error points marked.', url: 'prototypes/observability/journey-map/',
     why: 'Shows where users drop off or hit errors across a multi-step path, connecting the product view and the technical view of the same problem.',
     principles: ['Match the real world: steps named in user terms', 'Visibility of status at each touchpoint', 'Minimalist design: only exceptions are highlighted'],
@@ -126,11 +130,13 @@ window.THUMBS = {
   'prod-comms': 'thumbs/prod-comms.png',
   'int-partner': 'thumbs/int-partner.png',
   'wf-compliance': 'thumbs/wf-compliance.png',
-  'wf-mapping': 'thumbs/wf-mapping.png'
+  'wf-mapping': 'thumbs/wf-mapping.png',
+  'obs-process-impact': 'thumbs/obs-process-impact.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'obs-process-impact': 'thumbs/obs-process-impact-page.png',
   'wf-mapping': 'thumbs/wf-mapping-page.png',
   'wf-compliance': 'thumbs/wf-compliance-page.png',
   'int-partner': 'thumbs/int-partner-page.png',
