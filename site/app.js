@@ -70,7 +70,7 @@
       </div>
       <div class="meta">
         <section class="panel"><h2>Why it's useful</h2>${Array.isArray(p.why) ? `<ul>${list(p.why)}</ul>` : `<p>${esc(p.why || '')}</p>`}</section>
-        <section class="panel"><h2>Usability principles</h2><ul>${list(p.principles)}</ul></section>
+        <section class="panel"><h2>Design principles</h2><ul>${list(p.principles)}</ul></section>
         <section class="panel ext"><h2>Ways to extend</h2><ul>${list(p.extensions)}</ul></section>
       </div>
       <div class="shot${shot(p) ? '' : ' placeholder'}" style="background:${tint(p)}">${shot(p) ? `<img src="${shot(p)}" alt="${esc(p.title)} screenshot">` : ''}</div>`;
