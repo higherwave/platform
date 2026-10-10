@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;font-family:"Haas","Inter",-apple-system,"Segoe UI",sans-serif;color:#333840;background:#fff}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}button{font-family:inherit;cursor:pointer}</style></helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+  <div style="height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px;border-bottom:1px solid #ddd;flex:none;white-space:nowrap;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:24px;font-size:14px"><span style="font-size:18px;font-weight:500;color:#181d26">Discovery Review</span><span style="color:#41454d">Payments Gateway · scan 14 Oct · 9 sources</span></div>
+    <div style="display:flex;align-items:center;gap:12px;font-size:14px">
+      <span style="color:#41454d">{{ decidedCount }} of {{ total }} reviewed</span>
+      <button onClick="{{ bulkTrust }}" style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:500;color:#181d26">Trust all ≥ 90% ({{ highPending }})</button>
+      <button onClick="{{ approveAll }}" style="background:{{ approveBg }};border:0;border-radius:12px;padding:11px 20px;font-size:14px;font-weight:500;color:#fff">{{ approveLabel }}</button>
+    </div>
+  </div>
+  <div style="height:4px;background:#e0e2e6;flex:none"><div style="height:4px;background:#181d26;width:{{ progressPct }}"></div></div>
+  <div style="display:grid;grid-template-columns:340px minmax(0,1fr);flex:1;min-height:0">
+    <div style="border-right:1px solid #ddd;display:flex;flex-direction:column;background:#f8fafc">
+      <div style="display:flex;gap:8px;padding:16px 16px 8px">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3"><button onClick="{{ f.pick }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};border-radius:6px;padding:6px 10px;font-size:14px;font-weight:500;white-space:nowrap">{{ f.label }}</button></sc-for>
+      </div>
+      <div style="padding:8px 16px 24px;display:flex;flex-direction:column;gap:8px;overflow:auto">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <div onClick="{{ r.select }}" style="background:#fff;border:1px solid {{ r.bd }};border-radius:10px;padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;gap:8px"><span style="font-size:16px;font-weight:500;color:#181d26">{{ r.name }}</span><span style="font-size:13px;font-weight:500;white-space:nowrap;color:{{ r.stFg }}">{{ r.status }}</span></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#41454d"><span>{{ r.type }}</span><span style="background:{{ r.cBg }};color:#181d26;border-radius:6px;padding:2px 8px;font-weight:500">{{ r.confidence }}%</span><span>{{ r.flag }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:32px 48px;overflow:auto;display:flex;flex-direction:column;gap:24px;max-width:960px">
+      <div>
+        <div style="font-size:13px;color:#41454d;margin-bottom:8px">{{ sel.type }} · AI-generated</div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="font-size:32px;line-height:1.2;color:#181d26">{{ sel.name }}</span><span style="background:{{ sel.cBg }};color:#181d26;border-radius:6px;padding:4px 10px;font-size:14px;font-weight:500">{{ sel.confidence }}% confidence</span></div>
+      </div>
+      <div style="display:{{ sel.noteDisplay }};background:#f5e9d4;border-radius:10px;padding:16px 20px;font-size:14px;line-height:1.5;color:#181d26"><b style="font-weight:500">Needs a human look.</b> {{ sel.note }}</div>
+      <div>
+        <div style="font-size:14px;font-weight:500;color:#181d26;margin-bottom:8px">Documentation</div>
+        <div style="display:{{ sel.viewDisplay }};font-size:16px;line-height:1.5;color:#333840;border:1px solid #ddd;border-radius:10px;padding:20px">{{ sel.text }}</div>
+        <div style="display:{{ sel.editDisplay }};flex-direction:column;gap:12px">
+          <textarea value="{{ draft }}" onChange="{{ onDraft }}" style="font:inherit;font-size:16px;line-height:1.5;color:#181d26;border:2px solid #458fff;border-radius:6px;padding:16px;min-height:120px;resize:vertical;outline:0"></textarea>
+          <div style="display:flex;gap:8px"><button onClick="{{ saveEdit }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:500">Save edit</button><button onClick="{{ cancelEdit }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:12px;padding:12px 20px;font-size:14px;font-weight:500">Cancel</button></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:500;color:#181d26;margin-bottom:8px">Evidence ({{ sel.evCount }})</div>
+        <div style="border:1px solid #ddd;border-radius:10px">
+          <sc-for list="{{ sel.evidence }}" as="e" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:160px minmax(0,1fr) 72px;gap:16px;padding:12px 16px;border-top:{{ e.bt }};font-size:14px;line-height:1.4;align-items:baseline"><span style="font-weight:500;color:#181d26">{{ e.src }}</span><span>{{ e.detail }}</span><span style="color:{{ e.fg }};font-weight:500;text-align:right">{{ e.verdict }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;padding-top:8px;border-top:1px solid #ddd;padding-top:24px">
+        <button onClick="{{ trust }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:14px 24px;font-size:16px;font-weight:500">Trust as written</button>
+        <button onClick="{{ startEdit }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:12px;padding:14px 24px;font-size:16px;font-weight:500">Edit</button>
+        <button onClick="{{ reject }}" style="background:#fff;color:#aa2d00;border:1px solid #ddd;border-radius:12px;padding:14px 24px;font-size:16px;font-weight:500">Reject</button>
+        <button onClick="{{ reset }}" style="background:none;border:0;color:#1b61c9;font-size:14px;padding:14px 8px">Reset</button>
+        <span style="margin-left:auto;font-size:14px;color:#41454d">{{ sel.statusLine }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  items = [
+    {id:1,name:'payments-api',type:'Service',c:97,t:'REST service that authorises and captures card payments. Runs on 6 pods in the prod-eu cluster and is owned by the Payments team.',ev:[['Kubernetes manifests','Deployment payments-api, 6 replicas, namespace prod-eu','ok'],['Service catalog','Owner: Payments team','ok'],['Network flows','Inbound from checkout-web, 30 days','ok']]},
+    {id:2,name:'ledger-db',type:'Database',c:94,t:'PostgreSQL 14 primary with one read replica. Stores settled transactions and is written to only by payments-api and reconcile-job.',ev:[['CMDB','PostgreSQL 14.9, host pg-led-01','ok'],['Connection logs','Writers: payments-api, reconcile-job','ok'],['Backup config','Nightly snapshot, 14-day retention','ok']]},
+    {id:3,name:'fraud-score',type:'Service',c:88,t:'Scores each transaction before capture and returns a risk band within 200 ms. Called synchronously by payments-api.',ev:[['Traces','p95 latency 143 ms across 12k calls','ok'],['Repo README','Mentions 200 ms SLO','ok'],['Service catalog','No owner recorded','warn']]},
+    {id:4,name:'reconcile-job',type:'Batch job',c:81,t:'Nightly job at 02:00 UTC that matches processor settlement files against ledger-db and flags differences above 0.1%.',ev:[['Cron config','Schedule 0 2 * * * UTC','ok'],['Job logs','Last 30 runs succeeded','ok'],['Source code','Threshold set to 0.5%, not 0.1%','conflict']],note:'The 0.1% threshold in the draft conflicts with the code, which uses 0.5%.'},
+    {id:5,name:'Dependency: payments-api → legacy-vault',type:'Dependency',c:62,t:'payments-api reads card tokens from legacy-vault at checkout. Expected to be retired in Q4.',ev:[['Network flows','2 connections in 30 days','warn'],['Config files','No reference to legacy-vault','conflict'],['Wiki page','Migration to tokenizer-v2 completed in March','conflict']],note:'Traffic exists but no config references it, and a wiki page says the migration finished. This may be stale or a hidden dependency.'},
+    {id:6,name:'settlement-sftp',type:'Integration',c:73,t:'Receives daily settlement files from Acquirer Bank over SFTP and hands them to reconcile-job.',ev:[['Firewall rules','Inbound 22 from acquirer range','ok'],['File listing','Daily files since January','ok'],['Contract register','Provider listed as Acquirer Bank Ltd','warn']],note:'Provider name differs between the file path and the contract register.'},
+    {id:7,name:'Data classification: PCI scope',type:'Attribute',c:55,t:'The system is classified PCI DSS Level 1 and holds cardholder data in ledger-db.',ev:[['Compliance register','Level 1 recorded for payments-api only','warn'],['Schema scan','ledger-db stores last-4 digits only, no PAN','conflict']],note:'The schema scan found no full card numbers in ledger-db, which contradicts "holds cardholder data".'},
+    {id:8,name:'checkout-web',type:'Consumer',c:92,t:'Public web checkout that calls payments-api over HTTPS. The only external consumer.',ev:[['API gateway logs','98% of requests from checkout-web','ok'],['Service catalog','Owner: Storefront team','ok']]}
+  ].map(i=>({...i,status:'pending',orig:i.t}));
+  state = {items:this.items,sel:1,filter:'all',editing:false,draft:'',approved:false};
+  upd(id,fn){this.setState(s=>({items:s.items.map(i=>i.id===id?fn(i):i),approved:false}))}
+  renderVals(){
+    const s=this.state,items=s.items,cur=items.find(i=>i.id===s.sel);
+    const cBg=c=>c>=90?'#a8d8c4':c>=75?'#f4d35e':'#fcab79';
+    const stN={pending:'To review',trusted:'Trusted',edited:'Edited',rejected:'Rejected'};
+    const stC={pending:'#41454d',trusted:'#006400',edited:'#254fad',rejected:'#aa2d00'};
+    const decided=items.filter(i=>i.status!=='pending').length,total=items.length;
+    const highPending=items.filter(i=>i.status==='pending'&&i.c>=90).length;
+    const vis=items.filter(i=>s.filter==='all'||(s.filter==='todo'?i.status==='pending':i.status!=='pending'));
+    const fl=[['all','All'],['todo','To review'],['done','Decided']].map(([k,l])=>({label:l,pick:()=>this.setState({filter:k}),bd:s.filter===k?'#181d26':'#ddd',bg:s.filter===k?'#181d26':'#fff',fg:s.filter===k?'#fff':'#181d26'}));
+    const vm={ok:['Supports','#006400'],warn:['Partial','#8a5a00'],conflict:['Conflicts','#aa2d00']};
+    const flagOf=i=>i.ev.some(e=>e[2]==='conflict')?'Conflict found':i.ev.some(e=>e[2]==='warn')?'Partial evidence':'';
+    const txt=cur.status==='edited'?cur.t:cur.t;
+    const st=cur.status;
+    return {
+      total,decidedCount:decided,highPending,progressPct:(decided/total*100)+'%',
+      filters:fl,
+      rows:vis.map(i=>({name:i.name,type:i.type,confidence:i.c,cBg:cBg(i.c),flag:flagOf(i),status:stN[i.status],stFg:stC[i.status],bd:i.id===s.sel?'#181d26':'#ddd',select:()=>this.setState({sel:i.id,editing:false})})),
+      sel:{name:cur.name,type:cur.type,confidence:cur.c,cBg:cBg(cur.c),note:cur.note||'',noteDisplay:cur.note&&st==='pending'?'block':'none',text:txt,viewDisplay:s.editing?'none':'block',editDisplay:s.editing?'flex':'none',evCount:cur.ev.length,
+        evidence:cur.ev.map((e,k)=>({src:e[0],detail:e[1],verdict:vm[e[2]][0],fg:vm[e[2]][1],bt:k?'1px solid #ddd':'0'})),
+        statusLine:st==='pending'?'Not yet decided':st==='edited'?'Edited by you · original kept in history':'Marked '+stN[st].toLowerCase()},
+      draft:s.draft,onDraft:e=>this.setState({draft:e.target.value}),
+      trust:()=>{this.upd(s.sel,i=>({...i,status:'trusted'}));this.setState({editing:false})},
+      reject:()=>{this.upd(s.sel,i=>({...i,status:'rejected'}));this.setState({editing:false})},
+      reset:()=>{this.upd(s.sel,i=>({...i,status:'pending',t:i.orig}));this.setState({editing:false})},
+      startEdit:()=>this.setState({editing:true,draft:cur.t}),
+      cancelEdit:()=>this.setState({editing:false}),
+      saveEdit:()=>{const d=s.draft;this.upd(s.sel,i=>({...i,t:d,status:'edited'}));this.setState({editing:false})},
+      bulkTrust:()=>this.setState(p=>({items:p.items.map(i=>i.status==='pending'&&i.c>=90?{...i,status:'trusted'}:i)})),
+      approveAll:()=>{if(decided===total)this.setState({approved:true})},
+      approveLabel:s.approved?'Approved · published':decided===total?'Approve documentation':(total-decided)+' left to review',
+      approveBg:s.approved?'#006400':decided===total?'#181d26':'#9297a0'
+    };
+  }
+}
+</script>
+</body>
+</html>
