@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f8fafc;font-family:Haas,"Helvetica Neue",-apple-system,"Segoe UI",sans-serif;color:#181d26}a{color:#1b61c9;text-decoration:none}</style></helmet>
+<div style="max-width:880px;margin:0 auto;padding:32px 24px;box-sizing:border-box">
+  <a href="Invoice Workflow.dc.html" style="font-size:14px">← Back to workflow</a>
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:24px;background:#0a2e0e;color:#fff;border-radius:12px;padding:48px">
+      <div style="font-size:14px;font-weight:500;letter-spacing:.16px">{{ doneStep }}</div>
+      <h1 style="font-size:32px;font-weight:400;line-height:1.2;margin:8px 0 12px">{{ doneTitle }}</h1>
+      <p style="font-size:16px;line-height:1.5;margin:0 0 24px">{{ doneBody }}</p>
+      <a href="Invoice Workflow.dc.html" style="display:inline-block;background:#fff;color:#181d26;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500">Return to workflow</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isException }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top:24px">
+      <div style="font-size:14px;font-weight:500;letter-spacing:.16px;color:#41454d">Step 4 · Resolve exception</div>
+      <h1 style="font-size:32px;font-weight:400;line-height:1.2;margin:8px 0 8px">Invoice INV-20418 does not match PO-7731</h1>
+      <p style="font-size:14px;line-height:1.4;color:#333840;margin:0 0 24px">The agent found one difference and paused. Choose how to proceed.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;padding:24px">
+          <div style="font-size:14px;font-weight:500;color:#41454d">Invoice · Northwind Supply</div>
+          <div style="font-size:16px;margin-top:12px">40 × Pallet wrap</div>
+          <div style="font-size:24px;margin-top:4px;color:#aa2d00">$12.50 each</div>
+          <div style="font-size:14px;color:#333840;margin-top:8px">Total $500.00</div></div>
+        <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;padding:24px">
+          <div style="font-size:14px;font-weight:500;color:#41454d">Purchase order · PO-7731</div>
+          <div style="font-size:16px;margin-top:12px">40 × Pallet wrap</div>
+          <div style="font-size:24px;margin-top:4px">$10.00 each</div>
+          <div style="font-size:14px;color:#333840;margin-top:8px">Total $400.00</div></div>
+      </div>
+      <div style="background:#f5e9d4;border-radius:10px;padding:16px 24px;margin-top:16px;font-size:14px;line-height:1.4"><b style="font-weight:500">Agent note:</b> Unit price is 25% above the PO. Quantity and vendor match. Last three invoices from this vendor matched the PO price.</div>
+      <div style="font-size:16px;font-weight:500;margin:24px 0 8px">Action</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button onClick="{{ doException1 }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Request corrected invoice</button>
+        <button onClick="{{ doException2 }}" style="background:#fff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Accept invoice price</button>
+        <button onClick="{{ doException3 }}" style="background:#fff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Reject invoice</button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isApproval }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:24px">
+      <div style="font-size:14px;font-weight:500;letter-spacing:.16px;color:#41454d">Step 6 · Approve payment</div>
+      <h1 style="font-size:32px;font-weight:400;line-height:1.2;margin:8px 0 8px">Pay Northwind Supply $8,420.00</h1>
+      <p style="font-size:14px;line-height:1.4;color:#333840;margin:0 0 24px">Above the $5,000 limit, so this needs a manager. Summary prepared by the agent.</p>
+      <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14px;line-height:1.4">
+        <div><div style="color:#41454d">Invoice</div>INV-20419 · due Nov 8</div>
+        <div><div style="color:#41454d">Purchase order</div>PO-7750 · matched, goods received</div>
+        <div><div style="color:#41454d">Terms</div>Net 30 · pay Nov 6 to keep early-pay discount</div>
+        <div><div style="color:#41454d">Bank details</div>Unchanged since last payment</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;font-size:14px">
+        <div style="background:#a8d8c4;border-radius:10px;padding:12px 16px">Duplicate check: none found</div>
+        <div style="background:#a8d8c4;border-radius:10px;padding:12px 16px">Vendor risk: low</div>
+        <div style="background:#f4d35e;border-radius:10px;padding:12px 16px">Amount is 2.1× this vendor's average invoice</div>
+      </div>
+      <div style="font-size:16px;font-weight:500;margin:24px 0 8px">Decision</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button onClick="{{ doApprove }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Approve payment</button>
+        <button onClick="{{ doInfo }}" style="background:#fff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Ask for more info</button>
+        <button onClick="{{ doDeny }}" style="background:#fff;color:#181d26;border:1px solid #dddddd;border-radius:12px;padding:16px 24px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit">Reject</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 'exception', done: null };
+  componentDidMount() {
+    const read = () => this.setState({ step: location.hash === '#approval' ? 'approval' : 'exception', done: null });
+    read(); window.addEventListener('hashchange', read);
+  }
+  finish(step, title, body) { this.setState({ done: { step, title, body } }); }
+  renderVals() {
+    const d = this.state.done, s = this.state.step;
+    const ex = (t, b) => () => this.finish('Step 4 · Resolve exception', t, b);
+    const ap = (t, b) => () => this.finish('Step 6 · Approve payment', t, b);
+    return {
+      isDone: !!d, isException: !d && s === 'exception', isApproval: !d && s === 'approval',
+      doneStep: d ? d.step : '', doneTitle: d ? d.title : '', doneBody: d ? d.body : '',
+      doException1: ex('Corrected invoice requested', 'The agent emailed Northwind Supply and will resume at the risk check when the new invoice arrives.'),
+      doException2: ex('Invoice price accepted', 'The agent updated the match and continues to the risk check.'),
+      doException3: ex('Invoice rejected', 'The agent notified the vendor and closed the invoice.'),
+      doApprove: ap('Payment approved', 'The agent will schedule payment for Nov 6 and post it to the ledger.'),
+      doInfo: ap('More information requested', 'The agent sent your question to the AP clerk and holds the payment.'),
+      doDeny: ap('Payment rejected', 'The agent notified AP and closed the invoice.')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

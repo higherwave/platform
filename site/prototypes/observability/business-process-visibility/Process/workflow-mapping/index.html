@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#fff;font-family:Haas,"Helvetica Neue",-apple-system,"Segoe UI",sans-serif;color:#181d26}a{color:#1b61c9;text-decoration:none}</style></helmet>
+<div style="padding:48px 40px;max-width:1360px;margin:0 auto;box-sizing:border-box">
+  <div style="font-size:14px;font-weight:500;letter-spacing:.16px;color:#41454d">Operational workflow</div>
+  <h1 style="font-size:40px;font-weight:400;line-height:1.2;margin:8px 0 12px">Vendor invoice processing</h1>
+  <p style="font-size:16px;line-height:1.5;color:#333840;margin:0 0 24px;max-width:640px">An AI agent handles intake through payment. People step in for mismatched invoices and for payments above $5,000. Peach steps open the matching screen in this tab.</p>
+  <div style="display:flex;gap:24px;align-items:center;font-size:14px;color:#333840;margin-bottom:24px;flex-wrap:wrap">
+    <div style="display:flex;gap:8px;align-items:center;white-space:nowrap"><span style="flex-shrink:0;width:20px;height:14px;border-radius:4px;background:#f8fafc;border:1px solid #9297a0"></span>AI only</div>
+    <div style="display:flex;gap:8px;align-items:center"><span style="flex-shrink:0;width:20px;height:14px;border-radius:4px;background:#fcab79"></span>Human interaction or review (links to UI prototype)</div>
+  </div>
+  <div style="overflow-x:auto;border:1px solid #dddddd;border-radius:12px">
+  <div style="position:relative;width:1296px;height:460px">
+    <div style="position:absolute;left:0;top:0;width:1296px;height:230px;background:#fff"></div>
+    <div style="position:absolute;left:0;top:230px;width:1296px;height:230px;background:#fdf3ea;border-top:1px solid #dddddd"></div>
+    <div style="position:absolute;left:24px;top:16px;font-size:14px;font-weight:500;letter-spacing:.16px;color:#41454d">AI AGENT</div>
+    <div style="position:absolute;left:24px;top:246px;font-size:14px;font-weight:500;letter-spacing:.16px;color:#41454d">PEOPLE</div>
+    <svg width="1296" height="460" style="position:absolute;left:0;top:0" fill="none" stroke="#181d26" stroke-width="1.5">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#181d26" stroke="none"></path></marker></defs>
+      <path d="M152 148H184" marker-end="url(#ar)"></path>
+      <path d="M312 148H344" marker-end="url(#ar)"></path>
+      <path d="M408 208V348H504" marker-end="url(#ar)"></path>
+      <path d="M472 148H664" marker-end="url(#ar)"></path>
+      <path d="M632 348H700V208" marker-end="url(#ar)"></path>
+      <path d="M770 208V348H824" marker-end="url(#ar)"></path>
+      <path d="M792 148H984" marker-end="url(#ar)"></path>
+      <path d="M952 348H1048V208" marker-end="url(#ar)"></path>
+      <path d="M1112 148H1144" marker-end="url(#ar)"></path>
+    </svg>
+    <div style="position:absolute;left:418px;top:300px;font-size:13px;background:#fdf3ea;padding:0 4px;color:#333840">Mismatch</div>
+    <div style="position:absolute;left:530px;top:128px;font-size:13px;background:#fff;padding:0 4px;color:#333840">Matched</div>
+    <div style="position:absolute;left:640px;top:322px;font-size:13px;background:#fdf3ea;padding:0 4px;color:#333840">Resolved</div>
+    <div style="position:absolute;left:776px;top:300px;font-size:13px;background:#fdf3ea;padding:0 4px;color:#333840">Over $5k</div>
+    <div style="position:absolute;left:860px;top:128px;font-size:13px;background:#fff;padding:0 4px;color:#333840">$5k or less</div>
+    <div style="position:absolute;left:960px;top:322px;font-size:13px;background:#fdf3ea;padding:0 4px;color:#333840">Approved</div>
+
+    <div style="position:absolute;left:24px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">1 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Receive invoice</div><div style="font-size:12px;line-height:1.25;color:#333840">Reads vendor inbox</div></div>
+    <div style="position:absolute;left:184px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">2 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Extract data</div><div style="font-size:12px;line-height:1.25;color:#333840">Vendor, lines, totals, dates</div></div>
+    <div style="position:absolute;left:344px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">3 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Match to PO</div><div style="font-size:12px;line-height:1.25;color:#333840">Compares to PO and receipt</div></div>
+    <a href="Invoice Review UI.dc.html#exception" style="position:absolute;left:504px;top:288px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#fcab79;border-radius:10px;color:#181d26;display:block">
+      <div style="font-size:12px;font-weight:500">4 · Human</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Resolve exception</div><div style="font-size:12px;line-height:1.25">AP clerk picks a fix</div><div style="font-size:13px;font-weight:500;text-decoration:underline;margin-top:4px">Open UI →</div></a>
+    <div style="position:absolute;left:664px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">5 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Risk check</div><div style="font-size:12px;line-height:1.25;color:#333840">Duplicates, bank details</div></div>
+    <a href="Invoice Review UI.dc.html#approval" style="position:absolute;left:824px;top:288px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#fcab79;border-radius:10px;color:#181d26;display:block">
+      <div style="font-size:12px;font-weight:500">6 · Human review</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Approve payment</div><div style="font-size:12px;line-height:1.25">Manager reviews AI summary</div><div style="font-size:13px;font-weight:500;text-decoration:underline;margin-top:4px">Open UI →</div></a>
+    <div style="position:absolute;left:984px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">7 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Schedule payment</div><div style="font-size:12px;line-height:1.25;color:#333840">Sets pay date by terms</div></div>
+    <div style="position:absolute;left:1144px;top:88px;width:128px;height:120px;box-sizing:border-box;padding:10px;overflow:hidden;background:#f8fafc;border:1px solid #9297a0;border-radius:10px">
+      <div style="font-size:12px;color:#41454d">8 · AI only</div><div style="font-size:15px;font-weight:500;line-height:1.2;margin:2px 0 4px">Post and notify</div><div style="font-size:12px;line-height:1.25;color:#333840">Ledger entry, vendor email</div></div>
+  </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
