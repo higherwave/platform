@@ -39,7 +39,7 @@ window.PROTOS = [
     why: 'Shows in one flow which steps are handled by AI, which by people, and where the user interface comes in, so teams can see how responsibility is shared.',
     principles: ['Visibility of who or what acts at each step', 'Recognition over recall: consistent markers for AI, human, and UI', 'Match the real world: steps follow the actual process'],
     extensions: ['Filter the flow by AI, human, or UI steps', 'Mark steps that need human approval', 'Export the flow for documentation'] },
-  { id: 'wf-validate-docs', title: 'Validating AI-generated Documents', category: 'Workflows', description: 'A simple approval list of AI-generated content, with the ability to edit before approval', url: 'prototypes/workflows/agent-outcomes/index.html',
+  { id: 'wf-validate-docs', title: 'Validating Agent Outcomes', category: 'Workflows', description: 'A simple approval list of AI-generated content, with the ability to edit before approval', url: 'prototypes/workflows/agent-outcomes/index.html',
     why: 'Gives reviewers one list of everything the AI produced, so each item can be checked, edited, and approved before it is used.',
     principles: ['User control: edit any item before approving it', 'Visibility of status for each item in the list', 'Error prevention: nothing is final until a person approves it'],
     extensions: ['Bulk approve low-risk items', 'Show what changed between the AI draft and the edit', 'Route items to the right reviewer'] },
