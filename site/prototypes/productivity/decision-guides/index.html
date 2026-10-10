@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#f8fafc}a{color:#1b61c9}a:hover{color:#1a3866}</style></helmet>
+<div style="font-family:'Hanken Grotesk',sans-serif;color:#181d26;max-width:1560px;margin:0 auto;padding:48px 28px 96px;display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <h1 style="margin:0;font-size:56px;line-height:1.05;font-weight:500">Decision Guides</h1>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ guides }}" as="g" hint-placeholder-count="4"><button onClick="{{ g.select }}" style="cursor:pointer;font-family:inherit;font-size:15px;font-weight:500;line-height:1.2;white-space:nowrap;padding:10px 20px;border-radius:999px;border:1px solid {{ g.bd }};background:{{ g.bg }};color:{{ g.fg }}" style-hover="border-color:#181d26">{{ g.label }}</button></sc-for>
+    </div>
+  </div>
+  <header style="display:flex;flex-direction:column;gap:14px;max-width:780px">
+    <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#aa2d00">{{ m.eyebrow }}</div>
+    <h2 style="margin:0;font-size:42px;line-height:1.1;font-weight:500">{{ m.title }}</h2>
+    <p style="margin:0;font-size:18px;line-height:1.55;color:#333840">{{ m.intro }}</p>
+  </header>
+  <div style="background:#0a2e0e;color:#f5e9d4;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:#a8d8c4">RECOMMENDATION</div>
+    <div style="font-size:28px;font-weight:500;line-height:1.15">{{ rec.title }}</div>
+    <div style="font-size:15px;line-height:1.55">{{ rec.body }}</div>
+    <sc-for list="{{ rec.flags }}" as="f" hint-placeholder-count="0"><div style="font-size:14px;line-height:1.5;background:#12400f;border-radius:8px;padding:10px 12px;color:#fff">{{ f }}</div></sc-for>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+    <aside style="flex:1 1 260px;max-width:320px;position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:#aa2d00">DECISION HELPER</div>
+        <h2 style="margin:0;font-size:24px;line-height:1.2;font-weight:500">{{ m.hTitle }}</h2>
+        <p style="margin:0;color:#333840;font-size:14px;line-height:1.5">{{ m.hIntro }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+        <div style="background:#fff;border:1px solid #dddddd;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-weight:500;font-size:16px;line-height:1.35">{{ q.title }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px"><sc-for list="{{ q.options }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.pick }}" style="text-align:left;cursor:pointer;font-family:inherit;font-size:14px;line-height:1.4;padding:10px 14px;border-radius:6px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:#181d26" style-hover="border-color:#181d26">{{ o.label }}</button>
+          </sc-for></div>
+        </div>
+      </sc-for></div>
+    </aside>
+    <section data-screen-label="Patterns" style="flex:3 1 520px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:6px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+          <button onClick="{{ t.select }}" style="text-align:left;cursor:pointer;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.fg }};border-radius:10px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:6px;font-family:inherit" style-hover="border-color:#181d26">
+            <span style="font:500 11px 'IBM Plex Mono',monospace;opacity:.8">LEVEL {{ t.n }}</span>
+            <span style="font-size:14px;font-weight:500;line-height:1.25">{{ t.name }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;font:500 12px 'IBM Plex Mono',monospace;color:#41454d">
+        <span>{{ m.lo }}</span><div style="flex:1;height:2px;background:linear-gradient(90deg,#e0e2e6,#aa2d00)"></div><span>{{ m.hi }}</span>
+      </div>
+      <div style="background:#fff;border:1px solid #dddddd;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <h2 style="margin:0;font-size:32px;line-height:1.2;font-weight:500">{{ cur.name }}</h2>
+          <p style="margin:0;font-size:17px;line-height:1.55;color:#333840;max-width:760px">{{ cur.summary }}</p>
+        </div>
+        <div style="background:#f8fafc;border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;gap:14px;overflow-x:auto">
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px;min-width:max-content;margin:0 auto">
+            <sc-for list="{{ cur.flow }}" as="col" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:10px">
+                <sc-if value="{{ col.arrow }}" hint-placeholder-val="{{ false }}"><span style="color:#9297a0;font-size:20px">→</span></sc-if>
+                <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ col.nodes }}" as="nd" hint-placeholder-count="1">
+                  <div style="background:{{ nd.bg }};color:{{ nd.fg }};border:1px solid {{ nd.bd }};border-radius:8px;padding:10px 14px;font-size:14px;font-weight:500;text-align:center;min-width:96px;line-height:1.25">{{ nd.label }}<div style="font:400 11px 'IBM Plex Mono',monospace;opacity:.8;margin-top:3px">{{ nd.kind }}</div></div>
+                </sc-for></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="text-align:center;font:400 12px 'IBM Plex Mono',monospace;color:#41454d">{{ cur.note }}</div>
+        </div>
+        <sc-if value="{{ cur.hasSig }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#41454d">{{ m.sigLabel }}</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">
+            <sc-for list="{{ cur.signals }}" as="g" hint-placeholder-count="5">
+              <div style="border:1px solid #dddddd;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px">
+                <div style="font-weight:500;font-size:14px">{{ g.name }}</div>
+                <div style="display:flex;gap:3px"><div style="flex:1;height:6px;border-radius:3px;background:{{ g.c1 }}"></div><div style="flex:1;height:6px;border-radius:3px;background:{{ g.c2 }}"></div><div style="flex:1;height:6px;border-radius:3px;background:{{ g.c3 }}"></div></div>
+                <div style="font-size:12px;line-height:1.4;color:#333840">{{ g.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ cur.hasCases }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#41454d">{{ m.casesLabel }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ cur.cases }}" as="u" hint-placeholder-count="4"><span style="font-size:14px;padding:6px 12px;border-radius:999px;background:#f5e9d4;color:#181d26">{{ u }}</span></sc-for></div>
+        </div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#aa2d00">EXAMPLE</div>
+            <div style="font-weight:500;font-size:16px;line-height:1.35">{{ cur.exTitle }}</div>
+            <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:#333840;line-height:1.5;font-size:15px"><sc-for list="{{ cur.steps }}" as="s" hint-placeholder-count="3"><li>{{ s }}</li></sc-for></ol>
+            <sc-if value="{{ cur.hasTtd }}" hint-placeholder-val="{{ false }}"><div style="font:500 12px 'IBM Plex Mono',monospace;color:#aa2d00;line-height:1.4">{{ cur.ttd }}</div></sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#006400">BENEFITS</div>
+            <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:#333840;line-height:1.5;font-size:15px"><sc-for list="{{ cur.benefits }}" as="s" hint-placeholder-count="3"><li>{{ s }}</li></sc-for></ul>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#aa2d00">CONSTRAINTS</div>
+            <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:#333840;line-height:1.5;font-size:15px"><sc-for list="{{ cur.constraints }}" as="s" hint-placeholder-count="3"><li>{{ s }}</li></sc-for></ul>
+          </div>
+        </div>
+        <div style="border-top:1px solid #dddddd;padding-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#41454d">USE WHEN</div>
+              <div style="font-size:16px;line-height:1.5">{{ cur.when }}</div>
+            </div>
+            <sc-if value="{{ cur.hasOut }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;color:#aa2d00">MOVE UP WHEN</div>
+              <div style="font-size:16px;line-height:1.5">{{ cur.outgrown }}</div>
+            </div></sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ cur.meters }}" as="m" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:110px 1fr 64px;align-items:center;gap:12px;font-size:13px;color:#333840">
+              <span>{{ m.label }}</span>
+              <div style="height:6px;background:#e0e2e6;border-radius:3px"><div style="height:6px;border-radius:3px;background:#0a2e0e;width:{{ m.pct }}"></div></div>
+              <span style="font:400 11px 'IBM Plex Mono',monospace;color:#41454d">{{ m.word }}</span>
+            </div>
+          </sc-for></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { g: 'onb', lvl: { onb: 1, int: 1, obs: 1, wf: 1 }, a: { onb: [null,null,null,null], int: [null,null,null,null], obs: [null,null,null], wf: [null,null,null] } };
+  componentDidMount() { try { const s = JSON.parse(localStorage.getItem('dg-state') || 'null'); if (s && s.g) this.setState({ g: s.g, lvl: s.lvl }); } catch (e) {} }
+  save(p) { try { localStorage.setItem('dg-state', JSON.stringify({ g: p.g, lvl: p.lvl })); } catch (e) {} }
+  setG(id) { this.setState({ g: id }, () => this.save(this.state)); }
+  setLvl(id, n) { this.setState(s => ({ lvl: { ...s.lvl, [id]: n } }), () => this.save(this.state)); }
+  G() { const B = {
+    onb:()=>{const K = { source: ['#fff', '#181d26', '#9297a0'], conn: ['#e0e2e6', '#181d26', '#9297a0'], store: ['#0a2e0e', '#fff', '#0a2e0e'], logic: ['#a8d8c4', '#0a2e0e', '#6fb59a'], human: ['#fcab79', '#181d26', '#e8935c'], out: ['#181d26', '#fff', '#181d26'] };
+    const N = (label, kind) => { const k = K[kind]; return { label, kind, bg: k[0], fg: k[1], bd: k[2] }; };
+    const C = (...nodes) => ({ nodes });
+    const W = ['', 'Very low', 'Low', 'Medium', 'High', 'Very high'];
+    const M = (a, b, c, d) => [['Design effort', a], ['Build effort', b], ['Upkeep', c], ['Team skill', d]].map(([label, v]) => ({ label, pct: v * 20 + '%', word: W[v] }));
+    const S = (name, v, note) => ({ name, note, c1: v > 0 ? '#0a2e0e' : '#e0e2e6', c2: v > 1 ? '#0a2e0e' : '#e0e2e6', c3: v > 2 ? '#0a2e0e' : '#e0e2e6' });
+    const ex = 'New user must run a first project with their team';
+    const L = [
+      { name: 'Welcome screen and empty state', summary: 'One welcome message and a well-designed empty state point every new user to a single first action. The same content is shown to everyone, once.',
+        flow: [C(N('Sign up', 'source')), C(N('Welcome message', 'conn')), C(N('Empty state', 'logic')), C(N('Create project', 'out'))], note: 'one path, one call to action',
+        sig: [S('Time to value', 1, 'Depends on the user'), S('Personalization', 0, 'None'), S('Guidance depth', 1, 'One prompt'), S('Measurement', 1, 'Sign-up to first action'), S('Upkeep', 3, 'Almost none')],
+        cases: ['Simple single-purpose tools', 'Consumer apps', 'Early-stage MVPs', 'Products with an obvious first action'],
+        exTitle: ex, steps: ['A welcome screen names the product and its one job.', 'The empty project list shows a sample and a Create project button.', 'The user creates a project and the screen fills in.', 'Inviting a team is left for the user to find.'], ttd: 'Time to first value: minutes if the action is obvious',
+        benefits: ['Cheapest to design and build', 'Nothing to maintain as the product changes', 'No risk of getting in the way'], constraints: ['Same content for every user', 'Users who stall get no help', 'Cannot teach more than one action'],
+        when: 'There is one clear first action and the product is understood within a minute.', outgrown: 'Users reach the empty state and leave, or the first action needs explanation.', m: [1, 1, 1, 1] },
+      { name: 'Guided product tour', summary: 'A short sequence of tooltips or modal steps walks users through the main areas of the interface in a fixed order, with skip and replay.',
+        flow: [C(N('Sign up', 'source')), C(N('Tour trigger', 'conn')), C(N('Step 1: Create', 'logic'), N('Step 2: Assign', 'logic'), N('Step 3: Share', 'logic')), C(N('Skip / replay', 'human')), C(N('Workspace', 'out'))], note: 'a linear sequence shown once on first login',
+        sig: [S('Time to value', 2, 'Faster orientation'), S('Personalization', 0, 'None'), S('Guidance depth', 2, 'Three to five steps'), S('Measurement', 2, 'Step completion and skips'), S('Upkeep', 2, 'Breaks when UI moves')],
+        cases: ['Interfaces with several unfamiliar areas', 'Tools with a clear main screen', 'Feature launches for existing users', 'Products with visual workflows'],
+        exTitle: ex, steps: ['On first login, a tooltip highlights the New project button.', 'The next steps show how to add a task and assign it.', 'The final step points to the Share button.', 'The user can skip, and replay the tour from the help menu.'], ttd: 'Time to first value: minutes; many users skip the tour',
+        benefits: ['Shows the interface in context', 'Fast to build with a tour library', 'Step drop-off shows where users lose interest'], constraints: ['Users often dismiss tours without reading', 'Passive: the user watches rather than does', 'Tour steps break when the UI changes'],
+        when: 'The interface has a few areas that are hard to discover and all users share one goal.', outgrown: 'Skip rates are high, or users finish the tour without taking the actions it covered.', m: [2, 2, 2, 2] },
+      { name: 'Checklist-driven activation', summary: 'A persistent checklist turns onboarding into a short list of real actions. Each step is completed by doing the work, and progress stays visible until the user is activated.',
+        flow: [C(N('Sign up', 'source')), C(N('Checklist', 'conn')), C(N('Create project', 'logic'), N('Add tasks', 'logic'), N('Invite teammate', 'logic')), C(N('Progress tracking', 'store')), C(N('Activated', 'out'))], note: 'users learn by doing the actions that predict retention',
+        sig: [S('Time to value', 2, 'Tied to key actions'), S('Personalization', 1, 'Same list for all'), S('Guidance depth', 2, 'Action by action'), S('Measurement', 3, 'Activation funnel'), S('Upkeep', 2, 'Event tracking to maintain')],
+        cases: ['Products with a defined activation event', 'Team collaboration tools', 'Setup that spans several screens', 'Self-serve trials'],
+        exTitle: ex, steps: ['A checklist panel opens with four items and a progress bar.', 'Creating a project and adding three tasks tick items automatically.', 'Invite a teammate links to the invite dialog.', 'Completing the list marks the account as activated and collapses the panel.'], ttd: 'Time to first value: first session; activation measured per step',
+        benefits: ['Users take real actions, not a demo', 'Funnel shows exactly where activation stalls', 'Return visits resume where the user left off'], constraints: ['One list serves every role and goal', 'Needs event tracking behind each item', 'Long lists feel like homework'],
+        when: 'There is a known set of actions that predict retention, and most users share the same goal.', outgrown: 'Users in different roles skip different items, or half the checklist is irrelevant to a segment.', m: [3, 3, 2, 3] },
+      { name: 'Personalized onboarding paths', summary: 'Sign-up questions about role, goal or experience select a tailored path. Templates, content and checklist items change by segment, so each user sees only what applies.',
+        flow: [C(N('Sign up', 'source')), C(N('Role + goal questions', 'conn')), C(N('Segment rules', 'logic')), C(N('Marketing path', 'logic'), N('Engineering path', 'logic'), N('Operations path', 'logic')), C(N('Seeded template', 'store')), C(N('Activated', 'out'))], note: 'answers at sign-up select the path and starter content',
+        sig: [S('Time to value', 3, 'Starts from a relevant template'), S('Personalization', 2, 'By declared segment'), S('Guidance depth', 3, 'Per path'), S('Measurement', 3, 'Funnel per segment'), S('Upkeep', 1, 'Every path to maintain')],
+        cases: ['Products used by several roles', 'Template-led tools', 'Horizontal platforms', 'Products with distinct use cases'],
+        exTitle: ex, steps: ['Two sign-up questions ask for role and what the user wants to track.', 'A marketer lands in a campaign template; an engineer in a sprint board.', 'Each path has its own three-item checklist and sample data.', 'Completion rates are compared across paths to find weak ones.'], ttd: 'Time to first value: minutes, starting from relevant content',
+        benefits: ['Content matches the user\'s goal from the first screen', 'Higher activation for each segment', 'Segment data informs product and marketing'], constraints: ['Each path multiplies content and testing', 'Declared answers can be wrong or skipped', 'Optimizes the individual, not the team'],
+        when: 'Distinct roles or goals need different first actions and you can write and maintain a path for each.', outgrown: 'Activation depends on several people, admins or data setup, or behavior diverges from what users declared.', m: [4, 4, 3, 4] },
+      { name: 'Adaptive team and lifecycle onboarding', summary: 'Onboarding responds to behavior over weeks, across the product and email or chat, and covers admins, invited members and whole organizations. Rules and experiments decide the next best step for each person.',
+        flow: [C(N('Product events', 'source')), C(N('Behavior + account state', 'store')), C(N('Orchestration rules', 'logic'), N('Experiments', 'logic')), C(N('In-app guides', 'out'), N('Email + chat nudges', 'out'), N('Admin setup flow', 'out')), C(N('Success team', 'human'))], note: 'next step chosen from what each person and account has done',
+        sig: [S('Time to value', 3, 'Tuned per account'), S('Personalization', 3, 'Behavior and role'), S('Guidance depth', 3, 'Across channels and weeks'), S('Measurement', 3, 'Experiments and cohorts'), S('Upkeep', 0, 'Ongoing team effort')],
+        cases: ['Products sold to organizations', 'Setup with integrations and data import', 'Admin plus member roles', 'Sales-assisted and self-serve mix'],
+        exTitle: ex, steps: ['An admin gets a setup flow for single sign-on, import and permissions.', 'Invited members get a short path based on their project role.', 'If no one has added a task after two days, an email nudges the owner.', 'Accounts that stall are routed to the success team with their progress.'], ttd: 'Time to first value: first week for the team; stalls flagged automatically',
+        benefits: ['Handles admins, members and whole accounts', 'Reaches users who left the product', 'Experiments improve each step over time'], constraints: ['Needs a growth or lifecycle team', 'Rules and channels are hard to keep consistent', 'Highest build, data and tooling cost'],
+        when: 'Adoption depends on several people over days or weeks, and revenue depends on accounts reaching value.', outgrown: 'This is the top level. Revisit scope if few accounts need multi-week guidance.', m: [5, 5, 5, 5] }
+    ];
+    const Q = [
+      { title: 'How many distinct user types or goals?', o: ['One', 'Two or three, with different first actions', 'Many, including admins and members'] },
+      { title: 'How much effort does first value take?', o: ['One action', 'A few actions across screens', 'Setup with data, integrations or approvals'] },
+      { title: 'Who has to adopt the product?', o: ['An individual', 'A small team the first user invites', 'An organization with admins and a rollout'] },
+      { title: 'Who maintains onboarding?', o: ['A designer or PM, occasionally', 'A product team with analytics', 'A dedicated growth or lifecycle team'] }
+    ];
+ return {id:'onb',meta:{"chip":"Onboarding","eyebrow":"Onboarding design guide","title":"From a welcome screen to adaptive onboarding","intro":"Five onboarding patterns, ordered by how much of the guidance moves from static content into a system that responds to who the user is and what they do. Each step up handles more user types, harder first-value moments and larger teams, and costs more to design, build and maintain. Every example uses the same case: a new person signs up for a project tracking tool and needs to run a first project with their team.","lo":"STATIC, ONE-SIZE","hi":"ADAPTIVE, ORCHESTRATED","hTitle":"Which pattern does your product need?","hIntro":"Start with the simplest pattern that gets users to first value. The recommendation moves up with the number of user types, the effort to first value and the reach of adoption, and is capped by what your team can maintain.","sigLabel":"CAPABILITY COVERAGE","casesLabel":"TYPICAL PRODUCT FITS","eT":"Answer a question","eB":"The recommendation appears as you answer. Each answer can raise the level; the last question caps it at what your team can maintain."},L,Q,M,rec:a=>{const base=n=>Math.max(1,[1,4,5][n[0]]??1,[1,3,4][n[1]]??1,[1,3,5][n[2]]??1),calc=n=>Math.min(base(n),[3,4,5][n[3]]??5);if(!a.some(x=>x!=null))return null;const b=base(a),r=calc(a),f=[];
+if(a[0]===1&&b>=4)f.push('Level 4 or above: several user types with different first actions need separate paths.');
+if(a[1]===2&&b>=4)f.push('Setup with data or integrations needs follow-up beyond the first session.');
+if(a[2]===2)f.push('Organization-wide adoption needs an admin flow and member flows, which is level 5.');
+if(a[3]===0&&b>3)f.push('Capped at level 3: without analytics or a dedicated owner, separate paths and lifecycle rules will go stale.');
+if(a[3]===1&&b>4)f.push('Capped at level 4: lifecycle orchestration across channels needs a dedicated team.');
+if(r<=2&&a[2]===1)f.push('Consider a checklist item for inviting teammates even at this level.');
+if(r>=3)f.push('Instrument each step with events before launch so drop-off is measurable.');return{r,f}},toggle:true}},
+    int:()=>{const K = { source: ['#fff', '#181d26', '#dddddd'], conn: ['#eef0f4', '#181d26', '#dddddd'], store: ['#1b61c9', '#fff', '#1b61c9'], logic: ['#e6f5ec', '#14663b', '#a7dcc0'], human: ['#fff3e0', '#8a4b08', '#f0c88a'], out: ['#181d26', '#fff', '#181d26'] };
+    const N = (label, kind) => { const k = K[kind]; return { label, kind, bg: k[0], fg: k[1], bd: k[2] }; };
+    const C = (...nodes) => ({ nodes });
+    const W = ['', 'Very low', 'Low', 'Medium', 'High', 'Very high'];
+    const M = (a, b, c, d) => [['Setup effort', a], ['Running cost', b], ['Resilience', c], ['Team skill', d]].map(([label, v]) => ({ label, pct: v * 20 + '%', word: W[v] }));
+    const S = (name, v, note) => ({ name, note, c1: v > 0 ? '#0a2e0e' : '#e0e2e6', c2: v > 1 ? '#0a2e0e' : '#e0e2e6', c3: v > 2 ? '#0a2e0e' : '#e0e2e6' });
+    const L = [
+      { name: 'Manual and file transfer', summary: 'A person or a scheduled job exports a file (CSV, spreadsheet) from one system and uploads it to another, usually through SFTP, email or a shared drive.',
+        flow: [C(N('Order system', 'source')), C(N('CSV export', 'conn')), C(N('SFTP / shared drive', 'store')), C(N('Person uploads', 'human')), C(N('Billing', 'out'))], note: 'a person moves the data',
+        sig: [S('Speed', 0, 'Daily or weekly'), S('Error handling', 0, 'Found by eye'), S('Change tolerance', 1, 'File format agreed by hand'), S('Visibility', 0, 'Inbox and folder checks'), S('Reuse', 0, 'One-off per pair')],
+        cases: ['Month-end finance export', 'One-time data migration', 'Partner reports', 'Low-volume lists'],
+        exTitle: 'New order must reach billing, inventory and support', steps: ['Ops exports yesterday\'s orders to CSV each morning.', 'Billing staff upload the file to the invoicing tool.', 'Inventory and support get a copy by email.', 'A bad row is found when a customer complains.'], ttd: 'Typical data delay: up to a day; errors found in days',
+        benefits: ['No development needed', 'Works with any system that can export', 'Easy to audit by hand'], constraints: ['Depends on people remembering', 'Duplicates and missing rows go unnoticed', 'Breaks as volume or systems grow'],
+        when: 'Two systems, low volume, and a delay of a day or more is acceptable.', outgrown: 'Someone spends hours a week on it, or errors reach customers.', m: [1, 1, 1, 1] },
+      { name: 'Direct API or webhook', summary: 'One system calls another\'s API, or receives a webhook, in a direct point-to-point link. Simple code or built-in connectors move each record as it changes.',
+        flow: [C(N('Order system', 'source')), C(N('Webhook / REST call', 'conn')), C(N('Billing API', 'out'))], note: 'one link per system pair',
+        sig: [S('Speed', 3, 'Seconds'), S('Error handling', 1, 'Basic retry in code'), S('Change tolerance', 1, 'Both ends change together'), S('Visibility', 1, 'App logs only'), S('Reuse', 1, 'Each link is custom')],
+        cases: ['Order to billing', 'Form to CRM', 'Chat alert on a status change', 'Payment confirmation'],
+        exTitle: 'New order must reach billing, inventory and support', steps: ['The order system calls the billing API on each new order.', 'It then calls inventory with a second request.', 'Support gets a chat notification from a webhook.', 'If inventory is down, the call fails and the order is stuck.'], ttd: 'Typical data delay: seconds; failures need manual replay',
+        benefits: ['Fast to build for one or two links', 'Near real-time with little infrastructure', 'Easy to reason about'], constraints: ['Links multiply: n systems can need n(n-1) connections', 'A slow or down target blocks the sender', 'Retries and duplicates handled per link'],
+        when: 'Two or three systems, each with a stable API, and a missed call can be replayed by hand.', outgrown: 'A third or fourth consumer needs the same data, or outages in one system block another.', m: [2, 1, 2, 2] },
+      { name: 'Scheduled sync and workflow tool', summary: 'A low-code integration tool (iPaaS or automation platform) runs scheduled or triggered workflows with ready-made connectors, mapping and basic error alerts.',
+        flow: [C(N('Order system', 'source')), C(N('Connector', 'conn')), C(N('Workflow tool', 'logic')), C(N('Field mapping', 'logic')), C(N('Billing', 'out'), N('Inventory', 'out'), N('Support', 'out')), C(N('Failure alerts', 'human'))], note: 'one tool owns the mappings and schedules',
+        sig: [S('Speed', 2, 'Minutes to hourly'), S('Error handling', 2, 'Retry and alert'), S('Change tolerance', 2, 'Mapping in one place'), S('Visibility', 2, 'Run history in tool'), S('Reuse', 2, 'Shared connectors')],
+        cases: ['CRM to ERP sync', 'Nightly inventory refresh', 'Onboarding across tools', 'Reporting data loads'],
+        exTitle: 'New order must reach billing, inventory and support', steps: ['A workflow polls for new orders every five minutes.', 'It maps fields and writes to billing, inventory and support.', 'A failed step is retried, then raises an alert.', 'An analyst fixes the record and re-runs from run history.'], ttd: 'Typical data delay: minutes; failures visible in the tool',
+        benefits: ['Built by analysts or developers with little code', 'Central place for mappings and logs', 'Connectors cut build time'], constraints: ['Polling adds delay and load', 'Per-run or per-task pricing grows with volume', 'Complex logic gets awkward in visual editors'],
+        when: 'Three to ten systems, minutes of delay are fine, and a small team owns the flows.', outgrown: 'You need seconds-level delivery, ordering guarantees, or volume that makes polling costly.', m: [3, 3, 3, 2] },
+      { name: 'Event-driven messaging', summary: 'Systems publish events to a broker or queue. Each consumer subscribes independently, with retries, dead-letter queues and replay when something fails.',
+        flow: [C(N('Order service', 'source')), C(N('OrderPlaced event', 'conn')), C(N('Broker / queue', 'store')), C(N('Billing consumer', 'logic'), N('Inventory consumer', 'logic'), N('Support consumer', 'logic')), C(N('Dead-letter queue', 'human'))], note: 'publisher does not know its consumers',
+        sig: [S('Speed', 3, 'Seconds, buffered'), S('Error handling', 3, 'Retry, DLQ, replay'), S('Change tolerance', 3, 'Add consumers freely'), S('Visibility', 2, 'Queue depth and lag'), S('Reuse', 3, 'One event, many uses')],
+        cases: ['Order and fulfillment flows', 'Payment and ledger updates', 'Stock level changes', 'Audit and activity feeds'],
+        exTitle: 'New order must reach billing, inventory and support', steps: ['The order service publishes one OrderPlaced event.', 'Billing, inventory and support each consume it on their own.', 'Inventory is down; its messages wait in the queue.', 'When it recovers, it processes the backlog without data loss.'], ttd: 'Typical data delay: seconds; outages absorbed by the queue',
+        benefits: ['Producer and consumers fail independently', 'New consumers need no change to the producer', 'Replay recovers from bugs and outages'], constraints: ['Consumers must handle duplicates and ordering', 'Harder to trace one business flow end to end', 'Broker needs operating or a managed service'],
+        when: 'Several consumers need the same change, and one system being down must not stop the others.', outgrown: 'Many teams publish events with inconsistent schemas, or you need central security, versioning and monitoring.', m: [4, 3, 5, 4] },
+      { name: 'Integration platform and API layer', summary: 'A governed layer combines an API gateway, event backbone, shared schemas and orchestration. Teams publish and consume through standards, with central security, versioning and monitoring.',
+        flow: [C(N('Services + SaaS', 'source')), C(N('API gateway', 'conn'), N('Event backbone', 'conn')), C(N('Schema registry', 'store')), C(N('Orchestration', 'logic'), N('Policies + auth', 'logic')), C(N('Consumers + partners', 'out')), C(N('Platform team', 'human'))], note: 'standards, catalog and monitoring across teams',
+        sig: [S('Speed', 3, 'Seconds, tuned per flow'), S('Error handling', 3, 'Sagas, compensation, replay'), S('Change tolerance', 3, 'Versioned contracts'), S('Visibility', 3, 'End-to-end flow tracking'), S('Reuse', 3, 'Cataloged APIs and events')],
+        cases: ['Partner and customer APIs', 'Multi-step order-to-cash', 'Regulated data exchange', 'Cross-team shared events'],
+        exTitle: 'New order must reach billing, inventory and support', steps: ['The order event conforms to a registered, versioned schema.', 'Orchestration runs payment, stock reservation and support steps.', 'If stock fails, a compensating step refunds the payment.', 'The platform dashboard shows the order\'s path and any policy blocks.'], ttd: 'Typical data delay: seconds; every flow tracked end to end',
+        benefits: ['Consistent security and contracts across teams', 'Catalog makes existing APIs and events easy to find', 'Handles multi-step flows that need rollback'], constraints: ['Needs a dedicated platform team', 'Governance can slow small changes', 'Highest build and licence cost'],
+        when: 'Many teams and partners integrate, contracts must stay stable, and compliance or revenue depend on the flows.', outgrown: 'This is the top level. Revisit scope if few teams use the platform.', m: [5, 5, 5, 5] }
+    ];
+    const Q = [
+      { title: 'How many systems must share this data?', o: ['Two, one direction', 'Two or three', 'Four to ten', 'Many, owned by several teams', 'Many teams plus external partners'] },
+      { title: 'How fresh must the data be?', o: ['A day or more is fine', 'Minutes', 'Seconds, near real time'] },
+      { title: 'What does a lost or duplicate record cost?', o: ['Low: easy to fix by hand', 'Moderate: rework and support load', 'High: money, compliance or customer harm'] },
+      { title: 'Who can run the integrations?', o: ['No one dedicated; developers share it', 'A small team that also does other work', 'A dedicated platform or integration team'] }
+    ];
+ return {id:'int',meta:{"chip":"Integrations","eyebrow":"Integrations design guide","title":"From a CSV export to an event-driven platform","intro":"Five integration patterns, ordered by how much delivery, retry and monitoring work moves from people into the integration layer. Each step up handles more systems, faster data and harder failures, and costs more to build and run. Every example uses the same case so the patterns are easy to compare: a new customer order must reach billing, inventory and support.","lo":"SIMPLE, MANUAL","hi":"DECOUPLED, GOVERNED","hTitle":"Which pattern does your use case need?","hIntro":"Start at the simplest pattern that meets your needs. The recommendation moves up with the number of systems and speed required, and down with limits on people and tolerance for risk.","sigLabel":"CAPABILITY COVERAGE","casesLabel":"TYPICAL OPERATIONAL USE CASES","eT":"Answer the first question","eB":"The recommendation appears as you answer. Start with how many systems share the data."},L,Q,M,rec:a=>{if(a[0]==null)return null;const calc=n=>{let r=n[0]+1;if(n[1]===0)r=Math.min(r,3);if(n[1]===1)r=Math.min(Math.max(r,2),4);if(n[1]===2)r=Math.max(r,r>=3?4:2);if(n[2]===2)r=Math.max(r,3);if(n[3]===0)r=Math.min(r,3);if(n[3]===1)r=Math.min(r,4);return r};const raw=a[0]+1,r=calc(a),f=[];
+if(a[1]===0&&raw>3)f.push('Capped at level 3: a daily delay does not need a broker, so scheduled workflows are enough.');
+if(a[1]===2&&r>raw)f.push('Raised to level '+r+': near real-time delivery to several systems favors events over polling.');
+if(a[2]===2&&raw<3)f.push('Raised to level 3: high cost of lost records calls for retries, alerts and run history.');
+if(a[3]===0&&raw>3)f.push('Capped at level 3: with no dedicated owner, a managed workflow tool is a better fit than running a broker or platform.');
+if(a[3]===1&&raw>4)f.push('Capped at level 4: a governed platform needs a dedicated team to run it.');
+if(a[3]===0&&r>=3)f.push('Use managed services and prebuilt connectors to keep the operating load low.');
+if(a[2]===2&&r>=4)f.push('Make consumers idempotent and keep a dead-letter queue with an owner and an alert.');return{r,f}}}},
+    obs:()=>{const K = { source: ['#fff', '#181d26', '#dddddd'], collect: ['#eef0f4', '#181d26', '#dddddd'], store: ['#1b61c9', '#fff', '#1b61c9'], analyze: ['#e6f5ec', '#14663b', '#a7dcc0'], human: ['#fff3e0', '#8a4b08', '#f0c88a'], out: ['#181d26', '#fff', '#181d26'] };
+    const N = (label, kind) => { const k = K[kind]; return { label, kind, bg: k[0], fg: k[1], bd: k[2] }; };
+    const C = (...nodes) => ({ nodes });
+    const W = ['', 'Very low', 'Low', 'Medium', 'High', 'Very high'];
+    const M = (a, b, c, d) => [['Setup effort', a], ['Running cost', b], ['Debug speed', c], ['Team skill', d]].map(([label, v]) => ({ label, pct: v * 20 + '%', word: W[v] }));
+    const S = (name, v, note) => ({ name, note, c1: v > 0 ? '#0a2e0e' : '#e0e2e6', c2: v > 1 ? '#0a2e0e' : '#e0e2e6', c3: v > 2 ? '#0a2e0e' : '#e0e2e6' });
+    const L = [
+      { name: 'Logs and health checks', summary: 'Applications write text logs to local disk or a hosted viewer, and an uptime check pings the service. Engineers search by hand when something breaks.',
+        flow: [C(N('App', 'source')), C(N('Log files', 'store')), C(N('grep / viewer', 'human')), C(N('Fix', 'out'))], note: 'users report, engineers search',
+        sig: [S('Logs', 1, 'Unstructured text'), S('Metrics', 0, 'Uptime ping only'), S('Traces', 0, 'None'), S('Profiles', 0, 'None'), S('Changes', 0, 'Remembered, not recorded')],
+        exTitle: 'Checkout is slow for some users', steps: ['A customer emails support about slow checkout.', 'An engineer opens the server and searches logs for errors.', 'Nothing matches; slow requests do not log errors.', 'The cause is found by guessing and adding more log lines.'], ttd: 'Typical time to detect: hours, from user reports',
+        benefits: ['Almost no setup or cost', 'Everyone already knows how to read a log', 'Enough to confirm a service is up'], constraints: ['Cannot see trends or slow degradation', 'Search gets painful past a few hosts', 'Problems are found by users first'],
+        when: 'One app on a few hosts, a small user base, and an outage is annoying but not costly.', outgrown: 'You learn about incidents from users, or you cannot answer "is it getting worse?".', m: [1, 1, 1, 1] },
+      { name: 'Metrics, dashboards and alerts', summary: 'Numeric time series for rate, errors and latency are collected, graphed and checked against thresholds. Alerts page a person when a number crosses a line.',
+        flow: [C(N('App + host', 'source')), C(N('Agent / exporter', 'collect')), C(N('Time-series DB', 'store')), C(N('Dashboards', 'analyze'), N('Threshold alerts', 'analyze')), C(N('On-call', 'human'))], note: 'you know what to watch in advance',
+        sig: [S('Logs', 2, 'Centralized, searchable'), S('Metrics', 2, 'Rate, errors, latency, saturation'), S('Traces', 0, 'None'), S('Profiles', 0, 'None'), S('Changes', 1, 'Deploy markers on graphs')],
+        exTitle: 'Checkout is slow for some users', steps: ['A p95 latency alert on the checkout service fires.', 'The dashboard shows latency doubled at 14:05.', 'Logs for that window show nothing unusual.', 'The slow part is guessed from CPU and database graphs.'], ttd: 'Typical time to detect: minutes; time to cause: an hour or more',
+        benefits: ['Detects problems before users report them', 'Cheap: metric storage grows slowly', 'Mature tools and well-known dashboards'], constraints: ['Shows that something is wrong, not where', 'Only answers questions you graphed ahead of time', 'Threshold alerts get noisy or miss slow drift'],
+        when: 'A handful of services, uptime matters, and one team can own the dashboards.', outgrown: 'A graph shows a problem, but you cannot tell which downstream call caused it.', m: [2, 2, 2, 2] },
+      { name: 'Structured logs and tracing', summary: 'Logs become structured events with request IDs, and each request is traced across services. You can follow one slow request through every hop that touched it.',
+        flow: [C(N('Service A', 'source'), N('Service B', 'source'), N('Service C', 'source')), C(N('SDK + trace IDs', 'collect')), C(N('Trace store', 'store'), N('Log + metric store', 'store')), C(N('Trace view', 'analyze'), N('SLO alerts', 'analyze')), C(N('On-call', 'human'))], note: 'one request ID links every signal',
+        sig: [S('Logs', 3, 'Structured, tagged by request'), S('Metrics', 2, 'Per service and endpoint'), S('Traces', 2, 'Sampled, cross-service'), S('Profiles', 0, 'None'), S('Changes', 2, 'Deploys and flags tagged')],
+        exTitle: 'Checkout is slow for some users', steps: ['An SLO burn-rate alert fires for checkout.', 'Sampled slow traces all pass through the inventory service.', 'The trace shows an uncached query taking 3 seconds.', 'Logs with the same trace ID confirm one warehouse region.'], ttd: 'Typical time to detect: minutes; time to cause: under 30 minutes',
+        benefits: ['Shows where time is spent across services', 'Can filter by customer, region or version', 'SLO alerts track user impact, not raw numbers'], constraints: ['Every service must be instrumented', 'Sampling can drop the one trace you need', 'Storage and query costs grow with traffic'],
+        when: 'Several services call each other, and a single request crosses three or more of them.', outgrown: 'Teams use different tools and formats, or telemetry spend is growing faster than traffic.', m: [3, 3, 4, 3] },
+      { name: 'Unified telemetry platform', summary: 'One standard instrumentation layer (such as OpenTelemetry) feeds a central pipeline that enriches, samples and routes all signals. Teams share conventions, ownership and SLOs.',
+        flow: [C(N('Services + infra', 'source')), C(N('OTel SDK', 'collect')), C(N('Collector pipeline', 'collect')), C(N('Hot store', 'store'), N('Cold archive', 'store')), C(N('Correlated UI', 'analyze'), N('SLOs + error budgets', 'analyze')), C(N('Owning team', 'human'))], note: 'sample, enrich and route before storage',
+        sig: [S('Logs', 3, 'Correlated, routed by value'), S('Metrics', 3, 'Standard names and labels'), S('Traces', 3, 'Tail-sampled, keep errors'), S('Profiles', 2, 'Continuous on hot services'), S('Changes', 3, 'Deploys, flags, config')],
+        exTitle: 'Checkout is slow for some users', steps: ['Alert routes straight to the checkout team by service catalog.', 'Dashboard links metrics, traces, logs and the recent deploy.', 'A profile shows the hot code path in the inventory client.', 'The flag change from 13:58 is rolled back from the same view.'], ttd: 'Typical time to detect: under 5 minutes; time to cause: minutes',
+        benefits: ['Vendor-neutral and portable instrumentation', 'Pipeline controls cost before data is stored', 'Consistent practice across many teams'], constraints: ['Needs a platform team to run and support', 'Naming and tagging rules need enforcement', 'Migration from older agents is slow'],
+        when: 'Dozens of services, several teams, and telemetry cost or tool sprawl is a real problem.', outgrown: 'Alert volume exceeds what people can triage, or incidents need diagnosis faster than a person can click.', m: [4, 4, 4, 4] },
+      { name: 'Adaptive and automated', summary: 'Anomaly detection, automatic correlation and dynamic sampling sit on top of the platform. The system proposes causes, and for well-understood failures, applies fixes itself.',
+        flow: [C(N('Platform telemetry', 'source')), C(N('Adaptive sampling', 'collect')), C(N('Feature store', 'store')), C(N('Anomaly detection', 'analyze'), N('Cause ranking', 'analyze')), C(N('Runbook automation', 'analyze')), C(N('Human approval', 'human')), C(N('Resolved', 'out'))], note: 'detect, explain, act, then verify',
+        sig: [S('Logs', 3, 'Clustered into patterns'), S('Metrics', 3, 'Learned baselines'), S('Traces', 3, 'Sampled by anomaly'), S('Profiles', 3, 'Always on, compared by release'), S('Changes', 3, 'Linked to causes')],
+        exTitle: 'Checkout is slow for some users', steps: ['Anomaly detection flags a latency shift before the SLO is hit.', 'Correlation ranks the 13:58 flag change as the likely cause.', 'The system proposes rollback; an on-call engineer approves.', 'Automation reverts the flag and confirms latency recovered.'], ttd: 'Typical time to detect: seconds to minutes; time to fix: minutes',
+        benefits: ['Catches issues before users feel them', 'Cuts alert noise by grouping related signals', 'Routine fixes need no human at 3 a.m.'], constraints: ['Highest cost and staffing need', 'Models need clean, consistent data to work', 'Automated actions need strict limits and audit'],
+        when: 'Hundreds of services or strict availability targets, and the same incidents repeat often enough to automate.', outgrown: 'This is the top level. Revisit scope and cost if automation handles few incidents.', m: [5, 5, 5, 5] }
+    ];
+    const Q = [
+      { title: 'How is your system shaped?', o: ['One app on a few hosts', 'One app with a database, real uptime needs', 'Several services calling each other', 'Dozens of services owned by several teams', 'Hundreds of services, many regions, constant change'] },
+      { title: 'What does an hour of downtime cost?', o: ['Low: users tolerate it', 'Moderate: lost revenue or support load', 'High: contracts, compliance or safety at stake'] },
+      { title: 'Who can run observability?', o: ['No one dedicated; developers share on-call', 'A small team that also does other work', 'A dedicated platform or SRE team'] }
+    ];
+ return {id:'obs',meta:{"chip":"Observability","eyebrow":"Observability design guide","title":"From a log file to a self-diagnosing system","intro":"Five patterns, ordered by how much of the work of finding a problem moves from engineers into tooling. Each step up answers harder questions and costs more to build, run and staff. Every example uses the same incident so the differences are easy to compare: checkout is slow for some users.","lo":"REACTIVE, MANUAL","hi":"PROACTIVE, AUTOMATED","hTitle":"Which level does your system need?","hIntro":"Start at the lowest level that answers your questions. The recommendation moves up with system complexity and down with limits on money and people.","sigLabel":"SIGNAL COVERAGE","casesLabel":"","eT":"Answer the first question","eB":"The recommendation appears as you answer. Start with the shape of your system."},L,Q,M,rec:a=>{if(a[0]==null)return null;const calc=n=>{let r=n[0]+1;if(n[1]===0)r=Math.min(r,3);if(n[1]===2)r=Math.max(r,3);if(n[2]===0)r=Math.min(r,3);if(n[2]===1)r=Math.min(r,4);return r};const raw=a[0]+1,r=calc(a),f=[];
+if(a[1]===0&&raw>3)f.push('Capped at level 3: low downtime cost rarely justifies the spend of levels 4 and 5 across this many services.');
+if(a[1]===2&&raw<3)f.push('Raised to level 3: high downtime cost calls for SLO alerts and request-level tracing even in a smaller system.');
+if(a[2]===0&&raw>3)f.push('Capped at level 3: with no dedicated owner, a managed vendor tool is a better fit than running a platform.');
+if(a[2]===1&&raw>4)f.push('Capped at level 4: automation needs a dedicated team to tune and supervise it.');
+if(a[2]===0&&r>=3)f.push('Use a managed backend and auto-instrumentation to keep the operating load low.');
+if(a[1]===2&&r>=4)f.push('Keep a human approval step on any automated action that changes production.');return{r,f}}}},
+    wf:()=>{const K = { input: ['#fff', '#181d26', '#dddddd'], llm: ['#1b61c9', '#fff', '#1b61c9'], code: ['#eef0f4', '#181d26', '#dddddd'], tool: ['#e6f5ec', '#14663b', '#a7dcc0'], human: ['#fff3e0', '#8a4b08', '#f0c88a'], out: ['#181d26', '#fff', '#181d26'] };
+    const N = (label, kind) => { const k = K[kind]; return { label, kind: kind === 'out' ? 'output' : kind, bg: k[0], fg: k[1], bd: k[2] }; };
+    const C = (...nodes) => ({ nodes });
+    const W = ['', 'Very low', 'Low', 'Medium', 'High', 'Very high'];
+    const M = (c, l, r, k) => [['Cost', c, 1], ['Latency', l, 1], ['Reliability', r, 0], ['Flexibility', k, 0]].map(([label, v]) => ({ label, pct: v * 20 + '%', word: W[v] }));
+    const L = [
+      { name: 'Single prompt', summary: 'One model call turns an input into an output. No branching, no memory beyond the prompt. Most features should start here.',
+        flow: [C(N('Ticket text', 'input')), C(N('LLM call', 'llm')), C(N('Summary', 'out'))], note: 'one call, one result',
+        exTitle: 'Summarize a ticket for the agent queue', steps: ['Ticket body is passed into one prompt.', 'The model returns a 2-line summary.', 'The summary shows inline above the ticket.'],
+        benefits: ['Fastest and cheapest to build and run', 'Easy to test with a handful of examples', 'Behavior is easy to explain to users'], constraints: ['Quality is capped by one pass of reasoning', 'Cannot use outside data unless pasted in', 'Long or multi-part tasks degrade'],
+        when: 'The task is narrow, the input fits in context, and a wrong answer is cheap to spot and fix.', m: [1, 1, 4, 1] },
+      { name: 'Prompt chain', summary: 'A fixed sequence of calls. Each step feeds the next, with optional code checks or human approvals between steps. The path never changes.',
+        flow: [C(N('Ticket', 'input')), C(N('Draft reply', 'llm')), C(N('Policy check', 'code')), C(N('Rewrite tone', 'llm')), C(N('Agent approves', 'human')), C(N('Send', 'out'))], note: 'fixed order, gates between steps',
+        exTitle: 'Draft, check, and approve a reply', steps: ['Model drafts a reply from the ticket.', 'Code checks for banned phrases and refund limits.', 'A second call adjusts tone to the brand voice.', 'The agent approves or edits inline before sending.'],
+        benefits: ['Each step is small, testable and replaceable', 'Gates catch errors before they compound', 'Human approval fits naturally between steps'], constraints: ['Every ticket takes the same path, needed or not', 'Latency adds up across steps', 'Cannot adapt when input differs in kind'],
+        when: 'The task splits into known stages and you want checkpoints, audit trails, or approvals.', m: [2, 2, 4, 2] },
+      { name: 'Routing and parallel', summary: 'A classifier sends the input down one of several specialized paths, or runs independent calls at the same time and merges results. You still define every possible path.',
+        flow: [C(N('Ticket', 'input')), C(N('Router', 'llm')), C(N('Billing flow', 'llm'), N('Tech flow', 'llm'), N('Sales flow', 'llm')), C(N('Merge + checks', 'code')), C(N('Reply', 'out'))], note: 'branches run alone (routing) or together (parallel)',
+        exTitle: 'Handle each ticket type with its own flow', steps: ['Router labels the ticket: billing, technical, or sales.', 'The matching flow runs with its own prompt and tools.', 'In parallel, a sentiment check and a language check run.', 'Results merge into one reply and an urgency flag.'],
+        benefits: ['Specialized prompts outperform one generic prompt', 'Parallel calls cut latency and add independent checks', 'Cheaper models can handle simple branches'], constraints: ['Misrouted input fails quietly', 'Every new category needs a new path', 'More paths means more evals to maintain'],
+        when: 'Inputs fall into distinct, known categories that need different handling.', m: [3, 2, 4, 3] },
+      { name: 'Orchestrator and workers', summary: 'A lead model decides at runtime which subtasks are needed, hands them to worker calls, then combines the results. The number and kind of steps vary per input.',
+        flow: [C(N('Escalated case', 'input')), C(N('Orchestrator', 'llm')), C(N('Order lookup', 'tool'), N('Past tickets', 'tool'), N('Policy search', 'tool')), C(N('Synthesizer', 'llm')), C(N('Manager approves', 'human')), C(N('Resolution', 'out'))], note: 'subtasks are chosen per input',
+        exTitle: 'Resolve a multi-issue escalation', steps: ['Orchestrator reads a case with a late order, a wrong charge and a warranty claim.', 'It assigns a worker to each issue with the tools that issue needs.', 'Workers return findings; a synthesizer writes one resolution.', 'A manager approves the refund inline.'],
+        benefits: ['Handles tasks you cannot decompose in advance', 'Workers stay focused with small contexts', 'Scales to varied, multi-part inputs'], constraints: ['Higher cost and latency per request', 'Plans can be wrong, so outputs vary run to run', 'Needs tracing to debug which worker failed'],
+        when: 'Subtasks depend on the input, but each subtask is well-defined and the total scope is bounded.', m: [4, 4, 3, 4] },
+      { name: 'Autonomous agent', summary: 'The model loops on its own: plan, act with tools, observe, adjust, until it judges the goal met or hits a limit. You set the goal, tools and guardrails, not the steps.',
+        flow: [C(N('Goal', 'input')), C(N('Plan', 'llm')), C(N('Act', 'tool')), C(N('Observe', 'llm')), C(N('Done?', 'code')), C(N('Human review', 'human')), C(N('Result', 'out'))], note: 'plan → act → observe, repeated until done or capped',
+        exTitle: 'Investigate why refunds spiked this week', steps: ['Agent is given the goal and read access to tickets, orders and logs.', 'It queries data, forms a hypothesis, and tests it with more queries.', 'It drops dead ends and follows new leads without a script.', 'It reports findings; a person reviews before any action is taken.'],
+        benefits: ['Solves open-ended problems no flow could anticipate', 'Recovers from failed steps on its own', 'Least upfront workflow design'], constraints: ['Cost and run time are unbounded without caps', 'Behavior is hard to predict, test and audit', 'Errors compound across steps', 'Needs sandboxing, permissions and stop conditions'],
+        when: 'The path cannot be known ahead, the task is valuable enough to justify cost, and mistakes can be caught or reversed.', m: [5, 5, 2, 5] }
+    ];
+    const Q = [
+      { title: 'How well do you know the steps in advance?', o: ['One step is enough', 'A fixed sequence, same every time', 'A known set of paths, chosen by input type', 'Subtasks vary per input, but each is well-defined', 'The path itself is unknown until it runs'] },
+      { title: 'What does a wrong result cost?', o: ['Low: easy to spot and undo', 'High: money, trust or compliance at stake'] },
+      { title: 'How long can the user wait?', o: ['A few seconds', 'Up to a minute', 'Minutes or background work'] }
+    ];
+ return {id:'wf',meta:{"chip":"AI-driven workflows","eyebrow":"Workflow design guide","title":"From a single prompt to an autonomous agent","intro":"Five patterns, ordered by how much decision-making moves from your design into the model. Each step up adds capability and removes predictability. Every example below uses the same support-ticket scenario so the differences are easy to compare.","lo":"MORE PREDICTABLE","hi":"MORE AUTONOMOUS","hTitle":"Which level does your use case need?","hIntro":"Start at the lowest level that works. The recommendation moves up only as far as your answers require.","sigLabel":"","casesLabel":"","eT":"Answer the first question","eB":"The recommendation appears as you answer. Start with how well you know the steps."},L,Q,M,rec:a=>{if(a[0]==null)return null;let r=a[0]+1;const f=[];
+if(a[2]===0&&r>3){r=3;f.push('Capped at level 3: levels 4 and 5 rarely finish in a few seconds. Consider streaming progress or running in the background.')}
+if(a[2]===1&&r>4){r=4;f.push('Capped at level 4 for a one-minute wait. Level 5 usually needs longer.')}
+if(a[1]===1)f.push(r>=4?'High cost of error: add human approval before any action with side effects, and cap steps and spend.':'High cost of error: add a human approval step before the result is used.');
+if(a[1]===0&&r>=4)f.push('Low cost of error lets you keep approvals to a final review.');return{r,f}}}},
+  }; return ['onb','int','obs','wf'].map(k => B[k]()); }
+  renderVals() {
+    const all = this.G(), id = this.state.g, G = all.find(x => x.id === id), m = G.meta;
+    const lv = this.state.lvl[id], a = this.state.a[id], c0 = G.L[lv - 1];
+    const cur = { ...c0, flow: c0.flow.map((c, i) => ({ arrow: i > 0, nodes: c.nodes })), signals: c0.sig || [], meters: G.M(...c0.m), hasSig: !!c0.sig, hasCases: !!c0.cases, hasTtd: !!c0.ttd, hasOut: !!c0.outgrown, cases: c0.cases || [] };
+    const guides = all.map(x => ({ label: x.meta.chip, select: () => this.setG(x.id), bg: x.id === id ? '#181d26' : '#fff', fg: x.id === id ? '#fff' : '#181d26', bd: x.id === id ? '#181d26' : '#dddddd' }));
+    const tabs = G.L.map((l, i) => ({ n: i + 1, name: l.name, select: () => this.setLvl(id, i + 1), bg: lv === i + 1 ? '#181d26' : '#fff', fg: lv === i + 1 ? '#fff' : '#181d26', border: lv === i + 1 ? '#181d26' : '#dddddd' }));
+    const questions = G.Q.map((q, qi) => ({ title: q.title, options: q.o.map((label, oi) => ({ label, bg: a[qi] === oi ? '#f5e9d4' : '#fff', bd: a[qi] === oi ? '#181d26' : '#dddddd',
+      pick: () => { const n = a.slice(); n[qi] = G.toggle && n[qi] === oi ? null : oi; const r = G.rec(n); this.setState(s => ({ a: { ...s.a, [id]: n }, lvl: r ? { ...s.lvl, [id]: r.r } : s.lvl }), () => this.save(this.state)); } })) }));
+    const r = G.rec(a);
+    const rec = r ? { title: 'Level ' + r.r + ': ' + G.L[r.r - 1].name, body: G.L[r.r - 1].summary, flags: r.f } : { title: m.eT, body: m.eB, flags: [] };
+    return { guides, m, cur, tabs, questions, rec };
+  }
+}
+</script>
+</body>
+</html>
