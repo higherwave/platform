@@ -15,6 +15,8 @@
 body{margin:0;background:#f8fafc;font-family:Inter,system-ui,sans-serif;color:#181d26;-webkit-font-smoothing:antialiased}
 a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
 @keyframes dotPulse{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@keyframes guidePing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
+@keyframes guideIn{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:none}}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 </style>
 </helmet>
@@ -47,10 +49,9 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
     </nav>
   </header>
 
-  <section style="background:#0d1218;position:relative;overflow:hidden;min-height:246px;display:flex;align-items:center">
-    <div style="position:absolute;top:0;right:0;bottom:0;width:42%">
-      <image-slot id="argus-hero" shape="rect" placeholder="Drop hero image"></image-slot>
-    </div>
+  <section style="background:#1c1717;position:relative;overflow:hidden;min-height:246px;display:flex;align-items:center">
+    <div style="position:absolute;top:0;right:0;bottom:0;width:min(620px,55%);background:url('assets/hero-actor.png') right center/cover no-repeat"></div>
+    <div style="position:absolute;top:0;bottom:0;right:min(620px,55%);width:0;box-shadow:0 0 60px 50px #1c1717"></div>
     <div style="position:relative;max-width:1140px;width:100%;margin:0 auto;padding:28px 48px;box-sizing:border-box;pointer-events:none">
       <h1 style="margin:0;font-size:40px;font-weight:500;line-height:1.2;color:#fff;letter-spacing:-0.5px">Understand the <span style="color:#fcab79">Story</span><br>Behind Every Stream</h1>
       <p style="margin:20px 0 32px;font-size:18px;color:#e0e2e6;font-weight:400">Find and troubleshoot account, user, device, and streaming issues fast.</p>
@@ -64,7 +65,29 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
     <div style="flex:0 1 480px;min-width:0">
       <h2 style="margin:0 0 18px;font-size:18px;font-weight:400">Where do you want to start?</h2>
       <div style="display:grid;grid-template-columns:repeat(3,minmax(0,150px));gap:13px">
-        <button onClick="{{ startPerformance }}" style="aspect-ratio:150/153;background:#aa2d00;color:#fff;border:0;border-radius:6px;padding:16px;text-align:left;display:flex;align-items:flex-end;font:inherit;font-size:15px;line-height:1.35;cursor:pointer;transition:transform .15s, box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(24,29,38,.2)" style-active="transform:translateY(0)">Performance Issues / Latency</button>
+        <div ref="{{ tileRef }}" style="position:relative;z-index:5">
+        <sc-if value="{{ guideVisible }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute;top:-6px;left:-6px;width:16px;height:16px;z-index:2;pointer-events:none">
+            <span style="position:absolute;inset:0;border-radius:50%;background:#1b61c9;animation:guidePing 1.6s ease-out infinite"></span>
+            <span style="position:absolute;inset:3px;border-radius:50%;background:#1b61c9;border:2px solid #fff"></span>
+          </span>
+          <div role="dialog" aria-label="Getting started" style="position:absolute;left:{{ guide.boxLeft }};right:{{ guide.boxRight }};top:18px;width:250px;background:#181d26;color:#fff;border-radius:8px;padding:16px 16px 14px;box-shadow:0 10px 30px rgba(24,29,38,.28);animation:guideIn .35s ease-out both;z-index:3">
+            <span style="position:absolute;left:{{ guide.arrowLeft }};right:{{ guide.arrowRight }};top:22px;width:12px;height:12px;background:#181d26;transform:rotate(45deg)"></span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:11px;font-weight:500;color:#fcab79;letter-spacing:.4px;text-transform:uppercase">Start here</span>
+              <button onClick="{{ dismissGuide }}" aria-label="Dismiss" style="width:24px;height:24px;margin:-4px -6px 0 0;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:rgba(255,255,255,.1)">
+                <svg width="10" height="10" viewBox="0 0 10 10" stroke="#e0e2e6" stroke-width="1.6"><path d="M1 1l8 8M9 1L1 9"></path></svg>
+              </button>
+            </div>
+            <div style="font-size:14px;line-height:1.5;font-weight:400">Select <b style="font-weight:600">Performance Issues / Latency</b> to launch the Investigation Assistant.</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
+              <span style="font-size:11px;color:#9297a0">Step 1 of 5</span>
+              <button onClick="{{ startPerformance }}" style="font:inherit;font-size:12px;font-weight:500;color:#181d26;background:#fff;border:0;border-radius:4px;padding:6px 12px;cursor:pointer" style-hover="background:#e0e2e6">Show me</button>
+            </div>
+          </div>
+        </sc-if>
+        <button onClick="{{ startPerformance }}" style="width:100%;box-sizing:border-box;aspect-ratio:150/153;background:#aa2d00;color:#fff;border:0;border-radius:6px;padding:16px;text-align:left;display:flex;align-items:flex-end;font:inherit;font-size:15px;line-height:1.35;cursor:pointer;transition:transform .15s, box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(24,29,38,.2)" style-active="transform:translateY(0)">Performance Issues / Latency</button>
+        </div>
         <div style="aspect-ratio:150/153;background:#0a2e0e;color:#fff;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Token Authentication Issue Reported</div>
         <div style="aspect-ratio:150/153;background:#f5e9d4;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Game Crash Issue Reported</div>
         <div style="aspect-ratio:150/153;background:#fcab79;color:#181d26;border-radius:6px;padding:16px;display:flex;align-items:flex-end;font-size:15px;line-height:1.35;box-sizing:border-box">Reported Playback Issues</div>
@@ -108,7 +131,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
     <div onClick="{{ closePanel }}" style="position:fixed;inset:0;background:rgba(24,29,38,.12);z-index:9"></div>
   </sc-if>
 
-  <aside style="position:fixed;top:12px;right:12px;bottom:12px;width:404px;max-width:calc(100vw - 24px);background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(24,29,38,.22);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .42s cubic-bezier(.2,.8,.2,1);transform:{{ panelTransform }}">
+  <aside ref="{{ asideRef }}" style="position:fixed;top:12px;right:12px;bottom:12px;width:404px;max-width:calc(100vw - 24px);background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(24,29,38,.22);display:flex;flex-direction:column;overflow:hidden;z-index:10;transition:transform .42s cubic-bezier(.2,.8,.2,1);transform:{{ panelTransform }}">
     <div style="height:72px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 20px;box-shadow:0 2px 6px rgba(24,29,38,.08);position:relative;z-index:1">
       <span style="font-size:18px;font-weight:400">Investigation Assistant</span>
       <button onClick="{{ closePanel }}" aria-label="Close" style="width:40px;height:40px;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#f8fafc">
@@ -116,7 +139,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
       </button>
     </div>
 
-    <div ref="{{ chatRef }}" style="flex:1;overflow-y:auto;background:#f9f8fd;padding:20px 16px;display:flex;flex-direction:column">
+    <div ref="{{ chatRef }}" onScroll="{{ onChatScroll }}" style="flex:1;overflow-y:auto;background:#f9f8fd;padding:20px 16px;display:flex;flex-direction:column">
       <div style="flex:1"></div>
       <sc-for list="{{ messages }}" as="m" hint-placeholder-count="0">
         <div style="animation:msgIn .28s ease-out both;margin-top:12px">
@@ -144,7 +167,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
                   <div style="white-space:pre-line">{{ m.text }}</div>
                 </sc-if>
                 <sc-if value="{{ m.isOptions }}">
-                  <div>
+                  <div data-guide="time">
                     <div style="margin-bottom:8px">Enter the time window</div>
                     <div style="display:flex;flex-direction:column;gap:4px">
                       <sc-for list="{{ m.options }}" as="o">
@@ -165,7 +188,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
                   <div>
                     <div>If you need to provide more context, please do so now. Otherwise, select <i>Run Investigation</i>.</div>
                     <sc-if value="{{ m.runActive }}">
-                      <button onClick="{{ runInvestigation }}" style="margin-top:12px;font:inherit;font-size:13px;font-weight:500;color:#1b61c9;background:transparent;border:0;padding:0;cursor:pointer" style-hover="color:#1a3866;text-decoration:underline">Run Investigation</button>
+                      <button data-guide="context" onClick="{{ runInvestigation }}" style="margin-top:12px;font:inherit;font-size:13px;font-weight:500;color:#1b61c9;background:transparent;border:0;padding:0;cursor:pointer" style-hover="color:#1a3866;text-decoration:underline">Run Investigation</button>
                     </sc-if>
                     <sc-if value="{{ m.runInactive }}">
                       <div style="margin-top:12px;font-size:13px;font-weight:500;color:#9297a0">Run Investigation</div>
@@ -206,7 +229,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
                 </svg>
               </div>
 
-              <div style="background:#fff;border:1px solid #dddddd;border-radius:10px;overflow:hidden">
+              <div data-guide="done" style="background:#fff;border:1px solid #dddddd;border-radius:10px;overflow:hidden">
                 <div style="padding:14px 14px 12px">
                   <div style="display:flex;align-items:center;justify-content:space-between">
                     <span style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:#39bf45"></span>High confidence</span>
@@ -242,7 +265,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
     </div>
 
     <div style="flex:0 0 auto;border-top:1px solid #dddddd;padding:12px 16px 14px;background:#fff">
-      <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #dddddd;border-radius:24px;padding:4px 6px 4px 16px;background:#fafafa">
+      <div data-guide="account" style="display:flex;align-items:center;gap:8px;border:1.5px solid #dddddd;border-radius:24px;padding:4px 6px 4px 16px;background:#fafafa">
         <input ref="{{ inputRef }}" value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" disabled="{{ inputDisabled }}" placeholder="{{ placeholder }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:#181d26;height:36px">
         <button onClick="{{ send }}" aria-label="Send" style="width:36px;height:36px;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b61c9" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><path d="M12 17V7M7.5 11.5L12 7l4.5 4.5"></path></svg>
@@ -250,9 +273,28 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
       </div>
     </div>
   </aside>
+
+  <sc-if value="{{ pgVisible }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="{{ pg.title }}" style="position:fixed;top:{{ pg.top }}px;right:{{ pg.right }}px;width:250px;background:#181d26;color:#fff;border-radius:8px;padding:16px 16px 14px;box-shadow:0 10px 30px rgba(24,29,38,.28);z-index:12;transition:top .25s ease;animation:guideIn .35s ease-out both">
+      <span style="position:absolute;right:-6px;top:{{ pg.arrowTop }}px;width:12px;height:12px;background:#181d26;transform:rotate(45deg)"></span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;font-weight:500;color:#fcab79;letter-spacing:.4px;text-transform:uppercase">{{ pg.title }}</span>
+        <button onClick="{{ pg.onDismiss }}" aria-label="Dismiss" style="width:24px;height:24px;margin:-4px -6px 0 0;border:0;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:rgba(255,255,255,.1)">
+          <svg width="10" height="10" viewBox="0 0 10 10" stroke="#e0e2e6" stroke-width="1.6"><path d="M1 1l8 8M9 1L1 9"></path></svg>
+        </button>
+      </div>
+      <div style="font-size:14px;line-height:1.5;font-weight:400;text-wrap:pretty">{{ pg.body }}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;min-height:26px">
+        <span style="font-size:11px;color:#9297a0">{{ pg.step }}</span>
+        <sc-if value="{{ pg.hasBtn }}">
+          <button onClick="{{ pg.onBtn }}" style="font:inherit;font-size:12px;font-weight:500;color:#181d26;background:#fff;border:0;border-radius:4px;padding:6px 12px;cursor:pointer" style-hover="background:#e0e2e6">{{ pg.btnLabel }}</button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;botDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:900,&quot;min&quot;:200,&quot;max&quot;:2500,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Assistant&quot;},&quot;prefillAccount&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Assistant&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuide&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Onboarding&quot;},&quot;botDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:900,&quot;min&quot;:200,&quot;max&quot;:2500,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Assistant&quot;},&quot;prefillAccount&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Assistant&quot;}}">
 class Component extends DCLogic {
   state = { open: false, stage: 'idle', messages: [], input: '', time: null, account: '' };
   chatRef = React.createRef();
@@ -278,15 +320,76 @@ class Component extends DCLogic {
         setTimeout(go, 320);
       }
     }
+    if (prev.messages !== this.state.messages || prev.stage !== this.state.stage || prev.open !== this.state.open || prev.dismissed !== this.state.dismissed) this.schedulePanelGuide();
     if (prev.stage !== this.state.stage && (this.state.stage === 'account' || this.state.stage === 'context')) {
       setTimeout(() => this.inputRef.current && this.inputRef.current.focus(), 50);
     }
   }
-  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+  asideRef = React.createRef();
+  guideDefs = {
+    time: { step: 2, title: 'Time window', body: 'Choose how far back the assistant should look for this issue. For this walkthrough, select “Past 6 hours.”' },
+    account: { step: 3, title: 'Account ID', body: 'Enter the customer’s Account ID, then press Enter or the send arrow.' },
+    context: { step: 4, title: 'Run it', body: 'Add any extra context in the reply field, or select Run Investigation to continue.' },
+    done: { step: 5, title: 'Review results', body: 'Check the confidence level and open the source logs to trace how this conclusion was reached.', btn: 'Got it' }
+  };
+  guideKey() {
+    const { open, stage, dismissed } = this.state;
+    if (!(this.props.showGuide ?? true) || !open || !this.guideDefs[stage] || (dismissed || {})[stage]) return null;
+    return stage;
+  }
+  measurePanelGuide = () => {
+    const key = this.guideKey(), aside = this.asideRef.current, chat = this.chatRef.current;
+    let pos = null;
+    if (key && aside && chat) {
+      const els = aside.querySelectorAll(`[data-guide="${key}"]`);
+      const el = els[els.length - 1];
+      if (el) {
+        const r = el.getBoundingClientRect(), ar = aside.getBoundingClientRect(), cr = chat.getBoundingClientRect();
+        const lo = key === 'account' ? r.top : Math.max(r.top, cr.top), hi = key === 'account' ? r.bottom : Math.min(r.bottom, cr.bottom);
+        if (hi - lo > 8) {
+          const anchor = key === 'done' ? lo + Math.min(40, (hi - lo) / 2) : lo + Math.min(60, (hi - lo) / 2);
+          const top = Math.round(Math.max(12, Math.min(window.innerHeight - 190, anchor - 30)));
+          const right = Math.round(Math.min(window.innerWidth - ar.left + 14, window.innerWidth - 262));
+          pos = { top, right, arrowTop: Math.round(Math.max(10, Math.min(150, anchor - top - 6))), key };
+        }
+      }
+    }
+    const p = this.state.pgPos;
+    if (JSON.stringify(p) !== JSON.stringify(pos)) this.setState({ pgPos: pos });
+  };
+  schedulePanelGuide() { [0, 120, 460, 900].forEach(ms => setTimeout(this.measurePanelGuide, ms)); }
+  tileRef = React.createRef();
+  measureGuide = () => {
+    const el = this.tileRef.current;
+    if (!el) return;
+    this.measurePanelGuide();
+    const side = el.getBoundingClientRect().left >= 276 ? 'left' : 'right';
+    if (side !== this.state.guideSide) this.setState({ guideSide: side });
+  };
+  componentDidMount() {
+    this.measureGuide();
+    setTimeout(this.measureGuide, 300);
+    this._last = { n: 0, stage: null };
+    this.tick = setInterval(() => {
+      const { messages, stage, open } = this.state;
+      const el = this.chatRef.current;
+      if (messages.length !== this._last.n || messages[messages.length - 1]?.id !== this._last.id) {
+        this._last.n = messages.length; this._last.id = messages[messages.length - 1]?.id;
+        if (el) { el.scrollTop = el.scrollHeight; setTimeout(() => { el.scrollTop = el.scrollHeight; this.measurePanelGuide(); }, 320); }
+      }
+      if (stage !== this._last.stage) {
+        this._last.stage = stage;
+        if ((stage === 'account' || stage === 'context') && this.inputRef.current) this.inputRef.current.focus();
+      }
+      if (open || this.state.pgPos) this.measurePanelGuide();
+    }, 200);
+    window.addEventListener('resize', this.measureGuide);
+  }
+  componentWillUnmount() { this.timers.forEach(clearTimeout); window.removeEventListener('resize', this.measureGuide); clearInterval(this.tick); }
 
   startPerformance = () => {
     this.timers.forEach(clearTimeout); this.timers = [];
-    this.setState({ open: true, stage: 'time', messages: [], input: '', time: null, account: '' });
+    this.setState({ guideDone: true, dismissed: {}, pgPos: null, open: true, stage: 'time', messages: [], input: '', time: null, account: '' });
     this.later(() => {
       this.push({ kind: 'user', text: 'Investigate Performance Issues' });
       this.later(() => this.botReply({ kind: 'options' }), 300);
@@ -371,6 +474,21 @@ class Component extends DCLogic {
     const opts = ['Past 3 hours', 'Past 6 hours', 'Past 24 hours', 'Custom Range'];
     const placeholder = { account: 'Enter an Account ID', context: 'Add context (optional)', time: 'Select a time window above', running: 'Investigating…' }[stage] || 'Enter a reply';
     return {
+      guideVisible: (this.props.showGuide ?? true) && !open && !this.state.guideDone,
+      tileRef: this.tileRef,
+      asideRef: this.asideRef,
+      onChatScroll: this.measurePanelGuide,
+      ...(() => {
+        const key = this.guideKey(), pos = this.state.pgPos;
+        if (!key || !pos || pos.key !== key) return { pgVisible: false, pg: {} };
+        const d = this.guideDefs[key];
+        const dismiss = () => this.setState(s => ({ dismissed: { ...(s.dismissed || {}), [key]: true } }));
+        return { pgVisible: true, pg: { ...pos, title: d.title, body: d.body, step: `Step ${d.step} of 5`, hasBtn: !!d.btn, btnLabel: d.btn, onBtn: dismiss, onDismiss: dismiss } };
+      })(),
+      guide: (this.state.guideSide ?? 'left') === 'left'
+        ? { boxLeft: 'auto', boxRight: 'calc(100% + 14px)', arrowLeft: 'auto', arrowRight: '-6px' }
+        : { boxLeft: 'calc(100% + 14px)', boxRight: 'auto', arrowLeft: '-6px', arrowRight: 'auto' },
+      dismissGuide: () => this.setState({ guideDone: true }),
       panelOpen: open,
       panelTransform: open ? 'translateX(0)' : 'translateX(calc(100% + 32px))',
       startPerformance: this.startPerformance,
