@@ -99,6 +99,10 @@ window.PROTOS = [
     why: 'Makes hidden dependencies visible so teams can plan upgrades and migrations with less risk.',
     principles: ['Visibility of system relationships', 'Progressive disclosure: expand a node for detail', 'Error prevention: flag impact before a change'],
     extensions: ['Simulate the impact of retiring a system', 'Ownership and contact overlay', 'Change history over time'] },
+  { id: 'plat-ai-patterns', title: 'AI Interaction Patterns', category: 'Platform', description: 'Patterns for how people work with AI inside a product, shown in a copilot for power users', url: 'prototypes/agents/ai-interaction-patterns/Copilot%20for%20Power%20Users.dc.html',
+    why: 'Shows common ways people interact with AI in a product, so teams can reuse consistent patterns instead of designing each one from scratch.',
+    principles: ['Visibility of what the AI is doing and why', 'User control: accept, edit, or dismiss any suggestion', 'Consistency across AI features in the platform'],
+    extensions: ['Pattern variants for novice users', 'Shared component library for AI features', 'Guidelines for when AI should act on its own'] },
   { id: 'notify-rules', title: 'Platform-level Settings', category: 'Platform', description: 'Platform-level settings on both desktop and mobile (notification settings as the example).', url: 'prototypes/platform-core/platform-level-settings/',
     why: 'Gives users one consistent place to control platform-wide preferences across devices.',
     principles: ['Consistency between desktop and mobile', 'User control and freedom', 'Clear defaults with plain-language labels'],
@@ -146,11 +150,13 @@ window.THUMBS = {
   'obs-process-impact': 'thumbs/obs-process-impact.png',
   'prod-decision-guides': 'thumbs/prod-decision-guides.png',
   'wf-validate-docs': 'thumbs/wf-validate-docs.png',
-  'int-connect': 'thumbs/int-connect.png'
+  'int-connect': 'thumbs/int-connect.png',
+  'plat-ai-patterns': 'thumbs/plat-ai-patterns.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
 window.SHOTS = {
+  'plat-ai-patterns': 'thumbs/plat-ai-patterns-page.png',
   'int-connect': 'thumbs/int-connect-page.png',
   'wf-validate-docs': 'thumbs/wf-validate-docs-page.png',
   'prod-decision-guides': 'thumbs/prod-decision-guides-page.png',
