@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#333840;background:#ffffff;-webkit-font-smoothing:antialiased;font-feature-settings:'tnum' 1;}
+*{box-sizing:border-box;}
+a{color:#1b61c9;text-decoration:none;}
+a:hover{color:#1a3866;}
+button,input,select,textarea{font:inherit;color:inherit;}
+button{cursor:pointer;}
+:focus-visible{outline:2px solid #458fff;outline-offset:2px;}
+</style>
+</helmet>
+<div data-screen-label="AI interaction patterns" style="padding:32px 40px 56px;display:flex;max-width:1600px;margin:0 auto;background:#ffffff;min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;flex-direction:column;gap:4px;max-width:760px"><h1 style="margin:0;font-size:24px;font-weight:400;line-height:1.35;letter-spacing:0.12px;color:#181d26">AI interaction patterns</h1><span style="color:#41454d;text-wrap:pretty">Each frame renders the same thread component used in the live panel. Cream surfaces are AI interpretation; white hairline boxes are source data and tool calls.</span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px">
+    <sc-for list="{{ aiStates }}" as="st" hint-placeholder-count="6">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:13px;color:#41454d">{{ st.num }}</span><span style="font-weight:500;color:#181d26">{{ st.label }}</span></div>
+        <div style="font-size:13px;color:#41454d;min-height:36px;text-wrap:pretty">{{ st.desc }}</div>
+        <div style="height:540px;border:1px solid #dddddd;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;background:#ffffff">
+          <sc-if value="{{ st.isClosed }}" hint-placeholder-val="{{ false }}">
+            <div style="height:64px;display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 16px;border-bottom:1px solid #dddddd">
+              <span style="height:40px;display:flex;align-items:center;gap:8px;padding:0 14px;border:1px solid #dddddd;border-radius:6px;color:#181d26;font-weight:500">Copilot <span style="font-size:12px;font-weight:400;color:#41454d">⌘J</span></span>
+              <span style="width:40px;height:40px;border-radius:50%;background:#181d26;color:#ffffff;display:grid;place-items:center;font-size:13px">DW</span>
+            </div>
+            <div style="padding:20px 16px;display:flex;flex-direction:column;gap:12px;color:#41454d;font-size:13px">
+              <span>Page content uses the full width. Entry points:</span>
+              <span style="align-self:flex-start;height:40px;display:flex;align-items:center;padding:0 18px;border-radius:12px;background:#181d26;color:#ffffff;font-size:14px;font-weight:500">Investigate with AI</span>
+              <span style="align-self:flex-start;height:30px;display:flex;align-items:center;padding:0 10px;border:1px solid #dddddd;border-radius:6px;color:#181d26;font-weight:500">Investigate</span>
+              <span>Opening from a customer page attaches that customer as context.</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ st.isPanel }}" hint-placeholder-val="{{ true }}">
+            <div style="height:52px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 12px 0 16px;border-bottom:1px solid #dddddd"><span style="font-size:16px;font-weight:500;color:#181d26">Copilot</span><span style="flex:1"></span><span style="white-space:nowrap;flex-shrink:0;height:30px;display:flex;align-items:center;padding:0 10px;border:1px solid #dddddd;border-radius:6px;color:#181d26;font-size:13px;font-weight:500">New thread</span></div>
+            <div style="flex:1;min-height:0;overflow:auto;padding:16px"><dc-import name="CopilotThread" messages="{{ st.messages }}" hint-size="100%,200px"></dc-import></div>
+            <div style="flex-shrink:0;border-top:1px solid #dddddd;padding:12px 16px"><div style="height:40px;border:1px solid #dddddd;border-radius:6px;padding:0 12px;display:flex;align-items:center;color:#41454d;font-size:13px">Ask about customers, health, usage, renewals…</div></div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;customersState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;loading&quot;,&quot;empty&quot;,&quot;error&quot;],&quot;default&quot;:&quot;live&quot;,&quot;tsType&quot;:&quot;'live'|'loading'|'empty'|'error'&quot;,&quot;section&quot;:&quot;States&quot;},&quot;copilotOpenOnLoad&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;}}">
+class Component extends DCLogic {
+  ST = {
+    Healthy:{bg:'#a8d8c4',fg:'#181d26',fill:'#a8d8c4'}, Monitor:{bg:'#f4d35e',fg:'#181d26',fill:'#f4d35e'},
+    'At Risk':{bg:'#fcab79',fg:'#181d26',fill:'#fcab79'}, Critical:{bg:'#aa2d00',fg:'#ffffff',fill:'#aa2d00'},
+    neutral:{bg:'#e0e2e6',fg:'#181d26',fill:'#e0e2e6'}
+  };
+  STATUSES = ['Critical','At Risk','Monitor','Healthy'];
+  timers = []; detailCache = {};
+  threadRef = React.createRef(); inputRef = React.createRef(); searchRef = React.createRef(); mainRef = React.createRef();
+  data = this.buildData();
+  state = {
+    page:'ai-states', customerId:'acme', tab:'health',
+    copilotOpen:false, thread:[{kind:'intro'}], input:'', busy:false,
+    q:'', searchOpen:false, notifOpen:false, userOpen:false, notifRead:false,
+    filters:this.emptyFilters(), sort:{key:'risk',dir:'desc'}, pageNum:1, loading:false,
+    rowMenu:null, toast:null, watch:{}
+  };
+
+  emptyFilters(){ return {search:'',health:'',segment:'',industry:'',usage:'',renewal:'',risk:'',arr:'',support:''}; }
+  rng(seed){ let s=seed%2147483647; if(s<=0) s+=2147483646; return ()=>{ s=s*16807%2147483647; return (s-1)/2147483646; }; }
+  fmtArr(v){ return v>=1e6 ? '$'+(v/1e6).toFixed(v>=1e7?1:2).replace(/\.?0+$/,'')+'M' : '$'+Math.round(v/1e3)+'K'; }
+  dateIn(days, short){ const d=new Date(2026,9,3); d.setDate(d.getDate()+days); return d.toLocaleDateString('en-US', short?{month:'short',day:'numeric'}:{month:'short',day:'numeric',year:'numeric'}); }
+  pct(n,d){ return d? Math.round(n/d*100) : 0; }
+
+  buildData(){
+    const hand = [
+      ['acme','Acme Corporation','Enterprise','Manufacturing',1240000,38,-17,-34,5,2,73,'Priya Raman','Usage down 34% after admin turnover','Executive check-in','Open risk'],
+      ['northwind','Northwind Logistics','Enterprise','Logistics',860000,36,-12,-22,4,3,41,'Marcus Bell','3 P1–P2 cases on integrations API','Escalate open cases','Open risk'],
+      ['brightline','Brightline Retail','Mid-Market','Retail',310000,39,-14,-41,6,2,29,'Elena Torres','Renews in 29 days with no exec sponsor','Renewal risk review','Open risk'],
+      ['helix','Helix Biotech','Enterprise','Healthcare',720000,47,-9,-28,2,1,88,'Priya Raman','Champion left; 140 seats unassigned','Identify new champion','Mitigating'],
+      ['larkspur','Larkspur Financial','Enterprise','Financial Services',1050000,52,-6,-18,3,1,64,'Sam Okafor','Reporting adoption stalled at 22%','Adoption workshop','Open risk'],
+      ['cobalt','Cobalt Energy','Enterprise','Energy',940000,58,-4,-12,2,1,79,'Jules Whitfield','Expansion blocked by open SSO case','Resolve SSO case','Mitigating'],
+      ['meridian','Meridian Health Partners','Enterprise','Healthcare',1380000,63,-8,-9,2,1,54,'Marcus Bell','Budget review flagged in last QBR','Prepare ROI summary','Mitigating'],
+      ['orbital','Orbital Media','Mid-Market','Media',240000,55,-5,-15,1,0,112,'Elena Torres','Logins down 3 consecutive weeks','CSM health check','Watch']
+    ].map(a=>({id:a[0],name:a[1],segment:a[2],industry:a[3],arr:a[4],score:a[5],hd:a[6],usage:a[7],issues:a[8],highPri:a[9],renewDays:a[10],owner:a[11],reason:a[12],action:a[13],riskStatus:a[14]}));
+    const names=['Pinecrest Software','Ardent Labs','Bluewater Shipping','Caldera Foods','Driftwood Hotels','Evergreen Credit Union','Foundry Analytics','Granite Insurance','Harbor & Vine','Ironclad Security','Juniper Schools','Keystone Builders','Lumen Pharmaceuticals','Mosaic Learning','Nimbus Cloud','Oakridge Partners','Parallel Robotics','Quarry Materials','Redwood Capital','Sable Telecom','Tidewater Ports','Umbra Gaming','Vantage Clinics','Westfield Grocers','Yardline Sports','Zephyr Airlines','Atlas Freight','Beacon Health','Copperline Utilities','Delta Fabrication','Ember Studios','Fathom Marine','Glacier Water','Highmark Legal','Indigo Apparel','Jetstream Travel','Kinetic Motors','Lattice Data','Monarch Realty','Northstar University'];
+    const inds=['Software','Manufacturing','Logistics','Healthcare','Financial Services','Retail','Media','Energy','Education'];
+    const owners=['Priya Raman','Marcus Bell','Elena Torres','Sam Okafor','Jules Whitfield'];
+    const R=this.rng(20261003);
+    const gen=names.map(name=>{
+      const r=R(); const segment=r<0.3?'Enterprise':r<0.72?'Mid-Market':'SMB';
+      let score=Math.round(56+R()*42); if(R()<0.14) score=Math.round(42+R()*16);
+      score=Math.min(97,score);
+      const usage=Math.round((score-72)*0.6+(R()-0.5)*14-(segment==='Enterprise'?9:0));
+      const hd=Math.round(usage/3+(R()-0.5)*6);
+      const issues=Math.floor(R()*3)+(score<60?2:0);
+      const highPri=score<60&&R()<0.55?1:0;
+      const renewDays=12+Math.floor(R()*330);
+      const arr=Math.round((segment==='Enterprise'?380000+R()*1100000:segment==='Mid-Market'?90000+R()*290000:18000+R()*67000)/10000)*10000;
+      let reason,action;
+      if(usage<=-10){reason=`Weekly active users down ${-usage}%`;action='Adoption review';}
+      else if(highPri){reason='High-priority case open 12+ days';action='Escalate case';}
+      else if(renewDays<=90&&score<70){reason=`Renews in ${renewDays} days, health ${score}`;action='Renewal risk review';}
+      else if(usage>=10){reason=`Usage up ${usage}%`;action='Expansion conversation';}
+      else {reason='No active risk signals';action='Maintain cadence';}
+      const riskStatus=score<60?(R()<0.5?'Open risk':'Mitigating'):(score<75&&usage<=-10?'Watch':'None');
+      const id=name.toLowerCase().replace(/[^a-z]+/g,'-');
+      return {id,name,segment,industry:inds[Math.floor(R()*inds.length)],arr,score,hd,usage,issues,highPri,renewDays,owner:owners[Math.floor(R()*owners.length)],reason,action,riskStatus};
+    });
+    const customers=[...hand,...gen].map((c,i)=>this.enrich({...c,idx:i}));
+    const byId={}; customers.forEach(c=>byId[c.id]=c);
+    const N=customers.length;
+    const cur={}; this.STATUSES.forEach(s=>cur[s]=customers.filter(c=>c.status===s).length);
+    const off={Critical:[3,3,2,2,1,0],'At Risk':[4,3,3,2,1,0],Monitor:[2,2,1,1,0,0]};
+    const history=['May','Jun','Jul','Aug','Sep','Oct'].map((m,i)=>{ const C=Math.max(0,cur.Critical-off.Critical[i]); const Rk=Math.max(0,cur['At Risk']-off['At Risk'][i]); const M=Math.max(0,cur.Monitor-off.Monitor[i]); return {m,Critical:C,'At Risk':Rk,Monitor:M,Healthy:N-C-Rk-M}; });
+    return {customers,byId,N,cur,history,totalArr:customers.reduce((s,c)=>s+c.arr,0)};
+  }
+
+  enrich(c){
+    const status=c.score>=75?'Healthy':c.score>=60?'Monitor':c.score>=40?'At Risk':'Critical';
+    const st=this.ST[status]; const R=this.rng(c.idx*31+5);
+    const vals=[]; for(let i=0;i<12;i++){ const f=i<4?0:(i-4)/7; vals.push(100+c.usage*f+(i>3?(R()-0.5)*5:(R()-0.5)*3)); }
+    vals[11]=100+c.usage;
+    const spark=vals.map((v,i)=>`${(i*80/11).toFixed(1)},${Math.max(2,Math.min(22,22-(v-50)/70*20)).toFixed(1)}`).join(' ');
+    const supportStatus=c.highPri>0?'P1–P2 open':c.issues>0?'Open cases':'Clear';
+    const risk=(100-c.score)+c.highPri*8+(c.renewDays<=90?15:0)+Math.max(0,-c.usage)/2;
+    const neg='#aa2d00',pos='#006400',neu='#41454d';
+    return {...c,status,statusBg:st.bg,statusFg:st.fg,first:c.name.split(' ')[0],spark,usageVals:vals,
+      sparkColor:c.usage<=-10?neg:c.usage>=10?pos:neu, usageColor:c.usage<=-10?neg:c.usage>=10?pos:neu,
+      usageText:(c.usage<0?'↓':c.usage>0?'↑':'')+Math.abs(c.usage)+'%',
+      trendText:c.hd===0?'0 pts':(c.hd<0?'↓ ':'↑ ')+Math.abs(c.hd)+' pts', trendColor:c.hd<=-5?neg:c.hd>=3?pos:neu,
+      arrText:this.fmtArr(c.arr), renewText:this.dateIn(c.renewDays), renewIn:`in ${c.renewDays} days`,
+      renewColor:c.renewDays<=90?'#181d26':'#41454d', supportStatus, risk, sub:`${c.segment} · ${c.industry}`,
+      issuesHigh:c.highPri?`${c.highPri} high`:'', hasHigh:c.highPri>0};
+  }
+
+  detail(c){
+    if(this.detailCache[c.id]) return this.detailCache[c.id];
+    const R=this.rng(c.idx*97+13);
+    const base=Math.max(14,Math.round(c.arr/(c.segment==='Enterprise'?1500:c.segment==='Mid-Market'?1100:900)));
+    const wau=c.usageVals.map(v=>Math.round(base*v/100));
+    const weeks=wau.map((_,i)=>this.dateIn(-(11-i)*7,true));
+    const seats=Math.round(base*1.3);
+    const utilPct=this.pct(wau[11],seats);
+    const maxV=Math.max(seats,...wau)*1.1;
+    const yU=v=>(180-v/maxV*170).toFixed(1);
+    const usageLine=wau.map((v,i)=>`${(i*600/11).toFixed(1)},${yU(v)}`).join(' ');
+    const usageArea=`M0,180 L${usageLine.replace(/ /g,' L')} L600,180 Z`;
+    const seatsTop=(yU(seats)/180*100).toFixed(1)+'%';
+    const neg='#aa2d00',pos='#006400',neu='#41454d';
+    const feat=[['Workflows run',38],['Reports viewed',22],['Integration syncs',140],['Admin sessions',0.5]].map(([n,mult])=>{ const ch=Math.round(c.usage*(0.6+R()*0.9)); const v=Math.max(1,Math.round(base*mult*4*(1+ch/100))); return {name:n,value:v.toLocaleString('en-US'),ch,change:(ch<0?'↓':ch>0?'↑':'')+Math.abs(ch)+'%',color:ch<=-10?neg:ch>=10?pos:neu}; });
+    const hd=c.hd; const chU=Math.round(hd*0.5),chS=Math.round(hd*0.25),chE=Math.round(hd*0.15),chC=hd-chU-chS-chE;
+    const cl=v=>Math.max(5,Math.min(98,Math.round(v)));
+    const fill=s=>s<40?'#aa2d00':s<60?'#fcab79':s<75?'#f4d35e':'#a8d8c4';
+    const factors=[
+      {name:'Product usage',weight:'35% weight',score:cl(72+c.usage*1.1),change:chU},
+      {name:'Support experience',weight:'25% weight',score:cl(88-c.issues*6-c.highPri*9),change:chS},
+      {name:'Engagement',weight:'20% weight',score:cl(c.score+(R()-0.5)*16),change:chE},
+      {name:'Commercial',weight:'20% weight',score:cl(c.score+(c.renewDays<=90?-8:6)),change:chC}
+    ].map(f=>({...f,bar:f.score+'%',barColor:fill(f.score),changeText:f.change===0?'0':(f.change<0?'−':'+')+Math.abs(f.change),changeColor:f.change<0?neg:f.change>0?pos:neu}));
+    const s0=c.score-hd;
+    const hist=[s0+Math.round((R()-0.5)*6),s0+Math.round((R()-0.5)*6),s0+Math.round((R()-0.5)*6),s0+Math.round((R()-0.5)*4),s0,c.score].map(v=>Math.max(5,Math.min(99,v)));
+    const healthLine=hist.map((v,i)=>`${i*120},${(160-v/100*160).toFixed(1)}`).join(' ');
+    const histLabels=['May','Jun','Jul','Aug','Sep','Oct'].map((m,i)=>({m,v:hist[i]}));
+    const titles=['Integrations API returning 502 on bulk sync','SSO login loop for Okta users','Report exports timing out','Permission errors after role migration','Webhook delivery delayed over 30 min','Dashboard load time over 10s','CSV import failing above 50 MB','Audit log missing entries'];
+    const open=[]; for(let i=0;i<c.issues;i++){ const high=i<c.highPri; const pri=high?(i===0?'P1':'P2'):(R()<0.5?'P3':'P4'); const age=high?6+Math.floor(R()*16):2+Math.floor(R()*24); const pb=pri==='P1'?this.ST.Critical:pri==='P2'?this.ST['At Risk']:this.ST.neutral; open.push({id:'CS-'+(48000+Math.floor(R()*900)),title:titles[(c.idx+i*3)%8],pri,priBg:pb.bg,priFg:pb.fg,status:high?'Escalated to engineering':(R()<0.5?'In progress':'Waiting on customer'),age,ageText:age+'d',opened:this.dateIn(-age,true)}); }
+    open.sort((a,b)=>a.pri.localeCompare(b.pri));
+    const closed=[0,1,2].map(k=>({id:'CS-'+(47000+Math.floor(R()*900)),title:titles[(c.idx+k*5+1)%8],when:this.dateIn(-(20+k*9+Math.floor(R()*5)),true),res:`Resolved in ${1+Math.floor(R()*5)}d`}));
+    const caseVol=weeks.map((w,i)=>({w,v:Math.round(R()*1.6+(i>=8?c.issues*0.55:c.issues*0.15))}));
+    const maxCase=Math.max(3,...caseVol.map(x=>x.v));
+    caseVol.forEach(x=>{x.h=(x.v/maxCase*100)+'%';});
+    const ages=open.map(o=>o.age).sort((a,b)=>a-b);
+    const medianAge=ages.length?ages[Math.floor(ages.length/2)]+'d':'—';
+    const lastExec=c.id==='acme'?74:c.id==='brightline'?96:20+Math.floor(R()*90);
+    const stage=c.renewDays<=45?'In negotiation':c.renewDays<=120?'Renewal prep':'Not started';
+    const term=c.segment==='Enterprise'?'3-year term, auto-renew off':'Annual term, auto-renew on';
+    const ind=[];
+    if(c.usage<=-10) ind.push({label:'Usage decline',detail:`Weekly active users ${c.usageText} over 60 days (${wau[4]} → ${wau[11]})`,sev:'High'});
+    if(c.highPri) ind.push({label:'Open high-priority cases',detail:`${c.highPri} P1–P2 case${c.highPri>1?'s':''}, oldest open ${open[0].age} days`,sev:'High'});
+    if(c.score<60) ind.push({label:'Health below renewal threshold',detail:`Score ${c.score}; renewal playbook threshold is 60`,sev:'High'});
+    if(lastExec>60) ind.push({label:'No executive touchpoint',detail:`Last executive meeting ${lastExec} days ago`,sev:'Medium'});
+    if(utilPct<60) ind.push({label:'Low seat utilization',detail:`${utilPct}% of ${seats} licensed seats active`,sev:'Medium'});
+    if(!ind.length) ind.push({label:'No active renewal risks',detail:'All indicators within normal range',sev:'None'});
+    const sevSt={High:this.ST.Critical,Medium:this.ST['At Risk'],None:this.ST.Healthy};
+    ind.forEach(x=>{x.bg=sevSt[x.sev].bg;x.fg=sevSt[x.sev].fg;});
+    const ev=[];
+    if(hd!==0) ev.push({days:2,type:'Health',title:`Health moved to ${c.status}`,detail:`Score ${c.score} (${hd>0?'+':''}${hd} pts in 30 days)`});
+    open.forEach(o=>ev.push({days:o.age,type:'Support',title:`${o.pri} case opened`,detail:`${o.id} · ${o.title}`}));
+    if(c.usage<=-10) ev.push({days:18,type:'Usage',title:`Weekly active users fell to ${wau[9]}`,detail:`Down from ${wau[4]} in the week of ${weeks[4]}`});
+    if(c.id==='acme'){ ev.push({days:52,type:'Account',title:'Primary admin left the company',detail:'J. Alvarez removed from SSO directory'}); ev.push({days:49,type:'Account',title:'Admin seats reduced from 6 to 2',detail:'Changed by customer IT; no CSM notification'}); }
+    if(c.id==='helix') ev.push({days:40,type:'Account',title:'Champion left the company',detail:'Dr. Lena Ortiz, Director of Research Ops'});
+    ev.push({days:lastExec,type:'Meeting',title:'Executive sponsor meeting',detail:'Quarterly business review'});
+    ev.push({days:9,type:'CSM note',title:'CSM note added',detail:c.highPri?'Customer frustrated with case response times; asked for an escalation path':'Routine check-in, no blockers raised'});
+    if(c.renewDays<=120) ev.push({days:14,type:'Renewal',title:'Renewal opportunity opened',detail:`${c.arrText} · renews ${c.renewText}`});
+    ev.sort((a,b)=>a.days-b.days);
+    const timeline=ev.map(e=>({...e,dateText:this.dateIn(-e.days,true),ago:e.days===0?'Today':e.days===1?'Yesterday':`${e.days} days ago`}));
+    const sig=[];
+    if(c.usage<=-10) sig.push(`Weekly active users down ${-c.usage}% since the week of ${weeks[4]}`);
+    const worst=[...feat].sort((a,b)=>a.ch-b.ch)[0]; if(worst.ch<=-10) sig.push(`${worst.name} ${worst.change} over 30 days`);
+    if(c.id==='acme') sig.push(`Admin seats reduced from 6 to 2 on ${this.dateIn(-49)}`);
+    if(utilPct<60) sig.push(`Seat utilization at ${utilPct}% (${wau[11]} of ${seats})`);
+    if(!sig.length) sig.push('No significant usage changes in the last 30 days');
+    const d={base,wau,weeks,seats,utilPct,usageLine,usageArea,seatsTop,maxLabel:Math.round(maxV),feat,factors,hist,healthLine,histLabels,open,closed,caseVol,medianAge,lastExec,stage,term,indicators:ind,timeline,signals:sig.map(t=>({t})),
+      wauStart:wau[4],wauEnd:wau[11],oldestCase:open.length?`Oldest open case ${open.reduce((m,o)=>Math.max(m,o.age),0)} days`:'No open cases',
+      topFeatureDrop:`${worst.name} ${worst.change} over 30 days`,
+      weekLabels:[weeks[0],weeks[4],weeks[8],weeks[11]].map(w=>({w}))};
+    this.detailCache[c.id]=d; return d;
+  }
+
+  drivers(){
+    const cs=this.data.customers; const set=cs.filter(c=>c.score<60); const n=set.length;
+    const defs=[
+      ['Usage decline of 10% or more',c=>c.usage<=-10],
+      ['Open P1–P2 support cases',c=>c.highPri>0],
+      ['Renewal within 90 days',c=>c.renewDays<=90],
+      ['No executive touchpoint in 60+ days',c=>this.detail(c).lastExec>60],
+      ['Seat utilization below 60%',c=>this.detail(c).utilPct<60]
+    ];
+    const list=defs.map(([name,fn])=>{ const hit=set.filter(fn); return {name,count:hit.length,arr:hit.reduce((s,c)=>s+c.arr,0),fn}; }).sort((a,b)=>b.count-a.count);
+    const multi=set.filter(c=>defs.filter(([,fn])=>fn(c)).length>=2).length;
+    return {n,list,multi,set};
+  }
+  segAvg(seg){ const l=this.data.customers.filter(c=>c.segment===seg); return Math.round(l.reduce((s,c)=>s+c.usage,0)/l.length); }
+
+  get SUGG(){
+    const c=this.state&&this.state.page==='detail'?this.data.byId[this.state.customerId]:this.data.byId.acme;
+    return ['Which customers should I prioritize this week?',`Why is ${c.first}'s health declining?`,`What changed for ${c.first} in the last 30 days?`,'Which customers have declining usage and renew within 90 days?','What are the biggest drivers of customer risk?'];
+  }
+
+  planPriority(){
+    const cs=this.data.customers; const top=[...cs].sort((a,b)=>b.risk-a.risk).slice(0,5);
+    const sum=top.reduce((s,c)=>s+c.arr,0); const in90=top.filter(c=>c.renewDays<=90).length;
+    const hp=cs.reduce((s,c)=>s+c.highPri,0);
+    return {tools:[
+      {label:'health_scores',detail:'scores for all accounts',rows:`${cs.length} rows`},
+      {label:'usage_events',detail:'weekly active users, 12 weeks',rows:`${cs.length*12} rows`},
+      {label:'support_cases',detail:'open, priority P1–P2',rows:`${hp} rows`},
+      {label:'contracts',detail:'renewal dates',rows:`${cs.length} rows`}],
+      answer:{title:`${top.length} customers require attention`,
+        text:`Ranked by health score, 60-day usage change, open P1–P2 cases and days to renewal. These accounts hold ${this.fmtArr(sum)} ARR and ${in90} of them renew within 90 days, so this week's time is best spent on the first two.`,
+        itemsLabel:'From source data',
+        items:top.map(c=>({name:c.name,tag:c.status,tone:c.status,customerId:c.id,bullets:[`Usage ${c.usageText}`,c.highPri?`${c.highPri} high-priority case${c.highPri>1?'s':''}`:`${c.issues} open case${c.issues!==1?'s':''}`,`Renewal in ${c.renewDays} days`],action:`Recommended: ${c.action}`})),
+        evidence:[{source:'health_scores',detail:'score below 60',value:`${cs.filter(c=>c.score<60).length} accounts`},{source:'usage_events',detail:'down ≥10% in 60 days',value:`${cs.filter(c=>c.usage<=-10).length} accounts`},{source:'support_cases',detail:'open P1–P2',value:`${hp} cases`},{source:'contracts',detail:'renewing ≤90 days',value:`${cs.filter(c=>c.renewDays<=90).length} accounts`}],
+        actions:[{label:'View supporting data',type:'evidence'},{label:`Investigate ${top[0].first}`,type:'investigate',customerId:top[0].id},{label:'Open in Customers',type:'filter',filters:{health:'risk'}},{label:'Ask follow-up',type:'followup'}],
+        followups:[`Why is ${top[0].first}'s health declining?`,`What changed for ${top[1].first} in the last 30 days?`],
+        meta:'4 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planWhy(c){
+    const d=this.detail(c); const neg=[...d.factors].sort((a,b)=>a.change-b.change);
+    const bul={'Product usage':[`Weekly active users ${d.wauStart} → ${d.wauEnd} (${c.usageText})`,d.topFeatureDrop],'Support experience':[`${c.issues} open cases, ${c.highPri} P1–P2`,d.oldestCase],'Engagement':[`Last executive touchpoint ${d.lastExec} days ago`,c.id==='acme'?'Admin seats reduced from 6 to 2':`${d.utilPct}% seat utilization`],'Commercial':[`Renewal in ${c.renewDays} days`,`Stage: ${d.stage}`]};
+    const decl=c.hd<0;
+    return {tools:[
+      {label:'health_scores',detail:`${c.first}, 6 months`,rows:'26 rows'},
+      {label:'usage_events',detail:`${c.first}, 12 weeks`,rows:'12 rows'},
+      {label:'support_cases',detail:`${c.first}, open and recent`,rows:`${c.issues+3} rows`},
+      {label:'activity_log',detail:`${c.first}, 60 days`,rows:`${d.timeline.length} rows`}],
+      answer:{title:decl?`${c.name} health fell ${-c.hd} points in 30 days`:`${c.name} health is ${c.hd===0?'flat':'up '+c.hd+' points'} over 30 days`,
+        text:decl?`${neg[0].name} accounts for most of the drop (${neg[0].changeText} pts), followed by ${neg[1].name.toLowerCase()} (${neg[1].changeText} pts). ${c.id==='acme'?'The decline began the week admin seats were cut after the primary admin left, which points to an ownership gap rather than a product-fit problem.':'The decline is gradual and spread across factors, which usually responds to a structured adoption review.'}`:`No factor fell by more than 3 points. Current score ${c.score} is driven mainly by ${neg[0].name.toLowerCase()}.`,
+        itemsLabel:'Contributing factors · from source data',
+        items:neg.slice(0,3).map((f,k)=>({name:f.name,tag:`${f.changeText} pts`,tone:k===0&&f.change<0?'Critical':'neutral',bullets:bul[f.name],action:k===0?`Recommended: ${c.action}`:null})),
+        evidence:[{source:'health_scores',detail:'May → Oct',value:`${d.hist[0]} → ${c.score}`},{source:'usage_events',detail:'weekly active users',value:`${d.wauStart} → ${d.wauEnd}`},{source:'support_cases',detail:'open',value:`${c.issues} (${c.highPri} P1–P2)`},{source:'activity_log',detail:'last exec meeting',value:`${d.lastExec} days ago`}],
+        actions:[{label:'View customer',type:'view',customerId:c.id},{label:'View supporting data',type:'evidence'},{label:'Investigate usage',type:'investigate',customerId:c.id,tab:'usage'},{label:'Ask follow-up',type:'followup'}],
+        followups:[`What changed for ${c.first} in the last 30 days?`,'Which customers should I prioritize this week?'],
+        meta:'4 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planChanged(c){
+    const d=this.detail(c); const evts=d.timeline.filter(e=>e.days<=30);
+    return {tools:[{label:'activity_log',detail:`${c.first}, last 30 days`,rows:`${evts.length} rows`},{label:'usage_events',detail:`${c.first}, last 30 days`,rows:'5 rows'},{label:'support_cases',detail:`${c.first}, opened in 30 days`,rows:`${d.open.filter(o=>o.age<=30).length} rows`}],
+      answer:{title:`${evts.length} changes for ${c.name} in the last 30 days`,
+        text:`The largest measurable change is weekly active users (${c.usageText} over 60 days). ${c.highPri?`${c.highPri} high-priority case${c.highPri>1?'s':''} opened in the same window, and the`:'The'} health score moved ${c.hd} points.`,
+        itemsLabel:'Events · from activity_log',
+        items:evts.map(e=>({name:e.title,tag:e.dateText,tone:'neutral',bullets:[e.detail]})),
+        evidence:[{source:'activity_log',detail:'events since '+this.dateIn(-30,true),value:`${evts.length}`},{source:'usage_events',detail:'WAU now',value:`${d.wauEnd}`},{source:'health_scores',detail:'30-day change',value:`${c.hd} pts`}],
+        actions:[{label:'View activity',type:'investigate',customerId:c.id,tab:'activity'},{label:'View supporting data',type:'evidence'},{label:'Ask follow-up',type:'followup'}],
+        followups:[`Why is ${c.first}'s health declining?`],
+        meta:'3 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planDeclineRenew(){
+    const cs=this.data.customers; const l=cs.filter(c=>c.usage<=-10&&c.renewDays<=90).sort((a,b)=>a.renewDays-b.renewDays);
+    const ar=l.filter(c=>c.score<60).length;
+    return {tools:[{label:'usage_events',detail:'60-day change ≤ −10%',rows:`${cs.filter(c=>c.usage<=-10).length} rows`},{label:'contracts',detail:'renewal_date ≤ Jan 1, 2027',rows:`${cs.filter(c=>c.renewDays<=90).length} rows`}],
+      answer:{title:`${l.length} customers have declining usage and renew within 90 days`,
+        text:`Together they represent ${this.fmtArr(l.reduce((s,c)=>s+c.arr,0))} ARR. ${ar} of ${l.length} are already At Risk or Critical, so recovery plays need to start before renewal conversations do.`,
+        itemsLabel:'Matching accounts · from source data',
+        items:l.map(c=>({name:c.name,tag:c.status,tone:c.status,customerId:c.id,bullets:[`Usage ${c.usageText}`,`Renews ${c.renewText} (${c.renewDays} days)`,`Health ${c.score}`],action:`Recommended: ${c.action}`})),
+        evidence:[{source:'usage_events',detail:'60-day change ≤ −10%',value:`${cs.filter(c=>c.usage<=-10).length} accounts`},{source:'contracts',detail:'renewing ≤90 days',value:`${cs.filter(c=>c.renewDays<=90).length} accounts`},{source:'join',detail:'both conditions',value:`${l.length} accounts`}],
+        actions:[{label:'Open in Customers',type:'filter',filters:{usage:'Declining',renewal:'90'}},{label:'View supporting data',type:'evidence'},{label:'Ask follow-up',type:'followup'}],
+        followups:['What are the biggest drivers of customer risk?','Which customers should I prioritize this week?'],
+        meta:'2 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planDrivers(){
+    const dr=this.drivers();
+    return {tools:[{label:'health_scores',detail:'score below 60',rows:`${dr.n} rows`},{label:'usage_events',detail:'60-day change',rows:`${dr.n*12} rows`},{label:'support_cases',detail:'open P1–P2',rows:`${this.data.customers.reduce((s,c)=>s+c.highPri,0)} rows`},{label:'activity_log',detail:'exec touchpoints',rows:`${dr.n*4} rows`}],
+      answer:{title:'Top drivers of customer risk',
+        text:`Across ${dr.n} At Risk and Critical accounts, ${dr.list[0].name.toLowerCase()} appears most often (${dr.list[0].count} of ${dr.n}). ${dr.multi} accounts show two or more drivers at once, so single-factor plays are unlikely to recover them.`,
+        itemsLabel:`Drivers across ${dr.n} accounts · from source data`,
+        items:dr.list.slice(0,4).map(x=>({name:x.name,tag:`${x.count} of ${dr.n}`,tone:'neutral',bullets:[`${this.fmtArr(x.arr)} ARR affected`]})),
+        evidence:[{source:'health_scores',detail:'At Risk + Critical',value:`${dr.n} accounts`},{source:'derived',detail:'accounts with 2+ drivers',value:`${dr.multi}`}],
+        actions:[{label:'Open Insights',type:'page',page:'insights'},{label:'View supporting data',type:'evidence'},{label:'Ask follow-up',type:'followup'}],
+        followups:['Which customers have declining usage and renew within 90 days?','Why is Enterprise usage declining?'],
+        meta:'4 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planEnterprise(){
+    const cs=this.data.customers; const segs=['Enterprise','Mid-Market','SMB'];
+    return {tools:[{label:'usage_events',detail:'weekly active users by segment, 12 weeks',rows:`${cs.length*12} rows`},{label:'accounts',detail:'segment, ARR',rows:`${cs.length} rows`}],
+      answer:{title:'Declining usage is concentrated in Enterprise',
+        text:`Enterprise accounts average ${this.segAvg('Enterprise')}% weekly activity over 60 days versus ${this.segAvg('Mid-Market')}% for Mid-Market and ${this.segAvg('SMB')}% for SMB. The decline is broad within Enterprise rather than driven by one or two accounts.`,
+        itemsLabel:'By segment · from usage_events',
+        items:segs.map(s=>{ const l=cs.filter(c=>c.segment===s); const dn=l.filter(c=>c.usage<=-10); return {name:s,tag:`${this.segAvg(s)}% avg`,tone:s==='Enterprise'?'Critical':'neutral',bullets:[`${dn.length} of ${l.length} accounts down 10% or more`,`${this.fmtArr(dn.reduce((a,c)=>a+c.arr,0))} ARR in declining accounts`]}; }),
+        evidence:[{source:'usage_events',detail:'Aug 4 – Oct 3, 2026',value:'60 days'},{source:'accounts',detail:'Enterprise accounts',value:`${cs.filter(c=>c.segment==='Enterprise').length}`}],
+        actions:[{label:'Open in Customers',type:'filter',filters:{segment:'Enterprise',usage:'Declining'}},{label:'View supporting data',type:'evidence'},{label:'Ask follow-up',type:'followup'}],
+        followups:['What are the biggest drivers of customer risk?'],meta:'2 sources · data as of Oct 3, 8:00 AM'}};
+  }
+  planCases(){
+    const cs=this.data.customers; const l=cs.filter(c=>c.highPri>0).sort((a,b)=>b.highPri-a.highPri||a.score-b.score);
+    return {tools:[{label:'support_cases',detail:'open, priority P1–P2',rows:`${cs.reduce((s,c)=>s+c.highPri,0)} rows`},{label:'health_scores',detail:'matching accounts',rows:`${l.length} rows`}],
+      answer:{title:`${l.length} customers have open high-priority cases`,
+        text:`${l.filter(c=>c.score<60).length} of these accounts are At Risk or Critical. Northwind alone has 3 open P1–P2 cases on the integrations API, which is the most concentrated support risk in the portfolio.`,
+        itemsLabel:'Accounts · from support_cases',
+        items:l.slice(0,6).map(c=>({name:c.name,tag:c.status,tone:c.status,customerId:c.id,bullets:[`${c.highPri} P1–P2 of ${c.issues} open cases`,`Renewal in ${c.renewDays} days`]})),
+        evidence:[{source:'support_cases',detail:'open P1–P2',value:`${cs.reduce((s,c)=>s+c.highPri,0)} cases`}],
+        actions:[{label:'Open in Customers',type:'filter',filters:{support:'P1–P2 open'}},{label:'View supporting data',type:'evidence'},{label:'Ask follow-up',type:'followup'}],
+        followups:['Which customers should I prioritize this week?'],meta:'2 sources · data as of Oct 3, 8:00 AM'}};
+  }
+
+  plan(q,ctx){
+    const s=q.toLowerCase(); const cs=this.data.customers;
+    const named=cs.find(c=>s.includes(c.first.toLowerCase()));
+    const c=named||ctx; const usedContext=!named&&!!ctx;
+    const clar=kind=>({usedContext:false,clarify:`Which customer do you mean? These have the largest health declines this month.`,options:[...cs].sort((a,b)=>a.hd-b.hd).slice(0,3).map(x=>({label:x.name,q:kind==='why'?`Why is ${x.first}'s health declining?`:`What changed for ${x.first} in the last 30 days?`}))});
+    if(/salesforce|pipeline|opportunit/.test(s)) return {tools:[{label:'crm.opportunities',detail:'Salesforce connector'}],failAt:0,error:'The Salesforce connector did not respond within 10 seconds. No answer was generated from partial data.'};
+    if(/nps|survey|csat|sentiment/.test(s)) return {tools:[{label:'catalog.search',detail:'nps_responses, surveys',rows:'0 sources'}],empty:'No survey or NPS data is connected, so I can’t answer this from source data. Connected sources: health_scores, usage_events, support_cases, contracts, activity_log.',suggestions:this.SUGG.slice(0,2)};
+    if(/prioriti|focus|attention|this week/.test(s)) return this.planPriority();
+    if(/driver/.test(s)) return this.planDrivers();
+    if(/declin/.test(s)&&/renew/.test(s)) return this.planDeclineRenew();
+    if(/enterprise/.test(s)) return this.planEnterprise();
+    if(/high-priority|p1|cases/.test(s)) return this.planCases();
+    if(/why|declin|drop/.test(s)){ if(!c) return clar('why'); return {...this.planWhy(c),usedContext}; }
+    if(/chang|happen|last 30/.test(s)){ if(!c) return clar('changed'); return {...this.planChanged(c),usedContext}; }
+    if(c) return {...this.planWhy(c),usedContext};
+    return {tools:[{label:'catalog.search',detail:'match question to sources',rows:'0 matches'}],empty:'I couldn’t match this question to the data I can access. Ask about customer health, usage, support cases, renewals or activity.',suggestions:this.SUGG.slice(0,3)};
+  }
+
+  later(ms,fn){ this.timers.push(setTimeout(fn,ms)); }
+  clearTimers(){ this.timers.forEach(clearTimeout); this.timers=[]; }
+  patchLast(p){ this.setState(s=>{ const t=s.thread.slice(); t[t.length-1]={...t[t.length-1],...p}; return {thread:t}; }); }
+  replaceLast(m){ this.setState(s=>{ const t=s.thread.slice(); t[t.length-1]=m; return {thread:t}; }); }
+  patchMsg(i,p){ this.setState(s=>{ const t=s.thread.slice(); t[i]={...t[i],...p}; return {thread:t}; }); }
+  pushMsg(m,end){ this.setState(s=>({thread:[...s.thread.filter(x=>x.kind!=='thinking'),m],busy:end?false:s.busy})); }
+
+  ask = (q)=>{
+    q=(q||'').trim(); if(!q) return;
+    this.clearTimers();
+    const ctx=this.state.page==='detail'?this.data.byId[this.state.customerId]:null;
+    const prev=[...this.state.thread].reverse().find(m=>m.kind==='answer');
+    const plan=this.plan(q,ctx);
+    const user={kind:'user',text:q,followupOf:prev?prev.title:null,context:plan.usedContext?ctx.name:null};
+    const thread=this.state.thread.filter(m=>m.kind!=='intro').map(m=>m.kind==='answer'?{...m,done:true,shown:m.text.length,itemsShown:m.items.length}:m).concat([user,{kind:'thinking'}]);
+    this.setState({thread,busy:true,input:'',copilotOpen:true,searchOpen:false});
+    let t=700; const steps=plan.tools||[];
+    if(steps.length){
+      this.later(t,()=>this.replaceLast({kind:'tools',steps,done:0}));
+      for(let j=0;j<steps.length;j++){ t+=520; const jj=j; if(plan.failAt===jj){ this.later(t,()=>this.patchLast({failedAt:jj})); break; } this.later(t,()=>this.patchLast({done:jj+1})); }
+    }
+    t+=320;
+    this.later(t,()=>{
+      if(plan.error) return this.pushMsg({kind:'error',text:plan.error,retry:q},true);
+      if(plan.empty) return this.pushMsg({kind:'empty',text:plan.empty,suggestions:plan.suggestions},true);
+      if(plan.clarify) return this.pushMsg({kind:'clarify',text:plan.clarify,options:plan.options},true);
+      this.stream({kind:'answer',...plan.answer,shown:0,itemsShown:0,done:false,evidenceOpen:false});
+    });
+  };
+  stream(ans){
+    this.pushMsg(ans,false);
+    const L=ans.text.length; let n=0;
+    const items=k=>{ if(k<ans.items.length){ this.patchLast({itemsShown:k+1}); this.later(150,()=>items(k+1)); } else { this.patchLast({done:true}); this.setState({busy:false}); } };
+    const tick=()=>{ n=Math.min(L,n+4); this.patchLast({shown:n}); if(n<L) this.later(20,tick); else this.later(120,()=>items(0)); };
+    this.later(80,tick);
+  }
+  runAction(a,i){
+    if(a.type==='view') return this.goDetail(a.customerId);
+    if(a.type==='investigate') return this.goDetail(a.customerId,a.tab||'health');
+    if(a.type==='evidence') return this.patchMsg(i,{evidenceOpen:!this.state.thread[i].evidenceOpen});
+    if(a.type==='filter') return this.applyFilters(a.filters);
+    if(a.type==='page') return this.go(a.page);
+    if(a.type==='followup' && this.inputRef.current) this.inputRef.current.focus();
+  }
+  newThread = ()=>{ this.clearTimers(); this.setState({thread:[{kind:'intro'}],busy:false,input:''}); };
+
+  viewThread(raw,live){
+    const noop=()=>{};
+    const F={isIntro:false,isUser:false,isThinking:false,isTools:false,isAnswer:false,isError:false,isEmpty:false,isClarify:false};
+    const sugg=list=>list.map(q=>({label:q,onClick:live?()=>this.ask(q):noop}));
+    return raw.map((m,i)=>{
+      if(m.kind==='intro') return {...F,isIntro:true,suggestions:sugg(this.SUGG)};
+      if(m.kind==='user') return {...F,isUser:true,text:m.text,hasFollowupOf:!!m.followupOf,followupOf:m.followupOf||'',hasContext:!!m.context,context:m.context||''};
+      if(m.kind==='thinking') return {...F,isThinking:true};
+      if(m.kind==='tools'){
+        const failed=m.failedAt!=null; const complete=m.done>=m.steps.length;
+        const steps=m.steps.map((st,j)=>{ const f=m.failedAt===j, d=j<m.done&&!f, r=j===m.done&&!failed;
+          return {label:st.label,detail:st.detail,icon:f?'✕':d?'✓':r?'◌':'○',stateText:f?'Timed out':d?(st.rows||'Done'):r?'Querying…':'Queued',stateColor:f?'#aa2d00':d?'#006400':'#41454d'}; });
+        return {...F,isTools:true,steps,header:failed?'Data retrieval failed':complete?`Retrieved data from ${m.steps.length} source${m.steps.length>1?'s':''}`:`Retrieving data · ${m.done} of ${m.steps.length}`};
+      }
+      if(m.kind==='answer'){
+        const items=m.items.slice(0,m.itemsShown).map(it=>{ const t=this.ST[it.tone]||this.ST.neutral; return {name:it.name,tag:it.tag,tagBg:t.bg,tagFg:t.fg,bullets:it.bullets.map(b=>({text:b})),hasAction:!!it.action,action:it.action||'',hasView:!!it.customerId,onView:live&&it.customerId?()=>this.goDetail(it.customerId):noop}; });
+        return {...F,isAnswer:true,title:m.title,text:m.text.slice(0,m.shown),streaming:!m.done,isDone:!!m.done,hasItems:items.length>0,items,itemsLabel:m.itemsLabel||'From source data',
+          evidenceOpen:!!m.evidenceOpen,evidence:m.evidence,
+          actions:m.actions.map(a=>({label:a.type==='evidence'?(m.evidenceOpen?'Hide supporting data':'View supporting data'):a.label,onClick:live?()=>this.runAction(a,i):noop})),
+          followups:sugg(m.followups),hasFollowups:m.followups.length>0,meta:m.meta};
+      }
+      if(m.kind==='error') return {...F,isError:true,text:m.text,onRetry:live?()=>this.ask(m.retry):noop};
+      if(m.kind==='empty') return {...F,isEmpty:true,text:m.text,suggestions:sugg(m.suggestions||[])};
+      if(m.kind==='clarify') return {...F,isClarify:true,text:m.text,options:m.options.map(o=>({label:o.label,onClick:live?()=>this.ask(o.q):noop}))};
+      return F;
+    });
+  }
+
+  go = (page)=>{ this.setState({page,rowMenu:null,notifOpen:false,userOpen:false}); if(this.mainRef.current) this.mainRef.current.scrollTop=0; };
+  goDetail = (id,tab)=>{ this.setState({page:'detail',customerId:id,tab:tab||'health',rowMenu:null,notifOpen:false,searchOpen:false,q:''}); if(this.mainRef.current) this.mainRef.current.scrollTop=0; };
+  applyFilters = (partial)=>{ this.setState({page:'customers',filters:{...this.emptyFilters(),...partial},pageNum:1}); this.startLoad(); if(this.mainRef.current) this.mainRef.current.scrollTop=0; };
+  setFilter(k,v){ this.setState(s=>({filters:{...s.filters,[k]:v},pageNum:1})); this.startLoad(); }
+  startLoad(){ clearTimeout(this.loadT); this.setState({loading:true}); this.loadT=setTimeout(()=>this.setState({loading:false}),450); }
+  toastMsg(t){ clearTimeout(this.toastT); this.setState({toast:t}); this.toastT=setTimeout(()=>this.setState({toast:null}),2800); }
+
+  componentDidMount(){
+    if(this.props.copilotOpenOnLoad) this.setState({copilotOpen:true});
+    this.onKey=e=>{
+      const mod=e.metaKey||e.ctrlKey;
+      if(mod&&e.key.toLowerCase()==='k'){ e.preventDefault(); this.searchRef.current&&this.searchRef.current.focus(); }
+      if(mod&&e.key.toLowerCase()==='j'){ e.preventDefault(); this.setState(s=>({copilotOpen:!s.copilotOpen})); }
+      if(e.key==='Escape') this.setState({rowMenu:null,notifOpen:false,userOpen:false,searchOpen:false});
+    };
+    document.addEventListener('keydown',this.onKey);
+  }
+  componentWillUnmount(){ document.removeEventListener('keydown',this.onKey); this.clearTimers(); }
+  componentDidUpdate(pp,ps){ if(ps.thread!==this.state.thread&&this.threadRef.current){ const el=this.threadRef.current; el.scrollTop=el.scrollHeight; } }
+
+  filtered(){
+    const f=this.state.filters;
+    const list=this.data.customers.filter(c=>{
+      if(f.search){ const s=f.search.toLowerCase(); if(!(c.name.toLowerCase().includes(s)||c.owner.toLowerCase().includes(s)||c.industry.toLowerCase().includes(s))) return false; }
+      if(f.health){ if(f.health==='risk'){ if(c.score>=60) return false; } else if(c.status!==f.health) return false; }
+      if(f.segment&&c.segment!==f.segment) return false;
+      if(f.industry&&c.industry!==f.industry) return false;
+      if(f.usage){ const u=c.usage; if(f.usage==='Declining'&&u>-10) return false; if(f.usage==='Stable'&&(u<=-10||u>=10)) return false; if(f.usage==='Growing'&&u<10) return false; }
+      if(f.renewal){ const d=c.renewDays; if(f.renewal==='30'&&d>30) return false; if(f.renewal==='90'&&d>90) return false; if(f.renewal==='180'&&d>180) return false; if(f.renewal==='181'&&d<=180) return false; }
+      if(f.risk&&c.riskStatus!==f.risk) return false;
+      if(f.arr){ const a=c.arr; if(f.arr==='lt100'&&a>=1e5) return false; if(f.arr==='100'&&(a<1e5||a>=5e5)) return false; if(f.arr==='500'&&(a<5e5||a>=1e6)) return false; if(f.arr==='1m'&&a<1e6) return false; }
+      if(f.support&&c.supportStatus!==f.support) return false;
+      return true;
+    });
+    const {key,dir}=this.state.sort; const m=dir==='asc'?1:-1;
+    const val=c=>key==='name'?c.name:key==='health'?c.score:key==='usage'?c.usage:key==='issues'?c.issues:key==='renewal'?c.renewDays:key==='arr'?c.arr:c.risk;
+    return list.sort((a,b)=>{ const x=val(a),y=val(b); return (typeof x==='string'?x.localeCompare(y):x-y)*m; });
+  }
+
+  renderVals(){
+    const s=this.state, D=this.data, cs=D.customers, N=D.N, page=s.page;
+    const fmt=v=>this.fmtArr(v);
+    const navItem=([id,label,count])=>{ const on=page===id||(id==='customers'&&page==='detail'); return {label,count:count||'',sub:'',hasSub:false,current:on?'page':undefined,bg:on?'#e0e2e6':'transparent',weight:on?500:400,go:()=>this.go(id)}; };
+    const nav=[['overview','Overview'],['customers','Customers'],['insights','Insights']].map(navItem);
+    const reviewNav=[['ai-states','Copilot for Power Users','11']].map(navItem);
+
+    const q=s.q.trim().toLowerCase();
+    const sr=q?cs.filter(c=>c.name.toLowerCase().includes(q)||c.owner.toLowerCase().includes(q)||c.industry.toLowerCase().includes(q)).slice(0,6):[];
+    const searchResults=sr.map(c=>({name:c.name,sub:`${c.sub} · ${c.owner}`,status:c.status,statusBg:c.statusBg,statusFg:c.statusFg,go:()=>this.goDetail(c.id)}));
+
+    const notifications=[
+      {text:'Acme Corporation moved to Critical (score 38)',when:'2 hours ago',go:()=>this.goDetail('acme')},
+      {text:'Brightline Retail renews in 29 days with no executive sponsor',when:'5 hours ago',go:()=>this.goDetail('brightline','renewal')},
+      {text:'New insight: declining usage concentrated in Enterprise',when:'Today, 8:00 AM',go:()=>this.go('insights')},
+      {text:'Northwind Logistics: third P1–P2 case opened this month',when:'Yesterday',go:()=>this.goDetail('northwind','support')},
+      {text:'Weekly portfolio digest is ready',when:'Monday',go:()=>this.go('overview')}
+    ].map((n,i)=>({...n,dot:s.notifRead||i>2?'#dddddd':'#aa2d00',go:()=>{ this.setState({notifOpen:false,notifRead:true}); n.go(); }}));
+
+    const atRisk=cs.filter(c=>c.score<60), declining=cs.filter(c=>c.usage<=-10), ren90=cs.filter(c=>c.renewDays<=90);
+    const hpTotal=cs.reduce((a,c)=>a+c.highPri,0), hpCust=cs.filter(c=>c.highPri>0);
+    const H=D.history, prev=H[4], curH=H[5];
+    const riskDelta=(curH.Critical+curH['At Risk'])-(prev.Critical+prev['At Risk']);
+    const kpis=[
+      {label:'Total customers',value:String(N),delta:'+2',deltaColor:'#41454d',sub:`${fmt(D.totalArr)} ARR`,go:()=>this.applyFilters({})},
+      {label:'Customers at risk',value:String(atRisk.length),delta:`+${riskDelta} vs. Sep`,deltaColor:'#aa2d00',sub:`${fmt(atRisk.reduce((a,c)=>a+c.arr,0))} ARR · At Risk + Critical`,go:()=>this.applyFilters({health:'risk'})},
+      {label:'Declining usage',value:String(declining.length),delta:'+4 vs. Sep',deltaColor:'#aa2d00',sub:'Down 10% or more over 60 days',go:()=>this.applyFilters({usage:'Declining'})},
+      {label:'Renewals in 90 days',value:String(ren90.length),delta:fmt(ren90.reduce((a,c)=>a+c.arr,0)),deltaColor:'#41454d',sub:`${ren90.filter(c=>c.score<60).length} At Risk or Critical`,go:()=>this.applyFilters({renewal:'90'})},
+      {label:'Open high-priority issues',value:String(hpTotal),delta:'+5 vs. Sep',deltaColor:'#aa2d00',sub:`P1–P2 across ${hpCust.length} customers`,go:()=>this.applyFilters({support:'P1–P2 open'})}
+    ];
+    const ask=q=>()=>this.ask(q);
+    const priority=[...cs].sort((a,b)=>b.risk-a.risk).slice(0,8).map(c=>({...c,go:()=>this.goDetail(c.id),onKey:e=>{ if(e.key==='Enter') this.goDetail(c.id); },doAction:e=>{ e.stopPropagation(); this.toastMsg(`Task created: ${c.action} · ${c.name} · assigned to ${c.owner}`); }}));
+
+    const healthDist=this.STATUSES.slice().reverse().map(st=>{ const n=D.cur[st]; const arr=cs.filter(c=>c.status===st).reduce((a,c)=>a+c.arr,0); return {label:st,count:n,pctText:this.pct(n,N)+'%',w:(n/N*100)+'%',bg:this.ST[st].fill,arrText:fmt(arr),delta:(n-prev[st]>0?'+':'')+(n-prev[st])}; });
+    const healthTrend=H.map(h=>({m:h.m,segs:this.STATUSES.map(st=>({h:(h[st]/N*100)+'%',bg:this.ST[st].fill,title:`${st}: ${h[st]}`})),label:`${h.Critical+h['At Risk']} at risk`}));
+
+    const ent=this.segAvg('Enterprise'),mm=this.segAvg('Mid-Market'),smb=this.segAvg('SMB');
+    const entDecl=cs.filter(c=>c.segment==='Enterprise'&&c.usage<=-10);
+    const ren90Risk=ren90.filter(c=>c.score<60);
+    const dr=this.drivers();
+    const signals=[
+      {title:`Enterprise weekly activity down ${Math.abs(ent)}% on average`,stat:`Mid-Market ${mm}%, SMB ${smb>0?'+':''}${smb}% over the same 60 days`,meta:`${entDecl.length} Enterprise accounts down 10%+ · ${fmt(entDecl.reduce((a,c)=>a+c.arr,0))} ARR`,onInvestigate:ask('Why is Enterprise usage declining?'),onView:()=>this.applyFilters({segment:'Enterprise',usage:'Declining'})},
+      {title:`${hpTotal} open P1–P2 cases across ${hpCust.length} customers`,stat:`${this.pct(hpCust.filter(c=>c.score<60).length,hpCust.length)}% of them sit in At Risk or Critical accounts`,meta:`Northwind has 3 on the integrations API · last 30 days`,onInvestigate:ask('Which customers have open high-priority cases?'),onView:()=>this.applyFilters({support:'P1–P2 open'})},
+      {title:`${fmt(ren90Risk.reduce((a,c)=>a+c.arr,0))} ARR renewing in 90 days is At Risk or Critical`,stat:`${ren90Risk.length} of ${ren90.length} renewals in the window`,meta:`Earliest: ${[...ren90Risk].sort((a,b)=>a.renewDays-b.renewDays)[0].name}, ${[...ren90Risk].sort((a,b)=>a.renewDays-b.renewDays)[0].renewIn}`,onInvestigate:ask('Which customers have declining usage and renew within 90 days?'),onView:()=>this.applyFilters({health:'risk',renewal:'90'})},
+      {title:`${dr.list[0].name} appears in ${dr.list[0].count} of ${dr.n} at-risk accounts`,stat:`${dr.multi} accounts show two or more risk drivers at once`,meta:'Across At Risk and Critical accounts',onInvestigate:ask('What are the biggest drivers of customer risk?'),onView:()=>this.go('insights')}
+    ];
+    const grow=cs.filter(c=>c.usage>=10).sort((a,b)=>b.usage-a.usage)[0];
+    const activity=[
+      ['2h ago','acme','Health','Moved from At Risk to Critical (score 38)'],
+      ['4h ago','northwind','Support','P1 integrations API case escalated to engineering'],
+      ['Yesterday','brightline','Renewal','Renewal opportunity moved to negotiation'],
+      ['Yesterday','helix','Account','New champion candidate identified by Priya Raman'],
+      ['2 days ago','meridian','Meeting','QBR held; customer flagged an upcoming budget review'],
+      ['2 days ago',grow?grow.id:'acme','Usage',grow?`Usage up ${grow.usage}%; flagged for expansion`:''],
+      ['3 days ago','cobalt','Support','SSO case reopened after failed fix'],
+      ['3 days ago',null,'Operations','Elena Torres reassigned 3 accounts to Sam Okafor']
+    ].map(([when,id,type,text])=>({when,type,text,hasCustomer:!!id,customer:id?D.byId[id].name:'',go:id?()=>this.goDetail(id):()=>{}}));
+
+    const f=s.filters; const forced=this.props.customersState||'live';
+    const all=this.filtered(); const PS=12; const pages=Math.max(1,Math.ceil(all.length/PS)); const pn=Math.min(s.pageNum,pages);
+    const isError=forced==='error'; const isLoading=!isError&&(forced==='loading'||s.loading); const isEmpty=!isError&&!isLoading&&(forced==='empty'||all.length===0);
+    const showRows=!isError&&!isLoading&&!isEmpty;
+    const rows=all.slice((pn-1)*PS,pn*PS).map(c=>({...c,go:()=>this.goDetail(c.id),onKey:e=>{ if(e.key==='Enter') this.goDetail(c.id); },watched:!!s.watch[c.id],
+      onMenu:e=>{ e.stopPropagation(); const r=e.currentTarget.getBoundingClientRect(); this.setState({rowMenu:{id:c.id,top:r.bottom+4,left:Math.max(8,r.right-220)}}); }}));
+    const opt=(arr,allLabel)=>[{v:'',l:allLabel},...arr.map(a=>Array.isArray(a)?{v:a[0],l:a[1]}:{v:a,l:a})];
+    const industries=[...new Set(cs.map(c=>c.industry))].sort();
+    const fdefs=[
+      ['health','Health',opt([['risk','At Risk + Critical'],'Critical','At Risk','Monitor','Healthy'],'Health: All')],
+      ['segment','Segment',opt(['Enterprise','Mid-Market','SMB'],'Segment: All')],
+      ['industry','Industry',opt(industries,'Industry: All')],
+      ['usage','Usage trend',opt([['Declining','Declining (≤ −10%)'],['Stable','Stable'],['Growing','Growing (≥ +10%)']],'Usage: All')],
+      ['renewal','Renewal window',opt([['30','Renews ≤ 30 days'],['90','Renews ≤ 90 days'],['180','Renews ≤ 180 days'],['181','Renews > 180 days']],'Renewal: Any')],
+      ['risk','Risk status',opt(['Open risk','Mitigating','Watch','None'],'Risk status: All')],
+      ['arr','ARR',opt([['lt100','< $100K'],['100','$100K – $500K'],['500','$500K – $1M'],['1m','> $1M']],'ARR: Any')],
+      ['support','Support status',opt(['P1–P2 open','Open cases','Clear'],'Support: All')]
+    ];
+    const filterDefs=fdefs.map(([k,label,options])=>({key:k,label,options,value:f[k],border:f[k]?'#181d26':'#dddddd',bg:f[k]?'#f8fafc':'#ffffff',onChange:e=>this.setFilter(k,e.target.value)}));
+    const activeChips=fdefs.filter(([k])=>f[k]).map(([k,label,options])=>({label:`${label}: ${(options.find(o=>o.v===f[k])||{l:f[k]}).l}`,remove:()=>this.setFilter(k,'')}));
+    if(f.search) activeChips.unshift({label:`Search: “${f.search}”`,remove:()=>this.setFilter('search','')});
+    const views=[
+      {label:'Renewal risk: At Risk · declining usage · renews ≤ 90 days',filters:{health:'At Risk',usage:'Declining',renewal:'90'}},
+      {label:'P1–P2 cases open',filters:{support:'P1–P2 open'}},
+      {label:'Enterprise with declining usage',filters:{segment:'Enterprise',usage:'Declining'}}
+    ].map(v=>{ const on=Object.keys(this.emptyFilters()).every(k=>(v.filters[k]||'')===f[k]); return {label:v.label,border:on?'#181d26':'#dddddd',bg:on?'#f8fafc':'#ffffff',pressed:on,go:()=>this.applyFilters(v.filters)}; });
+    const sortCol=(key,label,right)=>({label,sortable:!!key,notSortable:!key,justify:right?'flex-end':'flex-start',
+      arrow:s.sort.key===key?(s.sort.dir==='asc'?'↑':'↓'):'',ariaSort:s.sort.key===key?(s.sort.dir==='asc'?'ascending':'descending'):'none',
+      onSort:()=>{ this.setState(st=>({sort:{key,dir:st.sort.key===key&&st.sort.dir==='desc'?'asc':'desc'},pageNum:1})); this.startLoad(); }});
+    const columns=[sortCol('name','Customer'),sortCol('health','Health'),sortCol(null,'Trend'),sortCol('usage','Usage (60d)'),sortCol('issues','Open issues'),sortCol(null,'Support'),sortCol('renewal','Renewal'),sortCol('arr','ARR',true),sortCol(null,'Risk status'),sortCol(null,'Owner'),sortCol(null,'')];
+    const pageBtns=Array.from({length:pages},(_,i)=>({n:i+1,bg:i+1===pn?'#181d26':'#ffffff',fg:i+1===pn?'#ffffff':'#181d26',current:i+1===pn?'page':undefined,go:()=>this.setState({pageNum:i+1})}));
+    const rm=s.rowMenu; const rmc=rm?D.byId[rm.id]:null;
+    const rowMenuItems=rmc?[
+      {label:'View customer',fn:()=>this.goDetail(rmc.id)},
+      {label:'Investigate with AI',fn:()=>{ this.setState({rowMenu:null}); this.ask(`Why is ${rmc.first}'s health declining?`); }},
+      {label:s.watch[rmc.id]?'Remove from watchlist':'Add to watchlist',fn:()=>{ const w={...s.watch,[rmc.id]:!s.watch[rmc.id]}; this.setState({watch:w,rowMenu:null}); this.toastMsg(`${rmc.name} ${w[rmc.id]?'added to':'removed from'} your watchlist`); }},
+      {label:'Copy account link',fn:()=>{ this.setState({rowMenu:null}); this.toastMsg('Link copied'); }}
+    ]:[];
+
+    const c=D.byId[s.customerId]; const d=this.detail(c);
+    const tabs=[['health','Health'],['usage','Product usage'],['support','Support',String(c.issues)],['renewal','Renewal'],['activity','Activity']].map(([id,label,count])=>({label,count:count||'',hasCount:!!count,selected:s.tab===id,border:s.tab===id?'#181d26':'transparent',color:s.tab===id?'#181d26':'#41454d',go:()=>this.setState({tab:id})}));
+    const investigate=()=>this.ask(c.hd<0?`Why is ${c.first}'s health declining?`:`What changed for ${c.first} in the last 30 days?`);
+
+    const insights=[
+      {title:'Declining usage is concentrated among Enterprise customers',summary:`Enterprise customers have experienced a ${Math.abs(ent)}% average decline in weekly activity over the last 60 days, compared with ${mm}% for Mid-Market and ${smb>0?'+':''}${smb}% for SMB.`,timeframe:'Aug 4 – Oct 3, 2026 · 60 days',basis:`usage_events · ${cs.filter(x=>x.segment==='Enterprise').length*12} weekly observations`,
+        evidence:[{k:'Enterprise avg. change',v:`${ent}%`},{k:'Mid-Market avg. change',v:`${mm}%`},{k:'SMB avg. change',v:`${smb}%`},{k:'Enterprise ARR in declining accounts',v:fmt(entDecl.reduce((a,x)=>a+x.arr,0))}],affectedList:entDecl,q:'Why is Enterprise usage declining?',view:{segment:'Enterprise',usage:'Declining'}},
+      {title:'High-priority support load sits in at-risk accounts',summary:`${hpCust.filter(x=>x.score<60).length} of ${hpCust.length} customers with open P1–P2 cases are At Risk or Critical. Cases opened per week at P1–P2 rose from 3 to 8 over 12 weeks.`,timeframe:'Jul 18 – Oct 3, 2026 · 12 weeks',basis:`support_cases · ${hpTotal} open P1–P2`,
+        evidence:[{k:'Open P1–P2 cases',v:String(hpTotal)},{k:'In At Risk or Critical accounts',v:String(hpCust.filter(x=>x.score<60).reduce((a,x)=>a+x.highPri,0))},{k:'Weekly P1–P2 opened (12 wks ago → now)',v:'3 → 8'}],affectedList:hpCust,q:'Which customers have open high-priority cases?',view:{support:'P1–P2 open'}},
+      {title:'Renewal exposure in the next 90 days',summary:`${ren90Risk.length} of ${ren90.length} renewals due before Jan 1, 2027 are At Risk or Critical, representing ${fmt(ren90Risk.reduce((a,x)=>a+x.arr,0))} of ${fmt(ren90.reduce((a,x)=>a+x.arr,0))} renewing ARR.`,timeframe:'Oct 3, 2026 – Jan 1, 2027',basis:`contracts + health_scores · ${ren90.length} renewals`,
+        evidence:[{k:'Renewals in window',v:String(ren90.length)},{k:'At Risk or Critical',v:String(ren90Risk.length)},{k:'ARR at risk',v:fmt(ren90Risk.reduce((a,x)=>a+x.arr,0))}],affectedList:ren90Risk,q:'Which customers have declining usage and renew within 90 days?',view:{health:'risk',renewal:'90'}}
+    ].map(x=>({...x,affected:x.affectedList.slice(0,6).map(a=>({name:a.name,go:()=>this.goDetail(a.id)})),affectedCount:`Affected customers (${x.affectedList.length})`,hasMore:x.affectedList.length>6,more:`+${x.affectedList.length-6} more`,onInvestigate:ask(x.q),onView:()=>this.applyFilters(x.view)}));
+    const driverBars=dr.list.map(x=>({name:x.name,count:`${x.count} of ${dr.n}`,w:this.pct(x.count,dr.n)+'%',arr:fmt(x.arr)}));
+    const segColors={Enterprise:'#aa2d00','Mid-Market':'#1b61c9',SMB:'#181d26'};
+    const usageSeries=['Enterprise','Mid-Market','SMB'].map(seg=>{ const l=cs.filter(x=>x.segment===seg); const avg=Array.from({length:12},(_,i)=>l.reduce((a,x)=>a+x.usageVals[i],0)/l.length); return {seg,color:segColors[seg],pts:avg.map((v,i)=>`${(i*600/11).toFixed(1)},${(180-(v-60)/55*170).toFixed(1)}`).join(' '),end:`${Math.round(avg[11]-100)}%`}; });
+    const sup=[[3,14],[2,15],[4,13],[3,16],[3,15],[4,14],[5,17],[4,16],[6,18],[7,19],[6,18],[8,21]];
+    const supMax=30;
+    const supportBars=sup.map(([h,o],i)=>({w:d.weeks[i],hi:(h/supMax*100)+'%',lo:(o/supMax*100)+'%',label:String(h+o)}));
+    const months=['Oct','Nov','Dec','Jan','Feb','Mar'];
+    const rb=months.map((m,i)=>{ const l=cs.filter(x=>Math.floor(x.renewDays/30)===i); const by={}; this.STATUSES.forEach(st=>by[st]=l.filter(x=>x.status===st).reduce((a,x)=>a+x.arr,0)); return {m,by,total:l.reduce((a,x)=>a+x.arr,0),n:l.length}; });
+    const rbMax=Math.max(...rb.map(x=>x.total));
+    const renewalBars=rb.map(x=>({m:x.m,total:fmt(x.total),n:`${x.n} renewals`,h:(x.total/rbMax*100)+'%',segs:this.STATUSES.map(st=>({h:x.total?(x.by[st]/x.total*100)+'%':'0%',bg:this.ST[st].fill}))}));
+
+    const nOpen=s.notifRead?0:3;
+    const rowMsg=s.copilotOpen;
+    const listM=s.searchOpen&&q;
+    return {
+      nav,reviewNav,portfolioName:'All customers',portfolioMeta:`${N} accounts · ${fmt(D.totalArr)} ARR`,
+      searchRef:this.searchRef,q:s.q,onSearch:e=>this.setState({q:e.target.value,searchOpen:true}),onSearchFocus:()=>this.setState({searchOpen:true}),onSearchBlur:()=>setTimeout(()=>this.setState({searchOpen:false}),150),
+      onSearchKey:e=>{ if(e.key==='Enter'&&sr[0]) this.goDetail(sr[0].id); },
+      searchOpen:!!listM,searchResults,noSearchResults:!!q&&!sr.length,askSearch:()=>this.ask(s.q),
+      toggleCopilot:()=>this.setState(st=>({copilotOpen:!st.copilotOpen})),copilotOpen:s.copilotOpen,copilotBtnBorder:s.copilotOpen?'#181d26':'#dddddd',copilotBtnBg:s.copilotOpen?'#f8fafc':'#ffffff',
+      toggleNotif:()=>this.setState(st=>({notifOpen:!st.notifOpen,userOpen:false})),notifOpen:s.notifOpen,hasUnread:nOpen>0,unreadCount:String(nOpen),markRead:()=>this.setState({notifRead:true}),notifications,
+      toggleUser:()=>this.setState(st=>({userOpen:!st.userOpen,notifOpen:false})),userOpen:s.userOpen,
+      userItems:['Profile settings','Notification preferences','Sign out'].map(label=>({label,fn:()=>{ this.setState({userOpen:false}); this.toastMsg(label==='Sign out'?'Sign-out is not available in this prototype':label+' is not available in this prototype'); }})),
+      mainRef:this.mainRef,
+      isOverview:page==='overview',isCustomers:page==='customers',isDetail:page==='detail',isInsights:page==='insights',isAiStates:page==='ai-states',
+      portfolioLine:`${N} customers · ${fmt(D.totalArr)} ARR · Owners: Priya Raman, Marcus Bell, Elena Torres, Sam Okafor, Jules Whitfield`,
+      askPriority:ask('Which customers should I prioritize this week?'),kpis,goCustomersRisk:()=>this.applyFilters({health:'risk'}),priority,
+      healthSummary:`${D.cur.Critical+D.cur['At Risk']} of ${N} customers are At Risk or Critical`,healthDist,healthTrend,signals,activity,
+      resultLine:`${all.length} of ${N} customers`,views,filterSearch:f.search,onFilterSearch:e=>this.setFilter('search',e.target.value),filterDefs,
+      hasChips:activeChips.length>0,activeChips,clearAll:()=>{ this.setState({filters:this.emptyFilters(),pageNum:1}); this.startLoad(); },
+      isLoading,columns,skeleton:Array.from({length:8},(_,i)=>({w:(45+(i*13)%40)+'%'})),isError,retry:()=>this.startLoad(),isEmpty,askFromEmpty:()=>this.ask('Which customers should I prioritize this week?'),showRows,rows,
+      rangeLine:all.length?`Showing ${(pn-1)*PS+1}–${Math.min(pn*PS,all.length)} of ${all.length}`:'No results',
+      prevPage:()=>this.setState({pageNum:Math.max(1,pn-1)}),prevDisabled:pn<=1,pageBtns,nextPage:()=>this.setState({pageNum:Math.min(pages,pn+1)}),nextDisabled:pn>=pages,
+      backToCustomers:()=>this.go('customers'),c,logAction:()=>this.toastMsg(`Action logged for ${c.name}`),investigate,healthPrev:String(c.score-c.hd),
+      tabs,tabHealth:s.tab==='health',tabUsage:s.tab==='usage',tabSupport:s.tab==='support',tabRenewal:s.tab==='renewal',tabActivity:s.tab==='activity',
+      d,recentChanges:d.timeline.slice(0,4),hpText:String(c.highPri),caseTotal:String(d.caseVol.reduce((a,x)=>a+x.v,0)),hasOpenCases:d.open.length>0,noOpenCases:d.open.length===0,
+      insights,driverN:String(dr.n),driverMulti:`${dr.multi} of ${dr.n} accounts show two or more drivers`,driverBars,usageSeries,supportBars,renewalBars,weekAxis:[d.weeks[0],d.weeks[4],d.weeks[8],d.weeks[11]].map(w=>({w})),
+      aiStates:this.aiStates,
+      hasCopilotContext:page==='detail',copilotContext:page==='detail'?c.name:'',newThread:this.newThread,closeCopilot:()=>this.setState({copilotOpen:false}),
+      threadRef:this.threadRef,threadView:this.viewThread(s.thread,true),inputRef:this.inputRef,input:s.input,onInput:e=>this.setState({input:e.target.value}),
+      onInputKey:e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); this.ask(s.input); } },
+      inputPlaceholder:page==='detail'?`Ask about ${c.name}…`:'Ask about customers, health, usage, renewals…',
+      send:()=>this.ask(s.input),sendDisabled:s.busy||!s.input.trim(),sendOpacity:s.busy||!s.input.trim()?0.4:1,
+      copilotStatus:s.busy?'Working… answers use connected sources only.':'Answers are generated from connected sources. Check source data before acting.',
+      anyMenu:!!(s.rowMenu||s.notifOpen||s.userOpen),closeMenus:()=>this.setState({rowMenu:null,notifOpen:false,userOpen:false}),
+      rowMenuOpen:!!rm,rowMenuTop:rm?rm.top+'px':'0',rowMenuLeft:rm?rm.left+'px':'0',rowMenuItems,hasToast:!!s.toast,toast:s.toast||''
+    };
+  }
+
+  get aiStates(){
+    if(this._g) return this._g;
+    const D=this.data, acme=D.byId.acme;
+    const ans=(p,o)=>({kind:'answer',...p.answer,shown:p.answer.text.length,itemsShown:p.answer.items.length,done:true,evidenceOpen:false,...o});
+    const tools=(p,done,extra)=>({kind:'tools',steps:p.tools,done,...extra});
+    const why=this.planWhy(acme), pri=this.planPriority();
+    const q1={kind:'user',text:'Which customers should I prioritize this week?'};
+    const q2={kind:'user',text:'Why is Acme\'s health declining?'};
+    const states=[
+      ['Copilot closed','Page content uses the full width. Copilot opens from the top bar or from an Investigate action.',null,true],
+      ['Empty thread','First open. Suggested questions only; no claims are made.',[{kind:'intro'}]],
+      ['Thinking','Question sent. The thread shows progress before any source is queried.',[q1,{kind:'thinking'}]],
+      ['Retrieving data','Each source is listed with its own state while queries run.',[q1,tools(pri,2)]],
+      ['Streaming answer','Text streams first, then source-data items appear below it.',[q1,tools(pri,pri.tools.length),ans(pri,{shown:140,itemsShown:1,done:false})]],
+      ['Answer','Complete answer. Cream surface is AI interpretation; hairline boxes are source data.',[q1,tools(pri,pri.tools.length),ans(pri)]],
+      ['Answer with supporting data','Evidence list opened from "View supporting data".',[q1,tools(pri,pri.tools.length),ans(pri,{evidenceOpen:true})]],
+      ['Customer context','Opened from a customer page. The customer is attached to the question.',[{...q2,context:'Acme Corporation'},tools(why,why.tools.length),ans(why)]],
+      ['Clarification','The question is ambiguous. Options are drawn from current data.',[{kind:'user',text:'Why is health declining?'},{kind:'clarify',text:'Which customer do you mean? These have the largest health declines this month.',options:[...D.customers].sort((a,b)=>a.hd-b.hd).slice(0,3).map(x=>({label:x.name,q:'Why is '+x.first+'\'s health declining?'}))}]],
+      ['Source error','A connector timed out. No answer is generated from partial data.',[{kind:'user',text:'Show open Salesforce opportunities'},{kind:'tools',steps:[{label:'crm.opportunities',detail:'Salesforce connector'}],done:0,failedAt:0},{kind:'error',text:'The Salesforce connector did not respond within 10 seconds. No answer was generated from partial data.',retry:'Show open Salesforce opportunities'}]],
+      ['No data available','The question falls outside connected sources, and the thread says so.',[{kind:'user',text:'What is our NPS trend?'},{kind:'tools',steps:[{label:'catalog.search',detail:'nps_responses, surveys',rows:'0 sources'}],done:1},{kind:'empty',text:'No survey or NPS data is connected, so I can\u2019t answer this from source data. Connected sources: health_scores, usage_events, support_cases, contracts, activity_log.',suggestions:this.SUGG.slice(0,2)}]]
+    ];
+    this._g=states.map(([label,desc,msgs,closed],i)=>({num:String(i+1).padStart(2,'0'),label,desc,isClosed:!!closed,isPanel:!closed,messages:msgs?this.viewThread(msgs,false):[]}));
+    return this._g;
+  }
+}
+</script>
+</body>
+</html>
