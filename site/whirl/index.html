@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
-<script src="./image-slot.js"></script>
+<title>How I would work with the Whirl team</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>html{scroll-behavior:smooth}body{margin:0;background:#fff;font-family:Inter,system-ui,-apple-system,sans-serif;color:#333840}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}section{scroll-margin-top:24px}</style>
-</helmet>
+<style>html{scroll-behavior:smooth}body{margin:0;background:#fff;font-family:Inter,system-ui,-apple-system,sans-serif;color:#333840}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}section{scroll-margin-top:24px}.panel{display:none}.panel.on{display:block}.ind{display:none;position:absolute;left:24px;right:24px;bottom:0;height:3px;background:#181d26;border-radius:2px}.tab.on .ind{display:block}[data-h="0"]:hover{background:#f5e9d4 !important;border-color:#181d26 !important;transform:translateY(-2px) !important}[data-h="1"]:hover{background:#f5e9d4 !important;color:#181d26 !important}[data-h="2"]:hover{background:#fff !important;color:#181d26 !important}</style>
+</head>
+<body>
+
 <div style="max-width:1280px;margin:0 auto;padding:0 48px;font-size:16px;line-height:1.5">
 
 <section data-screen-label="01 Title" style="padding:96px 0 72px">
@@ -25,14 +22,14 @@
 <section data-screen-label="02 Contents" style="background:#f8fafc;border-radius:12px;padding:48px">
   <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d;margin-bottom:24px">CONTENTS</div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
-    <a href="#process" onClick="{{ goProcess }}" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" style-hover="background:#f5e9d4;border-color:#181d26;transform:translateY(-2px)"><sc-if value="{{ isProcess }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:24px;right:24px;bottom:0;height:3px;background:#181d26;border-radius:2px"></div></sc-if><div style="font-size:14px;color:#41454d">01</div><div style="font-size:20px;margin:8px 0 8px">Basic process</div><div style="font-size:14px;line-height:1.4;color:#333840">Seven steps, compressed when context and patterns exist.</div></a>
-    <a href="#pipeline" onClick="{{ goPipeline }}" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" style-hover="background:#f5e9d4;border-color:#181d26;transform:translateY(-2px)"><sc-if value="{{ isPipeline }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:24px;right:24px;bottom:0;height:3px;background:#181d26;border-radius:2px"></div></sc-if><div style="font-size:14px;color:#41454d">02</div><div style="font-size:20px;margin:8px 0 8px">Design-to-code pipeline</div><div style="font-size:14px;line-height:1.4;color:#333840">What changes for the team and the product.</div></a>
-    <a href="#grounding" onClick="{{ goGrounding }}" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" style-hover="background:#f5e9d4;border-color:#181d26;transform:translateY(-2px)"><sc-if value="{{ isGrounding }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:24px;right:24px;bottom:0;height:3px;background:#181d26;border-radius:2px"></div></sc-if><div style="font-size:14px;color:#41454d">03</div><div style="font-size:20px;margin:8px 0 8px">Grounding the team</div><div style="font-size:14px;line-height:1.4;color:#333840">Helping the team make better decisions.</div></a>
-  <a href="#visualizing" onClick="{{ goVisualizing }}" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" style-hover="background:#f5e9d4;border-color:#181d26;transform:translateY(-2px)"><sc-if value="{{ isVisualizing }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:24px;right:24px;bottom:0;height:3px;background:#181d26;border-radius:2px"></div></sc-if><div style="font-size:14px;color:#41454d">04</div><div style="font-size:20px;margin:8px 0 8px">Visualizing Complexity</div><div style="font-size:14px;line-height:1.4;color:#333840">Navigating operational data with and without AI.</div></a>
+    <a class="tab" data-tab="process" href="#process" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" data-h="0"><div class="ind"></div><div style="font-size:14px;color:#41454d">01</div><div style="font-size:20px;margin:8px 0 8px">Basic process</div><div style="font-size:14px;line-height:1.4;color:#333840">Seven steps, compressed when context and patterns exist.</div></a>
+    <a class="tab" data-tab="pipeline" href="#pipeline" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" data-h="0"><div class="ind"></div><div style="font-size:14px;color:#41454d">02</div><div style="font-size:20px;margin:8px 0 8px">Design-to-code pipeline</div><div style="font-size:14px;line-height:1.4;color:#333840">What changes for the team and the product.</div></a>
+    <a class="tab" data-tab="grounding" href="#grounding" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" data-h="0"><div class="ind"></div><div style="font-size:14px;color:#41454d">03</div><div style="font-size:20px;margin:8px 0 8px">Grounding the team</div><div style="font-size:14px;line-height:1.4;color:#333840">Helping the team make better decisions.</div></a>
+  <a class="tab" data-tab="visualizing" href="#visualizing" style="position:relative;display:block;background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px;color:#181d26;transition:background .15s,border-color .15s,transform .15s" data-h="0"><div class="ind"></div><div style="font-size:14px;color:#41454d">04</div><div style="font-size:20px;margin:8px 0 8px">Visualizing Complexity</div><div style="font-size:14px;line-height:1.4;color:#333840">Navigating operational data with and without AI.</div></a>
   </div>
 </section>
 
-<sc-if value="{{ isProcess }}" hint-placeholder-val="{{ true }}"><section id="process" data-screen-label="03 Basic process" style="padding:96px 0">
+<section class="panel" id="process" data-screen-label="03 Basic process" style="padding:96px 0">
   <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d;margin-bottom:16px">01 · BASIC PROCESS</div>
   <h2 style="font-size:40px;line-height:1.2;font-weight:400;color:#181d26;margin:0 0 16px;max-width:760px">Seven steps from problem to measured impact, then back around</h2>
   <p style="font-size:20px;line-height:1.5;color:#333840;margin:0 0 48px;max-width:760px">Steps 1-2 build understanding. Step 3 is design. Steps 4-5 are development and final review. Steps 6-7 close the loop with data and feedback.</p>
@@ -49,9 +46,9 @@
     <div><div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#181d26;margin-bottom:8px">THE PROCESS CAN BE COMPRESSED</div><div style="font-size:24px;line-height:1.35;color:#181d26">When context is known and relevant patterns are available, the steps shorten.</div></div>
     <div style="font-size:14px;line-height:1.5;color:#181d26;display:grid;gap:12px"><div><b style="font-weight:500">Context is known:</b> steps 1-2 shrink to confirming what is already understood.</div><div><b style="font-weight:500">Patterns exist:</b> step 3 starts from them, with fewer options to weigh.</div></div>
   </div>
-</section></sc-if>
+</section>
 
-<sc-if value="{{ isPipeline }}" hint-placeholder-val="{{ false }}"><section id="pipeline" data-screen-label="04 Design-to-code pipeline" style="position:relative;background:#181d26;color:#fff;border-radius:12px;padding:72px 48px"><a href="uploads/Design-to-code-pipeline.pptx" download="Design-to-code-pipeline.pptx" style="position:absolute;top:32px;right:32px;display:inline-flex;align-items:center;gap:8px;background:#fff;color:#181d26;border-radius:12px;padding:12px 20px;font-size:16px;font-weight:500;line-height:1.4" style-hover="background:#f5e9d4;color:#181d26">View the slides ↗</a>
+<section class="panel" id="pipeline" data-screen-label="04 Design-to-code pipeline" style="position:relative;background:#181d26;color:#fff;border-radius:12px;padding:72px 48px"><a href="uploads/Design-to-code-pipeline.pptx" download="Design-to-code-pipeline.pptx" style="position:absolute;top:32px;right:32px;display:inline-flex;align-items:center;gap:8px;background:#fff;color:#181d26;border-radius:12px;padding:12px 20px;font-size:16px;font-weight:500;line-height:1.4" data-h="1">View the slides ↗</a>
   <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;margin-bottom:16px">02 · BENEFITS OF THE DESIGN-TO-CODE PIPELINE</div>
   <h2 style="font-size:40px;line-height:1.2;font-weight:400;margin:0 0 16px;max-width:760px">Review on a real, production-ready page</h2>
   <p style="font-size:20px;line-height:1.5;margin:0 0 48px;max-width:760px">Handoffs, design system updates and guideline writing have always taken repeated reviews. One simple format can improve several of these at once.</p>
@@ -65,10 +62,10 @@
     <div><div style="font-size:20px;margin-bottom:8px">Fewer review loops</div><div style="font-size:14px;line-height:1.5">The team reviews a real page instead of a Figma simulation. The design system is managed on the MCP server instead of through Figma, Storybook and production.</div></div>
     <div><div style="font-size:20px;margin-bottom:8px">Time for higher-level patterns</div><div style="font-size:14px;line-height:1.5">Saved time goes to reusable patterns for flows and pages, which match how product, engineers and users think.</div></div>
   </div>
-<div style="margin-top:48px;background:#fcab79;color:#181d26;border-radius:12px;padding:40px 48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px 32px"><div><div style="font-size:14px;font-weight:500;letter-spacing:0.16px;margin-bottom:8px">SEE IT IN PRACTICE</div><div style="font-size:32px;line-height:1.2">Design-to-code sample prototypes</div></div><a href="https://www.thehigherwave.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#181d26;color:#fff;border-radius:12px;padding:16px 28px;font-size:18px;font-weight:500;line-height:1.4" style-hover="background:#fff;color:#181d26">View prototypes ↗</a></div>
-</section></sc-if>
+<div style="margin-top:48px;background:#fcab79;color:#181d26;border-radius:12px;padding:40px 48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px 32px"><div><div style="font-size:14px;font-weight:500;letter-spacing:0.16px;margin-bottom:8px">SEE IT IN PRACTICE</div><div style="font-size:32px;line-height:1.2">Design-to-code sample prototypes</div></div><a href="https://www.thehigherwave.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#181d26;color:#fff;border-radius:12px;padding:16px 28px;font-size:18px;font-weight:500;line-height:1.4" data-h="2">View prototypes ↗</a></div>
+</section>
 
-<sc-if value="{{ isGrounding }}" hint-placeholder-val="{{ false }}"><section id="grounding" data-screen-label="05 Grounding the team" style="padding:96px 0">
+<section class="panel" id="grounding" data-screen-label="05 Grounding the team" style="padding:96px 0">
   <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d;margin-bottom:16px">03 · GROUNDING THE TEAM</div>
   <h2 style="font-size:40px;line-height:1.2;font-weight:400;color:#181d26;margin:0 0 16px;max-width:760px">How we can help the team make better decisions</h2>
   <p style="font-size:20px;line-height:1.5;color:#333840;margin:0 0 48px;max-width:760px">Design critique tends to fail without a frame of reference. A shared set of questions and reference artifacts gives the team one.</p>
@@ -96,39 +93,21 @@
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:32px">
     <a href="https://www.thehigherwave.com/#p=obs-journey" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><img src="thumb-journey.png" alt="Journey Maps prototype" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #ddd;border-radius:10px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px"><div><div style="font-size:24px;line-height:1.35">Journey Maps</div><div style="font-size:14px;color:#41454d;margin-top:4px">By vertical and persona</div></div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></div></a>
     <a href="https://www.thehigherwave.com/#p=prod-decision-guides" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><img src="thumb-decision.png" alt="Decision Guides prototype" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #ddd;border-radius:10px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px"><div><div style="font-size:24px;line-height:1.35">Decision Guides</div></div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></div></a>
-    <div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><image-slot id="thumb-prd-writer" shape="rect" placeholder="Drop a thumbnail for AI Product Requirements Writer"></image-slot></div><a href="https://www.thehigherwave.com/prototypes/productivity/product-requirement-writer/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">AI Product Requirements Writer</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div>
-    <div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><image-slot id="thumb-workflow-mapping" shape="rect" placeholder="Drop a thumbnail for Workflow Mapping"></image-slot></div><a href="https://www.thehigherwave.com/prototypes/workflows/workflow-mapping/index.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">Workflow Mapping</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div>
+    <div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><img src="thumb-prd-writer.webp" alt="" style="display:block;width:100%;height:100%;object-fit:cover"></div><a href="https://www.thehigherwave.com/prototypes/productivity/product-requirement-writer/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">AI Product Requirements Writer</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div>
+    <div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><img src="thumb-workflow-mapping.webp" alt="" style="display:block;width:100%;height:100%;object-fit:cover"></div><a href="https://www.thehigherwave.com/prototypes/workflows/workflow-mapping/index.html" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">Workflow Mapping</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div>
   </div>
-</section></sc-if>
-<sc-if value="{{ isVisualizing }}" hint-placeholder-val="{{ false }}"><section id="visualizing" data-screen-label="06 Visualizing Complexity" style="padding:96px 0">
+</section>
+<section class="panel" id="visualizing" data-screen-label="06 Visualizing Complexity" style="padding:96px 0">
   <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d;margin-bottom:16px">04 · VISUALIZING COMPLEXITY</div>
   <h2 style="font-size:40px;line-height:1.2;font-weight:400;color:#181d26;margin:0 0 16px;max-width:760px">Visualizing Complexity</h2>
   <p style="font-size:20px;line-height:1.5;color:#333840;margin:0;max-width:760px">Navigating operational data with and without AI.</p>
-  <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:32px"><a href="https://www.thehigherwave.com/#p=obs-process-impact" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><img src="thumb-visualizations.png" alt="Complex Visualizations prototype" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #ddd;border-radius:10px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px"><div><div style="font-size:24px;line-height:1.35">Complex Visualizations</div></div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></div></a><div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><image-slot id="thumb-workflow-builder" shape="rect" placeholder="Drop a thumbnail for Workflow Builder"></image-slot></div><a href="https://www.thehigherwave.com/prototypes/workflows/workflow-builder/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">Workflow Builder</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div></div>
-</section></sc-if>
+  <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:32px"><a href="https://www.thehigherwave.com/#p=obs-process-impact" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><img src="thumb-visualizations.png" alt="Complex Visualizations prototype" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top;border:1px solid #ddd;border-radius:10px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px"><div><div style="font-size:24px;line-height:1.35">Complex Visualizations</div></div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></div></a><div style="display:block;background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;color:#181d26"><div style="aspect-ratio:4/3;border:1px solid #ddd;border-radius:10px;overflow:hidden"><img src="thumb-workflow-builder.webp" alt="" style="display:block;width:100%;height:100%;object-fit:cover"></div><a href="https://www.thehigherwave.com/prototypes/workflows/workflow-builder/" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:20px 8px 8px;color:#181d26"><div style="font-size:24px;line-height:1.35">Workflow Builder</div><div style="font-size:14px;font-weight:500;color:#1b61c9;white-space:nowrap">Open prototype ↗</div></a></div></div>
+</section>
 
 
 </div>
 <div style="height:48px"></div>
-</x-dc>
-<script type="text/x-dc" data-dc-script>
-class Component extends DCLogic {
-  state = { tab: 'process' };
-  componentDidMount() {
-    const t = (location.hash || '').slice(1);
-    if (['process', 'pipeline', 'grounding', 'visualizing'].includes(t)) this.setState({ tab: t });
-  }
-  go(t) {
-    return (e) => { e.preventDefault(); history.replaceState(null, '', '#' + t); this.setState({ tab: t }); };
-  }
-  renderVals() {
-    const t = this.state.tab;
-    return {
-      isProcess: t === 'process', isPipeline: t === 'pipeline', isGrounding: t === 'grounding', isVisualizing: t === 'visualizing',
-      goProcess: this.go('process'), goPipeline: this.go('pipeline'), goGrounding: this.go('grounding'), goVisualizing: this.go('visualizing'),
-    };
-  }
-}
-</script>
+
+<script>(function(){var T=['process','pipeline','grounding','visualizing'];function show(t){if(T.indexOf(t)<0)t='process';document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('on',p.id===t)});document.querySelectorAll('.tab').forEach(function(a){a.classList.toggle('on',a.dataset.tab===t)})}document.querySelectorAll('.tab').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();history.replaceState(null,'','#'+a.dataset.tab);show(a.dataset.tab)})});window.addEventListener('hashchange',function(){show(location.hash.slice(1))});show(location.hash.slice(1))})();</script>
 </body>
 </html>
