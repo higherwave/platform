@@ -18,7 +18,7 @@
   try { const p = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(p)) pinned = p; } catch (e) {}
 
   const tint = p => TINTS[PROTOS.indexOf(p) % TINTS.length];
-  const thumbHtml = p => THUMBS[p.id] ? `<img src="${THUMBS[p.id]}" alt="" loading="lazy">` : '';
+  const thumbHtml = p => THUMBS[p.id] ? `<img src="${THUMBS[p.id]}" alt="" loading="lazy"${(window.THUMB_POS || {})[p.id] ? ` style="object-position:${window.THUMB_POS[p.id]}"` : ''}>` : '';
 
   function card(p) {
     const on = pinned.includes(p.id);
@@ -79,18 +79,26 @@
   function route() {
     const cases = location.hash === '#cases';
     const training = location.hash === '#training';
+    const chat = location.hash === '#chat';
     const m = location.hash.match(/^#p=(.+)$/);
-    const p = !cases && !training && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
+    const p = !cases && !training && !chat && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
     const tog = (id, cls, on) => { const el = $(id); if (el) el.classList.toggle(cls, on); };
     const hide = (id, h) => { const el = $(id); if (el) el.hidden = h; };
-    tog('tab-patterns', 'on', !cases && !training);
+    tog('tab-patterns', 'on', !cases && !training && !chat);
+    tog('tab-chat', 'on', chat);
+    hide('chat', !chat);
     tog('tab-cases', 'on', cases);
     tog('tab-training', 'on', training);
     hide('cases', !cases);
     hide('training', !training);
-    hide('gallery', cases || training || !!p);
-    hide('detail', cases || training || !p);
-    if (training) {
+    hide('gallery', cases || training || chat || !!p);
+    hide('detail', cases || training || chat || !p);
+    if (chat) {
+      const f = document.querySelector('.chat-frame');
+      if (f && !f.src) f.src = 'prototypes/whirl-chat/index.html';
+      document.title = 'Whirl Chat Options · Knowledge Base';
+    }
+    else if (training) {
       const f = document.querySelector('.training-frame');
       if (f && !f.src) f.src = 'training/onboarding/index.html';
       document.title = 'Whirl Academy · Knowledge Base';
