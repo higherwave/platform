@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>html,body{margin:0;height:100%;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#181d26}a{color:#1b61c9}a:hover{color:#1a3866}button{font-family:inherit}</style></helmet>
+<div style="display:flex;flex-direction:column;height:100vh;min-width:900px">
+<div style="display:flex;align-items:center;gap:6px;padding:10px 16px;background:#181d26;flex:none;overflow-x:auto">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6"><button onClick="{{ t.go }}" style="border:0;cursor:pointer;white-space:nowrap;font:500 13px sans-serif;padding:7px 13px;border-radius:999px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button></sc-for>
+</div>
+<div style="flex:none;padding:8px 16px;background:#f8fafc;border-bottom:1px solid #dddddd;font-size:12.5px;color:#333840;display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center">
+<span><b>Show-stopper errors</b> (the expected outcome could not be generated) are always visible inline in every option.</span>
+<span style="color:#41454d">{{ blurb }}</span>
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto;display:flex;align-items:center;gap:8px;font-weight:500">Prototype control, simulate sign-in as
+<span style="display:flex;background:#e0e2e6;border-radius:7px;padding:2px"><button onClick="{{ setA }}" style="border:0;font:500 12px sans-serif;padding:4px 10px;border-radius:5px;cursor:pointer;background:{{ aBg }}">Maya (Product)</button><button onClick="{{ setB }}" style="border:0;font:500 12px sans-serif;padding:4px 10px;border-radius:5px;cursor:pointer;background:{{ bBg }}">Dev (Engineering)</button></span></span></sc-if>
+</div>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;min-height:0;display:flex;background:#fff">
+<div style="width:252px;flex:none;background:#fff;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:22px 18px 14px 20px;border-bottom:1px solid #eef1f5"><span style="font:400 26px Georgia,'Times New Roman',serif;letter-spacing:-.02em">Whirl AI</span><span style="width:16px;height:14px;border:1.5px solid #41454d;border-radius:3px;display:inline-block"></span></div>
+<div style="padding:14px 12px;display:flex;flex-direction:column;gap:4px;font-size:15px">
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px"><span style="width:18px;height:18px;border:1.5px solid #41454d;border-radius:50%;box-sizing:border-box"></span>New Chat</div>
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px"><span style="width:18px;height:18px;border:1.5px solid #41454d;border-radius:6px 6px 9px 9px;box-sizing:border-box"></span>Intelligence</div>
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px"><span style="width:18px;text-align:center;color:#41454d">✧</span>Artifacts</div>
+<div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:#eef1f5;border-radius:10px"><span style="width:18px;height:16px;border:1.5px solid #41454d;border-radius:9px;box-sizing:border-box"></span>Chats</div>
+</div></div>
+
+<div style="flex:1;min-width:0;background:#eef4fd;border-radius:14px 0 0 0;display:flex;flex-direction:column;margin-top:16px;position:relative">
+<div style="flex:none;height:44px;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 24px;font-size:13px;color:#333840;position:relative">
+<sc-if value="{{ isToggle }}" hint-placeholder-val="{{ false }}"><span style="color:#41454d">View</span><span style="display:flex;background:#fff;border:1px solid #dde4ee;border-radius:8px;padding:2px"><button onClick="{{ setStd }}" style="border:0;font:500 12.5px sans-serif;padding:5px 12px;border-radius:6px;cursor:pointer;background:{{ stdBg }};color:{{ stdFg }}">Standard</button><button onClick="{{ setDev }}" style="border:0;font:500 12.5px sans-serif;padding:5px 12px;border-radius:6px;cursor:pointer;background:{{ devBg }};color:{{ devFg }}">Developer</button></span></sc-if>
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #dde4ee;border-radius:999px;padding:4px 14px 4px 5px"><span style="width:24px;height:24px;border-radius:12px;background:#181d26;color:#fff;font:600 11px/24px sans-serif;text-align:center">{{ initials }}</span><span style="font-weight:500">{{ userName }}</span><span style="color:#41454d">{{ userRole }}</span></span></sc-if>
+<sc-if value="{{ isFilter }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleIssues }}" style="display:flex;align-items:center;gap:9px;border:1px solid #dde4ee;background:#fff;border-radius:999px;cursor:pointer;font:500 12.5px sans-serif;color:#181d26;padding:5px 8px 5px 13px">Show resolved issues<span style="width:30px;height:17px;border-radius:9px;background:{{ trackBg }};position:relative;display:inline-block"><span style="position:absolute;top:2px;left:{{ knobLeft }};width:13px;height:13px;border-radius:7px;background:#fff"></span></span></button></sc-if>
+<sc-if value="{{ isPanelTab }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleMenu }}" style="border:1px solid #dde4ee;background:#fff;border-radius:8px;cursor:pointer;font:600 16px/1 sans-serif;padding:5px 11px 8px;color:#181d26;letter-spacing:1px">⋯</button>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:40px;right:24px;z-index:5;width:210px;background:#fff;border:1px solid #dddddd;border-radius:10px;box-shadow:0 8px 24px rgba(24,29,38,.12);padding:6px;font-size:13.5px"><div style="padding:8px 10px;color:#333840">Rename chat</div><div style="padding:8px 10px;color:#333840">Share</div><button onClick="{{ openPanel }}" style="display:block;width:100%;text-align:left;border:0;background:#eef4fd;border-radius:6px;padding:8px 10px;font:500 13.5px sans-serif;color:#181d26;cursor:pointer">{{ panelLabel }}</button></div></sc-if></sc-if>
+</div>
+
+<div style="flex:1;min-height:0;display:flex">
+<div style="flex:1;min-width:0;overflow-y:auto;padding:4px 40px 24px">
+<div style="max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+<div style="align-self:flex-end;max-width:560px;background:#fff;border:1px solid #e3e9f2;border-radius:16px;padding:16px 22px;font-size:15px;line-height:1.5">List every story on the KAN board with its status, and show me the tracking ticket details.</div>
+
+<sc-if value="{{ showDim }}" hint-placeholder-val="{{ false }}"><button onClick="{{ toggleOpen }}" style="text-align:left;border:0;background:none;padding:2px 0;cursor:pointer;display:flex;align-items:center;gap:8px;font:13px sans-serif;color:#41454d"><span style="width:7px;height:7px;border-radius:4px;background:#39bf45;display:inline-block"></span>Checked Jira (1 retry) · 1.6s <span style="color:#9297a0">{{ chev }}</span></button></sc-if>
+
+<sc-if value="{{ showCards }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #e3e9f2;border-radius:14px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #eef1f5"><span style="color:#41454d;font-size:15px">🔧︎</span><span style="font-size:16px">get_records</span><span style="display:flex;align-items:center;gap:6px;background:#fdecec;color:#b42318;border-radius:999px;padding:5px 12px 5px 9px;font:500 14px sans-serif"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#d92d20" stroke-width="1.4"><circle cx="8" cy="8" r="6.6"/><path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4"/></svg>Error</span><span style="margin-left:auto;font:12.5px ui-monospace,Menlo,monospace;color:#9297a0">0.4s ⌃</span></div>
+<div style="padding:14px 20px 16px"><div style="font:12.5px ui-monospace,Menlo,monospace;color:#6b7280">jira.get_records({ board: "KAN", fields: ["key","summary","status","sprint"] })</div>
+<div style="margin-top:10px;background:#fdf1ef;border:1px solid #f8d5d0;border-radius:8px;padding:12px 16px;font:13.5px/1.55 ui-monospace,Menlo,monospace;color:#b42318">400 Bad Request<br/>Field 'sprint' does not exist or you do not have permission to view it.</div>
+<div style="margin-top:10px;font:13px ui-monospace,Menlo,monospace;color:#6b7280">Retrying without sprint</div></div></div>
+<div style="background:#fff;border:1px solid #e3e9f2;border-radius:14px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #eef1f5"><span style="color:#41454d;font-size:15px">🔧︎</span><span style="font-size:16px">get_records</span><span style="display:flex;align-items:center;gap:6px;background:#e7f6ea;color:#006400;border-radius:999px;padding:5px 12px 5px 9px;font:500 14px sans-serif"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1f9d3a" stroke-width="1.4"><circle cx="8" cy="8" r="6.6"/><path d="M5.2 8.2l2 2 3.6-4"/></svg>Completed</span><span style="margin-left:auto;font:12.5px ui-monospace,Menlo,monospace;color:#9297a0">1.2s · 9 records ⌃</span></div>
+<div style="padding:14px 20px 16px"><div style="font:12.5px ui-monospace,Menlo,monospace;color:#6b7280">jira.get_records({ board: "KAN", fields: ["key","summary","status"] })</div>
+<pre style="margin:10px 0 0;background:#f8fafc;border:1px solid #eef1f5;border-radius:8px;padding:12px 16px;font:12.5px/1.65 ui-monospace,Menlo,monospace;color:#41454d;overflow-x:auto">{
+  "total": 9,
+  "records": [
+    { "key": "KAN-1", "summary": "Add Dark Mode Support to Settings Page 1", "status": "To Do" },
+    { "key": "KAN-2", "summary": "The Kittens Story",                        "status": "To Do" },
+    { "key": "KAN-3", "summary": "The Kittens Story - Continued",            "status": "To Do" },
+    … 6 more
+  ]
+}</pre></div></div>
+</sc-if>
+
+<div style="font-size:15px;margin-top:6px"><b>Description:</b> A tracking ticket for the kittens and puppies adventure series.</div>
+<div style="font-size:19px;font-weight:600;margin-top:6px">All KAN Stories</div>
+<div style="background:#eef4fd;border:1px solid #dde4ee;border-radius:10px;overflow:hidden;font-size:14.5px">
+<div style="display:grid;grid-template-columns:90px minmax(0,1fr) 80px;column-gap:16px;padding:14px 22px;background:#f4f7fc;font-weight:600;border-bottom:1px solid #dde4ee"><span>Key</span><span>Summary</span><span>Status</span></div>
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="9"><div style="display:grid;grid-template-columns:90px minmax(0,1fr) 80px;column-gap:16px;padding:14px 22px;border-bottom:1px solid #dde4ee"><span>{{ r.k }}</span><span>{{ r.s }}</span><span>To Do</span></div></sc-for>
+</div>
+<div style="font-size:15px">9 stories total, all unassigned and in <b>To Do</b> status.</div>
+<div style="display:flex;gap:16px;align-items:center;color:#6b7280;font-size:13.5px;margin-bottom:12px"><span style="display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M7 22V11M2 11h5v11H2zM7 11l4-8a2.5 2.5 0 0 1 2.5 2.5V9h6a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.1 21H7"></path></svg></span><span style="display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;transform:scaleY(-1)"><path d="M7 22V11M2 11h5v11H2zM7 11l4-8a2.5 2.5 0 0 1 2.5 2.5V9h6a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.1 21H7"></path></svg></span><span>1:53 PM</span><sc-if value="{{ isPanelTab }}" hint-placeholder-val="{{ false }}"><span style="color:#d0d4db">·</span><button onClick="{{ showPanel }}" style="border:0;background:none;padding:0;cursor:pointer;font:inherit;color:#1b61c9;text-decoration:none">1 resolved error</button></sc-if></div>
+<div style="background:#fff;border:1px solid #e3e9f2;border-radius:14px;height:64px;flex:none;padding:18px 22px;color:#9297a0;font-size:15px;box-sizing:border-box">Ask anything…</div>
+</div></div>
+
+<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+<div style="width:330px;flex:none;background:#fff;border-left:1px solid #dddddd;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #eef1f5"><span style="font:600 14px sans-serif">Activity log</span><button onClick="{{ closePanel }}" style="border:0;background:none;cursor:pointer;font-size:18px;color:#41454d">×</button></div>
+<div style="padding:16px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:0">
+<sc-for list="{{ events }}" as="e" hint-placeholder-count="6"><div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:9px;height:9px;border-radius:5px;background:{{ e.c }};margin-top:5px;flex:none"></span><span style="width:1px;flex:1;background:#dddddd"></span></div><div style="padding-bottom:16px"><div style="font:11.5px ui-monospace,Menlo,monospace;color:#9297a0">{{ e.t }}</div><div style="font-size:13px;line-height:1.45;margin-top:2px">{{ e.m }}</div><div style="font:11.5px/1.45 ui-monospace,Menlo,monospace;color:#6b7280;margin-top:3px">{{ e.d }}</div></div></div></sc-for>
+</div></div></sc-if>
+</div></div></div>
+</sc-if>
+
+<sc-if value="{{ isGuide }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;padding:28px 36px 48px;background:#fff">
+<div style="display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:16px;max-width:1500px">
+<sc-for list="{{ options }}" as="o" hint-placeholder-count="5"><div style="border:1px solid {{ o.bd }};border-radius:12px;padding:18px;background:{{ o.bg }};font-size:13px;line-height:1.5;color:#333840"><div style="font:600 15px sans-serif;color:#181d26">{{ o.name }}</div><div style="margin:4px 0 12px;color:#41454d">{{ o.tag }}</div>
+<div style="font:600 12px sans-serif;color:#006400;margin-bottom:4px">Pros</div><sc-for list="{{ o.pros }}" as="p" hint-placeholder-count="3"><div style="padding:2px 0">{{ p }}</div></sc-for>
+<div style="font:600 12px sans-serif;color:#b42318;margin:12px 0 4px">Cons</div><sc-for list="{{ o.cons }}" as="p" hint-placeholder-count="3"><div style="padding:2px 0">{{ p }}</div></sc-for></div></sc-for>
+</div>
+<div style="max-width:1500px;margin-top:26px;border:1px solid #dddddd;border-radius:12px;overflow:hidden;font-size:13px">
+<div style="display:grid;grid-template-columns:230px repeat(5,1fr);background:#f8fafc;font-weight:600;border-bottom:1px solid #dddddd"><span style="padding:11px 16px"></span><sc-for list="{{ options }}" as="o" hint-placeholder-count="5"><span style="padding:11px 16px">{{ o.short }}</span></sc-for></div>
+<sc-for list="{{ matrix }}" as="row" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:230px repeat(5,1fr);border-bottom:1px solid #eef1f5"><span style="padding:11px 16px;font-weight:500">{{ row.label }}</span><sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="5"><span style="padding:11px 16px;display:flex;gap:8px;align-items:center"><span style="width:8px;height:8px;border-radius:4px;background:{{ c.c }};flex:none"></span>{{ c.t }}</span></sc-for></div></sc-for>
+</div></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'auth', dev: false, user: 'A', issues: false, menu: false, panel: false, open: false };
+  renderVals() {
+    const s = this.state, G = '#39bf45', A = '#d9a441', R = '#d92d20', t = s.tab;
+    const set = (o) => () => this.setState(o);
+    const defs = [
+      ['auth', '1a Authenticated roles', 'Sign-in determines the view. No toggle exists; each user sees only what applies to them.'],
+      ['toggle', '1b Role toggle', 'A Standard / Developer switch changes the view.'],
+      ['filter', '2 Personal filter', 'Resolved issues are off by default. One click turns them on.'],
+      ['panel', '3 Activity panel', 'Hidden by default. Open it from the ⋯ menu.'],
+      ['dim', '4 Diminished', 'Shown by default as one quiet line; click to expand.'],
+      ['guide', 'Decision guide', 'Pros, cons and comparison.']
+    ];
+    const isAuthB = t === 'auth' && s.user === 'B';
+    const c = (t, k) => ({ t, c: k });
+    const o = (name, short, tag, bd, bg, pros, cons) => ({ name, short, tag, bd, bg, pros, cons });
+    const cells = (...a) => a.map(x => c(x[0], x[1]));
+    return {
+      tabs: defs.map(d => ({ label: d[1], go: set({ tab: d[0], menu: false }), bg: t === d[0] ? '#fff' : 'transparent', fg: t === d[0] ? '#181d26' : '#d9dde3' })),
+      blurb: (defs.find(d => d[0] === t) || {})[2],
+      isApp: t !== 'guide', isGuide: t === 'guide',
+      isToggle: t === 'toggle', isAuth: t === 'auth', isFilter: t === 'filter', isPanelTab: t === 'panel',
+      setStd: set({ dev: false }), setDev: set({ dev: true }),
+      stdBg: s.dev ? 'transparent' : '#181d26', stdFg: s.dev ? '#181d26' : '#fff', devBg: s.dev ? '#181d26' : 'transparent', devFg: s.dev ? '#fff' : '#181d26',
+      setA: set({ user: 'A' }), setB: set({ user: 'B' }), aBg: s.user === 'A' ? '#fff' : 'transparent', bBg: s.user === 'B' ? '#fff' : 'transparent',
+      initials: s.user === 'A' ? 'MC' : 'DP', userName: s.user === 'A' ? 'Maya Chen' : 'Dev Patel', userRole: s.user === 'A' ? 'Product Manager' : 'Platform Engineer',
+      toggleIssues: set({ issues: !s.issues }), trackBg: s.issues ? '#181d26' : '#c4c9d1', knobLeft: s.issues ? '15px' : '2px',
+      toggleMenu: set({ menu: !s.menu }), menuOpen: s.menu, panelOpen: s.panel && t === 'panel',
+      showPanel: set({ panel: true, menu: false }), openPanel: set({ panel: !s.panel, menu: false }), panelLabel: s.panel ? 'Hide activity log' : 'Show activity log', closePanel: set({ panel: false }),
+      showDim: t === 'dim', toggleOpen: set({ open: !s.open }), chev: s.open ? '⌃' : '⌄',
+      showCards: (t === 'toggle' && s.dev) || isAuthB || (t === 'filter' && s.issues) || (t === 'dim' && s.open),
+      rows: [['KAN-1', 'Add Dark Mode Support to Settings Page 1'], ['KAN-2', 'The Kittens Story'], ['KAN-3', 'The Kittens Story - Continued'], ['KAN-4', 'The Puppies and Kittens Adventure Story'], ['KAN-7', 'The Kittens Story 1'], ['KAN-11', 'The Kittens Story - A New Beginning'], ['KAN-12', 'The Kittens Story - Beyond the Tree Line'], ['KAN-13', 'The Kittens Story - The First Snow'], ['KAN-14', 'The Kittens Story - The Stranger at the Gate']].map(r => ({ k: r[0], s: r[1] })),
+      events: [
+        { t: '1:53:00.0', m: 'Request received', d: '', c: '#9297a0' },
+        { t: '1:53:00.1', m: 'Plan: read KAN board via Jira', d: 'tool: jira.get_records', c: '#9297a0' },
+        { t: '1:53:00.5', m: 'get_records failed (0.4s)', d: '400 Bad Request: field \'sprint\' not found or no permission', c: '#d92d20' },
+        { t: '1:53:00.5', m: 'Recovered: retrying without sprint', d: 'fields: key, summary, status', c: '#d9a441' },
+        { t: '1:53:01.7', m: 'get_records completed (1.2s)', d: '9 records', c: '#39bf45' },
+        { t: '1:53:02.0', m: 'Answer composed', d: 'table, 9 rows', c: '#39bf45' }
+      ],
+      options: [
+        o('1a Authenticated roles', '1a Auth roles', 'Sign-in decides the view. No toggle.', '#dddddd', '#fff', ['Each user sees only what applies.', 'Nothing to configure or misuse.', 'Fits governed or regulated settings.'], ['Hardest fit for overlapping personas.', 'Engineers who skim and analysts who debug get the wrong view.', 'Needs role data, permissions and an owner.', 'Screens cannot be shared or reproduced across roles.']),
+        o('1b Role toggle', '1b Toggle', 'Switch between Standard and Developer.', '#dddddd', '#fff', ['Simple mental model.', 'Easy to build.', 'Clean default for non-technical users.'], ['Assumes distinct personas.', 'Users can pick the wrong view.', 'Shared screens diverge between people.']),
+        o('2 Personal filter', '2 Filter', 'Issues off by default, one click to show.', '#dddddd', '#fff', ['No persona assumption.', 'Each person decides.', 'Works for overlapping users.'], ['Covers errors only.', 'Non-technical users may never find it.', 'Needs rules for what counts as a show-stopper.']),
+        o('3 Activity panel', '3 Panel', 'Hidden chronological log, opened from the menu.', '#181d26', '#f8fafc', ['One screen for everyone; thread stays clean.', 'Full timeline for debugging, support and audit.', 'Covers retries and timing too.'], ['Resolved errors link is contextual (only displaying when an error occurred). Processing details are not always highlighted.']),
+        o('4 Diminished', '4 Diminished', 'Visible by default, as one quiet line.', '#dddddd', '#fff', ['Discoverable without setup.', 'Reassures that work was checked.', 'Lowest build effort.'], ['Adds a line to every thread.', 'Grows with many tool calls.', 'Wording can still alarm non-technical users.'])
+      ],
+      matrix: [
+        { label: 'Clean default for non-technical users', cells: cells(['Yes, by role', G], ['Yes, by mode', G], ['Yes, once set', A], ['Yes, always', G], ['Partly, one line', A]) },
+        { label: 'Detail for technical users', cells: cells(['For engineering role', G], ['In Developer mode', G], ['On toggle', G], ['Full timeline', G], ['Summary only', R]) },
+        { label: 'Discoverability', cells: cells(['n/a', A], ['High', G], ['Medium', A], ['High', G], ['High', G]) },
+        { label: 'Works for overlapping users', cells: cells(['Weak', R], ['Medium', A], ['Strong', G], ['Strong', G], ['Strong', G]) },
+        { label: 'Shows more than errors', cells: cells(['No', R], ['No', R], ['No', R], ['Yes', G], ['No', R]) },
+        { label: 'Build effort', cells: cells(['Roles, permissions', R], ['Low', G], ['Setting plus rules', A], ['Event log plus panel', A], ['Low', G]) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
