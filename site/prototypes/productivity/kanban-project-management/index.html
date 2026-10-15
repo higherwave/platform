@@ -32,30 +32,14 @@
 
 <div style="min-height: 100vh; display: flex; flex-direction: column; background: #ffffff;">
 
-  <div style="height: 64px; flex: 0 0 64px; border-bottom: 1px solid #dddddd; display: flex; align-items: center; gap: 32px; padding: 0 32px; background: #ffffff;">
-    <div style="font-size: 18px; font-weight: 500; color: #181d26; letter-spacing: -0.2px;">adherent</div>
-    <div style="display: flex; gap: 24px; align-items: center;">
-      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
-        <div style="{{ n.style }}">{{ n.label }}</div>
-      </sc-for>
-    </div>
-    <div style="margin-left: auto; display: flex; gap: 16px; align-items: center;">
-      <div style="display: flex; gap: 4px; background: #f8fafc; border: 1px solid #dddddd; border-radius: 6px; padding: 3px;">
-        <div onClick="{{ setCCO }}" style="{{ ccoTabStyle }}">CCO</div>
-        <div onClick="{{ setSpec }}" style="{{ specTabStyle }}">Regulatory Specialist</div>
-      </div>
-      <div style="width: 32px; height: 32px; border-radius: 9999px; background: #181d26; color: #ffffff; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center;">JL</div>
-    </div>
-  </div>
-
   <div style="padding: 32px 32px 24px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;">
     <div>
       <div style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26;">Regulatory horizon board</div>
       <div style="font-size: 14px; line-height: 1.45; color: #41454d; margin-top: 8px; max-width: 780px;">{{ subhead }}</div>
     </div>
     <div style="display: flex; gap: 12px; flex: 0 0 auto;">
-      <div onClick="{{ resetBoard }}" style="background: #ffffff; color: #181d26; border: 1px solid #dddddd; font-size: 16px; font-weight: 500; padding: 12px 20px; border-radius: 12px; cursor: pointer; white-space: nowrap;">Reset board</div>
-      <div style="background: #181d26; color: #ffffff; font-size: 16px; font-weight: 500; padding: 12px 20px; border-radius: 12px; cursor: pointer; white-space: nowrap;">Export board</div>
+      <div onClick="{{ resetBoard }}" title="Reset board" aria-label="Reset board" style="background: #ffffff; color: #181d26; border: 1px solid #dddddd; width: 48px; height: 48px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 12px; cursor: pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg></div>
+      <div style="background: #181d26; color: #ffffff; font-size: 16px; font-weight: 500; padding: 12px 20px; border-radius: 12px; cursor: pointer; white-space: nowrap;">Save board</div>
     </div>
   </div>
 
@@ -88,7 +72,7 @@
   <div style="flex: 1 1 auto; overflow-x: auto; padding: 0 32px 32px 32px; min-height: 0;">
   <div style="display: flex; gap: 16px; align-items: stretch; min-width: 1360px;">
     <sc-for list="{{ columns }}" as="col" hint-placeholder-count="4">
-      <div style="{{ col.colStyle }}">
+      <div onDragOver="{{ col.onDragOver }}" onDrop="{{ col.onDrop }}" style="{{ col.colStyle }}">
         <div style="display: flex; gap: 8px; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid #dddddd;">
           <div onClick="{{ col.toggle }}" style="font-size: 16px; font-weight: 500; color: #181d26; cursor: pointer;">{{ col.title }}</div>
           <div style="font-size: 14px; font-weight: 500; color: #41454d;">{{ col.count }}</div>
@@ -97,7 +81,7 @@
         <sc-if value="{{ col.open }}" hint-placeholder-val="{{ true }}">
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <sc-for list="{{ col.items }}" as="item" hint-placeholder-count="4">
-              <div onClick="{{ item.onClick }}" style="{{ item.cardStyle }}">
+              <div draggable="true" onDragStart="{{ item.onDragStart }}" onDragEnd="{{ item.onDragEnd }}" onClick="{{ item.onClick }}" style="{{ item.cardStyle }}">
                 <div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline;">
                   <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d;">{{ item.body }}</div>
                   <div style="{{ item.tagStyle }}">{{ item.tag }}</div>
@@ -170,6 +154,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;showConfidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Horizon scanning&quot;},&quot;defaultAudience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cco&quot;,&quot;specialist&quot;],&quot;default&quot;:&quot;cco&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Audience&quot;}}">
 class Component extends DCLogic {
   state = {
+    dragId: null, overCol: null,
     audience: null, bodies: [], band: "All", query: "",
     sel: "eu-ai-act", overrides: {}, activity: [],
     closed: {}
@@ -222,7 +207,7 @@ class Component extends DCLogic {
   move(id, to, note) {
     this.setState(s => ({
       overrides: Object.assign({}, s.overrides, { [id]: to }),
-      activity: s.activity.concat([{ id: id, note: note }])
+      activity: s.activity.concat([{ id: id, note: note, prev: s.overrides[id] }])
     }));
   }
 
@@ -231,7 +216,7 @@ class Component extends DCLogic {
       const a = s.activity.slice(0, -1);
       const last = s.activity[s.activity.length - 1];
       const o = Object.assign({}, s.overrides);
-      if (last) delete o[last.id];
+      if (last) { if (last.prev === undefined) delete o[last.id]; else o[last.id] = last.prev; }
       return { activity: a, overrides: o };
     });
   }
@@ -255,6 +240,8 @@ class Component extends DCLogic {
     return Object.assign({}, d, {
       phase: phase,
       onClick: () => this.setState({ sel: d.id }),
+      onDragStart: e => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", d.id); setTimeout(() => this.setState({ dragId: d.id }), 0); },
+      onDragEnd: () => this.setState({ dragId: null, overCol: null }),
       tag: horizon ? (showConf ? d.band + " " + d.confidence + "%" : d.band) : phase === "addressed" ? "✓" : d.risk + " risk",
       meta: horizon
         ? d.dateLabel + " · " + d.signals + " signals detected"
@@ -267,7 +254,7 @@ class Component extends DCLogic {
         background: "#ffffff",
         border: horizon ? "1px dashed #d9a441" : "1px solid #dddddd",
         borderLeft: "4px solid " + (phase === "now" ? (d.risk === "High" ? "#aa2d00" : d.risk === "Medium" ? "#d9a441" : "#1b61c9") : this.phaseColor(phase)),
-        borderRadius: "10px", padding: "16px", cursor: "pointer",
+        borderRadius: "10px", padding: "16px", cursor: "grab", opacity: this.state.dragId === d.id ? 0.4 : 1,
         boxShadow: this.state.sel === d.id ? "0 0 0 2px #181d26" : "none"
       },
       tagStyle: phase === "addressed"
@@ -350,8 +337,17 @@ class Component extends DCLogic {
         title: c.title, window: c.window, items: c.items, count: c.items.length,
         open: this.state.closed[c.key] !== true,
         empty: c.items.length === 0,
+        onDragOver: e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (this.state.overCol !== c.key) this.setState({ overCol: c.key }); },
+        onDrop: e => {
+          e.preventDefault();
+          const id = this.state.dragId || e.dataTransfer.getData("text/plain");
+          const d = this.data.find(x => x.id === id);
+          this.setState({ dragId: null, overCol: null });
+          if (!d || this.phaseOf(d) === c.key) return;
+          this.move(id, c.key, d.name.split(" — ")[0] + " moved to " + c.title + ".");
+        },
         toggle: () => this.setState(s => ({ closed: Object.assign({}, s.closed, { [c.key]: !s.closed[c.key] }) })),
-        colStyle: { flex: "1 1 0", minWidth: 0, background: c.key === "horizon" ? "#f5e9d4" : "#f8fafc", border: "1px solid #dddddd", borderRadius: "10px", padding: "16px", boxSizing: "border-box" }
+        colStyle: { flex: "1 1 0", minWidth: 0, background: c.key === "horizon" ? "#f5e9d4" : "#f8fafc", border: this.state.dragId && this.state.overCol === c.key ? "1px solid #1b61c9" : "1px solid #dddddd", boxShadow: this.state.dragId && this.state.overCol === c.key ? "inset 0 0 0 2px #1b61c9" : "none", borderRadius: "10px", padding: "16px", boxSizing: "border-box" }
       }))
     }, this.detail());
   }
