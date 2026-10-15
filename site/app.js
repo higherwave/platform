@@ -18,7 +18,7 @@
   try { const p = JSON.parse(localStorage.getItem(KEY) || '[]'); if (Array.isArray(p)) pinned = p; } catch (e) {}
 
   const tint = p => TINTS[PROTOS.indexOf(p) % TINTS.length];
-  const thumbHtml = p => THUMBS[p.id] ? `<img src="${THUMBS[p.id]}" alt="" loading="lazy"${(window.THUMB_POS || {})[p.id] ? ` style="object-position:${window.THUMB_POS[p.id]}"` : ''}>` : '';
+  const thumbHtml = p => THUMBS[p.id] ? `<img src="${THUMBS[p.id]}" alt="" loading="lazy" onerror="this.remove()"${(window.THUMB_POS || {})[p.id] ? ` style="object-position:${window.THUMB_POS[p.id]}"` : ''}>` : '';
 
   function card(p) {
     const on = pinned.includes(p.id);
@@ -73,7 +73,7 @@
         <section class="panel"><h2>Design principles</h2><ul>${list(p.principles)}</ul></section>
         <section class="panel ext"><h2>Ways to extend</h2><ul>${list(p.extensions)}</ul></section>
       </div>
-      <div class="shot${shot(p) ? '' : ' placeholder'}" style="background:${tint(p)}">${shot(p) ? `<img src="${shot(p)}" alt="${esc(p.title)} screenshot">` : ''}</div>`;
+      <div class="shot${shot(p) ? '' : ' placeholder'}" style="background:${tint(p)}">${shot(p) ? `<img src="${shot(p)}" alt="${esc(p.title)} screenshot" onerror="this.remove()">` : ''}</div>`;
   }
 
   function route() {

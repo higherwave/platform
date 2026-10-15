@@ -83,6 +83,10 @@ window.PROTOS = [
     why: 'Shows the state of every work item at a glance, so teams can spot blocked work and balance load.',
     principles: ['Visibility of status through column position', 'Direct manipulation: drag cards between columns', 'Error prevention: warn when a WIP limit is exceeded'],
     extensions: ['Swimlanes by team or priority', 'Cycle-time analytics per column', 'Automations when a card changes column'] },
+  { id: 'prod-research-themes', title: 'Research Themes Analyzer', category: 'Productivity', description: 'Setup research projects, test plans, meeting transcriptions and auto-generate themes and journey maps', url: 'prototypes/productivity/research-themes-analyzer/',
+    why: 'Takes research from setup to synthesis in one place, turning transcripts into themes and journey maps without manual tagging.',
+    principles: ['Visibility of the source: each theme links back to transcript quotes', 'User control: edit, merge, or reject generated themes', 'Progressive disclosure: from project setup to themes to journey map'],
+    extensions: ['Import transcripts from meeting tools', 'Compare themes across studies', 'Export journey maps to design tools'] },
   { id: 'int-directory', title: 'Double-sided Marketplace', category: 'Integrations', description: 'Browse available integrations from the perspective of three users.', url: 'prototypes/integrations/double-sided-marketplace/',
     why: 'Shows how one marketplace serves the different needs of customers, partners, and admins.',
     principles: ['Consistency across user perspectives', 'Recognition over recall: categories and search', 'Trust signals before connecting'],
@@ -151,7 +155,8 @@ window.THUMBS = {
   'prod-decision-guides': 'thumbs/prod-decision-guides.png',
   'wf-validate-docs': 'thumbs/wf-validate-docs.png',
   'int-connect': 'thumbs/int-connect.png',
-  'plat-ai-patterns': 'thumbs/plat-ai-patterns.png'
+  'plat-ai-patterns': 'thumbs/plat-ai-patterns.png',
+  'prod-research-themes': 'thumbs/prod-research-themes.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
@@ -167,8 +172,14 @@ window.SHOTS = {
   'prod-comms': 'thumbs/prod-comms-page.png',
   'wf-runs': 'thumbs/wf-runs-page.png',
   'onb-two-level': 'thumbs/onb-two-level-page.png',
-  'obs-ai-dash': 'thumbs/obs-ai-dash-page.png'
+  'obs-ai-dash': 'thumbs/obs-ai-dash-page.png',
+  'prod-research-themes': 'thumbs/prod-research-themes-page.png'
 };
 
 // Cards shown under the Highlights filter (default view), in this order.
 window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard', 'prod-comms'];
+
+// Per-card thumbnail crop (CSS object-position). Default is 'center top'.
+window.THUMB_POS = {
+  'wf-compliance': 'left top'
+};
