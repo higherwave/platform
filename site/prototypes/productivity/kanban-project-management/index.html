@@ -34,7 +34,7 @@
 
   <div style="padding: 32px 32px 24px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;">
     <div>
-      <div style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26;">Regulatory horizon board</div>
+      <div style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26;">Board: Q4 Release</div>
       <div style="font-size: 14px; line-height: 1.45; color: #41454d; margin-top: 8px; max-width: 780px;">{{ subhead }}</div>
     </div>
     <div style="display: flex; gap: 12px; flex: 0 0 auto;">
@@ -81,7 +81,7 @@
         <sc-if value="{{ col.open }}" hint-placeholder-val="{{ true }}">
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <sc-for list="{{ col.items }}" as="item" hint-placeholder-count="4">
-              <div draggable="true" onDragStart="{{ item.onDragStart }}" onDragEnd="{{ item.onDragEnd }}" onClick="{{ item.onClick }}" style="{{ item.cardStyle }}">
+              <div draggable="true" onDragOver="{{ item.onDragOver }}" onDrop="{{ item.onDrop }}" onDragStart="{{ item.onDragStart }}" onDragEnd="{{ item.onDragEnd }}" onClick="{{ item.onClick }}" style="{{ item.cardStyle }}">
                 <div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline;">
                   <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #41454d;">{{ item.body }}</div>
                   <div style="{{ item.tagStyle }}">{{ item.tag }}</div>
@@ -154,7 +154,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;showConfidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Horizon scanning&quot;},&quot;defaultAudience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cco&quot;,&quot;specialist&quot;],&quot;default&quot;:&quot;cco&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Audience&quot;}}">
 class Component extends DCLogic {
   state = {
-    dragId: null, overCol: null,
+    dragId: null, overCol: null, overId: null, overAfter: false, order: null,
     audience: null, bodies: [], band: "All", query: "",
     sel: "eu-ai-act", overrides: {}, activity: [],
     closed: {}
@@ -190,7 +190,8 @@ class Component extends DCLogic {
   ];
 
   phaseOf(d) { return this.state.overrides[d.id] || d.phase; }
-  phaseColor(p) { return p === "addressed" ? "#a8d8c4" : p === "now" ? "#1b61c9" : p === "approaching" ? "#1a3866" : "#f5e9d4"; }
+  phaseColor(p) { return p === "addressed" ? "#d0d3d9" : p === "now" ? "#f5e08a" : p === "approaching" ? "#a8d8c4" : "#f5e9d4"; }
+  phaseDark(p) { return p === "addressed" ? "#7d828c" : p === "now" ? "#c9a400" : p === "approaching" ? "#4a9c7c" : "#d9a441"; }
   bandTone(b) { return b === "Likely" ? "#0a2e0e" : b === "Possible" ? "#d9a441" : "#41454d"; }
 
   get filtered() {
@@ -204,12 +205,24 @@ class Component extends DCLogic {
     });
   }
 
-  move(id, to, note) {
-    this.setState(s => ({
-      overrides: Object.assign({}, s.overrides, { [id]: to }),
-      activity: s.activity.concat([{ id: id, note: note, prev: s.overrides[id] }])
-    }));
+  get order() { return this.state.order || this.data.map(d => d.id); }
+
+  place(id, to, targetId, after, note) {
+    this.setState(s => {
+      const cur = s.order || this.data.map(d => d.id);
+      let o = cur.filter(x => x !== id);
+      let i = targetId ? o.indexOf(targetId) : -1;
+      if (i < 0) i = o.length; else if (after) i++;
+      o.splice(i, 0, id);
+      return {
+        order: o,
+        overrides: Object.assign({}, s.overrides, { [id]: to }),
+        activity: s.activity.concat([{ id: id, note: note, prev: s.overrides[id], prevOrder: s.order }])
+      };
+    });
   }
+
+  move(id, to, note) { this.place(id, to, null, false, note); }
 
   undo() {
     this.setState(s => {
@@ -217,7 +230,7 @@ class Component extends DCLogic {
       const last = s.activity[s.activity.length - 1];
       const o = Object.assign({}, s.overrides);
       if (last) { if (last.prev === undefined) delete o[last.id]; else o[last.id] = last.prev; }
-      return { activity: a, overrides: o };
+      return { activity: a, overrides: o, order: last ? last.prevOrder || null : s.order };
     });
   }
 
@@ -241,7 +254,7 @@ class Component extends DCLogic {
       phase: phase,
       onClick: () => this.setState({ sel: d.id }),
       onDragStart: e => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", d.id); setTimeout(() => this.setState({ dragId: d.id }), 0); },
-      onDragEnd: () => this.setState({ dragId: null, overCol: null }),
+      onDragEnd: () => this.setState({ dragId: null, overCol: null, overId: null }),
       tag: horizon ? (showConf ? d.band + " " + d.confidence + "%" : d.band) : phase === "addressed" ? "✓" : d.risk + " risk",
       meta: horizon
         ? d.dateLabel + " · " + d.signals + " signals detected"
@@ -253,9 +266,9 @@ class Component extends DCLogic {
       cardStyle: {
         background: "#ffffff",
         border: horizon ? "1px dashed #d9a441" : "1px solid #dddddd",
-        borderLeft: "4px solid " + (phase === "now" ? (d.risk === "High" ? "#aa2d00" : d.risk === "Medium" ? "#d9a441" : "#1b61c9") : this.phaseColor(phase)),
+        borderLeft: "4px solid " + this.phaseColor(phase),
         borderRadius: "10px", padding: "16px", cursor: "grab", opacity: this.state.dragId === d.id ? 0.4 : 1,
-        boxShadow: this.state.sel === d.id ? "0 0 0 2px #181d26" : "none"
+        boxShadow: this.state.sel === d.id ? "0 0 0 2px " + this.phaseDark(phase) : "none"
       },
       tagStyle: phase === "addressed"
         ? { fontSize: "16px", fontWeight: 600, lineHeight: 1, color: "#0a2e0e" }
@@ -267,16 +280,16 @@ class Component extends DCLogic {
     const raw = this.data.find(d => d.id === this.state.sel);
     if (!raw) return { d_eyebrow: "Detail", d_title: "Select an instrument", d_pills: [], d_summary: "Pick any card to see its obligations, owner and evidence trail.", d_rows: [], d_narrativeLabel: "", d_narrative: "", d_listLabel: "", d_list: [], d_primaryCta: "—", d_primaryAction: () => {} };
     const d = raw, phase = this.phaseOf(d), cco = this.aud === "cco", horizon = phase === "horizon";
-    const label = { addressed: "Addressed", now: "Acting now", approaching: "Approaching", horizon: "Horizon — predicted" }[phase];
+    const label = { addressed: "To Do", now: "In Progress", approaching: "In Review", horizon: "Horizon — predicted" }[phase];
     const tone = { addressed: "#0a2e0e", now: "#aa2d00", approaching: "#aa2d00", horizon: "#d9a441" }[phase];
     const pills = [this.pill(label, tone), this.pill(d.body, "#41454d")];
     pills.push(horizon ? this.pill(d.band + " · " + d.confidence + "%", "#181d26") : this.pill(d.risk + " inherent risk", d.risk === "High" ? "#aa2d00" : "#41454d"));
 
     let cta, act;
-    if (horizon) { cta = "Promote to programme"; act = () => this.move(d.id, "approaching", d.name.split(" — ")[0] + " promoted from Horizon to Approaching."); }
-    else if (phase === "approaching") { cta = "Start programme"; act = () => this.move(d.id, "now", d.name.split(" — ")[0] + " moved into Acting now."); }
-    else if (phase === "now") { cta = "File evidence pack"; act = () => this.move(d.id, "addressed", d.name.split(" — ")[0] + " evidenced and moved to Addressed."); }
-    else { cta = "Reopen for review"; act = () => this.move(d.id, "now", d.name.split(" — ")[0] + " reopened into Acting now."); }
+    if (horizon) { cta = "Promote to programme"; act = () => this.move(d.id, "approaching", d.name.split(" — ")[0] + " promoted from Horizon to In Review."); }
+    else if (phase === "approaching") { cta = "Start programme"; act = () => this.move(d.id, "now", d.name.split(" — ")[0] + " moved into In Progress."); }
+    else if (phase === "now") { cta = "File evidence pack"; act = () => this.move(d.id, "addressed", d.name.split(" — ")[0] + " evidenced and moved to To Do."); }
+    else { cta = "Reopen for review"; act = () => this.move(d.id, "now", d.name.split(" — ")[0] + " reopened into In Progress."); }
 
     return {
       d_eyebrow: horizon ? "Horizon scan · " + d.body : label + " · " + d.body,
@@ -299,13 +312,14 @@ class Component extends DCLogic {
 
   renderVals() {
     const items = this.filtered.map(d => this.decorate(d));
-    const pick = p => items.filter(i => i.phase === p);
+    const ord = this.order, rank = id => ord.indexOf(id);
+    const pick = p => items.filter(i => i.phase === p).sort((a, b) => rank(a.id) - rank(b.id));
     const openNow = items.filter(i => i.phase === "now").length;
     const cols = [
-      { key: "addressed", title: "Addressed", window: "Closed in the last 18 months — evidence on file", items: pick("addressed") },
-      { key: "now", title: "Acting now", window: "In force, gaps open — owner assigned", items: pick("now") },
-      { key: "approaching", title: "Approaching", window: "Adopted, not yet effective — scoped, not started", items: pick("approaching") },
-      { key: "horizon", title: "Horizon", window: "Predicted, up to 24 months out — confidence scored", items: pick("horizon") }
+      { key: "addressed", title: "To Do", window: "Requirements generated from the Requirements Writer tool", items: pick("addressed") },
+      { key: "now", title: "In Progress", window: "In force, gaps open — owner assigned", items: pick("now") },
+      { key: "approaching", title: "In Review", window: "Adopted, not yet effective — scoped, not started", items: pick("approaching") },
+      { key: "horizon", title: "Done", window: "Predicted, up to 24 months out — confidence scored", items: pick("horizon") }
     ];
 
     return Object.assign({
@@ -332,18 +346,40 @@ class Component extends DCLogic {
       hasActivity: this.state.activity.length > 0,
       lastActivity: this.state.activity.length ? this.state.activity[this.state.activity.length - 1].note : "",
       undo: () => this.undo(),
-      resetBoard: () => this.setState({ overrides: {}, activity: [], bodies: [], band: "All", query: "" }),
+      resetBoard: () => this.setState({ order: null, overrides: {}, activity: [], bodies: [], band: "All", query: "" }),
       columns: cols.map(c => ({
-        title: c.title, window: c.window, items: c.items, count: c.items.length,
+        title: c.title, window: c.window, count: c.items.length,
+        items: c.items.map(it => {
+          const st = this.state, here = st.dragId && st.overId === it.id && st.dragId !== it.id;
+          const base = it.cardStyle.boxShadow && it.cardStyle.boxShadow !== "none" ? it.cardStyle.boxShadow + ", " : "";
+          return Object.assign({}, it, {
+            cardStyle: here ? Object.assign({}, it.cardStyle, { boxShadow: base + (st.overAfter ? "0 4px 0 0 #1b61c9" : "0 -4px 0 0 #1b61c9") }) : it.cardStyle,
+            onDragOver: e => {
+              e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = "move";
+              const r = e.currentTarget.getBoundingClientRect(), after = e.clientY > r.top + r.height / 2;
+              if (st.overCol !== c.key || st.overId !== it.id || st.overAfter !== after) this.setState({ overCol: c.key, overId: it.id, overAfter: after });
+            },
+            onDrop: e => {
+              e.preventDefault(); e.stopPropagation();
+              const id = st.dragId || e.dataTransfer.getData("text/plain");
+              const d = this.data.find(x => x.id === id);
+              const after = st.overAfter;
+              this.setState({ dragId: null, overCol: null, overId: null });
+              if (!d || id === it.id) return;
+              const same = this.phaseOf(d) === c.key;
+              this.place(id, c.key, it.id, after, d.name.split(" — ")[0] + (same ? " reprioritised in " : " moved to ") + c.title + ".");
+            }
+          });
+        }),
         open: this.state.closed[c.key] !== true,
         empty: c.items.length === 0,
-        onDragOver: e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (this.state.overCol !== c.key) this.setState({ overCol: c.key }); },
+        onDragOver: e => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (this.state.overCol !== c.key || this.state.overId) this.setState({ overCol: c.key, overId: null }); },
         onDrop: e => {
           e.preventDefault();
           const id = this.state.dragId || e.dataTransfer.getData("text/plain");
           const d = this.data.find(x => x.id === id);
-          this.setState({ dragId: null, overCol: null });
-          if (!d || this.phaseOf(d) === c.key) return;
+          this.setState({ dragId: null, overCol: null, overId: null });
+          if (!d) return;
           this.move(id, c.key, d.name.split(" — ")[0] + " moved to " + c.title + ".");
         },
         toggle: () => this.setState(s => ({ closed: Object.assign({}, s.closed, { [c.key]: !s.closed[c.key] }) })),
