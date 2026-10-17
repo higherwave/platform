@@ -182,9 +182,17 @@
 <sc-if value="{{ isProject }}" hint-placeholder-val="{{ false }}">
 <div style="max-width:1200px;margin:0 auto;padding:32px 32px 96px">
   <div onClick="{{ goHome }}" style="cursor:pointer;color:#1b61c9;margin-bottom:16px">← Projects</div>
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
     <div><div style="font-size:32px;line-height:1.2;color:#181d26">{{ proj.name }}</div><div style="margin-top:6px;color:#41454d">{{ projMeta }}</div></div>
-    <button onClick="{{ runAnalysis }}" disabled="{{ noTrans }}" style="{{ analyzeStyle }}">{{ analyzeLabel }}</button>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onClick="{{ save }}" disabled="{{ notDirty }}" style="{{ saveBtnStyle }}">{{ saveLabel }}</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#41454d"><div style="{{ saveDot }}"></div>{{ saveText }}</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:4px;margin-top:28px;background:#f2f3f5;border-radius:8px;padding:3px;width:fit-content">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2"><div onClick="{{ g.go }}" style="{{ g.style }}">{{ g.name }}</div></sc-for>
   </div>
   <div style="display:flex;gap:28px;border-bottom:1px solid #ddd;margin:28px 0 32px">
     <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><div onClick="{{ t.go }}" style="{{ t.style }}">{{ t.name }}<span style="{{ t.cnt }}">{{ t.n }}</span></div></sc-for>
@@ -244,7 +252,7 @@
 
   <sc-if value="{{ tThemes }}" hint-placeholder-val="{{ false }}">
     <sc-if value="{{ noThemes }}" hint-placeholder-val="{{ false }}">
-      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes yet</div><div style="margin-bottom:20px">Add transcripts, then run the analysis to see prioritized themes.</div><button onClick="{{ goTrans }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer">Go to transcripts</button></div>
+      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes yet</div><div style="margin-bottom:20px">Add transcripts, then save to analyze them.</div><button onClick="{{ goTrans }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer">Go to transcripts</button></div>
     </sc-if>
     <sc-if value="{{ hasThemes }}" hint-placeholder-val="{{ true }}">
     <div style="animation:pop .25s">
@@ -258,7 +266,7 @@
             <div onClick="{{ t.open }}" style="{{ t.row }}">
               <div style="font-size:20px;color:#9297a0;width:24px;flex:none">{{ t.rank }}</div>
               <div style="flex:1;min-width:0">
-                <div style="font-size:16px;font-weight:500;color:#181d26;line-height:1.35">{{ t.title }}</div>
+                <div style="font-size:16px;font-weight:500;color:#181d26;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ t.title }}</div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center"><div style="{{ t.catStyle }}">{{ t.cat }}</div><div style="{{ t.prioStyle }}">{{ t.prio }}</div><div style="color:#41454d;font-size:13px">{{ t.ppl }} · {{ t.mentions }} mentions · {{ t.stage }}</div></div>
               </div>
               <div style="{{ t.pinStyle }}">{{ t.pinLabel }}</div>
@@ -269,12 +277,12 @@
           <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
             <div style="animation:pop .2s">
               <div style="display:flex;gap:8px;margin-bottom:12px"><div style="{{ sel.catStyle }}">{{ sel.cat }}</div><div style="{{ sel.prioStyle }}">{{ sel.prio }} priority</div></div>
-              <div style="font-size:24px;line-height:1.3;color:#181d26">{{ sel.title }}</div>
+              <textarea value="{{ nameVal }}" onChange="{{ setTitle }}" onKeyDown="{{ titleKey }}" rows="2" maxlength="60" style="width:100%;box-sizing:border-box;font-family:inherit;font-size:24px;line-height:1.3;color:#181d26;border:1px solid transparent;border-radius:6px;padding:4px 8px;margin:0 -9px;background:transparent;resize:none;overflow:hidden" style-hover="border-color:#ddd;background:#fff" style-focus="border-color:#458fff;outline:none;background:#fff"></textarea>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:#41454d;margin-top:2px"><div>Click to rename. Two lines max, Enter to apply.</div><div style="display:flex;gap:12px"><span onClick="{{ resetTitle }}" style="{{ resetTitleStyle }}">Restore original</span><span>{{ titleCount }}/60</span></div></div>
               <div style="margin-top:8px;font-size:15px">{{ sel.desc }}</div>
               <div style="display:flex;gap:12px;align-items:center;margin:20px 0;flex-wrap:wrap">
                 <div style="color:#41454d">Journey stage</div>
                 <select value="{{ sel.stage }}" onChange="{{ onStage }}" style="height:40px;padding:0 12px;border:1px solid #ddd;border-radius:6px;font-family:inherit;font-size:14px;background:#fff;color:#181d26"><sc-for list="{{ stageOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.i }}">{{ o.name }}</option></sc-for></select>
-                <button onClick="{{ togglePin }}" style="{{ pinBtnStyle }}">{{ pinBtnLabel }}</button>
               </div>
               <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:10px">Evidence · {{ selQuotes.length }} quotes</div>
               <div style="display:flex;flex-direction:column;gap:10px">
@@ -285,6 +293,60 @@
             </div>
           </sc-if>
           <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}"><div style="color:#41454d;padding:48px 0;text-align:center">Select a theme to see supporting quotes.</div></sc-if>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ tPrio }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ noThemes }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes to prioritize</div><div>Analyze transcripts first, then rank themes by impact and effort.</div></div>
+    </sc-if>
+    <sc-if value="{{ hasThemes }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:pop .25s">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <div style="color:#41454d;max-width:640px">Impact starts from the analysis priority and effort is a first guess. Drag a theme to another cell or select it to adjust.</div>
+        <button onClick="{{ resetAll }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer">Reset all to suggested</button>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px;align-items:start">
+        <div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px">
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase;color:#41454d">Impact →</div>
+          <div>
+            <div style="display:grid;grid-template-columns:44px repeat(3,minmax(0,1fr));gap:6px">
+              <sc-for list="{{ matrixRows }}" as="r" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:subgrid;grid-column:1/-1;gap:6px">
+                  <div style="display:flex;align-items:center;font-size:12px;color:#41454d;font-weight:500">{{ r.label }}</div>
+                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3">
+                    <div ondragover="{{ dragOver }}" onDrop="{{ c.drop }}" style="{{ c.style }}">
+                      <div style="font-size:11px;font-weight:500;color:#41454d;text-transform:uppercase;letter-spacing:.16px;min-height:14px">{{ c.zone }}</div>
+                      <sc-for list="{{ c.items }}" as="t" hint-placeholder-count="1"><div draggable="{{ true }}" onDragStart="{{ t.drag }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.title }}</div></sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:44px repeat(3,minmax(0,1fr));gap:6px;margin-top:8px"><div></div><div style="font-size:12px;color:#41454d;font-weight:500">Low</div><div style="font-size:12px;color:#41454d;font-weight:500">Medium</div><div style="font-size:12px;color:#41454d;font-weight:500">High</div></div>
+            <div style="text-align:center;font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase;color:#41454d;margin-top:6px">Effort →</div>
+          </div>
+        </div>
+        <div style="position:sticky;top:88px;background:#f8fafc;border-radius:12px;padding:32px">
+          <sc-if value="{{ hasPSel }}" hint-placeholder-val="{{ false }}">
+            <div style="animation:pop .2s">
+              <div style="font-size:20px;line-height:1.3;color:#181d26">{{ pSel.title }}</div>
+              <div style="margin-top:6px;color:#41454d">{{ pSel.ppl }} · {{ pSel.cat }}</div>
+              <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin:24px 0 8px">Impact</div>
+              <div style="display:flex;gap:8px"><sc-for list="{{ impOpts }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div>
+              <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin:20px 0 8px">Effort</div>
+              <div style="display:flex;gap:8px"><sc-for list="{{ effOpts }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.set }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div>
+              <div style="margin-top:20px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:14px 16px">
+                <div style="font-size:12px;font-weight:500;color:#41454d;margin-bottom:4px">Suggested: {{ pSel.sugImp }} impact, {{ pSel.sugEff }} effort</div>
+                <div style="color:#181d26;line-height:1.5">{{ pSel.why }}</div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:center;margin-top:16px"><button onClick="{{ resetOne }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer">Reset to suggested</button><div style="font-size:13px;color:#aa2d00">{{ pSel.edited }}</div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ noPSel }}" hint-placeholder-val="{{ true }}"><div style="color:#41454d;padding:48px 0;text-align:center">Select a theme in the matrix to change its impact or effort.</div></sc-if>
         </div>
       </div>
     </div>
@@ -306,7 +368,7 @@
           <div style="padding:20px 16px;font-size:12px;font-weight:500;color:#41454d;text-transform:uppercase;letter-spacing:.16px;border-top:1px solid #ddd">Themes</div>
           <sc-for list="{{ stageCols }}" as="c" hint-placeholder-count="5">
             <div style="padding:12px;display:flex;flex-direction:column;gap:8px;border-top:1px solid #ddd;border-left:1px solid #ddd;min-height:150px">
-              <sc-for list="{{ c.themes }}" as="t" hint-placeholder-count="1"><div onClick="{{ t.open }}" style="{{ t.style }}"><div style="font-size:13px;font-weight:500;color:#181d26;line-height:1.35">{{ t.title }}</div><div style="font-size:11px;color:#181d26;margin-top:6px;opacity:.85">{{ t.prio }} · {{ t.ppl }}</div></div></sc-for>
+              <sc-for list="{{ c.themes }}" as="t" hint-placeholder-count="1"><div onClick="{{ t.open }}" style="{{ t.style }}"><div style="font-size:13px;font-weight:500;color:#181d26;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ t.title }}</div><div style="font-size:11px;color:#181d26;margin-top:6px;opacity:.85">{{ t.prio }} · {{ t.ppl }}</div></div></sc-for>
             </div>
           </sc-for>
 
@@ -375,6 +437,8 @@ class Component extends DCLogic {
     concept:{name:'Concept test',desc:'Gauge reactions to an early idea or prototype and compare options.',what:'Whether the concept is understood, wanted, and preferred over alternatives',jWhen:'',jWant:'',jSo:'',outcomes:['Comprehension and appeal scores','Preferred direction'],methods:['Concept test','Survey follow-up'],tasks:[{q:'In your own words, what is this?',fups:['Who is it for?']},{q:'How would this fit into what you do today?',fups:['What would stop you from using it?']}]},
     blank:{name:'Blank project',desc:'Start empty and write your own plan and tasks.',what:'',jWhen:'',jWant:'',jSo:'',outcomes:[''],methods:[],tasks:[]}
   };
+  EFF = {t1:[3,'Needs a combined availability feed across providers and a calendar view in search.'],t2:[3,'Requires an insurance eligibility integration and copay estimates.'],t3:[1,'Ratings already exist; mostly a layout change.'],t4:[2,'Prefilling from the profile touches the form and account data.'],t5:[2,'Pricing must include fees from the first listing, which affects backend and display.'],t6:[1,'Extends the existing reminder messages with extra content.'],t7:[1,'A static checklist sent after booking.'],t8:[2,'Self-serve changes need clinic scheduling rules and notifications.'],t9:[2,'Needs a visit summary object and a place to show it in the app.']};
+  LV = ['','Low','Medium','High'];
   PLAT = {Zoom:['#fcab79','Zoom: after the meeting, open Recordings, then download the audio transcript (.vtt) from the cloud recording.'],Meet:['#a8d8c4','Google Meet: transcripts save to the organizer’s Drive as a Doc. Download it as .txt, or use a captions export (.sbv).'],Teams:['#f4d35e','Microsoft Teams: in the meeting recap, choose Transcript, then Download as .vtt.']};
   STEPS = ['Basics','Test plan','Participants','Task list','Transcripts'];
   STEP_COPY = [['Name your project','Pick a starting template. You can change anything in the next steps.'],['Test plan','Define what you are testing, how it maps to the job to be done, and what you expect to learn.'],['Participants','Who you plan to speak with and how to reach them.'],['Task list','The tasks and questions to cover in each session, with follow-ups to probe deeper.'],['Transcripts','Upload session transcripts now or skip and add them later.']];
@@ -385,7 +449,7 @@ class Component extends DCLogic {
   blankWiz(){ const t=this.TEMPLATES.usability; return {name:'',tpl:'usability',what:t.what,jWhen:'',jWant:'',jSo:'',outcomes:[...t.outcomes],methods:[...t.methods],participants:[{name:'',role:'',email:'',date:''}],tasks:JSON.parse(JSON.stringify(t.tasks)),transcripts:[]}; }
   makeSample(){
     const tr=this.SAMPLES.map(s=>({...s}));
-    return {id:'p1',name:'Clinic booking, usability round 1',tpl:'Usability test',what:'Whether patients can find a provider, book, and manage an appointment without calling the clinic',jWhen:'I need to see a doctor soon',jWant:'to find an available, covered provider and book quickly',jSo:'I can plan my day around the visit',outcomes:['Task completion rate above 80%','Top barriers ranked by severity'],methods:['Moderated usability test','Survey follow-up'],participants:[{name:'Maya Chen',role:'Working parent, new patient',email:'maya.chen@example.com',date:'Oct 6'},{name:'Daniel Ortiz',role:'Shift worker, returning patient',email:'d.ortiz@example.com',date:'Oct 7'},{name:'Priya Nair',role:'Graduate student, new patient',email:'priya.n@example.com',date:'Oct 8'}],tasks:JSON.parse(JSON.stringify(this.TEMPLATES.usability.tasks)),transcripts:tr,themes:this.analyze(tr),pinned:{}};
+    return {id:'p1',name:'Clinic booking, usability round 1',tpl:'Usability test',what:'Whether patients can find a provider, book, and manage an appointment without calling the clinic',jWhen:'I need to see a doctor soon',jWant:'to find an available, covered provider and book quickly',jSo:'I can plan my day around the visit',outcomes:['Task completion rate above 80%','Top barriers ranked by severity'],methods:['Moderated usability test','Survey follow-up'],participants:[{name:'Maya Chen',role:'Working parent, new patient',email:'maya.chen@example.com',date:'Oct 6'},{name:'Daniel Ortiz',role:'Shift worker, returning patient',email:'d.ortiz@example.com',date:'Oct 7'},{name:'Priya Nair',role:'Graduate student, new patient',email:'priya.n@example.com',date:'Oct 8'}],tasks:JSON.parse(JSON.stringify(this.TEMPLATES.usability.tasks)),transcripts:tr,themes:this.analyze(tr),pinned:{},analyzedKey:this.tkey(tr)};
   }
   parse(text){
     const out=[]; let last='';
@@ -405,6 +469,30 @@ class Component extends DCLogic {
     const total=Math.max(1,Object.keys(parts).length);
     return ths.filter(t=>t.quotes.length).map(t=>{ const ppl=new Set(t.quotes.map(q=>q.who)).size; const score=0.5*(ppl/total)+0.3*Math.min(t.quotes.length/6,1)+0.2*Math.abs(t.sev); return {...t,ppl,total,mentions:t.quotes.length,score,prio:score>=0.6?'High':score>=0.4?'Medium':'Low'}; }).sort((a,b)=>b.score-a.score);
   }
+  componentDidMount(){
+    let saved=null;
+    try{ const raw=localStorage.getItem('signalflow-projects-v1'); if(raw){ const d=JSON.parse(raw); if(Array.isArray(d.projects)&&d.projects.length) saved=d; } }catch(e){}
+    if(saved) saved.projects=saved.projects.map(p=>p.themes&&p.themes.length&&p.analyzedKey==null?{...p,analyzedKey:this.tkey(p.transcripts)}:p);
+    if(saved) this.setState({projects:saved.projects,activeId:saved.projects[0].id,savedJson:JSON.stringify(saved.projects),savedAt:saved.at||''});
+    else this.setState(s=>({savedJson:JSON.stringify(s.projects)}));
+    this._key=e=>{ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='s'){ e.preventDefault(); this.save(); } };
+    this._unload=e=>{ if(this._dirty){ e.preventDefault(); e.returnValue=''; } };
+    window.addEventListener('keydown',this._key); window.addEventListener('beforeunload',this._unload);
+  }
+  componentWillUnmount(){ window.removeEventListener('keydown',this._key); window.removeEventListener('beforeunload',this._unload); }
+  save(){
+    const P=this.proj();
+    if(this.state.view==='project'&&P&&this.needsAnalysis(P)){
+      if(P.transcripts.length) return this.runAnalysis(P.id,P.transcripts,()=>this.persist());
+      this.updProj({themes:[],analyzedKey:'',pinned:{}});
+    }
+    this.persist();
+  }
+  persist(){
+    const json=JSON.stringify(this.state.projects), at=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+    try{ localStorage.setItem('signalflow-projects-v1',JSON.stringify({projects:this.state.projects,at})); }catch(e){}
+    this.setState({savedJson:json,savedAt:at});
+  }
   proj(){ return this.state.projects.find(p=>p.id===this.state.activeId); }
   updProj(patch){ this.setState(s=>({projects:s.projects.map(p=>p.id===s.activeId?{...p,...patch}:p)})); }
   setWiz(patch){ this.setState(s=>({wiz:{...s.wiz,...patch}})); }
@@ -413,11 +501,13 @@ class Component extends DCLogic {
   addT(t){ const c=this.cur(); if(c.some(x=>x.name===t.name)) return; this.setTrans([...c,{...t,id:'u'+Date.now()+Math.random()}]); }
   handleFiles(files){ [...files].forEach(f=>{ const r=new FileReader(); r.onload=()=>{ const text=String(r.result); let plat=this.state.plat; if(/<v [^>]+>/.test(text)) plat='Teams'; else if(/\.sbv$/i.test(f.name)||/meet/i.test(f.name)) plat='Meet'; this.addT({name:f.name,platform:plat,text}); }; r.readAsText(f); }); }
   pri(color){ return `background:${color};color:#181d26;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:500;white-space:nowrap`; }
-  runAnalysis(pid, trans){
+  tkey(tr){ return tr.map(t=>t.name+':'+t.text.length).join('|'); }
+  needsAnalysis(p){ return !!p && this.tkey(p.transcripts)!==(p.analyzedKey||''); }
+  runAnalysis(pid, trans, after){
     const id=pid||this.state.activeId; let i=0; this.setState({busy:0});
     const tick=()=>{ i++; if(i<this.BUSY.length){ this.setState({busy:i}); setTimeout(tick,650); } else {
-      const themes=this.analyze(trans||this.proj().transcripts);
-      this.setState(s=>({busy:-1,tab:'themes',sel:themes[0]?themes[0].id:null,cat:'All',projects:s.projects.map(p=>p.id===id?{...p,themes,pinned:{}}:p)})); } };
+      const tr=trans||this.proj().transcripts, themes=this.analyze(tr);
+      this.setState(s=>({busy:-1,tab:'themes',sel:themes[0]?themes[0].id:null,cat:'All',projects:s.projects.map(p=>p.id===id?{...p,themes,pinned:{},over:{},analyzedKey:this.tkey(tr)}:p)}),()=>{ if(after) after(); }); } };
     setTimeout(tick,650);
   }
   create(){
@@ -426,10 +516,15 @@ class Component extends DCLogic {
     this.setState(s=>({projects:[p,...s.projects],activeId:id,view:'project',tab:w.transcripts.length?'themes':'transcripts',plat:'Zoom'}),()=>{ if(w.transcripts.length) this.runAnalysis(id,w.transcripts); });
   }
   renderVals(){
-    const s=this.state, w=s.wiz, P=this.proj(), me=this;
+    const P0=this.proj(), nm=(P0&&P0.names)||{};
+    const P=P0&&{...P0,themes:P0.themes.map(t=>nm[t.id]&&nm[t.id].trim()?{...t,title:nm[t.id].trim()}:t)};
+    const s=this.state, w=s.wiz, me=this;
+    const dirty=s.savedJson!=null&&JSON.stringify(s.projects)!==s.savedJson;
+    this._dirty=dirty;
     const btn2="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer";
     const chip=(on)=>`padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:500;border:1px solid ${on?'#181d26':'#ddd'};background:${on?'#181d26':'#fff'};color:${on?'#fff':'#181d26'}`;
-    const v={ isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
+    const ana=!!P0&&this.needsAnalysis(P0)&&P0.transcripts.length>0;
+    const v={ saveLabel:ana?'Save and analyze':'Save', saveText:dirty?(ana?'Unsaved changes. Saving will re-run the analysis.':'Unsaved changes'):(s.savedAt?'All changes saved at '+s.savedAt:'All changes saved'), saveDot:`width:8px;height:8px;border-radius:50%;background:${dirty?'#fcab79':'#0a2e0e'}`, notDirty:!dirty, save:()=>this.save(), saveBtnStyle:`border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;border:1px solid ${dirty?'#181d26':'#ddd'};background:${dirty?'#fff':'#f8fafc'};color:${dirty?'#181d26':'#9297a0'};cursor:${dirty?'pointer':'default'}`, isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
     v.goHome=()=>this.setState({view:'home'});
     v.startWizard=()=>this.setState({view:'wizard',step:0,wiz:this.blankWiz(),errs:{},plat:'Zoom'});
     v.projectCards=s.projects.map((p,i)=>({name:p.name,template:p.tpl,status:p.themes.length?'Analyzed':p.transcripts.length?'Ready to analyze':'Draft',sessions:p.transcripts.length,themes:p.themes.length,tasks:p.tasks.length,bg:`border-radius:12px;padding:24px;min-height:190px;cursor:pointer;box-sizing:border-box;background:${['#f5e9d4','#a8d8c4','#fcab79','#f8fafc'][i%4]}`,open:()=>this.setState({view:'project',activeId:p.id,tab:'plan',sel:null,cat:'All',plat:'Zoom'})}));
@@ -464,9 +559,11 @@ class Component extends DCLogic {
       const pc=P.themes.length;
       v.projMeta=`${P.tpl} · ${P.participants.length} participants · ${P.transcripts.length} transcripts`;
       v.noTrans=!P.transcripts.length; v.analyzeLabel=pc?'Re-run analysis':'Analyze transcripts';
-      v.analyzeStyle=`background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;${P.transcripts.length?'':'opacity:.4;cursor:default'}`;
+      v.analyzeStyle=`background:#181d26;color:#fff;border:0;border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;${P.transcripts.length?'':'opacity:.4;cursor:default'}`;
       v.runAnalysis=()=>this.runAnalysis();
-      v.tabs=[['plan','Test plan',null],['tasks','Task list',P.tasks.length],['transcripts','Transcripts',P.transcripts.length],['themes','Themes',pc],['journey','Journey map',null]].map(([k,n,c])=>({name:n,n:c==null?'':c,go:()=>this.setState({tab:k}),cnt:'margin-left:8px;font-size:12px;background:#e0e2e6;border-radius:6px;padding:1px 7px;color:#181d26;display:'+(c==null||c===0?'none':'inline-block'),style:`padding:0 0 14px;cursor:pointer;font-weight:500;font-size:15px;color:${s.tab===k?'#181d26':'#41454d'};border-bottom:2px solid ${s.tab===k?'#181d26':'transparent'};margin-bottom:-1px`}));
+      const RG=['plan','tasks','transcripts'], inR=RG.includes(s.tab);
+      v.groups=[['Research',true,'plan'],['Analysis',false,'themes']].map(([n,r,first])=>{ const on=r===inR; return {name:n,go:()=>{ if(!on) this.setState({tab:first}); },style:`padding:5px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;background:${on?'#fff':'transparent'};color:${on?'#181d26':'#41454d'};box-shadow:${on?'0 1px 2px rgba(0,0,0,.12)':'none'}`}; });
+      v.tabs=[['plan','Test plan',null],['tasks','Task list',P.tasks.length],['transcripts','Transcripts',P.transcripts.length],['themes','Themes',pc],['prio','Priorities',null],['journey','Journey map',null]].filter(x=>RG.includes(x[0])===inR).map(([k,n,c])=>({name:n,n:c==null?'':c,go:()=>this.setState({tab:k}),cnt:'margin-left:8px;font-size:12px;background:#e0e2e6;border-radius:6px;padding:1px 7px;color:#181d26;display:'+(c==null||c===0?'none':'inline-block'),style:`padding:0 0 14px;cursor:pointer;font-weight:500;font-size:15px;color:${s.tab===k?'#181d26':'#41454d'};border-bottom:2px solid ${s.tab===k?'#181d26':'transparent'};margin-bottom:-1px`}));
       v.tPlan=s.tab==='plan'; v.tTasks=s.tab==='tasks'; v.tTrans=s.tab==='transcripts'; v.tThemes=s.tab==='themes'; v.tJourney=s.tab==='journey';
       v.projTasks=P.tasks.map((t,i)=>({n:i+1,...t}));
       v.noThemes=!pc; v.hasThemes=pc>0; v.goTrans=()=>this.setState({tab:'transcripts'});
@@ -478,12 +575,36 @@ class Component extends DCLogic {
       const prCol={High:'#fcab79',Medium:'#f4d35e',Low:'#e0e2e6'};
       v.themeRows=list.map((t,i)=>({rank:P.themes.indexOf(t)+1,title:t.title,cat:t.cat,catStyle:this.pri(this.CATS[t.cat][0]),prio:t.prio,prioStyle:this.pri(prCol[t.prio]),ppl:`${t.ppl} of ${t.total}`,mentions:t.mentions,stage:this.STAGES[stageOf(t)],open:()=>this.setState({sel:t.id}),row:`display:flex;gap:12px;align-items:center;padding:16px;border-radius:10px;cursor:pointer;border:1px solid ${s.sel===t.id?'#181d26':'#ddd'};background:${s.sel===t.id?'#f8fafc':'#fff'}`,pinLabel:pinned(t)?'On map':'Off map',pinStyle:`font-size:12px;font-weight:500;color:${pinned(t)?'#0a2e0e':'#41454d'};white-space:nowrap`}));
       const sel=P.themes.find(t=>t.id===s.sel); v.hasSel=!!sel; v.noSel=!sel;
-      if(sel){ v.sel={...sel,stage:stageOf(sel),catStyle:this.pri(this.CATS[sel.cat][0]),prioStyle:this.pri(prCol[sel.prio])}; v.selQuotes=sel.quotes;
+      if(sel){ const raw=nm[sel.id]!=null?nm[sel.id]:sel.title; const orig=this.TH.find(x=>x.id===sel.id).title;
+        v.nameVal=raw; v.titleCount=raw.length;
+        v.setTitle=e=>this.updProj({names:{...nm,[sel.id]:e.target.value.replace(/\n/g,' ').slice(0,60)}});
+        v.titleKey=e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur(); } };
+        const ed=sel.title!==orig; v.resetTitle=()=>{ const n={...nm}; delete n[sel.id]; this.updProj({names:n}); }; v.resetTitleStyle=`color:#1b61c9;cursor:pointer;display:${ed?'inline':'none'}`;
+        v.sel={...sel,stage:stageOf(sel),catStyle:this.pri(this.CATS[sel.cat][0]),prioStyle:this.pri(prCol[sel.prio])}; v.selQuotes=sel.quotes;
         v.stageOpts=this.STAGES.map((n,i)=>({i,name:`${i+1}. ${n}`}));
         v.onStage=e=>this.updProj({pinned:{...P.pinned,['s'+sel.id]:+e.target.value}});
         v.pinBtnLabel=pinned(sel)?'Remove from journey map':'Add to journey map'; v.pinBtnStyle=pinned(sel)?btn2:btn2.replace('background:#fff;color:#181d26;border:1px solid #ddd','background:#181d26;color:#fff;border:1px solid #181d26');
         v.togglePin=()=>this.updProj({pinned:{...P.pinned,[sel.id]:!pinned(sel)}}); }
       else { v.sel={}; v.selQuotes=[]; v.stageOpts=[]; }
+      v.tPrio=s.tab==='prio';
+      const ov=P.over||{}, sugI=t=>t.prio==='High'?3:t.prio==='Medium'?2:1, sugE=t=>(this.EFF[t.id]||[2])[0];
+      const imp=t=>(ov[t.id]&&ov[t.id].imp)||sugI(t), eff=t=>(ov[t.id]&&ov[t.id].eff)||sugE(t);
+      const setO=(id,patch)=>this.updProj({over:{...ov,[id]:{...(ov[id]||{}),...patch}}});
+      const pSel=P.themes.find(t=>t.id===s.psel);
+      const zones={'3-1':'Quick wins','3-3':'Major projects','1-1':'Fill-ins','1-3':'Reconsider'};
+      const catC=t=>this.CATS[t.cat][0];
+      v.dragOver=e=>e.preventDefault();
+      v.matrixRows=[3,2,1].map(i=>({label:this.LV[i],cells:[1,2,3].map(e=>{ const k=i-e; return {zone:zones[i+'-'+e]||'',style:`border-radius:10px;min-height:120px;padding:10px;display:flex;flex-direction:column;gap:6px;background:${k>=1?'#e6f4ee':k===0?'#f8fafc':'#f2f3f5'};border:1px solid #ddd`,
+        items:P.themes.filter(t=>imp(t)===i&&eff(t)===e).map(t=>({title:t.title,drag:ev=>{ev.dataTransfer.setData('text/plain',t.id);this.setState({psel:t.id});},pick:()=>this.setState({psel:t.id}),style:`border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.3;color:#181d26;cursor:grab;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;background:${catC(t)};border:2px solid ${s.psel===t.id?'#181d26':'transparent'}`})),
+        drop:ev=>{ev.preventDefault();const id=ev.dataTransfer.getData('text/plain'); if(id) this.updProj({over:{...ov,[id]:{imp:i,eff:e}}}); this.setState({psel:id||s.psel});}}; })}));
+      v.hasPSel=!!pSel; v.noPSel=!pSel; v.pSel={};
+      if(pSel){ const ed=ov[pSel.id]&&((ov[pSel.id].imp&&ov[pSel.id].imp!==sugI(pSel))||(ov[pSel.id].eff&&ov[pSel.id].eff!==sugE(pSel)));
+        v.pSel={title:pSel.title,cat:pSel.cat,ppl:`${pSel.ppl} of ${pSel.total} participants`,sugImp:this.LV[sugI(pSel)],sugEff:this.LV[sugE(pSel)],why:(this.EFF[pSel.id]||[0,'Effort not yet estimated.'])[1],edited:ed?'Edited':''};
+        const seg=(cur,key)=>[1,2,3].map(n=>({label:this.LV[n],set:()=>setO(pSel.id,{[key]:n}),style:chip(cur===n)}));
+        v.impOpts=seg(imp(pSel),'imp'); v.effOpts=seg(eff(pSel),'eff');
+        v.resetOne=()=>{const o={...ov};delete o[pSel.id];this.updProj({over:o});}; }
+      else { v.impOpts=[]; v.effOpts=[]; v.resetOne=()=>{}; }
+      v.resetAll=()=>this.updProj({over:{}});
       // journey
       const pin=P.themes.filter(pinned); v.journeySummary=`${pin.length} of ${pc} themes are on the map, placed by stage.`;
       const cols=this.STAGES.map((n,i)=>{ const ts=pin.filter(t=>stageOf(t)===i); return {n:i+1,name:n,ts,sent:ts.length?ts.reduce((a,t)=>a+t.sev,0)/ts.length:null}; });
@@ -491,7 +612,7 @@ class Component extends DCLogic {
       const pts=cols.map((c,i)=>({x:(i+.5)*20,y:c.sent==null?50:50-c.sent*38,v:c.sent}));
       v.curvePts=pts.filter(p=>p.v!=null).map(p=>`${p.x},${p.y}`).join(' ');
       v.dots=pts.filter(p=>p.v!=null).map(p=>({style:`position:absolute;left:${p.x}%;top:${p.y}%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid #fff;box-sizing:content-box;background:${p.v>=0?'#0a2e0e':'#aa2d00'};`}));
-    } else { Object.assign(v,{tabs:[],projTasks:[],catChips:[],themeRows:[],stageCols:[],dots:[],selQuotes:[],stageOpts:[],sel:{}}); }
+    } else { Object.assign(v,{groups:[],tabs:[],projTasks:[],catChips:[],themeRows:[],stageCols:[],dots:[],selQuotes:[],stageOpts:[],sel:{}}); }
     v.busySteps=this.BUSY.map((l,i)=>({label:l,s:`opacity:${i<=s.busy?1:.4}`,mark:i<s.busy?'✓':'',dot:i<s.busy?'width:20px;height:20px;border-radius:50%;background:#a8d8c4;color:#0a2e0e;display:grid;place-items:center;font-size:12px;flex:none':i===s.busy?'width:20px;height:20px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;animation:spin .8s linear infinite;box-sizing:border-box;flex:none':'width:20px;height:20px;border-radius:50%;border:2px solid #41454d;box-sizing:border-box;flex:none'}));
     return v;
   }
