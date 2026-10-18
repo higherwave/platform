@@ -67,11 +67,7 @@ window.PROTOS = [
     why: 'Builds lasting skill with short lessons users can take when it suits them.',
     principles: ['Visibility of progress', 'Chunking: content split into short lessons', 'Practice tied to real tasks'],
     extensions: ['Certifications', 'Manager-assigned learning paths', 'Lessons embedded in the product'] },
-  { id: 'ai-draft', title: 'Product Requirement Writer', category: 'Productivity', description: 'Build a PR doc by stepping through preset questions, with opportunities for custom edits as needed.', url: 'prototypes/productivity/product-requirement-writer/',
-    why: 'Turns a blank-page task into a guided sequence of questions, producing a structured PRD faster.',
-    principles: ['Recognition over recall: preset questions', 'User control: edit any generated section', 'Visibility of the inputs the AI used'],
-    extensions: ['Team-specific templates', 'Pull context from tickets or research notes', 'Export to document tools'] },
-  { id: 'prod-comms', title: 'AI-enhanced Communication', category: 'Productivity', description: 'AI integrated into Slack or Teams for enhanced productivity', url: 'prototypes/productivity/AI-Collab/',
+  { id: 'prod-comms', title: 'AI-enhanced Communication', category: 'Productivity', description: 'AI integrated into Slack or Teams for enhanced productivity', url: 'https://www.thehigherwave.com/prototypes/productivity/AI-Collab/',
     why: ['Summarized threads for fast context', 'Auto summary of decisions and blockers', 'Automated Action List from Meetings', 'Auto highlight of previously answered questions to avoid re-litigation'],
     principles: ['Recognition over recall: summaries replace rereading long threads', 'Visibility of decisions and open blockers', 'User control: summaries and action items can be edited or dismissed'],
     extensions: ['Assign action items to owners with due dates', 'Weekly digest across channels', 'Link decisions to tickets or docs'] },
@@ -79,14 +75,10 @@ window.PROTOS = [
     why: 'Walks cross-functional teams through a structured path to a decision, so options, trade-offs, and reasoning are laid out the same way each time.',
     principles: ['Progressive disclosure: one decision step at a time', 'Visibility of options and trade-offs side by side', 'Recognition over recall: prompts replace remembering the process'],
     extensions: ['Save and share the decision record', 'Templates for common decision types', 'Link decisions to tickets or specs'] },
-  { id: 'prod-kanban', title: 'Kanban Project Management', category: 'Productivity', description: 'Move work items across status columns, with work-in-progress limits and quick filters by owner.', url: 'prototypes/productivity/kanban-project-management/',
-    why: 'Shows the state of every work item at a glance, so teams can spot blocked work and balance load.',
-    principles: ['Visibility of status through column position', 'Direct manipulation: drag cards between columns', 'Error prevention: warn when a WIP limit is exceeded'],
-    extensions: ['Swimlanes by team or priority', 'Cycle-time analytics per column', 'Automations when a card changes column'] },
-  { id: 'prod-research-themes', title: 'Research Themes Analyzer', category: 'Productivity', description: 'Setup research projects, test plans, meeting transcriptions and auto-generate themes and journey maps', url: 'prototypes/productivity/research-themes-analyzer/',
-    why: 'Takes research from setup to synthesis in one place, turning transcripts into themes and journey maps without manual tagging.',
-    principles: ['Visibility of the source: each theme links back to transcript quotes', 'User control: edit, merge, or reject generated themes', 'Progressive disclosure: from project setup to themes to journey map'],
-    extensions: ['Import transcripts from meeting tools', 'Compare themes across studies', 'Export journey maps to design tools'] },
+  { id: 'prod-building-from-themes', title: 'Building Products from Research Themes', category: 'Productivity', description: 'Combined productivity tools that build end-to-end projects from research themes.', url: 'https://www.thehigherwave.com/prototypes/productivity/research-driven-process/',
+    why: 'Carries research themes straight into project plans, so product work stays tied to what research found.',
+    principles: ['Visibility of the source: each work item links back to its research theme', 'User control: review and edit generated projects before committing', 'Consistency across the connected tools'],
+    extensions: ['Prioritize work items by theme frequency', 'Sync generated projects to a task tracker', 'Track which themes have been addressed'] },
   { id: 'int-directory', title: 'Double-sided Marketplace', category: 'Integrations', description: 'Browse available integrations from the perspective of three users.', url: 'prototypes/integrations/double-sided-marketplace/',
     why: 'Shows how one marketplace serves the different needs of customers, partners, and admins.',
     principles: ['Consistency across user perspectives', 'Recognition over recall: categories and search', 'Trust signals before connecting'],
@@ -133,7 +125,6 @@ window.THUMBS = {
   'obs-journey': 'thumbs/obs-journey.webp',
   'tg-tour': 'thumbs/tg-tour.webp',
   'wf-approval': 'thumbs/wf-approval.webp',
-  'ai-draft': 'thumbs/ai-draft.webp',
   'tg-training': 'thumbs/tg-training.webp',
   'wf-bpa': 'thumbs/wf-bpa.webp',
   'int-mapping': 'thumbs/int-mapping.webp',
@@ -144,7 +135,6 @@ window.THUMBS = {
   'tg-help': 'thumbs/tg-help.webp',
   'notify-rules': 'thumbs/notify-rules.webp',
   'int-directory': 'thumbs/int-directory.webp',
-  'prod-kanban': 'thumbs/prod-kanban.webp',
   'onb-two-level': 'thumbs/onb-two-level.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash.png',
   'prod-comms': 'thumbs/prod-comms.png',
@@ -156,7 +146,7 @@ window.THUMBS = {
   'wf-validate-docs': 'thumbs/wf-validate-docs.png',
   'int-connect': 'thumbs/int-connect.png',
   'plat-ai-patterns': 'thumbs/plat-ai-patterns.png',
-  'prod-research-themes': 'thumbs/prod-research-themes.png'
+  'prod-building-from-themes': 'thumbs/prod-building-from-themes.png'
 };
 
 // Optional detail-page images; falls back to THUMBS when absent.
@@ -173,11 +163,11 @@ window.SHOTS = {
   'wf-runs': 'thumbs/wf-runs-page.png',
   'onb-two-level': 'thumbs/onb-two-level-page.png',
   'obs-ai-dash': 'thumbs/obs-ai-dash-page.png',
-  'prod-research-themes': 'thumbs/prod-research-themes-page.png'
+  'prod-building-from-themes': 'thumbs/prod-building-from-themes-page.png'
 };
 
 // Cards shown under the Highlights filter (default view), in this order.
-window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard', 'prod-comms'];
+window.HIGHLIGHTS = ['obs-ai-dash', 'wf-builder', 'onb-two-level', 'wf-runs', 'tg-help', 'obs-dashboard', 'prod-comms', 'prod-building-from-themes'];
 
 // Per-card thumbnail crop (CSS object-position). Default is 'center top'.
 window.THUMB_POS = {
