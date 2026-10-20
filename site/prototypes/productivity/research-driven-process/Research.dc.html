@@ -127,13 +127,13 @@
 <sc-if value="{{ isProject }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;align-items:flex-start">
 <div style="flex:1;min-width:0;max-width:1200px;margin:0 auto;padding:32px 32px 96px;box-sizing:border-box">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
-    <div><div style="font-size:32px;line-height:1.2;color:#181d26">{{ pageTitle }}</div><div style="margin-top:6px;color:#41454d">{{ projMeta }}</div></div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-      <div style="display:flex;align-items:center;gap:12px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+    <div style="flex:1 1 0;min-width:0"><div style="font-size:32px;line-height:1.2;color:#181d26">{{ pageTitle }}</div><div style="margin-top:6px;color:#41454d">{{ projMeta }}</div></div>
+    <div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:nowrap">
         <sc-if value="{{ canEditPlan }}" hint-placeholder-val="{{ false }}"><button onClick="{{ editPlan }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:12px;height:38px;padding:0 18px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer" style-hover="background:#f2f3f5">Edit test plan</button></sc-if><sc-if value="{{ showSave }}" hint-placeholder-val="{{ true }}"><button onClick="{{ save }}" disabled="{{ notDirty }}" style="{{ saveBtnStyle }}">{{ saveLabel }}</button></sc-if>
       </div>
-      <sc-if value="{{ showSave }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#41454d"><div style="{{ saveDot }}"></div>{{ saveText }}</div></sc-if>
+      <sc-if value="{{ showSave }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px;line-height:1.3;color:#41454d;max-width:340px;text-align:right"><div style="{{ saveDot }}"></div><span>{{ saveText }}</span></div></sc-if>
     </div>
   </div>
   <div style="height:32px"></div>
@@ -486,7 +486,7 @@ class Component extends DCLogic {
     const btn2="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer";
     const chip=(on)=>`padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:500;border:1px solid ${on?'#181d26':'#ddd'};background:${on?'#181d26':'#fff'};color:${on?'#fff':'#181d26'}`;
     const ana=!!P0&&this.needsAnalysis(P0)&&P0.transcripts.length>0;
-    const v={ saveLabel:ana?'Save and analyze':'Save', saveText:dirty?(ana?'Unsaved changes. Saving will re-run the analysis.':'Unsaved changes'):ana?'Transcripts changed. Analyze to update themes.':(s.savedAt?'All changes saved at '+s.savedAt:'All changes saved'), saveDot:`width:8px;height:8px;border-radius:50%;background:${dirty?'#fcab79':'#0a2e0e'}`, notDirty:!dirty&&!ana, showSave:!(s.tab==='transcripts'&&!ana)&&s.tab!=='journey', save:()=>this.save(), saveBtnStyle:`border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;border:1px solid ${ana?'#1b61c9':dirty?'#181d26':'#ddd'};background:${ana?'#1b61c9':dirty?'#fff':'#f8fafc'};color:${ana?'#fff':dirty?'#181d26':'#9297a0'};cursor:${dirty||ana?'pointer':'default'}`, isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
+    const v={ saveLabel:ana?'Save and analyze':'Save', saveText:dirty?(ana?'Unsaved changes. Saving will re-run the analysis.':'Unsaved changes'):ana?'Transcripts changed. Analyze to update themes.':(s.savedAt?'All changes saved at '+s.savedAt:'All changes saved'), saveDot:`flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:${dirty?'#fcab79':'#0a2e0e'}`, notDirty:!dirty&&!ana, showSave:!(s.tab==='transcripts'&&!ana)&&s.tab!=='journey', save:()=>this.save(), saveBtnStyle:`flex:0 0 auto;white-space:nowrap;box-sizing:border-box;border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;border:1px solid ${ana?'#1b61c9':dirty?'#181d26':'#ddd'};background:${ana?'#1b61c9':dirty?'#fff':'#f8fafc'};color:${ana?'#fff':dirty?'#181d26':'#9297a0'};cursor:${dirty||ana?'pointer':'default'}`, isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
     v.goHome=()=>this.setState({view:'home'});
     v.startWizard=()=>this.toParent({sf:'new'});
     const PAL=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf','#eef2fa','#eeeafa','#e6f2fa','#fae6ed'], taken=new Set(), cardBg={}; s.projects.forEach(p=>{ let c=this.pc(p.name); if(taken.has(c)){ const f=PAL.find(x=>!taken.has(x)); if(f) c=f; } taken.add(c); cardBg[p.id]=c; });
