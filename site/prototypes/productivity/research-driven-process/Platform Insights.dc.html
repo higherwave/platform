@@ -16,7 +16,7 @@
 </div>
 <div style="flex:1;min-width:0;max-width:1200px;margin:0 auto;padding:32px 32px 96px;box-sizing:border-box">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
-      <div><div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div><div style="margin-top:12px;color:#41454d">What the team has learned across research projects</div></div>
+      <div><div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div><div style="margin-top:12px;font-size:16px;font-weight:400;color:#41454d">What the team has learned across research projects</div></div>
       <div style="width:280px;height:38px;box-sizing:border-box;border:1px solid #ddd;border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 14px;color:#6b7078;font-size:14px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>Search insights</div>
     </div>
     <div style="margin-top:44px;display:flex;gap:28px;border-bottom:1px solid #ddd">
@@ -53,6 +53,10 @@
         </sc-for>
       </div>
     </div>
+    </sc-if>
+
+    <sc-if value="{{ isOnb }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:44px;color:#41454d">Onboarding content coming soon.</div>
     </sc-if>
 
     <sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
@@ -185,15 +189,15 @@ class Component extends DCLogic {
         return { label: x ? x.n + ' of ' + p.n : '—', pick: () => this.setState({ cell: [i, pi] }),
           style: 'display:grid;place-items:center;border-radius:8px;min-height:56px;font-size:14px;font-weight:500;cursor:pointer;box-sizing:border-box;border:' + (on ? '2px solid #181d26' : '1px solid transparent') + ';' + (x ? 'background:rgba(27,97,201,' + a + ');color:' + (a > 0.45 ? '#fff' : '#181d26') : 'background:#f2f3f5;color:#9297a0') }; }) }));
     const goT = i => () => this.setState({ tab: 'ins', sel: i });
-    const tabs = [['ins', 'Platform Themes', T.length], ['case', 'Case studies', this.C.length]].map(([k, label, n]) => ({ label, count: n, go: () => this.setState({ tab: k }),
+    const tabs = [['ins', 'Platform Themes', T.length], ['case', 'Case studies', this.C.length], ['onb', 'Onboarding', '']].map(([k, label, n]) => ({ label, count: n, go: () => this.setState({ tab: k }),
       style: 'padding:0 0 12px;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:-1px;border-bottom:2px solid ' + (s.tab === k ? '#181d26' : 'transparent') + ';color:' + (s.tab === k ? '#181d26' : '#41454d') + ';font-weight:' + (s.tab === k ? 500 : 400),
-      cstyle: 'font-size:12px;font-weight:500;padding:1px 7px;border-radius:9999px;background:' + (s.tab === k ? '#181d26' : '#e0e2e6') + ';color:' + (s.tab === k ? '#fff' : '#41454d') }));
+      cstyle: (n === '' ? 'display:none;' : '') + 'font-size:12px;font-weight:500;padding:1px 7px;border-radius:9999px;background:' + (s.tab === k ? '#181d26' : '#e0e2e6') + ';color:' + (s.tab === k ? '#fff' : '#41454d') }));
     const cases = this.C.map(c => ({ title: c.title, summary: c.summary, outcome: c.outcome, bg: c.bg, owner: c.owner, date: c.date, themes: c.th.map(i => ({ label: T[i].title, go: goT(i) })) }));
     const guides = this.G.map((g, i) => ({ aud: g.aud, cat: g.cat, title: g.title, pick: () => this.setState({ gsel: i }),
       style: 'border-radius:10px;padding:14px 16px;cursor:pointer;box-sizing:border-box;background:#fff;border:' + (s.gsel === i ? '2px solid #181d26' : '1px solid #ddd') }));
     const gg = this.G[s.gsel];
     const g = { aud: gg.aud, owner: gg.owner, rev: gg.rev, hasEv: gg.th.length > 0, cat: gg.cat, title: gg.title, rule: gg.rule, doText: gg.doT, dontText: gg.dont, ev: gg.th.map(i => ({ title: T[i].title, meta: this.tot(T[i]) + ' of 13 participants · ' + T[i].src.length + ' projects', go: goT(i) })) };
-    return { tabs, isIns: s.tab === 'ins', isCase: s.tab === 'case', isGuide: s.tab === 'guide', cases, guides, g, recs, themes, sel, feed, heads: P.map(p => ({ name: p.name, bg: p.bg, sub: p.sub })), rows,
+    return { tabs, isIns: s.tab === 'ins', isCase: s.tab === 'case', isGuide: s.tab === 'guide', isOnb: s.tab === 'onb', cases, guides, g, recs, themes, sel, feed, heads: P.map(p => ({ name: p.name, bg: p.bg, sub: p.sub })), rows,
       cellTheme: T[ct].title, cellProject: P[cp].name, cellEmpty: !cs, cellQuotes: cs ? cs.q.map(q => ({ text: q.x, meta: this.meta(q) })) : [] };
   }
   sumPpl(r) { const m = {}; r.th.forEach(i => this.T[i].src.forEach(x => { m[x.p] = Math.max(m[x.p] || 0, x.n); })); return Object.values(m).reduce((a, b) => a + b, 0); }
