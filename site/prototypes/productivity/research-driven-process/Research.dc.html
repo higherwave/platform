@@ -19,7 +19,7 @@
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <div style="height:64px;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;background:#fff;z-index:20">
   <div style="display:flex;align-items:center;gap:12px;position:relative">
-    <div onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:18px;font-weight:500;color:#181d26"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#181d26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5H21a3.5 3.5 0 0 1 3.5 3.5v12A3.5 3.5 0 0 1 21 24H7a3.5 3.5 0 0 1-3.5-3.5V16"></path><circle cx="6" cy="6" r="4"></circle></svg><div style="line-height:1.1"><span style="font-weight:300">Signal Flow</span> <span style="font-weight:600">Themes</span></div></div>
+    <div onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:18px;font-weight:500;color:#181d26"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#181d26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5H21a3.5 3.5 0 0 1 3.5 3.5v12A3.5 3.5 0 0 1 21 24H7a3.5 3.5 0 0 1-3.5-3.5V16"></path><circle cx="6" cy="6" r="4"></circle></svg><div style="line-height:1.1"><span style="font-weight:300">Signal Flow</span></div></div>
   </div>
   <button onClick="{{ startWizard }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:10px 18px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer" style-active="background:#0d1218">New project</button>
 </div>
@@ -146,7 +146,7 @@
         <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin:28px 0 10px">Methods</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ proj.methods }}" as="m" hint-placeholder-count="2"><div style="padding:5px 12px;border-radius:6px;background:#fff;border:1px solid #ddd;color:#181d26">{{ m }}</div></sc-for></div>
       </div>
-      <div style="background:#f5e9d4;border-radius:12px;padding:32px;color:#181d26">
+      <div style="background:#faf3e6;border-radius:12px;padding:32px;color:#181d26">
         <div style="font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase;margin-bottom:10px">Outcomes expected</div>
         <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ proj.outcomes }}" as="o" hint-placeholder-count="2"><div style="display:flex;gap:10px"><div style="color:#aa2d00">→</div><div>{{ o }}</div></div></sc-for></div>
       </div>
@@ -203,11 +203,11 @@
 
   <sc-if value="{{ tThemes }}" hint-placeholder-val="{{ false }}">
     <sc-if value="{{ noThemes }}" hint-placeholder-val="{{ false }}">
-      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes yet</div><div style="margin-bottom:20px">Add transcripts, then save to analyze them.</div><button onClick="{{ goTrans }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer">Go to transcripts</button></div>
+      <div style="background:#faf3e6;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes yet</div><div style="margin-bottom:20px">Add transcripts, then save to analyze them.</div><button onClick="{{ goTrans }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-family:inherit;font-size:15px;font-weight:500;cursor:pointer">Go to transcripts</button></div>
     </sc-if>
     <sc-if value="{{ hasThemes }}" hint-placeholder-val="{{ true }}">
     <div style="animation:pop .25s">
-      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:24px;margin-bottom:20px">
         <div style="color:#41454d;margin-right:8px">{{ themeSummary }}</div>
         <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</div></sc-for>
       </div>
@@ -252,7 +252,7 @@
 
   <sc-if value="{{ tPrio }}" hint-placeholder-val="{{ false }}">
     <sc-if value="{{ noThemes }}" hint-placeholder-val="{{ false }}">
-      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes to prioritize</div><div>Analyze transcripts first, then rank themes by impact and effort.</div></div>
+      <div style="background:#faf3e6;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">No themes to prioritize</div><div>Analyze transcripts first, then rank themes by impact and effort.</div></div>
     </sc-if>
     <sc-if value="{{ hasThemes }}" hint-placeholder-val="{{ true }}">
     <div style="animation:pop .25s">
@@ -306,7 +306,7 @@
 
   <sc-if value="{{ tJourney }}" hint-placeholder-val="{{ false }}">
     <sc-if value="{{ noThemes }}" hint-placeholder-val="{{ false }}">
-      <div style="background:#f5e9d4;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">Journey map is empty</div><div>Themes appear here after transcripts are analyzed.</div></div>
+      <div style="background:#faf3e6;border-radius:12px;padding:48px;color:#181d26;max-width:720px"><div style="font-size:24px;margin-bottom:8px">Journey map is empty</div><div>Themes appear here after transcripts are analyzed.</div></div>
     </sc-if>
     <sc-if value="{{ hasThemes }}" hint-placeholder-val="{{ true }}">
     <div style="animation:pop .25s">
@@ -366,9 +366,9 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  pc(n){const K='signalflow-colors-v1',P=['#f5e9d4','#a8d8c4','#f6d3c4','#f4d35e','#eef2fa','#d9d2f2','#c9e4f5','#f5c6d6'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
+  pc(n){const K='signalflow-colors-v1',P=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf','#eef2fa','#eeeafa','#e6f2fa','#fae6ed'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
   STAGES = ['Find a provider','Book a time','Confirm & pay','Prepare or change','Visit & follow-up'];
-  CATS = { 'Pain point':['#f6d3c4','#7a1f00'], 'Need':['#f5e9d4','#5a3d00'], 'Expectation':['#a8d8c4','#0a2e0e'], 'Delight':['#f4d35e','#181d26'] };
+  CATS = { 'Pain point':['#fbe9e0','#7a1f00'], 'Need':['#faf3e6','#5a3d00'], 'Expectation':['#e4f3ec','#0a2e0e'], 'Delight':['#fbf3cf','#181d26'] };
   METHODS = ['Moderated usability test','Unmoderated test','Contextual interview','Diary study','Concept test','Card sort','Survey follow-up'];
   TH = [
     {id:'t1',title:'Provider availability is hard to see',cat:'Pain point',stage:0,sev:-0.7,kw:['availability','available','no slots','open slots','calendar'],desc:'Users cannot compare open times across providers and must open each profile one at a time.',opp:'Show a cross-provider availability calendar in search results.'},
@@ -394,7 +394,7 @@ class Component extends DCLogic {
   };
   EFF = {t1:[3,'Needs a combined availability feed across providers and a calendar view in search.'],t2:[3,'Requires an insurance eligibility integration and copay estimates.'],t3:[1,'Ratings already exist; mostly a layout change.'],t4:[2,'Prefilling from the profile touches the form and account data.'],t5:[2,'Pricing must include fees from the first listing, which affects backend and display.'],t6:[1,'Extends the existing reminder messages with extra content.'],t7:[1,'A static checklist sent after booking.'],t8:[2,'Self-serve changes need clinic scheduling rules and notifications.'],t9:[2,'Needs a visit summary object and a place to show it in the app.']};
   LV = ['','Low','Medium','High'];
-  PLAT = {Zoom:['#fcab79','Zoom: after the meeting, open Recordings, then download the audio transcript (.vtt) from the cloud recording.'],Meet:['#a8d8c4','Google Meet: transcripts save to the organizer’s Drive as a Doc. Download it as .txt, or use a captions export (.sbv).'],Teams:['#f4d35e','Microsoft Teams: in the meeting recap, choose Transcript, then Download as .vtt.']};
+  PLAT = {Zoom:['#fddcc6','Zoom: after the meeting, open Recordings, then download the audio transcript (.vtt) from the cloud recording.'],Meet:['#e4f3ec','Google Meet: transcripts save to the organizer’s Drive as a Doc. Download it as .txt, or use a captions export (.sbv).'],Teams:['#fbf3cf','Microsoft Teams: in the meeting recap, choose Transcript, then Download as .vtt.']};
   STEPS = ['Basics','Test plan','Participants'];
   STEP_COPY = [['Name your project','Pick a starting template. You can change anything in the next steps.'],['Test plan','Define what you are testing, and what you expect to learn.'],['Participants','Who you plan to speak with and how to reach them.']];
   BUSY = ['Parsing transcripts','Identifying speakers','Clustering statements','Scoring and prioritizing','Porting themes to journey map'];
@@ -486,10 +486,10 @@ class Component extends DCLogic {
     const btn2="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:6px;padding:8px 14px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer";
     const chip=(on)=>`padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:500;border:1px solid ${on?'#181d26':'#ddd'};background:${on?'#181d26':'#fff'};color:${on?'#fff':'#181d26'}`;
     const ana=!!P0&&this.needsAnalysis(P0)&&P0.transcripts.length>0;
-    const v={ saveLabel:ana?'Save and analyze':'Save', saveText:dirty?(ana?'Unsaved changes. Saving will re-run the analysis.':'Unsaved changes'):ana?'Transcripts changed. Analyze to update themes.':(s.savedAt?'All changes saved at '+s.savedAt:'All changes saved'), saveDot:`width:8px;height:8px;border-radius:50%;background:${dirty?'#fcab79':'#0a2e0e'}`, notDirty:!dirty&&!ana, showSave:!(s.tab==='transcripts'&&!ana), save:()=>this.save(), saveBtnStyle:`border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;border:1px solid ${ana?'#1b61c9':dirty?'#181d26':'#ddd'};background:${ana?'#1b61c9':dirty?'#fff':'#f8fafc'};color:${ana?'#fff':dirty?'#181d26':'#9297a0'};cursor:${dirty||ana?'pointer':'default'}`, isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
+    const v={ saveLabel:ana?'Save and analyze':'Save', saveText:dirty?(ana?'Unsaved changes. Saving will re-run the analysis.':'Unsaved changes'):ana?'Transcripts changed. Analyze to update themes.':(s.savedAt?'All changes saved at '+s.savedAt:'All changes saved'), saveDot:`width:8px;height:8px;border-radius:50%;background:${dirty?'#fcab79':'#0a2e0e'}`, notDirty:!dirty&&!ana, showSave:!(s.tab==='transcripts'&&!ana)&&s.tab!=='journey', save:()=>this.save(), saveBtnStyle:`border-radius:12px;height:38px;padding:0 22px;font-family:inherit;font-size:15px;font-weight:500;border:1px solid ${ana?'#1b61c9':dirty?'#181d26':'#ddd'};background:${ana?'#1b61c9':dirty?'#fff':'#f8fafc'};color:${ana?'#fff':dirty?'#181d26':'#9297a0'};cursor:${dirty||ana?'pointer':'default'}`, isHome:s.view==='home', isWizard:s.view==='wizard', isProject:s.view==='project'&&!!P, wiz:w, proj:P||{}, busy:s.busy>=0 };
     v.goHome=()=>this.setState({view:'home'});
     v.startWizard=()=>this.toParent({sf:'new'});
-    const PAL=['#f5e9d4','#a8d8c4','#f6d3c4','#f4d35e','#eef2fa','#d9d2f2','#c9e4f5','#f5c6d6'], taken=new Set(), cardBg={}; s.projects.forEach(p=>{ let c=this.pc(p.name); if(taken.has(c)){ const f=PAL.find(x=>!taken.has(x)); if(f) c=f; } taken.add(c); cardBg[p.id]=c; });
+    const PAL=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf','#eef2fa','#eeeafa','#e6f2fa','#fae6ed'], taken=new Set(), cardBg={}; s.projects.forEach(p=>{ let c=this.pc(p.name); if(taken.has(c)){ const f=PAL.find(x=>!taken.has(x)); if(f) c=f; } taken.add(c); cardBg[p.id]=c; });
     v.projectCards=s.projects.map((p,i)=>({name:p.name,template:p.tpl,status:p.themes.length?'Analyzed':p.transcripts.length?'Ready to analyze':'Draft',sessions:p.transcripts.length,themes:p.themes.length,tasks:p.tasks.length,bg:`border-radius:12px;padding:24px;min-height:190px;cursor:pointer;box-sizing:border-box;background:${cardBg[p.id]}`,open:()=>this.toParent({sf:'open',pid:p.id,analyzed:p.themes.length>0}),menuOpen:s.menuFor===p.id,toggleMenu:e=>{e.stopPropagation();this.setState(x=>({menuFor:x.menuFor===p.id?null:p.id}));},closeMenu:e=>{e.stopPropagation();this.setState({menuFor:null});},askDelete:e=>{e.stopPropagation();this.setState({menuFor:null,del:{id:p.id,name:p.name}});}}));
     v.delOpen=!!s.del; v.delName=s.del?s.del.name:''; v.delKind=s.del&&s.del.kind||'project'; v.stopDel=e=>e.stopPropagation(); v.cancelDel=()=>this.setState({del:null});
     v.confirmDel=()=>{ if(s.del&&s.del.kind==='transcript'){ const ix=s.del.idx; this.setState({del:null}); this.setTrans(this.cur().filter((_,j)=>j!==ix)); return setTimeout(()=>{ const P=this.proj(); if(P&&!P.transcripts.length) this.save(); else this.persist(); },0); } const id=s.del&&s.del.id; this.setState(x=>{ const ps=x.projects.filter(p=>p.id!==id); return {projects:ps,del:null,activeId:x.activeId===id?(ps[0]?ps[0].id:null):x.activeId}; },()=>this.persist()); };
@@ -546,7 +546,7 @@ class Component extends DCLogic {
       const list=P.themes.filter(t=>s.cat==='All'||t.cat===s.cat);
       const pinned=t=>P.pinned[t.id]!==false, stageOf=t=>P.pinned['s'+t.id]!=null?P.pinned['s'+t.id]:t.stage;
       v.themeSummary=`${pc} themes from ${P.transcripts.length} sessions`;
-      const prCol={High:'#fcab79',Medium:'#f4d35e',Low:'#e0e2e6'};
+      const prCol={High:'#fddcc6',Medium:'#fbf3cf',Low:'#e0e2e6'};
       v.themeRows=list.map((t,i)=>({rank:P.themes.indexOf(t)+1,title:t.title,cat:t.cat,catStyle:this.pri(this.CATS[t.cat][0]),prio:t.prio,prioStyle:this.pri(prCol[t.prio]),ppl:`${t.ppl} of ${t.total}`,mentions:t.mentions,stage:this.STAGES[stageOf(t)],open:()=>this.setState({sel:t.id}),row:`display:flex;gap:12px;align-items:center;padding:16px;border-radius:10px;cursor:pointer;border:1px solid ${s.sel===t.id?'#181d26':'#ddd'};background:${s.sel===t.id?'#f8fafc':'#fff'}`,pinLabel:pinned(t)?'On map':'Off map',pinStyle:`font-size:12px;font-weight:500;color:${pinned(t)?'#0a2e0e':'#41454d'};white-space:nowrap`}));
       const sel=P.themes.find(t=>t.id===s.sel); v.hasSel=!!sel; v.noSel=!sel;
       if(sel){ const raw=nm[sel.id]!=null?nm[sel.id]:sel.title; const orig=this.TH.find(x=>x.id===sel.id).title;
@@ -582,12 +582,12 @@ class Component extends DCLogic {
       // journey
       const pin=P.themes.filter(pinned); v.journeySummary=`${pin.length} of ${pc} themes are on the map, placed by stage.`;
       const cols=this.STAGES.map((n,i)=>{ const ts=pin.filter(t=>stageOf(t)===i); return {n:i+1,name:n,ts,sent:ts.length?ts.reduce((a,t)=>a+t.sev,0)/ts.length:null}; });
-      v.stageCols=cols.map((c,i)=>({n:c.n,name:c.name,noPain:!c.ts.some(t=>t.cat==='Pain point'),pains:c.ts.filter(t=>t.cat==='Pain point').sort((a,b)=>a.sev-b.sev).map(t=>({title:t.title,meta:`${t.ppl} of ${t.total} participants · ${t.prio}`,dot:`width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:${t.sev<=-0.75?'#aa2d00':'#fcab79'}`,open:()=>this.setState({tab:'themes',sel:t.id,cat:'All'})})),opp:c.ts.length?c.ts[0].opp:'No themes mapped to this stage.',themes:c.ts.map(t=>({title:t.title,prio:t.prio,ppl:`${t.ppl}/${t.total}`,open:()=>this.setState({tab:'themes',sel:t.id,cat:'All'}),style:`border-radius:10px;padding:10px 12px;cursor:pointer;background:${this.CATS[t.cat][0]}`}))}));
+      v.stageCols=cols.map((c,i)=>({n:c.n,name:c.name,noPain:!c.ts.some(t=>t.cat==='Pain point'),pains:c.ts.filter(t=>t.cat==='Pain point').sort((a,b)=>a.sev-b.sev).map(t=>({title:t.title,meta:`${t.ppl} of ${t.total} participants · ${t.prio}`,dot:`width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:${t.sev<=-0.75?'#aa2d00':'#fddcc6'}`,open:()=>this.setState({tab:'themes',sel:t.id,cat:'All'})})),opp:c.ts.length?c.ts[0].opp:'No themes mapped to this stage.',themes:c.ts.map(t=>({title:t.title,prio:t.prio,ppl:`${t.ppl}/${t.total}`,open:()=>this.setState({tab:'themes',sel:t.id,cat:'All'}),style:`border-radius:10px;padding:10px 12px;cursor:pointer;background:${this.CATS[t.cat][0]}`}))}));
       const pts=cols.map((c,i)=>({x:(i+.5)*20,y:c.sent==null?50:50-c.sent*38,v:c.sent}));
       v.curvePts=pts.filter(p=>p.v!=null).map(p=>`${p.x},${p.y}`).join(' ');
       v.dots=pts.filter(p=>p.v!=null).map(p=>({style:`position:absolute;left:${p.x}%;top:${p.y}%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:3px solid #fff;box-sizing:content-box;background:${p.v>=0?'#0a2e0e':'#aa2d00'};`}));
     } else { Object.assign(v,{gR:{},gA:{},tabs:[],pageTitle:'',projTasks:[],projTaskRows:[],catChips:[],themeRows:[],stageCols:[],dots:[],selQuotes:[],stageOpts:[],sel:{}}); }
-    v.busySteps=this.BUSY.map((l,i)=>({label:l,s:`opacity:${i<=s.busy?1:.4}`,mark:i<s.busy?'✓':'',dot:i<s.busy?'width:20px;height:20px;border-radius:50%;background:#a8d8c4;color:#0a2e0e;display:grid;place-items:center;font-size:12px;flex:none':i===s.busy?'width:20px;height:20px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;animation:spin .8s linear infinite;box-sizing:border-box;flex:none':'width:20px;height:20px;border-radius:50%;border:2px solid #41454d;box-sizing:border-box;flex:none'}));
+    v.busySteps=this.BUSY.map((l,i)=>({label:l,s:`opacity:${i<=s.busy?1:.4}`,mark:i<s.busy?'✓':'',dot:i<s.busy?'width:20px;height:20px;border-radius:50%;background:#e4f3ec;color:#0a2e0e;display:grid;place-items:center;font-size:12px;flex:none':i===s.busy?'width:20px;height:20px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;animation:spin .8s linear infinite;box-sizing:border-box;flex:none':'width:20px;height:20px;border-radius:50%;border:2px solid #41454d;box-sizing:border-box;flex:none'}));
     return v;
   }
 }

@@ -40,7 +40,7 @@
   <sc-if value="{{ hasProject }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 32px 32px 24px 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px;">
     <div>
-      <div style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26;">Board: {{ projectName }}</div>
+      <div style="font-size: 32px; font-weight: 400; line-height: 1.2; color: #181d26;">User Stories: {{ projectName }}</div>
       <div style="font-size: 14px; line-height: 1.45; color: #41454d; margin-top: 8px; max-width: 780px;">{{ subhead }}</div>
     </div>
     <div style="display: flex; align-items: center; gap: 12px; flex: 0 0 auto; padding-top: 6px;">
@@ -79,7 +79,7 @@
   </div>
 
   <sc-if value="{{ hasActivity }}" hint-placeholder-val="{{ false }}">
-    <div style="margin: 0 32px 16px 32px; background: #f5e9d4; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+    <div style="margin: 0 32px 16px 32px; background: #faf3e6; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
       <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; color: #181d26;">Board activity</div>
       <div style="font-size: 14px; color: #333840;">{{ lastActivity }}</div>
       <div onClick="{{ undo }}" style="margin-left: auto; font-size: 14px; font-weight: 500; color: #1b61c9; cursor: pointer;">Undo</div>
@@ -101,8 +101,8 @@
               <div draggable="true" onDragOver="{{ item.onDragOver }}" onDrop="{{ item.onDrop }}" onDragStart="{{ item.onDragStart }}" onDragEnd="{{ item.onDragEnd }}" onClick="{{ item.onClick }}" style="{{ item.cardStyle }}">
                 <div style="{{ item.tagStyle }}">{{ item.tag }}</div>
                 <div title="{{ item.name }}" style="font-size: 16px; font-weight: 500; color: #181d26; line-height: 1.35; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; min-width: 0;">{{ item.name }}</div>
-                <div title="{{ item.body }}" style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; margin-top: 6px; color: #41454d; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; min-width: 0;">{{ item.body }}</div>
-                <div title="{{ item.meta }}" style="font-size: 14px; line-height: 1.4; color: #41454d; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; min-width: 0;">{{ item.meta }}</div>
+                <div title="{{ item.body }}" style="font-size: 14px; font-weight: 500; letter-spacing: 0.16px; margin-top: 6px; color: #6b7078; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; min-width: 0;">{{ item.body }}</div>
+                <sc-if value="{{ item.meta }}" hint-placeholder-val="{{ false }}"><div title="{{ item.meta }}" style="font-size: 14px; line-height: 1.4; color: #41454d; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; min-width: 0;">{{ item.meta }}</div></sc-if>
                 <sc-if value="{{ item.showProgress }}" hint-placeholder-val="{{ false }}">
                   <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px;">
                     <div style="flex: 1 1 auto; height: 4px; background: #e0e2e6; border-radius: 9999px; overflow: hidden;">
@@ -157,6 +157,10 @@
           </sc-for>
         </div>
       </div>
+      <div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px;">
+        <sc-if value="{{ hasJira }}" hint-placeholder-val="{{ false }}"><div style="font-size: 14px; color: #41454d;">Created {{ jiraAt }}</div><a href="#" onClick="{{ viewJira }}" style="font-size: 14px; font-weight: 500; color: #1b61c9; text-decoration: none;" style-hover="text-decoration: underline">View ticket {{ jiraKey }}</a></sc-if>
+        <sc-if value="{{ noJira }}" hint-placeholder-val="{{ true }}"><button onClick="{{ createJira }}" style="background: #181d26; color: #ffffff; border: 0; border-radius: 12px; padding: 10px 20px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer;" style-active="background: #0d1218">Create Jira Ticket</button></sc-if>
+      </div>
     </div>
   </div>
   </div>
@@ -189,11 +193,11 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showConfidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Horizon scanning&quot;},&quot;defaultAudience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cco&quot;,&quot;specialist&quot;],&quot;default&quot;:&quot;cco&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Audience&quot;}}">
 class Component extends DCLogic {
-  pc(n){const K='signalflow-colors-v1',P=['#f5e9d4','#a8d8c4','#f6d3c4','#f4d35e','#eef2fa','#d9d2f2','#c9e4f5','#f5c6d6'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
+  pc(n){const K='signalflow-colors-v1',P=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf','#eef2fa','#eeeafa','#e6f2fa','#fae6ed'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
   state = {
     savedAt: new Date(), moreOpen: false, switcherOpen: false, project: null, imported: [], menuFor: null, del: null, dragId: null, overCol: null, overId: null, overAfter: false, order: null,
     audience: null, bodies: [], band: "All", query: "",
-    sel: "r1", overrides: {}, activity: [],
+    sel: "r1", jira: {}, overrides: {}, activity: [],
     closed: {}
   };
 
@@ -221,7 +225,7 @@ class Component extends DCLogic {
   ];
 
   phaseOf(d) { return this.state.overrides[d.id] || d.phase; }
-  phaseColor(p) { return p === "addressed" ? "#d0d3d9" : p === "now" ? "#f5e08a" : p === "approaching" ? "#a8d8c4" : "#f5e9d4"; }
+  phaseColor(p) { return p === "addressed" ? "#d0d3d9" : p === "now" ? "#fbf3cf" : p === "approaching" ? "#e4f3ec" : "#faf3e6"; }
   phaseDark(p) { return p === "addressed" ? "#7d828c" : p === "now" ? "#c9a400" : p === "approaching" ? "#4a9c7c" : "#d9a441"; }
   bandTone(b) { return b === "Likely" ? "#0a2e0e" : b === "Possible" ? "#d9a441" : "#41454d"; }
 
@@ -286,7 +290,7 @@ class Component extends DCLogic {
       onDragStart: e => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", d.id); setTimeout(() => this.setState({ dragId: d.id }), 0); },
       onDragEnd: () => this.setState({ dragId: null, overCol: null, overId: null }),
       tag: phase === "horizon" ? "✓" : d.risk,
-      meta: cco ? d.dateLabel + " · " + d.owner : d.participants + " participants · " + crit,
+      meta: cco ? "" : d.participants + " participants · " + crit,
       showProgress: d.obligations > 0,
       progressLabel: pct + "%",
       progressStyle: { width: pct + "%", height: "100%", background: this.phaseDark(phase) },
@@ -364,6 +368,9 @@ class Component extends DCLogic {
       lastActivity: this.state.activity.length ? this.state.activity[this.state.activity.length - 1].note : "",
       undo: () => this.undo(),
       savedAt: this.state.savedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }), hasProject: !!this.state.project, noProject: false, projectName: this.state.project ? this.state.project.name : "",
+      jiraKey: (this.state.jira[this.state.sel] || {}).key || '', jiraAt: (this.state.jira[this.state.sel] || {}).at || '', hasJira: !!this.state.jira[this.state.sel], noJira: !this.state.jira[this.state.sel],
+      viewJira: e => e.preventDefault(),
+      createJira: () => this.setState(s => s.jira[s.sel] ? null : { jira: Object.assign({}, s.jira, { [s.sel]: { key: 'SF-' + (100 + Object.keys(s.jira).length + 1), at: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) } }) }),
       goLaunch: () => this.setState({ project: null, sel: this.state.sel }),
       importFile: e => { const f = e.target.files && e.target.files[0]; if (!f) return; const name = f.name.replace(/\.[^.]+$/, ""); this.setState(s => ({ project: { name: name }, imported: s.imported.concat([{ name: name, status: "Imported", source: "Imported from Product Docs" }]) })); },
       projectCards: this.menuCards(this.published().map(p => ({ name: p.name, pub: true, status: "Published", source: "Product Docs · published " + p.at, bg: this.pc(p.name), count: p.items.length, open: () => this.setState({ project: { name: p.name, items: p.items }, sel: p.items[0] ? p.items[0].id : null, bodies: [], band: "All", query: "", overrides: {}, order: null, activity: [] }) })).concat([{ name: "Q4 Release", status: "Active", source: "Product Docs · updated today", bg: "#f5e9d4" }, { name: "Q1 Planning", status: "Draft", source: "Product Docs · updated last week", bg: "#e5f0ec" }]).concat(this.state.imported.map(i => Object.assign({ bg: "#eef2fa" }, i))).map(c => Object.assign({ count: this.data.length, open: () => this.setState({ project: { name: c.name }, sel: "r1", overrides: {}, order: null, activity: [] }) }, c, { bg: this.pc(c.name) }))),
@@ -406,7 +413,7 @@ class Component extends DCLogic {
           this.move(id, c.key, d.name.split(" — ")[0] + " moved to " + c.title + ".");
         },
         toggle: () => this.setState(s => ({ closed: Object.assign({}, s.closed, { [c.key]: !s.closed[c.key] }) })),
-        colStyle: { flex: "1 1 0", minWidth: 0, background: c.key === "horizon" ? "#f5e9d4" : "#fbfbfc", border: this.state.dragId && this.state.overCol === c.key ? "1px solid #1b61c9" : "1px solid #dddddd", boxShadow: this.state.dragId && this.state.overCol === c.key ? "inset 0 0 0 2px #1b61c9" : "none", borderRadius: "10px", padding: "16px", boxSizing: "border-box" }
+        colStyle: { flex: "1 1 0", minWidth: 0, background: c.key === "horizon" ? "#faf3e6" : "#fbfbfc", border: this.state.dragId && this.state.overCol === c.key ? "1px solid #1b61c9" : "1px solid #dddddd", boxShadow: this.state.dragId && this.state.overCol === c.key ? "inset 0 0 0 2px #1b61c9" : "none", borderRadius: "10px", padding: "16px", boxSizing: "border-box" }
       }))
     }, this.detail());
   }

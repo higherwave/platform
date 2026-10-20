@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#f0eee9;font-family:Inter,system-ui,sans-serif}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08)}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px}.dv-tname{font:600 13px/1.2 Inter,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-direction:column;gap:44px}.dv-opt{display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 12px/1.4 Inter,sans-serif;color:rgba(0,0,0,.6)}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 Inter,sans-serif;color:rgba(0,0,0,.55)}</style>
+</helmet>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Platform Insights as a team knowledge base, built on <a class="dv-oid" href="#1a">1a</a></span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Insights, Case studies and Guidelines tabs. Guidelines are a standards reference for product marketing, training and outreach, with supporting insights linked where a standard rests on research.</div>
+<div style="width:1280px;background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;display:flex;color:#333840">
+  <div style="width:208px;flex:0 0 208px;background:#2b2f36;padding:20px 12px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:18px;font-weight:300;color:#fff;padding:4px 12px 20px">Signal Flow</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;color:#c9ccd2"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3l1.5 2h6.5A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5z"></path></svg>Research Projects</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:500;background:#4a4f58;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V9M7 16V4M12 16v-5M17 16V7"></path></svg>Platform Insights</div>
+  </div>
+  <div style="flex:1;min-width:0;padding:32px 32px 40px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+      <div><div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div><div style="margin-top:6px;color:#41454d">What the team has learned across research projects</div></div>
+      <div style="width:280px;height:38px;box-sizing:border-box;border:1px solid #ddd;border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 14px;color:#6b7078;font-size:14px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>Search insights</div>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:28px;border-bottom:1px solid #ddd">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3"><div onClick="{{ tb.go }}" style="{{ tb.style }}">{{ tb.label }}<span style="{{ tb.cstyle }}">{{ tb.count }}</span></div></sc-for>
+    </div>
+
+    <sc-if value="{{ isIns }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top:24px;font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Recommendations</div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+      <sc-for list="{{ recs }}" as="r" hint-placeholder-count="4"><div style="border:1px solid #ddd;border-radius:10px;padding:14px 16px;background:#f8fafc"><div style="font-size:14px;font-weight:500;line-height:1.35;color:#181d26">{{ r.title }}</div><div style="margin-top:8px;font-size:13px;color:#41454d">{{ r.from }}</div></div></sc-for>
+    </div>
+    <div style="margin-top:28px;display:flex;gap:28px;align-items:flex-start">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:10px">Themes across projects</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ themes }}" as="t" hint-placeholder-count="5">
+            <div onClick="{{ t.pick }}" style="{{ t.rowStyle }}">
+              <div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:500;color:#181d26;line-height:1.3">{{ t.title }}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><div style="{{ t.catStyle }}">{{ t.cat }}</div><sc-for list="{{ t.chips }}" as="c" hint-placeholder-count="2"><div style="{{ c.style }}">{{ c.label }}</div></sc-for></div></div>
+              <div style="width:150px;flex:0 0 150px"><div style="font-size:14px;font-weight:500;color:#181d26">{{ t.ppl }}</div><div style="margin-top:6px;height:4px;background:#e0e2e6;border-radius:9999px;overflow:hidden"><div style="{{ t.bar }}"></div></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="width:400px;flex:0 0 400px;background:#f8fafc;border:1px solid #ddd;border-radius:10px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Where this comes from</div>
+        <div style="font-size:20px;font-weight:500;line-height:1.3;color:#181d26">{{ sel.title }}</div>
+        <div style="font-size:14px;color:#41454d;line-height:1.5">{{ sel.conf }}</div>
+        <div style="height:1px;background:#ddd"></div>
+        <sc-for list="{{ sel.src }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px"><div style="{{ s.chip }}">{{ s.name }}</div><div style="font-size:13px;color:#41454d">{{ s.count }}</div></div>
+            <sc-for list="{{ s.quotes }}" as="q" hint-placeholder-count="1"><div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 12px"><div style="font-size:14px;line-height:1.45;color:#333840">“{{ q.text }}”</div><div style="margin-top:6px;font-size:12px;color:#41454d">{{ q.meta }} · <a href="#2a">Open transcript</a></div></div></sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+      <sc-for list="{{ cases }}" as="c" hint-placeholder-count="4">
+        <div style="border-radius:12px;padding:24px;background:{{ c.bg }};color:#181d26;display:flex;flex-direction:column;gap:12px;min-height:260px">
+          <div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;color:#41454d"><span>{{ c.owner }}</span><span>{{ c.date }}</span></div>
+          <div style="font-size:22px;line-height:1.25;font-weight:500">{{ c.title }}</div>
+          <div style="font-size:15px;line-height:1.5;color:#333840">{{ c.summary }}</div>
+          <div style="font-size:15px;font-weight:500">{{ c.outcome }}</div>
+          <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(24,29,38,.15)">
+            <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:8px">Based on</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ c.themes }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.go }}" style="font-size:13px;font-weight:500;padding:3px 10px;border-radius:6px;background:#fff;color:#1b61c9;cursor:pointer">{{ t.label }}</div></sc-for></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isGuide }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:24px;display:flex;gap:28px;align-items:flex-start">
+      <div style="width:380px;flex:0 0 380px;display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ guides }}" as="g" hint-placeholder-count="4">
+          <div onClick="{{ g.pick }}" style="{{ g.style }}"><div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">{{ g.cat }}</div><div style="margin-top:6px;font-size:15px;font-weight:500;line-height:1.35;color:#181d26">{{ g.title }}</div><div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ g.aud }}" as="a" hint-placeholder-count="2"><div style="font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px;background:#eef2fa;color:#181d26">{{ a }}</div></sc-for></div></div>
+        </sc-for>
+      </div>
+      <div style="flex:1;min-width:0;background:#f8fafc;border:1px solid #ddd;border-radius:10px;padding:28px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px">
+        <div><div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">{{ g.cat }}</div><div style="margin-top:6px;font-size:24px;font-weight:500;line-height:1.25;color:#181d26">{{ g.title }}</div></div>
+        <div style="font-size:16px;line-height:1.55;color:#333840">{{ g.rule }}</div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+          <div style="background:#a8d8c4;border-radius:10px;padding:16px 18px;color:#0a2e0e"><div style="font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase">Say</div><div style="margin-top:6px;font-size:15px;line-height:1.5">“{{ g.doText }}”</div></div>
+          <div style="background:#f6d3c4;border-radius:10px;padding:16px 18px;color:#7a1f00"><div style="font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase">Avoid</div><div style="margin-top:6px;font-size:15px;line-height:1.5">“{{ g.dontText }}”</div></div>
+        </div>
+        <div style="height:1px;background:#ddd"></div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap;font-size:14px">
+          <div><div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:6px">Applies to</div><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ g.aud }}" as="a" hint-placeholder-count="2"><div style="font-size:13px;font-weight:500;padding:2px 10px;border-radius:6px;background:#eef2fa;color:#181d26">{{ a }}</div></sc-for></div></div>
+          <div><div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:6px">Owner</div><div style="color:#181d26">{{ g.owner }}</div></div>
+          <div><div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:6px">Last reviewed</div><div style="color:#181d26">{{ g.rev }}</div></div>
+        </div>
+        <sc-if value="{{ g.hasEv }}" hint-placeholder-val="{{ false }}">
+        <div style="height:1px;background:#ddd"></div>
+        <div>
+          <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:10px">Supporting insights</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ g.ev }}" as="e" hint-placeholder-count="2"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 14px"><div><div style="font-size:14px;font-weight:500;color:#181d26">{{ e.title }}</div><div style="margin-top:2px;font-size:13px;color:#41454d">{{ e.meta }}</div></div><div onClick="{{ e.go }}" style="font-size:14px;font-weight:500;color:#1b61c9;cursor:pointer;white-space:nowrap">View sources</div></div></sc-for>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "add a way to submit a new case study or guideline" · "show guideline status (draft, approved) and owner" · "new directions for the Case studies layout"</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Platform Insights: three ways to roll up themes and trace them to their source</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Ranked themes with a source drawer. Select a theme to see every project, participant and quote behind it.</div>
+<div style="width:1280px;background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;display:flex;color:#333840">
+  <div style="width:208px;flex:0 0 208px;background:#2b2f36;padding:20px 12px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:18px;font-weight:300;color:#fff;padding:4px 12px 20px">Signal Flow</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;color:#c9ccd2"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3l1.5 2h6.5A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5z"></path></svg>Research Projects</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:500;background:#4a4f58;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V9M7 16V4M12 16v-5M17 16V7"></path></svg>Platform Insights</div>
+  </div>
+  <div style="flex:1;min-width:0;padding:32px">
+    <div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div>
+    <div style="margin-top:6px;color:#41454d">Rolled up from 3 projects · 13 sessions · 13 participants</div>
+    <div style="margin-top:24px;font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Recommendations</div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+      <sc-for list="{{ recs }}" as="r" hint-placeholder-count="4"><div style="border:1px solid #ddd;border-radius:10px;padding:14px 16px;background:#f8fafc"><div style="font-size:14px;font-weight:500;line-height:1.35;color:#181d26">{{ r.title }}</div><div style="margin-top:8px;font-size:13px;color:#41454d">{{ r.from }}</div></div></sc-for>
+    </div>
+    <div style="margin-top:28px;display:flex;gap:28px;align-items:flex-start">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase;margin-bottom:10px">Themes across projects</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ themes }}" as="t" hint-placeholder-count="5">
+            <div onClick="{{ t.pick }}" style="{{ t.rowStyle }}">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:15px;font-weight:500;color:#181d26;line-height:1.3">{{ t.title }}</div>
+                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><div style="{{ t.catStyle }}">{{ t.cat }}</div><sc-for list="{{ t.chips }}" as="c" hint-placeholder-count="2"><div style="{{ c.style }}">{{ c.label }}</div></sc-for></div>
+              </div>
+              <div style="width:150px;flex:0 0 150px"><div style="font-size:14px;font-weight:500;color:#181d26">{{ t.ppl }}</div><div style="margin-top:6px;height:4px;background:#e0e2e6;border-radius:9999px;overflow:hidden"><div style="{{ t.bar }}"></div></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="width:400px;flex:0 0 400px;background:#f8fafc;border:1px solid #ddd;border-radius:10px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Where this comes from</div>
+        <div style="font-size:20px;font-weight:500;line-height:1.3;color:#181d26">{{ sel.title }}</div>
+        <div style="font-size:14px;color:#41454d;line-height:1.5">{{ sel.conf }}</div>
+        <div style="height:1px;background:#ddd"></div>
+        <sc-for list="{{ sel.src }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px"><div style="{{ s.chip }}">{{ s.name }}</div><div style="font-size:13px;color:#41454d">{{ s.count }}</div></div>
+            <sc-for list="{{ s.quotes }}" as="q" hint-placeholder-count="1">
+              <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 12px"><div style="font-size:14px;line-height:1.45;color:#333840">“{{ q.text }}”</div><div style="margin-top:6px;font-size:12px;color:#41454d">{{ q.meta }} · <a href="#1a">Open transcript</a></div></div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Recommendations first. Each one expands into its evidence trail: themes, then projects, then the original quote.</div>
+<div style="width:1280px;background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;display:flex;color:#333840">
+  <div style="width:208px;flex:0 0 208px;background:#2b2f36;padding:20px 12px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:18px;font-weight:300;color:#fff;padding:4px 12px 20px">Signal Flow</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;color:#c9ccd2"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3l1.5 2h6.5A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5z"></path></svg>Research Projects</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:500;background:#4a4f58;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V9M7 16V4M12 16v-5M17 16V7"></path></svg>Platform Insights</div>
+  </div>
+  <div style="flex:1;min-width:0;padding:32px;max-width:900px">
+    <div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div>
+    <div style="margin-top:6px;color:#41454d">4 recommendations from 5 themes across 3 projects</div>
+    <div style="margin-top:24px;display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{ feed }}" as="r" hint-placeholder-count="4">
+        <div style="border:1px solid #ddd;border-radius:12px;padding:20px 24px;background:#fff">
+          <div style="display:flex;align-items:flex-start;gap:16px">
+            <div style="flex:1;min-width:0"><div style="font-size:18px;font-weight:500;line-height:1.3;color:#181d26">{{ r.title }}</div><div style="margin-top:8px;font-size:14px;line-height:1.5;color:#333840">{{ r.why }}</div></div>
+            <div style="{{ r.prioStyle }}">{{ r.prio }}</div>
+          </div>
+          <div style="margin-top:14px;display:flex;align-items:center;gap:12px">
+            <div onClick="{{ r.toggle }}" style="font-size:14px;font-weight:500;color:#1b61c9;cursor:pointer" style-hover="color:#1a3866">{{ r.toggleLabel }}</div>
+            <div style="font-size:13px;color:#41454d">{{ r.summary }}</div>
+          </div>
+          <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;padding-left:20px;border-left:2px solid #ddd;display:flex;flex-direction:column;gap:18px">
+              <sc-for list="{{ r.ev }}" as="e" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><div style="font-size:15px;font-weight:500;color:#181d26">{{ e.theme }}</div><div style="font-size:13px;color:#41454d">{{ e.count }}</div></div>
+                  <sc-for list="{{ e.src }}" as="s" hint-placeholder-count="2">
+                    <div style="display:flex;gap:10px;align-items:flex-start"><div style="{{ s.chip }}">{{ s.name }}</div><div style="flex:1;min-width:0;font-size:14px;line-height:1.45;color:#333840">“{{ s.text }}” <span style="font-size:12px;color:#41454d">{{ s.meta }} · <a href="#1b">Open transcript</a></span></div></div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Evidence matrix. Themes by project, so coverage is visible at a glance. Select a cell to read its quotes.</div>
+<div style="width:1280px;background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;display:flex;color:#333840">
+  <div style="width:208px;flex:0 0 208px;background:#2b2f36;padding:20px 12px;display:flex;flex-direction:column;gap:4px">
+    <div style="font-size:18px;font-weight:300;color:#fff;padding:4px 12px 20px">Signal Flow</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;color:#c9ccd2"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3l1.5 2h6.5A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5z"></path></svg>Research Projects</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:500;background:#4a4f58;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V9M7 16V4M12 16v-5M17 16V7"></path></svg>Platform Insights</div>
+  </div>
+  <div style="flex:1;min-width:0;padding:32px">
+    <div style="font-size:32px;line-height:1.2;color:#181d26">Platform Insights</div>
+    <div style="margin-top:6px;color:#41454d">Participants raising each theme, by project</div>
+    <div style="margin-top:24px;display:flex;gap:28px;align-items:flex-start">
+      <div style="flex:1;min-width:0">
+        <div style="display:grid;grid-template-columns:minmax(0,1.6fr) repeat(3,minmax(0,1fr)) 72px;gap:6px;align-items:stretch">
+          <div></div>
+          <sc-for list="{{ heads }}" as="h" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:8px;background:{{ h.bg }};font-size:13px;font-weight:500;color:#181d26;line-height:1.3">{{ h.name }}<div style="font-weight:400;color:#41454d;margin-top:2px">{{ h.sub }}</div></div></sc-for>
+          <div style="padding:8px 4px;font-size:13px;font-weight:500;color:#41454d">Total</div>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+            <div style="padding:10px 4px;font-size:14px;font-weight:500;color:#181d26;line-height:1.3;display:flex;flex-direction:column;justify-content:center">{{ r.title }}<div style="{{ r.catStyle }}">{{ r.cat }}</div></div>
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3"><div onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</div></sc-for>
+            <div style="padding:10px 4px;font-size:14px;font-weight:500;color:#181d26;display:flex;align-items:center">{{ r.total }}</div>
+          </sc-for>
+        </div>
+        <div style="margin-top:32px;font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Recommendations</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ recs }}" as="r" hint-placeholder-count="4"><div style="display:flex;gap:12px;align-items:baseline;border-top:1px solid #ddd;padding-top:8px"><div style="flex:1;font-size:14px;font-weight:500;color:#181d26">{{ r.title }}</div><div style="font-size:13px;color:#41454d">{{ r.from }}</div></div></sc-for>
+        </div>
+      </div>
+      <div style="width:380px;flex:0 0 380px;background:#f8fafc;border:1px solid #ddd;border-radius:10px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Evidence</div>
+        <div style="font-size:18px;font-weight:500;line-height:1.3;color:#181d26">{{ cellTheme }}</div>
+        <div style="font-size:14px;color:#41454d">{{ cellProject }}</div>
+        <div style="height:1px;background:#ddd"></div>
+        <sc-if value="{{ cellEmpty }}" hint-placeholder-val="{{ false }}"><div style="font-size:14px;color:#41454d;line-height:1.5">This theme did not come up in this project.</div></sc-if>
+        <sc-for list="{{ cellQuotes }}" as="q" hint-placeholder-count="2">
+          <div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 12px"><div style="font-size:14px;line-height:1.45;color:#333840">“{{ q.text }}”</div><div style="margin-top:6px;font-size:12px;color:#41454d">{{ q.meta }} · <a href="#1c">Open transcript</a></div></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "combine <a class="dv-oid" href="#1b">1b</a> recommendations with the <a class="dv-oid" href="#1a">1a</a> drawer" · "add filters by project and date range to <a class="dv-oid" href="#1c">1c</a>" · "new directions"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sel: 0, open: { 0: true }, cell: [0, 0], tab: 'ins', gsel: 0 };
+  C = [
+    { title: 'Rebuilding provider search around availability', summary: 'Search results now lead with each provider’s next open time. Participants stopped opening profiles one by one to find a slot.', outcome: 'Booking completion rose from 61% to 78%', bg: '#f5e9d4', owner: 'Booking team', date: 'Sep 2026', th: [0] },
+    { title: 'Showing coverage before booking', summary: 'A coverage badge on each listing tells people whether their plan is accepted before they pick a provider.', outcome: 'Coverage-related support calls fell 23%', bg: '#a8d8c4', owner: 'Pricing team', date: 'Aug 2026', th: [1, 4] },
+    { title: 'Self-serve reschedule pilot', summary: 'Reschedule and cancel moved onto the appointment card for a pilot group of clinics.', outcome: '41% of reschedules completed in the app', bg: '#d9d2f2', owner: 'Booking team', date: 'Jul 2026', th: [2] },
+    { title: 'Visit prep checklist rollout', summary: 'A checklist and directions message now follows every confirmed booking.', outcome: 'No-shows fell 9% for pilot clinics', bg: '#c9e4f5', owner: 'Notifications team', date: 'Jun 2026', th: [3] }
+  ];
+  G = [
+    { cat: 'Terminology', title: 'Say “appointment” and “book”, not “slot” and “schedule”', rule: 'Customer-facing copy uses the words participants used in research. Internal tools may keep scheduling terms.', doT: 'Book an appointment with a provider near you.', dont: 'Schedule a slot with a provider.', aud: ['Marketing', 'Outreach'], owner: 'Brand team', rev: 'Sep 2026', th: [] },
+    { cat: 'Claims', title: 'Cite a source and date for every performance claim', rule: 'Claims about completion rates, wait times, savings or coverage name the study or data set and when it ran.', doT: 'Booking completion rose from 61% to 78% in the 2026 clinic pilot.', dont: 'The easiest booking experience ever.', aud: ['Marketing', 'Outreach'], owner: 'Product marketing', rev: 'Aug 2026', th: [] },
+    { cat: 'Pricing language', title: 'Quote the all-in price and say whether coverage applies', rule: 'Product copy and outreach show the total price including fees, and state coverage status when it is known.', doT: 'Total $40 · Covered by your plan.', dont: 'Starting at $25 + fees.', aud: ['Marketing', 'Outreach'], owner: 'Pricing team', rev: 'Sep 2026', th: [1, 4] },
+    { cat: 'Training', title: 'Teach workflows in the order people do them', rule: 'Training decks and walkthroughs follow the booking journey: find, book, pay, prepare, visit.', doT: 'Start with finding a provider, then booking.', dont: 'Organize the session by feature menu.', aud: ['Training'], owner: 'Customer education', rev: 'Jul 2026', th: [] },
+    { cat: 'Outreach', title: 'Open research invitations with the time commitment', rule: 'Invitations state length, format and incentive in the first two lines.', doT: '30-minute video call, $50 gift card.', dont: 'We’d love to pick your brain.', aud: ['Outreach'], owner: 'Research ops', rev: 'Jun 2026', th: [] }
+  ];
+  P = [
+    { name: 'Clinic booking, round 1', short: 'Round 1', bg: '#f5e9d4', n: 3, sub: '3 participants' },
+    { name: 'Clinic booking, round 2', short: 'Round 2', bg: '#a8d8c4', n: 4, sub: '4 participants' },
+    { name: 'Check-in diary study', short: 'Diary study', bg: '#d9d2f2', n: 6, sub: '6 participants' }
+  ];
+  CAT = { 'Pain point': ['#f6d3c4', '#7a1f00'], 'Need': ['#f5e9d4', '#5a3d00'], 'Expectation': ['#a8d8c4', '#0a2e0e'], 'Delight': ['#f4d35e', '#181d26'] };
+  T = [
+    { title: 'Provider availability is hard to see', cat: 'Pain point', src: [
+      { p: 0, n: 3, q: [{ w: 'P1', s: 'Session 1', t: '08:12', x: 'I had to open every doctor one by one just to find an opening.' }] },
+      { p: 1, n: 3, q: [{ w: 'P6', s: 'Session 2', t: '14:32', x: 'I can’t tell who is free this week without clicking through.' }] },
+      { p: 2, n: 5, q: [{ w: 'P9', s: 'Day 3 entry', t: '', x: 'Gave up and called the clinic because the calendar never loaded.' }] }] },
+    { title: 'Insurance coverage is unclear up front', cat: 'Pain point', src: [
+      { p: 0, n: 2, q: [{ w: 'P2', s: 'Session 2', t: '21:05', x: 'I picked a doctor and only then found out they don’t take my plan.' }] },
+      { p: 1, n: 3, q: [{ w: 'P5', s: 'Session 1', t: '11:48', x: 'Show me what’s covered before I start booking.' }, { w: 'P7', s: 'Session 3', t: '05:20', x: 'I wasn’t sure if “in network” meant I’d pay nothing.' }] }] },
+    { title: 'People expect to reschedule without calling', cat: 'Expectation', src: [
+      { p: 0, n: 2, q: [{ w: 'P3', s: 'Session 3', t: '17:40', x: 'There should be a button right on the appointment.' }] },
+      { p: 1, n: 4, q: [{ w: 'P4', s: 'Session 2', t: '09:15', x: 'Every other service lets me move a booking in two taps.' }] },
+      { p: 2, n: 3, q: [{ w: 'P11', s: 'Day 5 entry', t: '', x: 'Had a conflict at work and had no way to shift it in the app.' }] }] },
+    { title: 'A prep checklist before the visit is valued', cat: 'Delight', src: [
+      { p: 1, n: 3, q: [{ w: 'P6', s: 'Session 4', t: '12:02', x: 'This list of what to bring is exactly what I needed.' }] },
+      { p: 2, n: 4, q: [{ w: 'P10', s: 'Day 2 entry', t: '', x: 'The reminder with directions saved me a stressful morning.' }] }] },
+    { title: 'Fees appear late at checkout', cat: 'Pain point', src: [
+      { p: 0, n: 1, q: [{ w: 'P1', s: 'Session 3', t: '24:18', x: 'The price changed on the last screen. That felt off.' }] },
+      { p: 1, n: 2, q: [{ w: 'P8', s: 'Session 2', t: '18:33', x: 'Why is the fee only showing up now?' }] }] }
+  ];
+  R = [
+    { title: 'Show live provider availability in search results', why: 'Participants in every project struggled to find an open slot without opening each provider. Showing next-available times in the list removes the extra clicks.', prio: 'High', th: [0, 2] },
+    { title: 'Show coverage and the all-in price on each listing', why: 'Coverage and fees both surfaced late, after participants had chosen a provider. Moving them earlier lets people decide with the full picture.', prio: 'High', th: [1, 4] },
+    { title: 'Add self-serve reschedule and cancel to the appointment', why: 'Reschedule was expected in all three projects and was missing in each, which sent people to the phone.', prio: 'High', th: [2] },
+    { title: 'Send a prep checklist and directions after booking', why: 'The checklist and reminder were the most positive moments in two projects. Expanding them to all visit types extends that effect.', prio: 'Medium', th: [3] }
+  ];
+  tot(t) { return t.src.reduce((a, s) => a + s.n, 0); }
+  pill(c) { const k = this.CAT[c]; return 'font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px;background:' + k[0] + ';color:' + k[1]; }
+  chip(p) { return 'font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px;color:#181d26;flex:0 0 auto;white-space:nowrap;background:' + this.P[p].bg; }
+  meta(q) { return q.w + ' · ' + q.s + (q.t ? ' · ' + q.t : ''); }
+  renderVals() {
+    const s = this.state, T = this.T, P = this.P, me = this;
+    const from = r => r.th.map(i => T[i].title).length + (r.th.length > 1 ? ' themes' : ' theme') + ' · ' + new Set(r.th.flatMap(i => T[i].src.map(x => x.p))).size + ' projects';
+    const recs = this.R.map(r => ({ title: r.title, from: from(r) }));
+    const themes = T.map((t, i) => ({
+      title: t.title, cat: t.cat, catStyle: this.pill(t.cat), ppl: this.tot(t) + ' of 13 participants',
+      bar: 'height:100%;background:#181d26;width:' + Math.round(this.tot(t) / 13 * 100) + '%',
+      chips: t.src.map(x => ({ label: P[x.p].short, style: this.chip(x.p) })),
+      rowStyle: 'display:flex;gap:20px;align-items:center;border-radius:10px;padding:14px 16px;cursor:pointer;box-sizing:border-box;border:' + (s.sel === i ? '2px solid #181d26' : '1px solid #ddd') + ';background:#fff',
+      pick: () => this.setState({ sel: i })
+    }));
+    const st = T[s.sel];
+    const sel = { title: st.title, conf: 'Raised by ' + this.tot(st) + ' of 13 participants across ' + st.src.length + ' of 3 projects.', src: st.src.map(x => ({ name: P[x.p].name, chip: this.chip(x.p), count: x.n + ' of ' + P[x.p].n + ' participants', quotes: x.q.map(q => ({ text: q.x, meta: this.meta(q) })) })) };
+    const feed = this.R.map((r, ri) => {
+      const o = !!s.open[ri];
+      return { title: r.title, why: r.why, prio: r.prio + ' priority', prioStyle: 'font-size:12px;font-weight:500;padding:3px 10px;border-radius:6px;white-space:nowrap;' + (r.prio === 'High' ? 'background:#f6d3c4;color:#7a1f00' : 'background:#f5e9d4;color:#5a3d00'),
+        open: o, toggleLabel: o ? 'Hide evidence' : 'Show evidence', summary: r.th.length + (r.th.length > 1 ? ' themes' : ' theme') + ' · ' + this.sumPpl(r) + ' participants',
+        toggle: () => this.setState(x => ({ open: Object.assign({}, x.open, { [ri]: !x.open[ri] }) })),
+        ev: r.th.map(i => ({ theme: T[i].title, count: this.tot(T[i]) + ' of 13 participants', src: T[i].src.map(x => ({ name: P[x.p].short, chip: this.chip(x.p), text: x.q[0].x, meta: this.meta(x.q[0]) })) })) };
+    });
+    const [ct, cp] = s.cell, cs = T[ct].src.find(x => x.p === cp);
+    const rows = T.map((t, i) => ({ title: t.title, cat: t.cat, catStyle: this.pill(t.cat) + ';align-self:flex-start;margin-top:6px', total: this.tot(t),
+      cells: P.map((p, pi) => { const x = t.src.find(y => y.p === pi), on = ct === i && cp === pi; const a = x ? (0.12 + 0.6 * x.n / p.n).toFixed(2) : 0;
+        return { label: x ? x.n + ' of ' + p.n : '—', pick: () => this.setState({ cell: [i, pi] }),
+          style: 'display:grid;place-items:center;border-radius:8px;min-height:56px;font-size:14px;font-weight:500;cursor:pointer;box-sizing:border-box;border:' + (on ? '2px solid #181d26' : '1px solid transparent') + ';' + (x ? 'background:rgba(27,97,201,' + a + ');color:' + (a > 0.45 ? '#fff' : '#181d26') : 'background:#f2f3f5;color:#9297a0') }; }) }));
+    const goT = i => () => this.setState({ tab: 'ins', sel: i });
+    const tabs = [['ins', 'Platform Themes', T.length], ['case', 'Case studies', this.C.length], ['guide', 'Guidelines', this.G.length]].map(([k, label, n]) => ({ label, count: n, go: () => this.setState({ tab: k }),
+      style: 'padding:0 0 12px;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:-1px;border-bottom:2px solid ' + (s.tab === k ? '#181d26' : 'transparent') + ';color:' + (s.tab === k ? '#181d26' : '#41454d') + ';font-weight:' + (s.tab === k ? 500 : 400),
+      cstyle: 'font-size:12px;font-weight:500;padding:1px 7px;border-radius:9999px;background:' + (s.tab === k ? '#181d26' : '#e0e2e6') + ';color:' + (s.tab === k ? '#fff' : '#41454d') }));
+    const cases = this.C.map(c => ({ title: c.title, summary: c.summary, outcome: c.outcome, bg: c.bg, owner: c.owner, date: c.date, themes: c.th.map(i => ({ label: T[i].title, go: goT(i) })) }));
+    const guides = this.G.map((g, i) => ({ aud: g.aud, cat: g.cat, title: g.title, pick: () => this.setState({ gsel: i }),
+      style: 'border-radius:10px;padding:14px 16px;cursor:pointer;box-sizing:border-box;background:#fff;border:' + (s.gsel === i ? '2px solid #181d26' : '1px solid #ddd') }));
+    const gg = this.G[s.gsel];
+    const g = { aud: gg.aud, owner: gg.owner, rev: gg.rev, hasEv: gg.th.length > 0, cat: gg.cat, title: gg.title, rule: gg.rule, doText: gg.doT, dontText: gg.dont, ev: gg.th.map(i => ({ title: T[i].title, meta: this.tot(T[i]) + ' of 13 participants · ' + T[i].src.length + ' projects', go: goT(i) })) };
+    return { tabs, isIns: s.tab === 'ins', isCase: s.tab === 'case', isGuide: s.tab === 'guide', cases, guides, g, recs, themes, sel, feed, heads: P.map(p => ({ name: p.name, bg: p.bg, sub: p.sub })), rows,
+      cellTheme: T[ct].title, cellProject: P[cp].name, cellEmpty: !cs, cellQuotes: cs ? cs.q.map(q => ({ text: q.x, meta: this.meta(q) })) : [] };
+  }
+  sumPpl(r) { const m = {}; r.th.forEach(i => this.T[i].src.forEach(x => { m[x.p] = Math.max(m[x.p] || 0, x.n); })); return Object.values(m).reduce((a, b) => a + b, 0); }
+}
+</script>
+</body>
+</html>

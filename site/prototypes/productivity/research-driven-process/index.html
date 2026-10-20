@@ -12,7 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>body{margin:0;background:#fff}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style>
 </helmet>
-<div style="min-height:100vh;display:flex;flex-direction:column;font-family:Inter,-apple-system,'Segoe UI',sans-serif;background:#fff;color:#333840">
+<div style="min-height:100vh;display:flex;font-family:Inter,-apple-system,'Segoe UI',sans-serif;background:#fff;color:#333840">
+  <nav style="width:88px;flex:0 0 88px;box-sizing:border-box;background:#2b2f36;position:sticky;top:0;height:100vh;padding:16px 8px;display:flex;flex-direction:column;gap:16px;z-index:60">
+    <div onClick="{{ toHome }}" style="{{ rpStyle }}" style-hover="{{ rpHover }}"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5H21a3.5 3.5 0 0 1 3.5 3.5v12A3.5 3.5 0 0 1 21 24H7a3.5 3.5 0 0 1-3.5-3.5V16"></path><circle cx="6" cy="6" r="4"></circle></svg>Research Projects</div>
+    <div onClick="{{ toInsights }}" style="{{ piStyle }}" style-hover="{{ piHover }}"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="M3 16V9M8 16V4M13 16v-5M18 16V7" transform="translate(-1 0)"></path></svg>Platform Insights</div>
+  </nav>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
   <sc-if value="{{ inProject }}" hint-placeholder-val="{{ false }}">
     <div style="height:56px;flex:0 0 56px;box-sizing:border-box;border-bottom:1px solid #ddd;display:flex;align-items:center;gap:16px;padding:0 32px;background:#fff;position:sticky;top:0;z-index:50">
       <div onClick="{{ toHome }}" style="cursor:pointer;color:#1b61c9;font-size:15px" style-hover="color:#1a3866">← Research Projects</div>
@@ -43,8 +48,10 @@
     <div style="flex:1;min-width:0">
       <iframe src="Research.dc.html" title="Themes" data-m="r" onLoad="{{ onFrameLoad }}" style="{{ showR }}"></iframe>
       <iframe src="Spec%20Writer.dc.html" title="Docs" data-m="s" onLoad="{{ onFrameLoad }}" style="{{ showS }}"></iframe>
+      <iframe src="Platform%20Insights.dc.html" title="Platform Insights" onLoad="{{ onFrameLoad }}" style="{{ showI }}"></iframe>
       <iframe src="Boards.dc.html" title="Boards" data-m="b" onLoad="{{ onFrameLoad }}" style="{{ showB }}"></iframe>
     </div>
+  </div>
   </div>
 </div>
 </x-dc>
@@ -59,6 +66,7 @@ class Component extends DCLogic {
   post(m, msg) { const w = this.frame(m); if (w) try { w.postMessage(Object.assign({ sf: 'nav' }, msg), '*'); } catch (e) {} }
   send() {
     const s = this.state;
+    if (s.view === 'insights') return;
     if (s.view === 'home') return this.post('r', { view: 'home' });
     if (this.RS.includes(s.section)) return this.post('r', s.pid ? { view: 'project', pid: s.pid, section: s.section } : { view: 'new' });
     if (s.section === 'docs') return this.post('s', { section: 'docs', pid: s.pid });
@@ -89,7 +97,7 @@ class Component extends DCLogic {
     const defs = [
       ['Plan', [['plan', 'Test Plan', ''], ['tasks', 'Task List', 'Save the test plan first'], ['transcripts', 'Transcripts', 'Save the test plan first']]],
       ['Analyze', [['themes', 'Themes', 'Save and analyze a transcript first'], ['journey', 'Journey Map', 'Save and analyze a transcript first'], ['prio', 'Priorities', 'Save and analyze a transcript first']]],
-      ['Deliver', [['docs', 'Docs', 'Save and analyze a transcript first'], ['boards', 'Boards', 'Publish the doc first']]]
+      ['Deliver', [['docs', 'Requirements', 'Save and analyze a transcript first'], ['boards', 'Stories', 'Publish the doc first']]]
     ];
     let n = 0;
     const groups = defs.map(([label, its]) => ({ label, items: its.map(([k, name, hint]) => {
@@ -98,14 +106,20 @@ class Component extends DCLogic {
         go: () => { if (A[k] && s.section !== k) this.go('project', s.pid, k); },
         row: 'display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;font-size:15px;box-sizing:border-box;' + (on ? 'background:#181d26;color:#ffffff;font-weight:500;cursor:default' : ok ? 'color:#181d26;cursor:pointer' : 'color:#9297a0;cursor:not-allowed'),
         hover: on ? 'background:#181d26' : 'background:#e8eaed',
-        dot: 'width:24px;height:24px;border-radius:50%;box-sizing:border-box;display:grid;place-items:center;font-size:12px;font-weight:500;flex:0 0 auto;' + (on ? 'background:#ffffff;color:#181d26' : ok ? 'border:1px solid #181d26;color:#181d26;background:#fff' : 'border:1px solid #c4c7cc;color:#9297a0;background:transparent')
+        dot: 'width:24px;height:24px;border-radius:50%;box-sizing:border-box;display:grid;place-items:center;font-size:12px;font-weight:500;flex:0 0 auto;' + (on ? 'background:#ffffff;color:#181d26' : ok ? 'color:#181d26;background:transparent' : 'color:#9297a0;background:transparent')
       };
     }) }));
     const fs = k => 'border:0;width:100%;display:' + (k ? 'block' : 'none') + ';height:' + (inP ? 'calc(100vh - 56px)' : '100vh');
-    const research = !inP || this.RS.includes(s.section);
+    const ins = s.view === 'insights';
+    const research = !ins && (!inP || this.RS.includes(s.section));
+    const nav = (on) => 'display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:8px;font-size:12px;line-height:1.25;text-align:center;cursor:pointer;' + (on ? 'font-weight:500;background:#4a4f58;color:#ffffff' : 'color:#c9ccd2');
+    const hov = (on) => on ? 'background:#4a4f58;color:#ffffff' : 'background:#3a3e46;color:#ffffff';
     return {
       inProject: inP, groups, projectName: A.P ? A.P.name : 'New project',
       toHome: () => this.go('home', null, 'plan'),
+      toInsights: () => this.go('insights', null, 'plan'),
+      rpStyle: nav(!ins), rpHover: hov(!ins), piStyle: nav(ins), piHover: hov(ins),
+      showI: fs(ins),
       onFrameLoad: () => this.send(),
       showR: fs(research), showS: fs(inP && s.section === 'docs'), showB: fs(inP && s.section === 'boards')
     };

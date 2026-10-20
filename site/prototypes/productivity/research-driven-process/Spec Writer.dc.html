@@ -64,8 +64,9 @@
 <div style="font-weight:500;font-size:16px;color:#181d26;flex:1">{{ step.title }}</div>
 <div style="font-size:12px;font-weight:500;color:{{ step.statusColor }}">{{ step.statusLabel }}</div><sc-if value="{{ step.canEdit }}" hint-placeholder-val="{{ false }}"><button onClick="{{ step.edit }}" style="background:#fff;color:#181d26;border:1px solid #ddd;border-radius:8px;padding:3px 12px;font-family:inherit;font-size:12px;font-weight:500;cursor:pointer" style-hover="background:#f2f3f5">Edit</button></sc-if></div>
 <sc-if value="{{ step.open }}" hint-placeholder-val="{{ false }}">
-<div style="margin-top:12px;font-size:14px;line-height:1.6;color:#333840">{{ step.reasoningText }}</div>
-<sc-if value="{{ step.showRevised }}" hint-placeholder-val="{{ false }}"><div style="margin-top:10px;font-size:13px;background:#f5e9d4;color:#181d26;padding:8px 12px;border-radius:6px">{{ step.revisedNote }}</div></sc-if>
+<sc-if value="{{ step.review }}" hint-placeholder-val="{{ false }}"><textarea value="{{ step.reasoningText }}" onInput="{{ setEdit }}" rows="{{ step.rows }}" aria-label="Edit reasoning" style="display:block;width:100%;box-sizing:border-box;margin-top:12px;font-family:inherit;font-size:14px;line-height:1.6;color:#333840;background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px 12px;resize:vertical" style-focus="outline:none;border-color:#181d26"></textarea></sc-if>
+<sc-if value="{{ step.notReview }}" hint-placeholder-val="{{ true }}"><div style="margin-top:12px;font-size:14px;line-height:1.6;color:#333840">{{ step.reasoningText }}</div></sc-if>
+<sc-if value="{{ step.showRevised }}" hint-placeholder-val="{{ false }}"><div style="margin-top:10px;font-size:13px;background:#faf3e6;color:#181d26;padding:8px 12px;border-radius:6px">{{ step.revisedNote }}</div></sc-if>
 <sc-if value="{{ step.showEv }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center"><div style="font-size:12px;color:#41454d">Evidence</div><sc-for list="{{ step.ev }}" as="e" hint-placeholder-count="2"><div style="font-size:12px;padding:2px 8px;border-radius:6px;border:1px solid #ddd;color:#181d26">{{ e }}</div></sc-for></div></sc-if>
 <sc-if value="{{ step.review }}" hint-placeholder-val="{{ false }}">
 <sc-if value="{{ step.hasAlts }}" hint-placeholder-val="{{ false }}"><div style="margin-top:16px;font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Considered and rejected</div>
@@ -78,14 +79,14 @@
 </div>
 <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:72px">
 <div style="font-size:12px;font-weight:500;letter-spacing:.16px;color:#41454d;text-transform:uppercase">Output</div>
-<div style="background:#f5e9d4;border-radius:12px;padding:24px 28px;color:#181d26">
+<div style="background:#faf3e6;border-radius:12px;padding:24px 28px;color:#181d26">
 <div style="font-size:12px;font-weight:500;letter-spacing:.16px;text-transform:uppercase">Product brief</div>
 <sc-if value="{{ brief.empty }}" hint-placeholder-val="{{ true }}"><div style="margin-top:10px;color:#41454d">The brief builds as steps 1 to 3 are approved.</div></sc-if>
 <sc-if value="{{ brief.hasProblem }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-size:12px;font-weight:500;color:#41454d">Problem</div><div style="font-size:16px;line-height:1.55;margin-top:2px">{{ brief.problem }}</div></sc-if>
 <sc-if value="{{ brief.hasUsers }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-size:12px;font-weight:500;color:#41454d">Users</div><div style="font-size:16px;line-height:1.55;margin-top:2px">{{ brief.users }}</div></sc-if>
 <sc-if value="{{ brief.hasGoals }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;font-size:12px;font-weight:500;color:#41454d">Goals</div>
 <sc-for list="{{ brief.beats }}" as="beat" hint-placeholder-count="2"><div style="font-size:16px;line-height:1.55;margin-top:2px">— {{ beat.text }}</div></sc-for></sc-if>
-<sc-if value="{{ brief.locked }}" hint-placeholder-val="{{ false }}"><div style="margin-top:16px;font-size:13px;font-weight:500;background:#a8d8c4;color:#0a2e0e;padding:6px 12px;border-radius:6px;width:fit-content">Brief locked. Drafting begins.</div></sc-if>
+<sc-if value="{{ brief.locked }}" hint-placeholder-val="{{ false }}"><div style="margin-top:16px;font-size:13px;font-weight:500;background:#e4f3ec;color:#0a2e0e;padding:6px 12px;border-radius:6px;width:fit-content">Brief locked. Drafting begins.</div></sc-if>
 </div>
 <sc-if value="{{ hasBlocks }}" hint-placeholder-val="{{ false }}">
 <div style="border:1px solid #ddd;border-radius:12px;padding:24px 28px;display:flex;flex-direction:column;gap:18px;animation:pop .25s">
@@ -94,7 +95,7 @@
 <sc-for list="{{ block.lines }}" as="ln" hint-placeholder-count="1"><div style="font-size:14px;line-height:1.6;margin-top:4px">{{ ln.text }}</div></sc-for></div></sc-for>
 </div></sc-if>
 <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
-<div style="background:#a8d8c4;border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:#0a2e0e">
+<div style="background:#e4f3ec;border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:#0a2e0e">
 <div style="flex:1;min-width:200px"><div style="font-size:18px;font-weight:500">{{ publishedLabel }}</div><div style="font-size:13px;margin-top:2px">{{ summary }}</div></div>
 <button onClick="{{ publish }}" style="background:#181d26;color:#fff;border:0;border-radius:12px;padding:10px 22px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer">{{ publishText }}</button></div></sc-if>
 </div></div></div></sc-if>
@@ -122,12 +123,12 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  pc(n){const K='signalflow-colors-v1',P=['#f5e9d4','#a8d8c4','#f6d3c4','#f4d35e','#eef2fa','#d9d2f2','#c9e4f5','#f5c6d6'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
-  CATS={'Pain point':'#f6d3c4','Need':'#f5e9d4','Expectation':'#a8d8c4','Delight':'#f4d35e'};
+  pc(n){const K='signalflow-colors-v1',P=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf','#eef2fa','#eeeafa','#e6f2fa','#fae6ed'];let m={};try{m=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}if(m[n]==null){const u=Object.values(m);let i=P.findIndex((_,j)=>!u.includes(j));if(i<0)i=Object.keys(m).length%P.length;m[n]=i;try{localStorage.setItem(K,JSON.stringify(m))}catch(e){}}return P[m[n]]}
+  CATS={'Pain point':'#fbe9e0','Need':'#faf3e6','Expectation':'#e4f3ec','Delight':'#fbf3cf'};
   LOAD=['Reading project plan','Importing themes and priorities','Collecting supporting quotes','Drafting the problem frame'];
   mk(a){return {id:a[0],title:a[1],cat:a[2],prio:a[3],ppl:a[4],total:3,eff:a[5],opp:a[6],quote:a[7]}}
   EFF={t1:3,t2:3,t3:1,t4:2,t5:2,t6:1,t7:1,t8:2,t9:2};
-  BGS=['#f5e9d4','#a8d8c4','#f6d3c4','#f4d35e'];
+  BGS=['#faf3e6','#e4f3ec','#fbe9e0','#fbf3cf'];
   projects(){
     let saved=[];try{const d=JSON.parse(localStorage.getItem('signalflow-projects-v1')||'null');if(d&&Array.isArray(d.projects))saved=d.projects}catch(e){}
     let raw=null;try{raw=JSON.parse(localStorage.getItem('signalflow-projects-v1')||'null')}catch(e){}
@@ -150,10 +151,10 @@ class Component extends DCLogic {
     return [
       {id:'p1',name:'Clinic booking, usability round 1',tpl:'Usability test',bg:this.pc('Clinic booking, usability round 1'),status:'Analyzed',sessions:3,what:'Whether patients can find a provider, book, and manage an appointment without calling the clinic',jtbd:['I need to see a doctor soon','find an available, covered provider and book quickly','plan my day around the visit'],outcomes:['Task completion rate above 80%','Top barriers ranked by severity'],people:['Working parent, new patient','Shift worker, returning patient','Graduate student, new patient'],themes:T}];
   }
-  state={view:'launch',ctx:null,inc:{},standalone:false,saName:'',saWhat:'',saErr:'',loading:-1,cur:0,phase:'thinking',typed:0,done:[],redo:{},gen:{},redoOpen:false,redoText:'',published:false,switcher:false,savedKey:'',savedAt:'',leaveOpen:false,custom:[],menuFor:null,del:null};
+  state={view:'launch',ctx:null,inc:{},standalone:false,saName:'',saWhat:'',saErr:'',loading:-1,cur:0,phase:'thinking',typed:0,done:[],redo:{},edits:{},gen:{},redoOpen:false,redoText:'',published:false,switcher:false,savedKey:'',savedAt:'',leaveOpen:false,custom:[],menuFor:null,del:null};
   componentDidMount(){this._msg=e=>{const m=e.data;if(m&&m.sf==='nav'&&m.section==='docs'&&m.pid)this.openProject(m.pid)};window.addEventListener('message',this._msg);this._st=e=>{if(!e.key||e.key==='signalflow-projects-v1')this.forceUpdate()};window.addEventListener('storage',this._st)}
   componentWillUnmount(){clearInterval(this.iv);clearTimeout(this.lt);window.removeEventListener('storage',this._st);window.removeEventListener('message',this._msg)}
-  openProject(pid){const P=this.projects().find(p=>p.id===pid);if(!P)return;const c=this.state.ctx;if(c&&c.id===pid&&c.themes.length===P.themes.length&&this.state.view==='writer')return;let snap=null,pub=false;try{const d=JSON.parse(localStorage.getItem('prd-writer-drafts-v1')||'{}')[pid+':'+P.name];if(d)snap={done:d.done||[],redo:d.redo||{},inc:d.inc||{},gen:{}};pub=JSON.parse(localStorage.getItem('signalflow-published-specs-v1')||'[]').some(x=>x.key===pid+':'+P.name)}catch(e){}this.setState({view:'launch'});this.open({...P,snap,status:pub?'Published':'Draft'})}
+  openProject(pid){const P=this.projects().find(p=>p.id===pid);if(!P)return;const c=this.state.ctx;if(c&&c.id===pid&&c.themes.length===P.themes.length&&this.state.view==='writer')return;let snap=null,pub=false;try{const d=JSON.parse(localStorage.getItem('prd-writer-drafts-v1')||'{}')[pid+':'+P.name];if(d)snap={done:d.done||[],redo:d.redo||{},edits:d.edits||{},inc:d.inc||{},gen:{}};pub=JSON.parse(localStorage.getItem('signalflow-published-specs-v1')||'[]').some(x=>x.key===pid+':'+P.name)}catch(e){}this.setState({view:'launch'});this.open({...P,snap,status:pub?'Published':'Draft'})}
   build(ctx,inc){
     const th=ctx.themes.filter(t=>inc[t.id]),has=th.some(t=>t.cat==='Pain point'),n=ctx.sessions||0;
     const rk=t=>(t.prio==='High'?3:t.prio==='Medium'?2:1)*10+t.ppl;
@@ -177,28 +178,28 @@ class Component extends DCLogic {
     S.push({t:'List open questions',r:has?`${outS.length?'Held-out themes with high priority need an owner decision. ':''}The team also needs to confirm how fees are shown and what self-serve changes are allowed.`:'Open questions cover users, success measures and scope, since none are backed by research.',ev:ev(outS),alts:[],out:['Open questions',has?(outS.map(t=>`Should "${lc(t.title)}" move into scope? It was raised by ${t.ppl} of ${t.total} participants.`).concat(['Which fees and change windows are allowed for self-serve changes?'])):['Who is the primary user?','Which metrics define success?']]});
     return S;
   }
-  open(ctx){if(ctx.id==='sa'){const sn=ctx.snap;const nx=sn?[0,1,2,3,4,5,6,7].find(k=>!sn.done.includes(k)):0;this.setState({ctx,inc:sn?sn.inc:{},switcher:false,loading:-1,view:'writer',cur:nx==null?7:nx,done:sn?sn.done:[],redo:sn?sn.redo:{},gen:sn?sn.gen:{},published:!!sn&&ctx.status==='Published'},()=>this.start());return}
-  this.setState({loading:0,ctx,inc:Object.fromEntries(ctx.themes.map(t=>[t.id,true])),switcher:false});let i=0;const tick=()=>{i++;if(i<this.LOAD.length){this.setState({loading:i});this.lt=setTimeout(tick,450)}else{const sn=ctx.snap;if(sn){const nx=[0,1,2,3,4,5,6,7].find(k=>!sn.done.includes(k));this.setState({loading:-1,view:'writer',cur:nx==null?7:nx,done:sn.done,redo:sn.redo,gen:sn.gen,inc:sn.inc,published:ctx.status==='Published'},()=>this.start())}else{this.setState({loading:-1,view:'writer',cur:0,done:[],redo:{},gen:{},published:false},()=>this.start())}}};this.lt=setTimeout(tick,450)}
+  open(ctx){if(ctx.id==='sa'){const sn=ctx.snap;const nx=sn?[0,1,2,3,4,5,6,7].find(k=>!sn.done.includes(k)):0;this.setState({ctx,inc:sn?sn.inc:{},switcher:false,loading:-1,view:'writer',cur:nx==null?7:nx,done:sn?sn.done:[],redo:sn?sn.redo:{},edits:sn&&sn.edits?sn.edits:{},gen:sn?sn.gen:{},published:!!sn&&ctx.status==='Published'},()=>this.start());return}
+  this.setState({loading:0,ctx,edits:{},inc:Object.fromEntries(ctx.themes.map(t=>[t.id,true])),switcher:false});let i=0;const tick=()=>{i++;if(i<this.LOAD.length){this.setState({loading:i});this.lt=setTimeout(tick,450)}else{const sn=ctx.snap;if(sn){const nx=[0,1,2,3,4,5,6,7].find(k=>!sn.done.includes(k));this.setState({loading:-1,view:'writer',cur:nx==null?7:nx,done:sn.done,redo:sn.redo,edits:sn.edits||{},gen:sn.gen,inc:sn.inc,published:ctx.status==='Published'},()=>this.start())}else{this.setState({loading:-1,view:'writer',cur:0,done:[],redo:{},edits:{},gen:{},published:false},()=>this.start())}}};this.lt=setTimeout(tick,450)}
   start(){clearInterval(this.iv);const i=this.state.cur;this.gen=this.gen||{};if(!this.state.gen[i]||this._regen){this.setState(s=>({gen:{...s.gen,[i]:this.build(s.ctx,s.inc)[i]}}))}this._regen=false;this.setState({phase:'thinking',typed:0});this.iv=setInterval(()=>{const L=this.text(this.state.cur).length,n=this.state.typed+6;if(n>=L){clearInterval(this.iv);this.setState({typed:L,phase:'review'})}else this.setState({typed:n})},30)}
-  text(i){const g=this.state.gen[i]||this.build(this.state.ctx,this.state.inc)[i],r=this.state.redo[i];return g.r+(r?' Revised to account for: '+r+'.':'')}
-  addCard(x,status,bg0){const bg=this.pc(x.ctx.name);if(!x.ctx||x.ctx.id!=='sa')return x.custom;const c={...x.ctx,bg,status,snap:{done:x.done,redo:x.redo,gen:x.gen,inc:x.inc}};return [c,...x.custom.filter(k=>k.name!==c.name)]}
+  text(i){if(this.state.edits[i]!==undefined)return this.state.edits[i];const g=this.state.gen[i]||this.build(this.state.ctx,this.state.inc)[i],r=this.state.redo[i];return g.r+(r?' Revised to account for: '+r+'.':'')}
+  addCard(x,status,bg0){const bg=this.pc(x.ctx.name);if(!x.ctx||x.ctx.id!=='sa')return x.custom;const c={...x.ctx,bg,status,snap:{done:x.done,redo:x.redo,edits:x.edits,gen:x.gen,inc:x.inc}};return [c,...x.custom.filter(k=>k.name!==c.name)]}
   share(){const s=this.state,c=s.ctx;if(!c)return;const rk=t=>(t.prio==='High'?3:t.prio==='Medium'?2:1)*10+t.ppl,th=c.themes.filter(t=>s.inc[t.id]);const mkI=(t,id,name,ph,dl)=>({id,name,body:t.title,phase:ph,dateLabel:dl,owner:'Unassigned',obligations:0,evidenced:0,risk:t.prio,participants:t.ppl+' of '+t.total,short:t.opp+(t.quote?' "'+t.quote+'"':''),exposure:t.title+' was raised by '+t.ppl+' of '+t.total+' participants.',action:'Assign an owner and define acceptance criteria.',tasks:[]});const inS=th.filter(t=>t.eff<=2).sort((a,b)=>rk(b)-rk(a)),outS=th.filter(t=>t.eff===3);const items=inS.map((t,i)=>mkI(t,'r'+(i+1),'R'+(i+1)+' — '+t.opp,t.prio==='High'?'now':'approaching','Stage 1')).concat(outS.map((t,i)=>mkI(t,'q'+(i+1),'Open question — Should "'+t.title+'" move into scope?','addressed','Decision')));const at=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});try{const key=c.id+':'+c.name,l=JSON.parse(localStorage.getItem('signalflow-published-specs-v1')||'[]').filter(x=>x.key!==key);l.unshift({key,pid:c.id,name:c.name,at,items});localStorage.setItem('signalflow-published-specs-v1',JSON.stringify(l))}catch(e){}try{if(window.parent!==window)window.parent.postMessage({sf:'published',pid:c.id},'*')}catch(e){}}
   hiddenIds(){try{return JSON.parse(localStorage.getItem('signalflow-hidden-specs-v1')||'[]')}catch(e){return[]}}
   removeDoc(p){const key=p.id+':'+p.name;try{if(p.id!=='sa'){const h=this.hiddenIds();if(!h.includes(p.id))h.push(p.id);localStorage.setItem('signalflow-hidden-specs-v1',JSON.stringify(h))}const l=JSON.parse(localStorage.getItem('signalflow-published-specs-v1')||'[]').filter(x=>x.key!==key);localStorage.setItem('signalflow-published-specs-v1',JSON.stringify(l));const d=JSON.parse(localStorage.getItem('prd-writer-drafts-v1')||'{}');delete d[key];localStorage.setItem('prd-writer-drafts-v1',JSON.stringify(d))}catch(e){}this.setState(x=>({del:null,custom:x.custom.filter(c=>!(c.id===p.id&&c.name===p.name))}))}
-  persist(){const s=this.state,at=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});try{const raw=JSON.parse(localStorage.getItem('prd-writer-drafts-v1')||'{}');raw[s.ctx.id+':'+s.ctx.name]={done:s.done,redo:s.redo,inc:s.inc,at};localStorage.setItem('prd-writer-drafts-v1',JSON.stringify(raw))}catch(e){}this.setState({savedKey:JSON.stringify([s.done,s.redo,s.inc]),savedAt:at})}
+  persist(){const s=this.state,at=new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});try{const raw=JSON.parse(localStorage.getItem('prd-writer-drafts-v1')||'{}');raw[s.ctx.id+':'+s.ctx.name]={done:s.done,redo:s.redo,edits:s.edits,inc:s.inc,at};localStorage.setItem('prd-writer-drafts-v1',JSON.stringify(raw))}catch(e){}this.setState({savedKey:JSON.stringify([s.done,s.redo,s.inc,s.edits]),savedAt:at})}
   renderVals(){
     const s=this.state,me=this,ctx=s.ctx,P=this.projects();
     const lines=(o)=>{const x=o[1],y=o[2];return Array.isArray(x)?x:Array.isArray(y)?y:[x]};
     const stepsAll=ctx?(s.view==='writer'?[0,1,2,3,4,5,6,7].map(i=>s.gen[i]||this.build(ctx,s.inc)[i]):[]):[];
     const done=s.done,all=done.length===8&&stepsAll.length===8;
     const steps=stepsAll.map((x,i)=>{const dn=done.includes(i),cu=i===s.cur&&!all,rv=cu&&s.phase==='review';
-      return {num:dn?'✓':i+1,title:x.t,statusLabel:dn?(s.redo[i]?'Approved, revised':'Approved'):cu?(rv?'Awaiting review':'Reasoning…'):'Pending',statusColor:dn?'#0a2e0e':cu?'#181d26':'#9297a0',dot:dn?'#0a2e0e':cu?'#181d26':'#c4c7cc',border:cu?'#181d26':'#ddd',opacity:dn||cu?1:.55,open:dn||cu,reasoningText:cu?this.text(i).slice(0,s.typed):this.text(i),showRevised:!!s.redo[i]&&(dn||rv),revisedNote:'Revised: '+(s.redo[i]||''),showEv:x.ev.length>0&&(dn||rv),ev:x.ev,review:rv,hasAlts:x.alts.length>0,alts:x.alts,canEdit:dn&&!s.published,edit:()=>{clearInterval(this.iv);this.setState({cur:i,done:done.filter(k=>k!==i),phase:'review',typed:this.text(i).length})}}});
+      return {num:dn?'✓':i+1,title:x.t,statusLabel:dn?(s.edits[i]!==undefined?'Approved, edited':s.redo[i]?'Approved, revised':'Approved'):cu?(rv?'Awaiting review':'Reasoning…'):'Pending',statusColor:dn?'#0a2e0e':cu?'#181d26':'#9297a0',dot:dn?'#0a2e0e':cu?'#181d26':'#c4c7cc',border:cu?'#181d26':'#ddd',opacity:dn||cu?1:.55,open:dn||cu,reasoningText:cu&&!rv?this.text(i).slice(0,s.typed):this.text(i),notReview:!rv,rows:Math.max(4,Math.ceil(this.text(i).length/62)+1),showRevised:!!s.redo[i]&&s.edits[i]===undefined&&(dn||rv),revisedNote:'Revised: '+(s.redo[i]||''),showEv:x.ev.length>0&&(dn||rv),ev:x.ev,review:rv,hasAlts:x.alts.length>0,alts:x.alts,canEdit:dn,edit:()=>{clearInterval(this.iv);this.setState({published:false,cur:i,done:done.filter(k=>k!==i),phase:'review',typed:this.text(i).length})}}});
     const out=i=>done.includes(i)&&stepsAll[i]?stepsAll[i].out:null,p=out(0),u=out(1),g=out(2);
     const brief={empty:!p,hasProblem:!!p,problem:p&&p[1],hasUsers:!!u,users:u&&u[1],hasGoals:!!g,beats:g?g[2].map(text=>({text})):[],locked:!!g};
     const blocks=[3,4,5,6,7].filter(i=>done.includes(i)&&stepsAll[i]).map(i=>({heading:stepsAll[i].out[0],lines:lines(stepsAll[i].out).map(text=>({text}))}));
     const rc=Object.keys(s.redo).length,ac=stepsAll.reduce((a,x)=>a+x.alts.length,0);
     if(s.view!=='writer')clearInterval(this.iv);
-    const sa=ctx&&ctx.id==='sa';const dirtyKey=JSON.stringify([s.done,s.redo,s.inc]),saved=dirtyKey===s.savedKey;
+    const sa=ctx&&ctx.id==='sa';const dirtyKey=JSON.stringify([s.done,s.redo,s.inc,s.edits]),saved=dirtyKey===s.savedKey;
     return {
       delOpen:!!s.del,delName:s.del?s.del.name:'',delKind:'doc',stopDel:e=>e.stopPropagation(),cancelDel:()=>this.setState({del:null}),confirmDel:()=>this.removeDoc(s.del),
       switcherOpen:s.switcher,toggleSwitcher:()=>this.setState(x=>({switcher:!x.switcher})),switcherBtn:`width:40px;height:40px;border-radius:8px;display:grid;place-items:center;cursor:pointer;background:${s.switcher?'#f2f3f5':'transparent'}`,
@@ -209,7 +210,7 @@ class Component extends DCLogic {
       standalone:s.standalone,stop:e=>e.stopPropagation(),toggleStandalone:()=>this.setState({standalone:!s.standalone}),saBorder:s.standalone?'2px solid #181d26':'1px dashed #9297a0',
       saName:s.saName,saWhat:s.saWhat,saErr:s.saErr,setSaName:e=>this.setState({saName:e.target.value}),setSaWhat:e=>this.setState({saWhat:e.target.value}),
       startStandalone:()=>{if(s.saName.trim().length<2||!s.saWhat.trim())return this.setState({saErr:'Enter a name and a description.'});this.setState({saErr:''});this.open({id:'sa',name:s.saName.trim(),tpl:'Stand-alone spec',what:s.saWhat.trim(),jtbd:null,outcomes:[],people:[],sessions:0,themes:[]})},
-      docTitle:ctx?'Doc: '+ctx.name:'',
+      docTitle:ctx?'Requirements: '+ctx.name:'',
       sourceLine:ctx?(sa?'Stand-alone spec · no research attached':`From Signal Flow · ${ctx.tpl} · ${ctx.sessions} sessions · ${ctx.themes.length} themes`):'',
       ctxLabel:ctx&&ctx.themes.length?'Context loaded from research themes':'Context',
       hasThemes:!!ctx&&ctx.themes.length>0,noThemes:!ctx||ctx.themes.length===0,
@@ -218,13 +219,13 @@ class Component extends DCLogic {
       steps,brief,blocks,hasBlocks:blocks.length>0,ready:all,
       publishedLabel:s.published?'Published to workspace':'Ready to publish',publishText:s.published?'Published':'Publish',
       summary:`8 steps reviewed · ${ac} alternatives considered and rejected · ${rc} redone · ${sa?'no research attached':'evidence linked to Signal Flow themes'}`,
-      approve:()=>{const i=s.cur,nd=[...done,i],nx=[0,1,2,3,4,5,6,7].find(k=>!nd.includes(k));this.setState({done:nd},()=>{this.persist();if(nx!=null)this.setState({cur:nx},()=>this.start())})},
+      setEdit:e=>{const v=e.target.value,k=s.cur;this.setState(x=>({edits:{...x.edits,[k]:v}}))},approve:()=>{const i=s.cur,nd=[...done,i],nx=[0,1,2,3,4,5,6,7].find(k=>!nd.includes(k));this.setState({done:nd},()=>{this.persist();if(nx!=null)this.setState({cur:nx},()=>this.start())})},
       openRedo:()=>this.setState({redoOpen:true,redoText:''}),closeRedo:()=>this.setState({redoOpen:false}),
       setRedo:e=>this.setState({redoText:e.target.value}),
-      submitRedo:()=>{const t=(s.redoText||'').trim()||'Take a different angle';this.setState({redoOpen:false,redo:{...s.redo,[s.cur]:t}});this._regen=true;this.start()},
+      submitRedo:()=>{const t=(s.redoText||'').trim()||'Take a different angle';this.setState(x=>{const ed={...x.edits};delete ed[s.cur];return {redoOpen:false,edits:ed,redo:{...s.redo,[s.cur]:t}}});this._regen=true;this.start()},
       redoStepTitle:stepsAll[s.cur]?stepsAll[s.cur].t:'',redoText:s.redoText,redoOpen:s.redoOpen,
       publish:()=>{this.persist();this.share();this.setState({published:true})},
-      busySteps:this.LOAD.map((l,i)=>({label:l,op:i<=s.loading?1:.4,mark:i<s.loading?'✓':'',dot:i<s.loading?'width:20px;height:20px;border-radius:50%;background:#a8d8c4;color:#0a2e0e;display:grid;place-items:center;font-size:12px;flex:none':i===s.loading?'width:20px;height:20px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;animation:spin .8s linear infinite;box-sizing:border-box;flex:none':'width:20px;height:20px;border-radius:50%;border:2px solid #41454d;box-sizing:border-box;flex:none'}))
+      busySteps:this.LOAD.map((l,i)=>({label:l,op:i<=s.loading?1:.4,mark:i<s.loading?'✓':'',dot:i<s.loading?'width:20px;height:20px;border-radius:50%;background:#e4f3ec;color:#0a2e0e;display:grid;place-items:center;font-size:12px;flex:none':i===s.loading?'width:20px;height:20px;border-radius:50%;border:2px solid #fff;border-top-color:transparent;animation:spin .8s linear infinite;box-sizing:border-box;flex:none':'width:20px;height:20px;border-radius:50%;border:2px solid #41454d;box-sizing:border-box;flex:none'}))
     };
   }
 }
