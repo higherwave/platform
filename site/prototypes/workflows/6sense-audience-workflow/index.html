@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#ffffff;}
+body{font-family:"Haas","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#181d26;-webkit-font-smoothing:antialiased;}
+a{color:#1b61c9;text-decoration:none;}a:hover{color:#1a3866;}
+input,select,textarea,button{font-family:inherit;}
+</style>
+</helmet>
+<div style="height:100vh; display:flex; background:#ffffff;">
+  <nav style="width:64px; flex:none; background:#181d26; display:flex; flex-direction:column; align-items:center; padding:14px 0; gap:10px;">
+    <div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; margin-bottom:14px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" style="fill:#ffffff;"><path d="M12 1l11 11-11 11L1 12z"></path></svg>
+    </div>
+    <sc-for list="{{ rail }}" as="r" hint-placeholder-count="4">
+      <div style="width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:{{ r.bg }}; cursor:pointer;" style-hover="background:#2b3240;">
+        <svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:#ffffff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ r.icon }}"></path></svg>
+      </div>
+    </sc-for>
+  </nav>
+
+  <div style="flex:1; min-width:0; display:flex; flex-direction:column;">
+    <header style="height:56px; flex:none; display:flex; align-items:center; gap:12px; padding:0 24px; background:#ffffff; border-bottom:1px solid #e0e2e6;">
+      <input value="{{ playName }}" onChange="{{ onName }}" style="width:{{ nameWidth }}ch; min-width:12ch; max-width:40ch; border:1px solid transparent; border-radius:6px; background:transparent; font-size:20px; font-weight:500; color:#181d26; padding:4px 6px; outline:none;" style-hover="border-color:#dddddd;" style-focus="border-color:#458fff;">
+      <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"></path></svg>
+      <span style="font-size:12px; font-weight:500; padding:3px 10px; border-radius:6px; background:{{ statusBg }}; color:#181d26;">{{ status }}</span>
+      <div style="flex:1;"></div>
+      <svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4zM10 21h4"></path></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"></path></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 12l2-1-2-4-2 .5-1.5-1.2L15 4h-4l-.5 2.3L9 7.5 7 7 5 11l2 1v1l-2 1 2 4 2-.5 1.5 1.2L11 20h4l.5-2.3 1.5-1.2 2 .5 2-4-2-1z"></path></svg>
+      <div style="width:32px; height:32px; border-radius:50%; background:#d6e4fb; color:#1a3866; font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:center;">VB</div>
+    </header>
+
+    <div style="height:56px; flex:none; display:flex; align-items:center; gap:20px; padding:0 20px; background:#ffffff; border-bottom:1px solid #e0e2e6;">
+      <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:#333840; flex:none; white-space:nowrap;">
+        <svg width="18" height="18" viewBox="0 0 24 24" style="flex:none; fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"></path></svg>
+        <span>Segment: {{ segmentName }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:#333840; white-space:nowrap; flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" style="flex:none; fill:none; stroke:#41454d; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"></path></svg>
+        <span>Schedule:</span>
+        <select value="{{ schedule }}" onChange="{{ onSchedule }}" style="border:1px solid transparent; border-radius:6px; background:transparent; font-size:14px; color:#333840; padding:4px 2px; cursor:pointer; outline:none;" style-hover="border-color:#dddddd;">
+          <option value="Daily">Daily</option><option value="Weekly">Weekly</option><option value="Hourly">Hourly</option><option value="On entry">On entry</option>
+        </select>
+      </div>
+      <div style="flex:1;"></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button onClick="{{ cancel }}" style="height:40px; padding:0 18px; flex:none; white-space:nowrap; border-radius:6px; border:1px solid #dddddd; background:#ffffff; color:#181d26; font-size:15px; font-weight:500; cursor:pointer;" style-hover="background:#f8fafc;">Cancel</button>
+        <button onClick="{{ saveDraft }}" style="height:40px; padding:0 18px; flex:none; white-space:nowrap; border-radius:6px; border:1px solid #dddddd; background:#ffffff; color:#181d26; font-size:15px; font-weight:500; cursor:pointer;" style-hover="background:#f8fafc;">{{ saveLabel }}</button>
+        <button onClick="{{ publish }}" style="height:40px; padding:0 20px; flex:none; white-space:nowrap; border-radius:6px; border:none; background:#1b61c9; color:#ffffff; font-size:15px; font-weight:500; cursor:pointer;" style-hover="background:#1a3866;">{{ publishLabel }}</button>
+        <svg width="20" height="20" viewBox="0 0 24 24" style="fill:#41454d; margin-left:4px;"><circle cx="12" cy="5" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle></svg>
+      </div>
+    </div>
+
+    <main ref="{{ canvasRef }}" onMouseDown="{{ canvasDown }}" style="flex:1; position:relative; overflow:hidden; background-color:#e9edf3; background-image:radial-gradient(#bcc4d1 1.2px, transparent 1.2px); background-size:{{ gridSize }}px {{ gridSize }}px; background-position:{{ panX }}px {{ panY }}px; cursor:{{ canvasCursor }};">
+      <div style="position:absolute; left:0; top:0; transform-origin:0 0; transform:translate({{ panX }}px, {{ panY }}px) scale({{ zoom }});">
+        <svg width="1" height="1" style="position:absolute; left:0; top:0; overflow:visible; pointer-events:none;">
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="0">
+            <g>
+              <path d="{{ e.d }}" onMouseDown="{{ e.onMouseDown }}" style="fill:none; stroke:transparent; stroke-width:14; pointer-events:stroke; cursor:pointer;"></path>
+              <path d="{{ e.d }}" style="fill:none; stroke:{{ e.stroke }}; stroke-width:{{ e.width }}; pointer-events:none;"></path>
+              <path d="{{ e.head }}" style="fill:{{ e.stroke }}; pointer-events:none;"></path>
+            </g>
+          </sc-for>
+          <sc-if value="{{ linking }}" hint-placeholder-val="{{ false }}">
+            <path d="{{ linkD }}" style="fill:none; stroke:#1b61c9; stroke-width:2; stroke-dasharray:6 5;"></path>
+          </sc-if>
+        </svg>
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="0">
+          <div data-node-id="{{ n.id }}" onMouseDown="{{ n.onMouseDown }}" onDoubleClick="{{ n.onDoubleClick }}" style="position:absolute; left:{{ n.left }}px; top:{{ n.top }}px; width:{{ n.w }}px; height:{{ n.h }}px; cursor:grab; user-select:none;">
+            <sc-if value="{{ n.isCircle }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; inset:0; box-sizing:border-box; border-radius:50%; background:#c6ebe0; border:{{ n.bw }}px solid {{ n.circleBorder }}; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:600; color:#181d26;">{{ n.label }}</div>
+            </sc-if>
+            <sc-if value="{{ n.isDiamond }}" hint-placeholder-val="{{ false }}">
+              <svg width="164" height="164" viewBox="0 0 164 164" style="position:absolute; inset:0; overflow:visible; filter:drop-shadow(0 2px 6px rgba(24,29,38,0.14));"><polygon points="82,3 161,82 82,161 3,82" style="fill:#ffffff; stroke:{{ n.diamondStroke }}; stroke-width:{{ n.bw }}; stroke-linejoin:round;"></polygon></svg>
+              <div style="position:absolute; left:34px; top:34px; width:96px; height:96px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:12px; line-height:1.25; font-weight:500; color:#181d26; overflow:hidden;">{{ n.label }}</div>
+            </sc-if>
+            <sc-if value="{{ n.isCard }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; inset:0; box-sizing:border-box; background:#ffffff; border:1px solid {{ n.cardBorder }}; box-shadow:{{ n.ring }}; border-radius:6px; padding:0 14px; display:flex; align-items:center; gap:12px;">
+                <div style="width:30px; height:30px; flex:none; border-radius:50%; background:{{ n.bg }}; display:flex; align-items:center; justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:{{ n.fg }}; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ n.icon }}"></path></svg>
+                </div>
+                <span style="font-size:13px; font-weight:500; line-height:1.3; color:#181d26; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">{{ n.label }}</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ n.isWait }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; inset:0; background:{{ n.waitBorder }}; clip-path:polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);">
+                <div style="position:absolute; inset:{{ n.waitInset }}px; background:#ffffff; clip-path:polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%); display:flex; align-items:center; gap:10px; padding:0 22px 0 14px;">
+                  <div style="width:26px; height:26px; flex:none; border-radius:50%; background:{{ n.bg }}; display:flex; align-items:center; justify-content:center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" style="fill:none; stroke:{{ n.fg }}; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ n.icon }}"></path></svg>
+                  </div>
+                  <span style="font-size:13px; font-weight:500; line-height:1.25; color:#181d26;">{{ n.label }}</span>
+                </div>
+              </div>
+            </sc-if>
+            <sc-for list="{{ n.outs }}" as="o" hint-placeholder-count="0">
+              <sc-if value="{{ o.isPill }}" hint-placeholder-val="{{ false }}">
+                <div onMouseDown="{{ o.onMouseDown }}" title="Drag to connect" style="position:absolute; left:{{ o.left }}px; top:{{ o.top }}px; height:22px; box-sizing:border-box; padding:0 10px; display:flex; align-items:center; border-radius:4px; background:{{ o.bg }}; border:1px solid #a8d8c4; font-size:12px; font-weight:500; color:#0a2e0e; white-space:nowrap; cursor:crosshair;">{{ o.label }}</div>
+              </sc-if>
+              <sc-if value="{{ o.isDot }}" hint-placeholder-val="{{ false }}">
+                <div onMouseDown="{{ o.onMouseDown }}" title="Drag to connect" style="position:absolute; left:{{ o.left }}px; top:{{ o.top }}px; width:14px; height:14px; box-sizing:border-box; border-radius:50%; background:{{ o.bg }}; border:2px solid #1b61c9; cursor:crosshair;"></div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position:absolute; left:16px; top:16px; display:flex; align-items:center; gap:8px; font-size:13px; color:#333840; white-space:nowrap; background:#ffffff; border:1px solid #dddddd; border-radius:6px; padding:6px 10px; z-index:1; pointer-events:none;">
+        <span style="flex:none; width:8px; height:8px; border-radius:50%; background:{{ validDot }};"></span>
+        <span>{{ validText }}</span>
+      </div>
+      <div onMouseDown="{{ stop }}" style="position:absolute; left:16px; bottom:16px; display:flex; flex-direction:column; background:#ffffff; border:1px solid #dddddd; border-radius:8px; padding:4px; box-shadow:0 2px 8px rgba(24,29,38,0.08);">
+        <button onClick="{{ zoomIn }}" title="Zoom in" style="width:36px; height:36px; border:none; background:transparent; border-radius:6px; cursor:pointer; font-size:20px; color:#181d26;" style-hover="background:#f8fafc;">+</button>
+        <button onClick="{{ zoomOut }}" title="Zoom out" style="width:36px; height:36px; border:none; background:transparent; border-radius:6px; cursor:pointer; font-size:20px; color:#181d26;" style-hover="background:#f8fafc;">−</button>
+        <button onClick="{{ fit }}" title="Fit to screen" style="width:36px; height:36px; border:none; background:transparent; border-radius:6px; cursor:pointer;" style-hover="background:#f8fafc;"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:#181d26; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg></button>
+      </div>
+
+      <sc-if value="{{ tourOn }}" hint-placeholder-val="{{ false }}">
+        <div onMouseDown="{{ stop }}" style="position:absolute; left:50%; bottom:20px; transform:translateX(-50%); width:380px; box-sizing:border-box; background:#181d26; color:#ffffff; border-radius:8px; padding:16px 18px; box-shadow:0 8px 24px rgba(24,29,38,0.3); display:flex; flex-direction:column; gap:8px; z-index:3;">
+          <div style="display:flex; align-items:center;">
+            <span style="flex:1; font-size:12px; color:#e0e2e6;">Step {{ tourN }} of 4</span>
+            <span onClick="{{ closeTour }}" style="cursor:pointer; font-size:14px; color:#e0e2e6; padding:0 4px;">✕</span>
+          </div>
+          <span style="font-size:16px; font-weight:500;">{{ tourTitle }}</span>
+          <span style="font-size:13px; line-height:1.45; color:#e0e2e6;">{{ tourBody }}</span>
+          <div style="display:flex; justify-content:flex-end; padding-top:4px;">
+            <button onClick="{{ nextTour }}" style="height:32px; padding:0 16px; border:none; border-radius:6px; background:#1b61c9; color:#ffffff; font-size:13px; font-weight:500; cursor:pointer;">{{ tourBtn }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div onMouseDown="{{ stop }}" style="position:absolute; right:{{ toolbarRight }}px; top:16px; width:76px; box-sizing:border-box; background:#ffffff; border:1px solid #dddddd; border-radius:8px; padding:8px 0; display:flex; flex-direction:column; align-items:center; gap:2px; box-shadow:0 2px 8px rgba(24,29,38,0.08); z-index:2;">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+          <div onClick="{{ c.onClick }}" style="width:64px; padding:10px 0 8px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:6px; cursor:pointer; background:{{ c.bg }};" style-hover="background:#f0f3f8;">
+            <svg width="26" height="26" viewBox="0 0 24 24" style="fill:none; stroke:#181d26; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ c.icon }}"></path></svg>
+            <span style="font-size:12px; font-weight:500; color:#181d26;">{{ c.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ flyOpen }}" hint-placeholder-val="{{ false }}">
+        <div onMouseDown="{{ stop }}" style="position:absolute; right:{{ flyRight }}px; top:16px; width:250px; box-sizing:border-box; background:#ffffff; border:1px solid #dddddd; border-radius:8px; padding:14px 12px; display:flex; flex-direction:column; gap:6px; box-shadow:0 8px 24px rgba(24,29,38,0.12); z-index:2;">
+          <div style="display:flex; flex-direction:column; gap:2px; padding:0 4px 8px;">
+            <span style="font-size:16px; font-weight:500;">{{ flyTitle }}</span>
+            <span style="font-size:12px; color:#41454d;">Drag onto the canvas.</span>
+          </div>
+          <sc-for list="{{ flyItems }}" as="it" hint-placeholder-count="3">
+            <div onMouseDown="{{ it.onMouseDown }}" style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:6px; border:1px solid #e0e2e6; background:#ffffff; cursor:grab; user-select:none;" style-hover="background:#f8fafc;">
+              <div style="width:28px; height:28px; flex:none; border-radius:50%; background:{{ it.bg }}; display:flex; align-items:center; justify-content:center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" style="fill:none; stroke:{{ it.fg }}; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ it.icon }}"></path></svg>
+              </div>
+              <div style="display:flex; flex-direction:column; min-width:0;">
+                <span style="font-size:14px; font-weight:500;">{{ it.name }}</span>
+                <span style="font-size:12px; color:#41454d;">{{ it.desc }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+        <section onMouseDown="{{ stop }}" style="position:absolute; top:0; right:0; bottom:0; width:360px; background:#ffffff; border-left:1px solid #dddddd; display:flex; flex-direction:column; z-index:4;">
+          <div style="display:flex; align-items:center; gap:12px; padding:20px 20px 16px; border-bottom:1px solid #dddddd;">
+            <div style="width:36px; height:36px; flex:none; border-radius:50%; background:{{ pBg }}; display:flex; align-items:center; justify-content:center;">
+              <svg width="19" height="19" viewBox="0 0 24 24" style="fill:none; stroke:{{ pFg }}; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ pIcon }}"></path></svg>
+            </div>
+            <div style="display:flex; flex-direction:column; flex:1; min-width:0;">
+              <span style="font-size:12px; font-weight:500; color:#41454d; letter-spacing:0.16px;">{{ pCat }}</span>
+              <span style="font-size:18px; font-weight:500;">{{ pType }}</span>
+            </div>
+            <button onClick="{{ closePanel }}" title="Close" style="width:36px; height:36px; border-radius:50%; border:1px solid #dddddd; background:#ffffff; cursor:pointer; font-size:16px; color:#181d26;">✕</button>
+          </div>
+          <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:18px;">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <span style="font-size:13px; font-weight:500; color:#41454d;">{{ pNameLabel }}</span>
+              <input value="{{ pTitle }}" onChange="{{ onTitle }}" placeholder="{{ pPlaceholder }}" style="height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+            </div>
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font-size:13px; font-weight:500; color:#41454d;">{{ f.label }}</span>
+                <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}">
+                  <input value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+                </sc-if>
+                <sc-if value="{{ f.isTextarea }}" hint-placeholder-val="{{ false }}">
+                  <textarea value="{{ f.value }}" onChange="{{ f.onChange }}" rows="3" style="box-sizing:border-box; padding:12px 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; line-height:1.4; color:#181d26; outline:none; resize:vertical;" style-focus="border-color:#458fff;"></textarea>
+                </sc-if>
+                <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                  <select value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:44px; box-sizing:border-box; padding:0 10px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; background:#ffffff; outline:none;">
+                    <sc-for list="{{ f.options }}" as="op" hint-placeholder-count="0"><option value="{{ op.value }}">{{ op.value }}</option></sc-for>
+                  </select>
+                </sc-if>
+                <sc-if value="{{ f.isNumber }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <input type="number" value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:110px; height:44px; box-sizing:border-box; padding:0 14px; border:1px solid #dddddd; border-radius:6px; font-size:14px; color:#181d26; outline:none;" style-focus="border-color:#458fff;">
+                    <span style="font-size:14px; color:#41454d;">{{ f.unit }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ f.isSeg }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; gap:2px; padding:3px; background:#e0e2e6; border-radius:8px;">
+                    <sc-for list="{{ f.options }}" as="op" hint-placeholder-count="0">
+                      <button onClick="{{ op.onClick }}" style="flex:1; height:34px; border:none; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; background:{{ op.bg }}; color:#181d26; box-shadow:{{ op.shadow }};">{{ op.value }}</button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ f.hasHelp }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px; color:#41454d;">{{ f.help }}</span></sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ hasBranches }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:8px; padding-top:18px; border-top:1px solid #dddddd;">
+                <span style="font-size:13px; font-weight:500; color:#41454d;">Branch routing</span>
+                <sc-for list="{{ branches }}" as="b" hint-placeholder-count="2">
+                  <div style="display:flex; align-items:flex-start; gap:10px; font-size:14px;">
+                    <span style="font-size:12px; font-weight:500; background:#dff3e3; border:1px solid #a8d8c4; padding:1px 8px; border-radius:4px; white-space:nowrap;">{{ b.label }}</span>
+                    <span style="color:#41454d;">→</span>
+                    <span style="color:{{ b.color }};">{{ b.target }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex; gap:8px; padding:16px 20px; border-top:1px solid #dddddd;">
+            <button onClick="{{ deleteOpen }}" style="height:44px; padding:0 18px; border-radius:6px; border:1px solid #dddddd; background:#ffffff; color:#aa2d00; font-size:15px; font-weight:500; cursor:pointer;">Delete step</button>
+            <div style="flex:1;"></div>
+            <button onClick="{{ closePanel }}" style="height:44px; padding:0 24px; border-radius:6px; border:none; background:#1b61c9; color:#ffffff; font-size:15px; font-weight:500; cursor:pointer;" style-hover="background:#1a3866;">Done</button>
+          </div>
+        </section>
+      </sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ ghostOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; left:{{ ghostX }}px; top:{{ ghostY }}px; transform:translate(-50%,-50%); display:flex; align-items:center; gap:10px; padding:10px 14px; background:#ffffff; border:1px solid #1b61c9; border-radius:6px; pointer-events:none; z-index:50;">
+      <div style="width:28px; height:28px; border-radius:50%; background:{{ ghostBg }}; display:flex; align-items:center; justify-content:center;">
+        <svg width="15" height="15" viewBox="0 0 24 24" style="fill:none; stroke:{{ ghostFg }}; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;"><path d="{{ ghostIcon }}"></path></svg>
+      </div>
+      <span style="font-size:14px; font-weight:500;">{{ ghostName }}</span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;snapToGrid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showTour&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const GRID = 16;
+const IC = {
+  users: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2.5 3 5',
+  mail: 'M3 6h18v12H3zM3 6l9 7 9-7', clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  rep: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c0-4 3-6 7-6s7 2 7 6M16 11l2 2 4-4',
+  bell: 'M6 16v-5a6 6 0 1 1 12 0v5l2 2H4zM10 21h4', flag: 'M5 21V4M5 4h11l-2 4 2 4H5',
+  display: 'M3 5h18v11H3zM8 21h8M12 16v5', list: 'M4 6h16M4 12h16M4 18h10', bars: 'M5 20V10M10 20V4M15 20v-7M20 20V8',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13', ads: 'M3 11l12-6v14L3 13zM15 9a3 3 0 0 1 0 6M7 14v5h3',
+  diamond: 'M12 2l10 10-10 10L2 12z', play: 'M5 4h14v16H5zM10 9l5 3-5 3z', stopwatch: 'M12 21a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 9v4M9 2h6',
+  dots: 'M5 12h.01M12 12h.01M19 12h.01', trend: 'M3 17l6-6 4 4 8-8M15 7h6v6', menu: 'M4 7h16M4 12h16M4 17h16', person: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6', gauge: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 12l4-4'
+};
+const BLUE = '#d6e4fb', VIOLET = '#e4dcf7', PEACH = '#fcd9c2', TEAL = '#a8d8c4', GRAY = '#e0e2e6', YEL = '#f4e6a8';
+const DEC_FIELDS = [
+  { k: 'criteria', l: 'Evaluate', t: 'select', o: ['Account profile fit', 'Intent score', 'Engagement level', 'Buying stage'] },
+  { k: 'match', l: 'Condition', t: 'text' },
+  { k: 'branches', l: 'Branch labels', t: 'text', help: 'Comma separated. Each label becomes an output port.' }
+];
+const decSum = c => `Is ${String(c.criteria).toLowerCase()}: ${c.match}?`;
+const TYPES = {
+  segment: { grp: 'more', shape: 'circle', w: 100, h: 100, name: 'Segment', desc: 'Audience entry point', icon: IC.users, bg: '#c6ebe0', fg: '#181d26', cat: 'Entry',
+    fields: [{ k: 'segment', l: 'Segment', t: 'select', o: ['CMOs US West', 'ICP Mid-market SaaS', 'Enterprise target accounts', 'Event registrants'] }, { k: 'reentry', l: 'Re-entry', t: 'seg', o: ['Once', 'Recurring'] }],
+    def: { segment: 'CMOs US West', reentry: 'Once' }, sum: () => 'Segment' },
+  fit: { grp: 'decisions', shape: 'diamond', w: 164, h: 164, name: 'Account fit', desc: 'Branch on profile fit', icon: IC.diamond, bg: BLUE, fg: '#181d26', cat: 'Decision', fields: DEC_FIELDS,
+    def: { criteria: 'Account profile fit', match: 'Tier 1 OR Tier 2', branches: 'Yes, No' }, sum: decSum },
+  intent: { grp: 'decisions', shape: 'diamond', w: 164, h: 164, name: 'Intent check', desc: 'Branch on intent score', icon: IC.diamond, bg: BLUE, fg: '#181d26', cat: 'Decision', fields: DEC_FIELDS,
+    def: { criteria: 'Intent score', match: 'Surging or higher', branches: 'Yes, No' }, sum: decSum },
+  engage: { grp: 'decisions', shape: 'diamond', w: 164, h: 164, name: 'Engagement check', desc: 'Branch on engagement', icon: IC.diamond, bg: BLUE, fg: '#181d26', cat: 'Decision', fields: DEC_FIELDS,
+    def: { criteria: 'Engagement level', match: 'Engaged', branches: 'Engaged, Not engaged' }, sum: decSum },
+  display: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Display campaign', desc: 'Run display ads', icon: IC.display, bg: BLUE, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'campaign', l: 'Campaign', t: 'text' }, { k: 'budget', l: 'Daily budget', t: 'number', u: 'USD / day' }, { k: 'duration', l: 'Duration', t: 'number', u: 'days' }],
+    def: { campaign: 'Early Bird Pricing', budget: 200, duration: 14 }, sum: c => `Display Campaign: ${c.campaign}` },
+  static: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Static list', desc: 'Sync to marketing automation', icon: IC.bars, bg: VIOLET, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'list', l: 'List name', t: 'text' }, { k: 'dest', l: 'Destination', t: 'select', o: ['MAP', 'CRM', 'Ad platform'] }],
+    def: { list: 'Early Bird Pricing', dest: 'MAP' }, sum: c => `${c.dest} Static List: ${c.list}` },
+  ads: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Ad campaign', desc: 'LinkedIn, Google or Meta', icon: IC.ads, bg: BLUE, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'platform', l: 'Platform', t: 'seg', o: ['LinkedIn', 'Google', 'Meta'] }, { k: 'campaign', l: 'Campaign', t: 'text' }, { k: 'budget', l: 'Daily budget', t: 'number', u: 'USD / day' }],
+    def: { platform: 'LinkedIn', campaign: 'Last Minute Pricing', budget: 150 }, sum: c => `${c.platform}: ${c.campaign}` },
+  email: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Send email', desc: 'Marketing email', icon: IC.mail, bg: PEACH, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'template', l: 'Template', t: 'select', o: ['Event invite', 'Early bird offer', 'Last minute offer', 'Event recap'] }, { k: 'subject', l: 'Subject line', t: 'text' }, { k: 'send', l: 'Send time', t: 'seg', o: ['Now', 'Next day', 'Optimal'] }],
+    def: { template: 'Early bird offer', subject: 'Save your seat at a lower price', send: 'Now' }, sum: c => `Email: ${c.template}` },
+  task: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'SDR task', desc: 'Hand off to sales', icon: IC.rep, bg: TEAL, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'task', l: 'Task', t: 'select', o: ['Call', 'LinkedIn message', 'Personal email'] }, { k: 'owner', l: 'Assign to', t: 'select', o: ['Round robin', 'Account owner', 'Territory team'] }, { k: 'due', l: 'Due within', t: 'number', u: 'days' }],
+    def: { task: 'Call', owner: 'Account owner', due: 2 }, sum: c => `SDR Task: ${c.task} (${c.owner})` },
+  remove: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Remove from', desc: 'Clean up a campaign or list', icon: IC.trash, bg: GRAY, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'target', l: 'Remove from', t: 'select', o: ['MAP', '6s Display Campaign', 'LinkedIn Campaign', 'CRM list'] }, { k: 'campaign', l: 'Campaign or list', t: 'text' }],
+    def: { target: 'MAP', campaign: 'Early Bird Pricing' }, sum: c => `Remove from ${c.target}: ${c.campaign}` },
+  alert: { grp: 'actions', shape: 'card', w: 230, h: 68, name: 'Team alert', desc: 'Notify a channel', icon: IC.bell, bg: YEL, fg: '#181d26', cat: 'Action',
+    fields: [{ k: 'channel', l: 'Channel', t: 'text' }, { k: 'message', l: 'Message', t: 'textarea' }],
+    def: { channel: '#event-pipeline', message: 'An account moved to Tier 1.' }, sum: c => `Notify ${c.channel}` },
+  wait: { grp: 'timer', shape: 'wait', w: 190, h: 60, name: 'Wait until', desc: 'Pause until a date', icon: IC.clock, bg: TEAL, fg: '#0a2e0e', cat: 'Timer',
+    fields: [{ k: 'date', l: 'Date', t: 'text' }, { k: 'tz', l: 'Time zone', t: 'select', o: ['Account local', 'Pacific', 'Eastern', 'UTC'] }],
+    def: { date: '2/1/2023', tz: 'Account local' }, sum: c => `Wait Until ${c.date}` },
+  delay: { grp: 'timer', shape: 'wait', w: 190, h: 60, name: 'Wait for', desc: 'Pause for a duration', icon: IC.stopwatch, bg: TEAL, fg: '#0a2e0e', cat: 'Timer',
+    fields: [{ k: 'days', l: 'Duration', t: 'number', u: 'days' }],
+    def: { days: 3 }, sum: c => `Wait ${c.days} days` },
+  goal: { grp: 'more', shape: 'card', w: 230, h: 68, name: 'Goal reached', desc: 'End of the play', icon: IC.flag, bg: '#181d26', fg: '#ffffff', cat: 'Goal',
+    fields: [{ k: 'goal', l: 'Goal', t: 'select', o: ['Registration', 'Meeting booked', 'Opportunity created'] }, { k: 'attr', l: 'Attribution', t: 'seg', o: ['First', 'Last', 'Multi'] }],
+    def: { goal: 'Registration', attr: 'Multi' }, sum: c => `Goal: ${c.goal}` }
+};
+const CATS = [
+  { id: 'decisions', label: 'Decisions', icon: IC.diamond, title: 'Decisions' }, { id: 'actions', label: 'Actions', icon: IC.play, title: 'Actions' },
+  { id: 'timer', label: 'Timer', icon: IC.stopwatch, title: 'Timer' }, { id: 'more', label: 'More', icon: IC.dots, title: 'More blocks' }
+];
+const TOUR = [
+  ['Start with a segment', 'The segment sets which accounts enter the play. Double-click it to change the audience.'],
+  ['Add decisions and actions', 'Open Decisions, Actions, Timer or More on the right and drag a block onto the canvas.'],
+  ['Connect steps', 'Drag from the port on the right edge of a step, or from a branch label, onto the next step.'],
+  ['Configure a step', 'Double-click any step to open its settings. Press Delete to remove a selected step or line.']
+];
+const branchesOf = n => { const a = String(n.config.branches || '').split(',').map(s => s.trim()).filter(Boolean); return a.length ? a : ['Yes']; };
+const outsOf = n => TYPES[n.type].shape === 'diamond' ? branchesOf(n) : (n.type === 'goal' ? [] : ['']);
+const offs = (i, c) => (i - (c - 1) / 2) * 34;
+const mk = (id, type, x, y, cfg, title) => ({ id, type, x, y, title: title || '', config: Object.assign({}, TYPES[type].def, cfg || {}) });
+const initial = () => ({
+  nodes: [
+    mk('n1', 'segment', 0, 200), mk('n2', 'fit', 150, 168, { branches: 'Yes' }),
+    mk('n3', 'display', 460, 180), mk('n4', 'static', 460, 290, { dest: 'MAP' }),
+    mk('n5', 'wait', 770, 250), mk('n6', 'fit', 1010, 202, { branches: 'Tier 1, Tier 2' }),
+    mk('n7', 'remove', 1380, 60), mk('n8', 'remove', 1380, 160, { target: '6s Display Campaign' }), mk('n9', 'ads', 1380, 260, { platform: 'Google', campaign: 'Last Minute Pricing' }),
+    mk('n10', 'ads', 1380, 400), mk('n11', 'remove', 1380, 500, { target: '6s Display Campaign' }), mk('n12', 'remove', 1380, 600)
+  ],
+  edges: [['n1', 0, 'n2'], ['n2', 0, 'n3'], ['n2', 0, 'n4'], ['n3', 0, 'n5'], ['n4', 0, 'n5'], ['n5', 0, 'n6'], ['n6', 0, 'n7'], ['n6', 0, 'n8'], ['n6', 0, 'n9'], ['n6', 1, 'n10'], ['n6', 1, 'n11'], ['n6', 1, 'n12']]
+    .map((e, i) => ({ id: 'e' + (i + 1), from: e[0], port: e[1], to: e[2] }))
+});
+
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  seq = 100; drag = null; userMoved = false;
+  state = Object.assign(initial(), { panX: 0, panY: 0, zoom: 1, sel: null, open: null, hover: null, link: null, ghost: null, panning: false, cat: null, tour: 0, status: 'Draft', saved: false, name: 'Drive Event Attendance', schedule: 'Daily' });
+
+  componentDidMount() {
+    this._move = e => this.onMove(e); this._up = e => this.onUp(e); this._key = e => this.onKey(e); this._wheel = e => this.onWheel(e);
+    window.addEventListener('mousemove', this._move); window.addEventListener('mouseup', this._up); window.addEventListener('keydown', this._key);
+    const attach = () => { const c = this.canvasRef.current; if (!c) return setTimeout(attach, 50); c.addEventListener('wheel', this._wheel, { passive: false }); this._ro = new ResizeObserver(() => { if (!this.userMoved) this.fit(); }); this._ro.observe(c); };
+    attach(); [100, 300, 700].forEach(t => setTimeout(() => { if (!this.userMoved) this.fit(); }, t));
+  }
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this._move); window.removeEventListener('mouseup', this._up); window.removeEventListener('keydown', this._key);
+    const c = this.canvasRef.current; if (c) c.removeEventListener('wheel', this._wheel); if (this._ro) this._ro.disconnect();
+  }
+  rect() { return this.canvasRef.current.getBoundingClientRect(); }
+  toWorld(e) { const r = this.rect(), s = this.state; return { x: (e.clientX - r.left - s.panX) / s.zoom, y: (e.clientY - r.top - s.panY) / s.zoom }; }
+  snap(v) { return (this.props.snapToGrid ?? true) ? Math.round(v / GRID) * GRID : Math.round(v); }
+  fit() {
+    const c = this.canvasRef.current; if (!c) return; const ns = this.state.nodes; const r = c.getBoundingClientRect(); if (!r.width) return;
+    if (!ns.length) return this.setState({ panX: r.width / 2, panY: 80, zoom: 1 });
+    const x0 = Math.min(...ns.map(n => n.x)), y0 = Math.min(...ns.map(n => n.y));
+    const x1 = Math.max(...ns.map(n => n.x + TYPES[n.type].w)), y1 = Math.max(...ns.map(n => n.y + TYPES[n.type].h));
+    const aw = r.width - 108;
+    const z = Math.max(0.3, Math.min(1, (aw - 80) / (x1 - x0), (r.height - 80 - (this.state.tour >= 0 && (this.props.showTour ?? true) ? 170 : 0)) / (y1 - y0)));
+    this.setState({ zoom: z, panX: (aw - (x1 - x0) * z) / 2 - x0 * z + 20, panY: (r.height - (this.state.tour >= 0 && (this.props.showTour ?? true) ? 170 : 0) - (y1 - y0) * z) / 2 - y0 * z });
+  }
+  zoomAt(f, cx, cy) { this.userMoved = true; const s = this.state; const z = Math.max(0.3, Math.min(2, s.zoom * f)); const wx = (cx - s.panX) / s.zoom, wy = (cy - s.panY) / s.zoom; this.setState({ zoom: z, panX: cx - wx * z, panY: cy - wy * z }); }
+  zoomCenter(f) { const r = this.rect(); this.zoomAt(f, r.width / 2, r.height / 2); }
+  onWheel(e) {
+    e.preventDefault();
+    if (e.ctrlKey || e.metaKey) { const r = this.rect(); this.zoomAt(Math.exp(-e.deltaY * 0.01), e.clientX - r.left, e.clientY - r.top); }
+    else { this.userMoved = true; this.setState(s => ({ panX: s.panX - e.deltaX, panY: s.panY - e.deltaY })); }
+  }
+  onKey(e) {
+    const t = e.target.tagName; if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT') return;
+    if (e.key === 'Escape') this.setState({ open: null, cat: null });
+    if ((e.key === 'Delete' || e.key === 'Backspace') && this.state.sel) {
+      e.preventDefault(); const sel = this.state.sel;
+      if (sel.type === 'node') this.removeNode(sel.id); else this.setState(s => ({ edges: s.edges.filter(x => x.id !== sel.id), sel: null }));
+    }
+  }
+  removeNode(id) { this.setState(s => ({ nodes: s.nodes.filter(n => n.id !== id), edges: s.edges.filter(e => e.from !== id && e.to !== id), sel: null, open: s.open === id ? null : s.open })); }
+  nodeDown(id, e) {
+    if (e.button !== 0) return; e.stopPropagation(); const p = this.toWorld(e); const n = this.state.nodes.find(x => x.id === id);
+    this.drag = { kind: 'node', id, dx: p.x - n.x, dy: p.y - n.y }; this.setState({ sel: { type: 'node', id }, cat: null });
+  }
+  portDown(id, port, e) { e.stopPropagation(); e.preventDefault(); const p = this.toWorld(e); this.drag = { kind: 'link', from: id, port }; this.setState({ link: { from: id, port, x: p.x, y: p.y } }); }
+  canvasDown(e) { if (e.button !== 0) return; this.drag = { kind: 'pan', sx: e.clientX, sy: e.clientY, px: this.state.panX, py: this.state.panY }; this.setState({ sel: null, panning: true, cat: null }); }
+  paletteDown(type, e) { if (e.button !== 0) return; e.preventDefault(); this.drag = { kind: 'palette', type }; this.setState({ ghost: { type, x: e.clientX, y: e.clientY } }); }
+  onMove(e) {
+    const d = this.drag; if (!d) return;
+    if (d.kind === 'node') { const p = this.toWorld(e); const x = this.snap(p.x - d.dx), y = this.snap(p.y - d.dy); this.setState(s => ({ nodes: s.nodes.map(n => n.id === d.id ? Object.assign({}, n, { x, y }) : n) })); }
+    else if (d.kind === 'link') {
+      const p = this.toWorld(e); const el = document.elementFromPoint(e.clientX, e.clientY); const t = el && el.closest && el.closest('[data-node-id]'); let hid = t ? t.getAttribute('data-node-id') : null;
+      if (hid === d.from || (hid && this.state.nodes.find(n => n.id === hid).type === 'segment')) hid = null;
+      this.setState({ link: { from: d.from, port: d.port, x: p.x, y: p.y }, hover: hid });
+    } else if (d.kind === 'pan') { this.userMoved = true; this.setState({ panX: d.px + e.clientX - d.sx, panY: d.py + e.clientY - d.sy }); }
+    else if (d.kind === 'palette') this.setState({ ghost: { type: d.type, x: e.clientX, y: e.clientY } });
+  }
+  onUp(e) {
+    const d = this.drag; this.drag = null; if (!d) return;
+    if (d.kind === 'link') {
+      const to = this.state.hover;
+      if (to) this.setState(s => s.edges.some(x => x.from === d.from && x.port === d.port && x.to === to) ? null : { edges: s.edges.concat({ id: 'e' + (++this.seq), from: d.from, port: d.port, to }) });
+      this.setState({ link: null, hover: null });
+    } else if (d.kind === 'palette') {
+      const r = this.rect(); const inside = e.clientX > r.left && e.clientX < r.right - 100 && e.clientY > r.top && e.clientY < r.bottom;
+      if (inside) {
+        const p = this.toWorld(e); const T = TYPES[d.type]; const id = 'n' + (++this.seq);
+        const node = mk(id, d.type, this.snap(p.x - T.w / 2), this.snap(p.y - T.h / 2));
+        this.setState(s => ({ nodes: s.nodes.concat(node), sel: { type: 'node', id }, cat: null, saved: false, tour: s.tour === 1 ? 2 : s.tour }));
+      }
+      this.setState({ ghost: null });
+    } else if (d.kind === 'pan') this.setState({ panning: false });
+  }
+  setCfg(id, k, v) { this.setState(s => ({ nodes: s.nodes.map(n => n.id === id ? Object.assign({}, n, { config: Object.assign({}, n.config, { [k]: v }) }) : n), saved: false })); }
+  setTitle(id, v) { this.setState(s => ({ nodes: s.nodes.map(n => n.id === id ? Object.assign({}, n, { title: v }) : n), saved: false })); }
+  route(s, i, t) {
+    const T = TYPES[s.type], sx = s.x + T.w, sy = s.y + T.h / 2, tx = t.x, ty = t.y + TYPES[t.type].h / 2;
+    let d;
+    if (T.shape === 'diamond') { const py = sy + offs(i, outsOf(s).length), mx = Math.max(sx + 120, (sx + tx) / 2); d = `M${sx} ${sy} H${sx + 28} V${py} H${mx} V${ty} H${tx - 2}`; }
+    else { const mx = Math.max(sx + 24, (sx + tx) / 2); d = `M${sx} ${sy} H${mx} V${ty} H${tx - 2}`; }
+    return { d, head: `M${tx} ${ty} l-10 -5.5 v11 z` };
+  }
+  renderVals() {
+    const s = this.state; const byId = {}; s.nodes.forEach(n => byId[n.id] = n);
+    let open = 0;
+    const nodes = s.nodes.map(n => {
+      const T = TYPES[n.type]; const sel = s.sel && s.sel.type === 'node' && s.sel.id === n.id; const act = sel || s.open === n.id; const tgt = s.hover === n.id;
+      const outs = outsOf(n).map((lab, i, arr) => {
+        const conn = s.edges.some(e => e.from === n.id && e.port === i && byId[e.to]); if (!conn && T.shape === 'diamond') open++;
+        if (T.shape === 'diamond') return { isPill: true, isDot: false, label: lab, left: T.w + 34, top: T.h / 2 + offs(i, arr.length) - 11, bg: conn ? '#dff3e3' : '#ffffff', onMouseDown: ev => this.portDown(n.id, i, ev) };
+        return { isPill: false, isDot: conn || act || tgt, left: T.w - 7, top: T.h / 2 - 7, bg: conn ? '#1b61c9' : '#ffffff', onMouseDown: ev => this.portDown(n.id, i, ev) };
+      });
+      return {
+        id: n.id, left: n.x, top: n.y, w: T.w, h: T.h, label: n.title || T.sum(n.config), icon: T.icon, bg: T.bg, fg: T.fg, outs,
+        isCircle: T.shape === 'circle', isDiamond: T.shape === 'diamond', isCard: T.shape === 'card', isWait: T.shape === 'wait',
+        bw: act || tgt ? 4 : 2.5, circleBorder: act || tgt ? '#1b61c9' : '#a8d8c4', diamondStroke: tgt ? '#458fff' : act ? '#1a3866' : '#1b61c9',
+        cardBorder: act || tgt ? '#1b61c9' : '#dddddd', ring: act || tgt ? '0 0 0 2px rgba(27,97,201,0.35)' : '0 1px 3px rgba(24,29,38,0.12)',
+        waitBorder: act || tgt ? '#1b61c9' : '#c9ced6', waitInset: act || tgt ? 2 : 1,
+        onMouseDown: e => this.nodeDown(n.id, e), onDoubleClick: e => { e.stopPropagation(); this.setState({ open: n.id, sel: { type: 'node', id: n.id }, cat: null }); }
+      };
+    });
+    const edges = s.edges.filter(e => byId[e.from] && byId[e.to] && e.port < outsOf(byId[e.from]).length).map(e => {
+      const r = this.route(byId[e.from], e.port, byId[e.to]); const sel = s.sel && s.sel.type === 'edge' && s.sel.id === e.id;
+      return { d: r.d, head: r.head, stroke: sel ? '#1b61c9' : '#41454d', width: sel ? 2.5 : 1.6, onMouseDown: ev => { ev.stopPropagation(); this.setState({ sel: { type: 'edge', id: e.id } }); } };
+    });
+    let linkD = '';
+    if (s.link && byId[s.link.from]) { const a = byId[s.link.from], T = TYPES[a.type], h = s.hover && byId[s.hover]; linkD = `M${a.x + T.w} ${a.y + T.h / 2} L${h ? h.x : s.link.x} ${h ? h.y + TYPES[h.type].h / 2 : s.link.y}`; }
+    const items = g => Object.keys(TYPES).filter(k => TYPES[k].grp === g).map(k => { const T = TYPES[k]; return { name: T.name, desc: T.desc, icon: T.icon, bg: T.bg, fg: T.fg, onMouseDown: e => this.paletteDown(k, e) }; });
+    const cur = CATS.find(c => c.id === s.cat);
+    const on = s.open && byId[s.open]; const pv = {};
+    if (on) {
+      const T = TYPES[on.type]; const dia = T.shape === 'diamond';
+      Object.assign(pv, {
+        pBg: T.bg, pFg: T.fg, pIcon: T.icon, pCat: T.cat, pType: T.name, pTitle: on.title, pNameLabel: dia ? 'Question shown in diamond' : 'Step name', pPlaceholder: T.sum(on.config),
+        onTitle: e => this.setTitle(on.id, e.target.value),
+        fields: T.fields.map(f => { const v = on.config[f.k]; return { label: f.l, value: v, unit: f.u || '', help: f.help || '', hasHelp: !!f.help, isText: f.t === 'text', isTextarea: f.t === 'textarea', isSelect: f.t === 'select', isNumber: f.t === 'number', isSeg: f.t === 'seg',
+          onChange: e => this.setCfg(on.id, f.k, e.target.value),
+          options: (f.o || []).map(o => ({ value: o, bg: o === v ? '#ffffff' : 'transparent', shadow: o === v ? '0 1px 2px rgba(24,29,38,0.12)' : 'none', onClick: () => this.setCfg(on.id, f.k, o) })) }; }),
+        hasBranches: dia,
+        branches: dia ? outsOf(on).map((lab, i) => { const ts = s.edges.filter(x => x.from === on.id && x.port === i && byId[x.to]).map(x => { const t = byId[x.to]; return t.title || TYPES[t.type].sum(t.config); });
+          return { label: lab, target: ts.length ? ts.join('; ') : 'Not connected', color: ts.length ? '#181d26' : '#aa2d00' }; }) : [],
+        deleteOpen: () => this.removeNode(on.id)
+      });
+    }
+    const g = s.ghost && TYPES[s.ghost.type]; const seg = s.nodes.find(n => n.type === 'segment');
+    const tour = TOUR[Math.max(0, Math.min(3, s.tour))];
+    return Object.assign({
+      canvasRef: this.canvasRef, nodes, edges, linking: !!s.link, linkD,
+      rail: [IC.trend, IC.menu, IC.person, IC.gauge].map((icon, i) => ({ icon, bg: i === 2 ? '#1b61c9' : 'transparent' })),
+      cats: CATS.map(c => ({ label: c.label, icon: c.icon, bg: s.cat === c.id ? '#e8eef9' : 'transparent', onClick: () => this.setState({ cat: s.cat === c.id ? null : c.id }) })),
+      flyOpen: !!cur, flyTitle: cur ? cur.title : '', flyItems: cur ? items(cur.id) : [],
+      panX: s.panX, panY: s.panY, zoom: s.zoom, gridSize: 20 * s.zoom, canvasCursor: s.panning ? 'grabbing' : 'default',
+      panelOpen: !!on, toolbarRight: on ? 376 : 16, flyRight: on ? 462 : 102,
+      tourOn: s.tour >= 0 && (this.props.showTour ?? true), tourN: s.tour + 1, tourTitle: tour[0], tourBody: tour[1], tourBtn: s.tour >= 3 ? 'Done' : 'Next',
+      nextTour: () => this.setState(st => ({ tour: st.tour >= 3 ? -1 : st.tour + 1 }), () => { if (!this.userMoved) this.fit(); }), closeTour: () => this.setState({ tour: -1 }, () => { if (!this.userMoved) this.fit(); }),
+      stop: e => e.stopPropagation(), closePanel: () => this.setState({ open: null }),
+      zoomIn: () => this.zoomCenter(1.2), zoomOut: () => this.zoomCenter(1 / 1.2), fit: () => { this.userMoved = false; this.fit(); },
+      canvasDown: e => this.canvasDown(e),
+      playName: s.name, nameWidth: Math.max(12, s.name.length + 2), onName: e => this.setState({ name: e.target.value, saved: false }),
+      schedule: s.schedule, onSchedule: e => this.setState({ schedule: e.target.value, saved: false }),
+      segmentName: seg ? seg.config.segment : 'None',
+      validText: open ? `${open} open branch${open > 1 ? 'es' : ''}` : 'All branches connected', validDot: open ? '#d9a441' : '#39bf45',
+      status: s.status, statusBg: s.status === 'Live' ? '#a8d8c4' : '#f4d35e', saveLabel: s.saved ? 'Saved' : 'Save Draft', publishLabel: s.status === 'Live' ? 'Unpublish' : 'Publish',
+      cancel: () => { this.userMoved = false; this.setState(Object.assign(initial(), { open: null, sel: null, saved: false })); setTimeout(() => this.fit(), 50); },
+      saveDraft: () => this.setState({ saved: true }), publish: () => this.setState(st => ({ status: st.status === 'Live' ? 'Draft' : 'Live' })),
+      ghostOn: !!g, ghostX: s.ghost ? s.ghost.x : 0, ghostY: s.ghost ? s.ghost.y : 0, ghostName: g ? g.name : '', ghostIcon: g ? g.icon : '', ghostBg: g ? g.bg : '', ghostFg: g ? g.fg : ''
+    }, pv);
+  }
+}
+</script>
+</body>
+</html>
