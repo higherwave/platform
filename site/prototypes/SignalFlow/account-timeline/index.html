@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f3f4f6}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style></helmet>
+<div style="width:1440px;background:#f3f4f6;font-family:Haas,Inter,-apple-system,'Segoe UI',sans-serif;color:#333840;font-size:14px;padding-bottom:64px">
+<div style="height:64px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 32px;gap:32px">
+<div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26"><div style="width:28px;height:28px;border-radius:8px;background:#1b61c9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px">A</div>Anchor CX</div>
+<div style="display:flex;gap:24px"><span style="color:#1b61c9;font-weight:500">Accounts</span><span>Tickets</span><span>Playbooks</span><span>Digest</span><span>Reports</span></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">Priya Raman · CSM<div style="width:36px;height:36px;border-radius:50%;background:#e0e2e6;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">PR</div></div>
+</div>
+<div style="padding:24px 32px 0">
+<div style="display:flex;align-items:baseline;gap:20px"><div style="font-size:32px;color:#181d26">Northwind Logistics</div><span style="font-size:15px">Mid-size · Renews in 62 days · Dec 31, 2026 · Owner: Priya Raman</span></div>
+
+<div style="display:grid;grid-template-columns:340px 1fr 340px;gap:20px;margin-top:20px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="font-weight:500;color:#181d26;font-size:16px">Health score</div>
+<div style="display:flex;align-items:baseline;gap:10px;margin-top:8px"><span style="font-size:72px;line-height:1;color:#8a5a00">62</span><span style="color:#b42318;font-weight:500">−16 from 78</span></div>
+<div style="color:#41454d;margin-top:6px">Last updated today, 8:42 AM</div></div>
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="font-weight:500;color:#181d26;font-size:16px">Risk factors</div>
+<sc-for list="{{ risks }}" as="r" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #eee"><div style="height:30px;border-radius:6px;background:#fde8e6;color:#b42318;font-weight:500;display:flex;align-items:center;justify-content:center">{{ r.d }}</div><div><div style="font-weight:500;color:#181d26">{{ r.t }}</div><div style="line-height:1.45;margin-top:2px">{{ r.s }}</div></div></div>
+</sc-for>
+<div style="margin-top:12px"><a href="#">See full score history →</a></div></div>
+</div>
+
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;display:flex;flex-direction:column;height:820px">
+<div style="padding:20px 24px;border-bottom:1px solid #eee"><div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:20px;color:#181d26">Customer timeline</div><span style="color:#41454d">Newest first · Today is Oct 30</span></div>
+<div style="display:flex;gap:8px;margin-top:14px"><sc-for list="{{ filters }}" as="f" hint-placeholder-count="4"><span style="padding:5px 14px;border-radius:9999px;cursor:pointer;font-weight:500;border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }}" onClick="{{ f.pick }}">{{ f.name }}</span></sc-for></div></div>
+<div style="overflow:auto;flex:1;padding:8px 24px 24px">
+<sc-for list="{{ events }}" as="e" hint-placeholder-count="6">
+<div>
+<div style="display:{{ e.todayShow }};align-items:center;gap:12px;margin:14px 0"><div style="flex:1;height:2px;background:#1b61c9"></div><span style="background:#1b61c9;color:#fff;border-radius:6px;padding:3px 12px;font-weight:500">Today · Oct 30</span><div style="flex:1;height:2px;background:#1b61c9"></div></div>
+<div style="display:grid;grid-template-columns:40px 1fr 92px;gap:14px;padding:14px 0;border-bottom:1px solid #eee;opacity:{{ e.op }}">
+<div style="width:36px;height:36px;border-radius:10px;background:#eef3fb;color:#1b61c9;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="{{ e.icon }}"></path></svg></div>
+<div><div style="font-weight:500;color:#181d26;font-size:15px">{{ e.title }}</div><div style="line-height:1.5;margin-top:2px">{{ e.text }}</div><div style="color:#41454d;margin-top:4px">{{ e.source }}</div></div>
+<div style="color:#41454d;text-align:right">{{ e.date }}</div></div>
+</div>
+</sc-for>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="display:flex;justify-content:space-between"><div style="font-weight:500;color:#181d26;font-size:16px">Renewal checklist</div><span style="color:#41454d">3 of 5 done</span></div>
+<div style="height:6px;border-radius:3px;background:#eee;margin:12px 0 4px"><div style="height:6px;border-radius:3px;background:#1b61c9;width:60%"></div></div>
+<sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5"><div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #eee"><div style="width:20px;height:20px;flex:none;border-radius:5px;text-align:center;line-height:20px;background:{{ c.bg }};color:#fff;border:{{ c.bd }}">{{ c.mark }}</div><span style="color:{{ c.col }}">{{ c.text }}</span></div></sc-for>
+<div style="margin-top:12px"><a href="#">Open renewal workspace →</a></div></div>
+<div style="color:#41454d;line-height:1.5;padding:0 4px">New panels are added in these side columns. The timeline stays in the middle and stays on screen.</div>
+</div>
+</div>
+
+<div style="margin-top:40px;max-width:640px;background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:24px">
+<div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Rejected</span><span style="font-weight:500;color:#181d26">New panels stacked on top</span></div>
+<div style="display:flex;gap:16px;margin-top:16px;align-items:stretch">
+<div style="width:260px;background:#f8fafc;border:1px solid #eee;border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;height:200px;position:relative;overflow:hidden">
+<div style="display:flex;gap:6px"><div style="flex:1;height:34px;background:#e0e2e6;border-radius:4px"></div><div style="flex:1;height:34px;background:#e0e2e6;border-radius:4px"></div></div>
+<div style="height:34px;background:#e0e2e6;border-radius:4px"></div><div style="height:34px;background:#e0e2e6;border-radius:4px"></div>
+<div style="position:absolute;left:0;right:0;bottom:36px;border-top:2px dashed #b42318"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:36px;background:#fff;padding:6px 10px;color:#41454d;font-size:13px">Timeline (below the fold)</div></div>
+<div style="flex:1;line-height:1.5;color:#41454d;align-self:center">The timeline is pushed below the fold and must be scrolled to. It is the part of the product every group uses most.</div></div>
+</div>
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { f: 'All' };
+  renderVals() {
+    const I = { Email: 'M3 6h18v12H3z M3 6l9 7 9-7', Ticket: 'M4 7h16v4a2 2 0 000 2v4H4v-4a2 2 0 000-2z', Call: 'M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z' };
+    const E = [
+      ['Call', 'Renewal kickoff with Marcus Delgado', 'Scheduled. Agenda: billing sync status and renewal timeline.', 'Calendar', 'Nov 12', 1],
+      ['Email', 'Priya to Marcus: checking in on the billing sync', 'Asked for a 30-minute call and offered to join Engineering for a status review.', 'Sent from Priya Raman, 9:05 AM', 'Oct 30'],
+      ['Ticket', '#48377 Route export times out above 5,000 stops', 'Escalated by Aaron Blake. Second open escalation on the account.', 'Support ticket', 'Oct 28'],
+      ['Ticket', '#48213 Customer reports another failed sync', 'Marcus: our VP of Finance asked whether we should keep the integration at renewal.', 'Support ticket · full thread', 'Oct 23'],
+      ['Call', 'Check-in with Marcus Delgado (25 min)', 'Walked through new dispatch reports. Marcus new to the account, asked for a billing sync contact.', 'Call by Priya Raman', 'Oct 20'],
+      ['Ticket', '#48213 Fourth sync failure this month', 'Customer re-keying invoices by hand. Fix scheduled for Oct 22 release.', 'Support ticket', 'Oct 17'],
+      ['Ticket', '#48213 Billing sync fails every night', 'Opened by Marcus Delgado. 41 invoices missing from ledger.', 'Support ticket', 'Oct 14'],
+      ['Email', 'Tom Reyes to Priya: moving to Seattle hub', 'Tom introduces Marcus Delgado as the day-to-day contact.', 'Inbound email', 'Oct 9'],
+      ['Ticket', '#47790 Dashboard login redirect loop resolved', 'Stale SSO session cleared for the tenant.', 'Support ticket', 'Oct 2'],
+      ['Call', 'Q3 business review with Tom Reyes', 'Dispatch rollout to Denver and Dallas, interest in 12 more seats.', 'Call by Priya Raman', 'Jul 17']
+    ];
+    const f = this.state.f;
+    const shown = E.filter(e => f === 'All' || e[0] === f);
+    const firstPast = shown.findIndex(e => !e[5]);
+    const ck = [['Review health score and risk factors', 1], ['Pull 90-day usage report', 1], ['Confirm new champion', 1], ['Prepare renewal proposal', 0], ['Schedule executive review call', 0]];
+    return {
+      events: shown.map((e, i) => ({ icon: I[e[0]], title: e[1], text: e[2], source: e[3], date: e[4], op: e[5] ? '.75' : '1', todayShow: i === firstPast ? 'flex' : 'none' })),
+      filters: ['All', 'Email', 'Ticket', 'Call'].map(n => ({ name: n, bg: f === n ? '#e8f0fc' : '#fff', bd: f === n ? '#1b61c9' : '#ddd', fg: f === n ? '#1a3866' : '#41454d', pick: () => this.setState({ f: n }) })),
+      risks: [
+        { d: '−9', t: 'Usage down 30%', s: 'Weekly active users fell from 214 to 150 in 30 days.' },
+        { d: '−5', t: 'Two open escalations', s: 'Billing sync (#48213) and route export (#48377).' },
+        { d: '−2', t: 'Champion changed', s: 'Tom Reyes moved to the Seattle hub on Oct 9.' }
+      ],
+      checklist: ck.map(([text, d]) => ({ text, mark: d ? '✓' : '', bg: d ? '#1b61c9' : '#fff', bd: d ? '1px solid #1b61c9' : '1.5px solid #9297a0', col: d ? '#41454d' : '#181d26' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

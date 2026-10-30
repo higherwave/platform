@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f3f4f6}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style></helmet>
+<div style="width:1440px;background:#f3f4f6;font-family:Haas,Inter,-apple-system,'Segoe UI',sans-serif;color:#333840;font-size:14px;padding-bottom:64px">
+<div style="height:64px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 32px;gap:32px">
+<div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26"><div style="width:28px;height:28px;border-radius:8px;background:#1b61c9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px">A</div>Anchor CX</div>
+<div style="display:flex;gap:24px"><span>Accounts</span><span>Tickets</span><span style="color:#1b61c9;font-weight:500">Playbooks</span><span>Digest</span><span>Reports</span></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">Ben Nakamura · CS Operations<div style="width:36px;height:36px;border-radius:50%;background:#e0e2e6;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">BN</div></div>
+</div>
+<div style="padding:32px 48px 0">
+<div style="font-size:14px;color:#41454d">Screen 1 · Operations view</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px"><div style="font-size:32px;color:#181d26">Renewal playbook</div>
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:10px 16px;color:#41454d">Before: <span style="text-decoration:line-through">12 copies</span> maintained by hand → <b style="color:#181d26;font-weight:500">1 playbook</b></div></div>
+<div style="margin-top:20px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:8px 28px">
+<div style="display:grid;grid-template-columns:40px 1fr 380px;gap:16px;padding:14px 0;border-bottom:1px solid #ddd;color:#41454d;font-weight:500"><span>#</span><span>Step</span><span>Optional for</span></div>
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:40px 1fr 380px;gap:16px;padding:14px 0;border-bottom:1px solid #eee;align-items:center">
+<span style="color:#41454d">{{ s.n }}</span><span style="color:#181d26;font-size:15px">{{ s.name }}</span>
+<div style="display:flex;gap:8px"><sc-for list="{{ s.segs }}" as="g" hint-placeholder-count="3"><span style="padding:5px 12px;border-radius:9999px;cursor:pointer;border:1px solid {{ g.bd }};background:{{ g.bg }};color:{{ g.fg }};font-weight:500" onClick="{{ g.toggle }}">{{ g.name }}</span></sc-for></div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:10px;color:#41454d">Mark a segment on a step to make it optional there. Steps stay required for every other segment.</div>
+
+<div style="margin-top:48px;font-size:14px;color:#41454d">Screen 2 · CSM view</div>
+<div style="display:grid;grid-template-columns:1fr 420px;gap:24px;margin-top:4px;align-items:start">
+<div>
+<div style="display:flex;align-items:baseline;gap:16px"><div style="font-size:32px;color:#181d26">Northwind Logistics</div><span style="font-size:16px">Renews in 62 days · Owner: Priya Raman</span></div>
+<div style="margin-top:16px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px 28px;display:flex;align-items:center;gap:16px">
+<span style="font-weight:500;color:#181d26">Account segment</span><span style="padding:5px 14px;border-radius:6px;border:1px solid #ddd;color:#181d26">Mid-size ▾</span><span style="color:#41454d">Set on the account, not the playbook. Steps adjust to it.</span></div>
+<div style="margin-top:16px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:8px 28px">
+<sc-for list="{{ csm }}" as="s" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:28px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid #eee;align-items:center">
+<div style="width:20px;height:20px;border-radius:5px;border:1.5px solid {{ s.bd }};background:{{ s.bg }}"></div>
+<div><div style="font-size:15px;color:{{ s.col }};text-decoration:{{ s.deco }}">{{ s.name }}</div><div style="color:#41454d;margin-top:2px">{{ s.note }}</div></div>
+<span style="padding:5px 12px;border-radius:12px;border:1px solid #ddd;color:#181d26;font-weight:500;cursor:pointer;background:#fff;visibility:{{ s.btnVis }}" onClick="{{ s.flip }}">{{ s.btn }}</span>
+</div>
+</sc-for></div>
+</div>
+<div style="background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:24px;margin-top:64px">
+<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:16px;font-weight:500;color:#181d26">Which playbooks lead to renewals</div><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Next</span></div>
+<div style="margin-top:12px;line-height:1.5;color:#41454d">Not built yet. Would compare renewal rates for accounts that completed each playbook, by segment.</div>
+<div style="margin-top:16px;height:90px;border-radius:6px;background:#f8fafc;border:1px solid #eee;display:flex;align-items:center;justify-content:center;color:#41454d">Chart placeholder</div></div>
+</div>
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { opt: { 4: ['Small business'], 5: ['Mid-size', 'Small business'], 7: ['Mid-size', 'Small business'] }, on: {} };
+  renderVals() {
+    const names = ['Confirm renewal owner and date', 'Review health score and risk factors', 'Pull 90-day usage report', 'Confirm decision makers', 'Schedule executive business review', 'Present renewal proposal', 'Complete procurement and security questionnaire', 'Send renewal quote'];
+    const SEG = ['Enterprise', 'Mid-size', 'Small business'];
+    const { opt, on } = this.state;
+    const steps = names.map((name, i) => {
+      const n = i + 1, cur = opt[n] || [];
+      return { n, name, segs: SEG.map(g => { const a = cur.includes(g); return { name: g, bg: a ? '#e8f0fc' : '#fff', bd: a ? '#1b61c9' : '#ddd', fg: a ? '#1a3866' : '#41454d',
+        toggle: () => this.setState(s => { const c = s.opt[n] || []; return { opt: { ...s.opt, [n]: c.includes(g) ? c.filter(x => x !== g) : [...c, g] } }; }) }; }) };
+    });
+    const csm = names.map((name, i) => {
+      const n = i + 1, skipped = (opt[n] || []).includes('Mid-size') && !on[n], optional = (opt[n] || []).includes('Mid-size');
+      return { name, skipped,
+        note: skipped ? 'Skipped: optional for Mid-size accounts' : (optional ? 'Turned back on by Priya for this account' : (n < 4 ? 'Done' : 'To do')),
+        col: skipped ? '#41454d' : '#181d26', deco: skipped ? 'line-through' : 'none',
+        bg: skipped ? '#e0e2e6' : (n < 4 ? '#1b61c9' : '#fff'), bd: skipped ? '#9297a0' : (n < 4 ? '#1b61c9' : '#9297a0'),
+        btnVis: optional ? 'visible' : 'hidden', btn: skipped ? 'Turn back on' : 'Skip again',
+        flip: () => this.setState(s => ({ on: { ...s.on, [n]: !s.on[n] } })) };
+    });
+    return { steps, csm };
+  }
+}
+</script>
+</body>
+</html>

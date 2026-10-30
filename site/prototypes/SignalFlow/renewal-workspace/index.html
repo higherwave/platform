@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f3f4f6}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style></helmet>
+<div style="width:1440px;background:#f3f4f6;font-family:Haas,Inter,-apple-system,'Segoe UI',sans-serif;color:#333840;font-size:14px;padding-bottom:64px">
+<div style="height:64px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 32px;gap:32px">
+<div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26"><div style="width:28px;height:28px;border-radius:8px;background:#1b61c9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px">A</div>Anchor CX</div>
+<div style="display:flex;gap:24px"><span style="color:#1b61c9;font-weight:500">Accounts</span><span>Tickets</span><span>Playbooks</span><span>Digest</span><span>Reports</span></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">Priya Raman · CSM<div style="width:36px;height:36px;border-radius:50%;background:#e0e2e6;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">PR</div></div>
+</div>
+<div style="padding:32px 48px 0">
+<div style="color:#41454d">Accounts / Northwind Logistics / Renewal workspace</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px">
+<div><div style="font-size:32px;color:#181d26">Renewal workspace</div><div style="margin-top:6px;font-size:16px">Northwind Logistics · Renews Dec 31, 2026 · <b style="color:#181d26;font-weight:500">62 days</b> · Health <b style="color:#8a5a00;font-weight:500">62</b></div></div>
+<button style="font:inherit;font-size:16px;font-weight:500;background:#181d26;color:#fff;border:0;border-radius:12px;padding:14px 24px">Draft renewal quote</button></div>
+
+<div style="display:grid;grid-template-columns:1fr 460px;gap:24px;margin-top:24px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:28px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:18px;font-weight:500;color:#181d26">Usage, last 90 days</div><div><b style="color:#b42318;font-weight:500">−30%</b> weekly active users vs. prior 30 days</div></div>
+<svg viewBox="0 0 800 230" style="width:100%;height:230px;margin-top:12px">
+<rect x="507" y="0" width="293" height="180" fill="#f3f4f6"/>
+<line x1="0" y1="180" x2="800" y2="180" stroke="#ddd"/><line x1="0" y1="90" x2="800" y2="90" stroke="#eee"/>
+<polyline points="{{ pts }}" fill="none" stroke="#1b61c9" stroke-width="3" stroke-linejoin="round"/>
+<text x="515" y="20" font-size="14" fill="#41454d">Last 30 days</text>
+<text x="0" y="205" font-size="14" fill="#41454d">Aug 1</text><text x="262" y="205" font-size="14" fill="#41454d">Sep 1</text><text x="515" y="205" font-size="14" fill="#41454d">Oct 1</text><text x="745" y="205" font-size="14" fill="#41454d">Today</text>
+<text x="0" y="84" font-size="14" fill="#41454d">180</text><text x="0" y="174" font-size="14" fill="#41454d">140</text>
+</svg>
+<div style="color:#41454d;margin-top:4px">214 weekly active users on Oct 1, 150 now. Dispatch and route planning dropped most.</div>
+</div>
+
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:28px">
+<div style="font-size:18px;font-weight:500;color:#181d26">Tickets <span style="font-weight:400;color:#41454d;font-size:14px;margin-left:8px">2 open · 1 recent. Expand to read the full thread.</span></div>
+<div style="margin-top:12px">
+<sc-for list="{{ tickets }}" as="t" hint-placeholder-count="3">
+<div style="border-top:1px solid #eee"><div style="display:flex;align-items:center;gap:14px;padding:16px 0;cursor:pointer" onClick="{{ t.toggle }}">
+<span style="width:16px;color:#41454d">{{ t.chev }}</span>
+<div style="flex:1"><div style="font-weight:500;color:#181d26;font-size:15px">{{ t.id }} · {{ t.title }}</div><div style="color:#41454d;margin-top:2px">{{ t.meta }}</div></div>
+<span style="padding:3px 12px;border-radius:9999px;background:#e0e2e6;color:#181d26">{{ t.status }}</span></div>
+<div style="margin:0 0 16px 30px;border-left:2px solid #ddd;padding-left:20px">
+<sc-for list="{{ t.msgs }}" as="m" hint-placeholder-count="0">
+<div style="padding:8px 0"><div style="color:#41454d"><b style="color:#181d26;font-weight:500">{{ m.who }}</b> · {{ m.when }} <span style="margin-left:6px;padding:1px 8px;border-radius:6px;background:{{ m.bg }};color:#181d26;font-size:13px">{{ m.tag }}</span></div><div style="line-height:1.5;margin-top:3px">{{ m.text }}</div></div>
+</sc-for></div></div>
+</sc-for>
+</div></div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="display:flex;justify-content:space-between"><div style="font-size:18px;font-weight:500;color:#181d26">Renewal checklist</div><span style="color:#41454d">3 of 5 done</span></div>
+<div style="height:6px;border-radius:3px;background:#eee;margin:12px 0 8px"><div style="height:6px;border-radius:3px;background:#1b61c9;width:60%"></div></div>
+<sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #eee"><div style="width:20px;height:20px;border-radius:5px;flex:none;text-align:center;line-height:20px;font-size:14px;background:{{ c.bg }};color:#fff;border:{{ c.bd }}">{{ c.mark }}</div><span style="color:{{ c.col }}">{{ c.text }}</span></div>
+</sc-for></div>
+
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="font-size:18px;font-weight:500;color:#181d26">Contract summary</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+<div><div style="color:#41454d">Term</div><div style="color:#181d26;font-size:16px">24 months</div></div>
+<div><div style="color:#41454d">Annual value</div><div style="color:#181d26;font-size:16px">$184,000</div></div>
+<div><div style="color:#41454d">Renewal date</div><div style="color:#181d26;font-size:16px">Dec 31, 2026</div></div>
+<div><div style="color:#41454d">Notice deadline</div><div style="color:#181d26;font-size:16px">Dec 1, 2026</div></div></div>
+<div style="color:#41454d;margin-top:16px">Key clauses</div>
+<ul style="margin:6px 0 0;padding-left:20px;line-height:1.7"><li>Auto-renews unless 30 days written notice is given</li><li>Renewal price increase capped at 5%</li><li>99.9% uptime SLA with service credits</li><li>Billing integration listed as a covered service</li></ul></div>
+
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="font-size:18px;font-weight:500;color:#181d26">Last quarter's notes <span style="font-size:14px;font-weight:400;color:#41454d;margin-left:6px">Q3 review, Jul 17</span></div>
+<ul style="margin:10px 0 0;padding-left:20px;line-height:1.7"><li>Tom Reyes wants dispatch rolled out to the Denver and Dallas depots by Q4.</li><li>Finance asked for automatic invoice sync with NetSuite.</li><li>Open to adding 12 seats if rollout goes well.</li></ul></div>
+</div></div>
+
+<div style="margin-top:40px;max-width:520px;background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:20px">
+<div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Previous version</span><span style="color:#41454d">Earlier prototype</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px">
+<div style="background:#f8fafc;border-radius:6px;padding:12px"><div style="color:#41454d">Checklist</div><div style="color:#181d26">3 of 5 done</div></div>
+<div style="background:#f8fafc;border-radius:6px;padding:12px"><div style="color:#41454d">Tickets</div><div style="color:#181d26">3 tickets · <a href="#">View in Support ↗</a></div></div></div>
+<div style="margin-top:12px;color:#41454d;line-height:1.5">Tickets showed only as a count, so the CSM left the page. Now the thread opens in place.</div></div>
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: { a: true } };
+  renderVals() {
+    const o = this.state.open;
+    const tg = { c: ['Customer', '#e0e2e6'], s: ['Support', '#e0e2e6'], n: ['Internal note', '#dbe5f6'] };
+    const M = (a) => a.map(([k, who, when, text]) => ({ who, when, text, tag: tg[k][0], bg: tg[k][1] }));
+    const raw = [
+      { k: 'a', id: '#48213', title: 'Billing sync fails every night', meta: 'Opened Oct 14 · Marcus Delgado · 7 entries', status: 'Open · Escalated', msgs: M([
+        ['c', 'Marcus Delgado', 'Oct 14, 9:12 AM', 'Our nightly billing sync has failed three nights running. 41 invoices are missing from our ledger.'],
+        ['n', 'Hannah Cho', 'Oct 14, 10:05 AM', 'Token refresh is timing out. Same pattern as #47790. Opened ENG-3392.'],
+        ['c', 'Marcus Delgado', 'Oct 17, 2:22 PM', 'Failed again last night. Fourth time this month, we are re-keying invoices by hand.'],
+        ['s', 'Hannah Cho', 'Oct 22, 11:30 AM', 'The fix is live. Please reauthorize the connector under Settings > Integrations.'],
+        ['c', 'Marcus Delgado', 'Oct 23, 8:48 AM', 'It failed again after reauthorizing. Our VP of Finance asked whether we should keep the integration at renewal.']]) },
+      { k: 'b', id: '#48377', title: 'Route export times out above 5,000 stops', meta: 'Opened Oct 27 · Elena Park · 3 entries', status: 'Open · Escalated', msgs: M([
+        ['c', 'Elena Park', 'Oct 27, 1:10 PM', 'Exporting the Denver route plan times out after about two minutes. Dispatch needs it before 6 AM shifts.'],
+        ['s', 'Aaron Blake', 'Oct 27, 2:35 PM', 'Reproduced on our side. Sending to Engineering as a performance defect.'],
+        ['n', 'Aaron Blake', 'Oct 28, 9:02 AM', 'Second escalation on this account in two weeks. Looping in the CSM.']]) },
+      { k: 'c', id: '#47790', title: 'Dashboard login redirect loop', meta: 'Resolved Oct 2 · Tom Reyes · 3 entries', status: 'Resolved', msgs: M([
+        ['c', 'Tom Reyes', 'Oct 1, 4:15 PM', 'Three of our dispatchers get sent back to the login page after signing in.'],
+        ['s', 'Hannah Cho', 'Oct 2, 10:20 AM', 'A stale SSO session was the cause. We cleared it for your tenant.'],
+        ['c', 'Tom Reyes', 'Oct 2, 11:05 AM', 'Working now, thank you.']]) }
+    ];
+    const vals = [205,210,214,212,216,214,211,208,196,178,165,158,150];
+    const pts = vals.map((v, i) => (i * 800 / 12).toFixed(0) + ',' + (170 - (v - 140) / 90 * 150).toFixed(0)).join(' ');
+    const ck = [['Review health score and risk factors', 1], ['Pull 90-day usage report', 1], ['Confirm new champion and decision makers', 1], ['Prepare renewal proposal with 5% cap', 0], ['Schedule executive review call', 0]];
+    return {
+      pts,
+      tickets: raw.map(t => ({ ...t, chev: o[t.k] ? '▾' : '▸', msgs: o[t.k] ? t.msgs : [], toggle: () => this.setState(s => ({ open: { ...s.open, [t.k]: !s.open[t.k] } })) })),
+      checklist: ck.map(([text, d]) => ({ text, mark: d ? '✓' : '', bg: d ? '#1b61c9' : '#fff', bd: d ? '1px solid #1b61c9' : '1.5px solid #9297a0', col: d ? '#41454d' : '#181d26' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

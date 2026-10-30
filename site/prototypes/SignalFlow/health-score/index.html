@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f3f4f6}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style></helmet>
+<div style="width:1440px;min-height:1180px;background:#f3f4f6;font-family:Haas,Inter,-apple-system,'Segoe UI',sans-serif;color:#333840;font-size:14px">
+<div style="height:64px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 32px;gap:32px">
+<div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26"><div style="width:28px;height:28px;border-radius:8px;background:#1b61c9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px">A</div>Anchor CX</div>
+<div style="display:flex;gap:24px"><span style="color:#1b61c9;font-weight:500">Accounts</span><span>Tickets</span><span>Playbooks</span><span>Digest</span><span>Reports</span></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">Priya Raman · CSM<div style="width:36px;height:36px;border-radius:50%;background:#e0e2e6;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">PR</div></div>
+</div>
+<div style="padding:32px 48px 0">
+<div style="color:#41454d">Accounts / Northwind Logistics</div>
+<div style="display:flex;align-items:flex-end;gap:24px;margin-top:8px">
+<div style="font-size:32px;line-height:1.2;color:#181d26">Northwind Logistics</div>
+<div style="display:flex;gap:8px;padding-bottom:6px;flex-wrap:wrap">
+<span style="padding:4px 12px;border-radius:9999px;background:#fff;border:1px solid #ddd">Mid-size</span>
+<span style="padding:4px 12px;border-radius:9999px;background:#fff;border:1px solid #ddd">Renews in 62 days · Dec 31, 2026</span>
+<span style="padding:4px 12px;border-radius:9999px;background:#fff;border:1px solid #ddd">Owner: Priya Raman</span>
+</div></div>
+<div style="display:flex;gap:28px;margin-top:20px;border-bottom:1px solid #ddd;font-size:15px">
+<span style="padding:10px 0;color:#1b61c9;border-bottom:2px solid #1b61c9;font-weight:500">Overview</span><span style="padding:10px 0">Timeline</span><span style="padding:10px 0">Tickets</span><span style="padding:10px 0">Renewal</span><span style="padding:10px 0">Contacts</span>
+</div>
+
+<div style="margin-top:24px;display:flex;align-items:center;gap:10px"><span style="background:#1b61c9;color:#fff;border-radius:6px;padding:4px 10px;font-weight:500">Chosen direction</span><span style="color:#41454d">Always-visible Risk factors panel beside the score</span></div>
+<div style="display:grid;grid-template-columns:400px 1fr;gap:24px;margin-top:12px;outline:2px solid #1b61c9;outline-offset:8px;border-radius:12px">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:32px">
+<div style="font-size:16px;font-weight:500;color:#181d26">Health score</div>
+<div style="display:flex;align-items:baseline;gap:12px;margin-top:16px"><span style="font-size:96px;line-height:1;color:#8a5a00">62</span><span style="font-size:20px;color:#41454d">/ 100</span></div>
+<div style="display:inline-block;margin-top:12px;padding:4px 12px;border-radius:9999px;background:#fdf1d6;color:#8a5a00;font-weight:500">Needs attention</div>
+<div style="margin-top:24px;display:flex;align-items:center;gap:12px;font-size:16px;color:#181d26"><span style="color:#006400;background:#e6f4e6;padding:2px 10px;border-radius:6px">78</span>→<span style="color:#8a5a00;background:#fdf1d6;padding:2px 10px;border-radius:6px">62</span><span style="color:#b42318;font-weight:500">−16 in 14 days</span></div>
+<div style="margin-top:16px;color:#41454d;line-height:1.5">Score on Oct 16 was 78. Scores below 70 are flagged for the account owner.</div>
+</div>
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:32px;display:flex;flex-direction:column">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:16px;font-weight:500;color:#181d26">Risk factors</div><div style="color:#41454d">Why the score moved from 78 to 62</div></div>
+<div style="display:flex;flex-direction:column;margin-top:8px">
+<sc-for list="{{ factors }}" as="f" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:64px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid #eee">
+<div style="height:36px;border-radius:8px;background:#fde8e6;color:#b42318;font-size:18px;font-weight:500;display:flex;align-items:center;justify-content:center">{{ f.d }}</div>
+<div><div style="font-size:16px;font-weight:500;color:#181d26">{{ f.title }}</div><div style="line-height:1.5;margin-top:4px;max-width:620px">{{ f.text }}</div>
+<div style="height:6px;border-radius:3px;background:#eee;margin-top:12px;max-width:620px"><div style="height:6px;border-radius:3px;background:#b42318;width:{{ f.w }}"></div></div></div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;padding-top:20px;font-size:16px;color:#181d26"><span>Total change</span><span style="color:#b42318;font-weight:500">−16 points</span></div>
+<div style="margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;color:#41454d"><span>Last updated today, 8:42 AM</span><a href="#">See full score history →</a></div>
+</div>
+</div>
+
+<div style="margin-top:56px;font-size:20px;color:#181d26">Design notes</div>
+<div style="margin-top:4px;color:#41454d;max-width:900px;line-height:1.5">CSMs, support leads and executives discounted the score because nobody could see what moved it. Priya and Jordan both asked for the explanation next to the score.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0 64px">
+<div style="background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:24px">
+<div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Rejected</span><span style="font-weight:500;color:#181d26">A · Explanation in a tooltip on the score</span></div>
+<div style="display:flex;gap:20px;align-items:flex-start;margin-top:20px;min-height:170px">
+<div style="font-size:64px;line-height:1;color:#8a5a00;padding-top:8px">62</div>
+<div style="border:1px solid #ddd;border-radius:10px;padding:14px 16px;box-shadow:0 4px 14px rgba(24,29,38,.12);line-height:1.6;color:#181d26">Usage down 30% (−9)<br>Two open escalations (−5)<br>Changed champion (−2)</div>
+</div>
+<div style="color:#41454d;line-height:1.5">Hidden until someone hovers the score, so most viewers never see why it moved.</div>
+</div>
+<div style="background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:24px">
+<div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Rejected</span><span style="font-weight:500;color:#181d26">B · A single sentence under the score</span></div>
+<div style="margin-top:20px;min-height:170px"><div style="font-size:64px;line-height:1;color:#8a5a00">62</div>
+<div style="margin-top:12px;color:#181d26;max-width:420px;line-height:1.5">Down 16 points in two weeks, mainly because usage dropped.</div></div>
+<div style="color:#41454d;line-height:1.5">Visible, but it does not show each factor or how much it moved the score.</div>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return { factors: [
+      { d: '−9', w: '56%', title: 'Usage down 30% in the last 30 days', text: 'Weekly active users fell from 214 to 150. Dispatch and route planning dropped the most.' },
+      { d: '−5', w: '31%', title: 'Two open escalations', text: 'Billing-sync failures (#48213) and route-export timeouts (#48377) are both escalated and unresolved.' },
+      { d: '−2', w: '13%', title: 'Champion changed', text: 'Tom Reyes, the main sponsor, moved to the Seattle hub on Oct 9. Marcus Delgado is now the day-to-day contact.' }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#f3f4f6}a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}</style></helmet>
+<div style="width:1440px;background:#f3f4f6;font-family:Haas,Inter,-apple-system,'Segoe UI',sans-serif;color:#333840;font-size:14px;padding-bottom:64px">
+<div style="height:64px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;padding:0 32px;gap:32px">
+<div style="display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500;color:#181d26"><div style="width:28px;height:28px;border-radius:8px;background:#1b61c9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px">A</div>Anchor CX</div>
+<div style="display:flex;gap:24px"><span>Accounts</span><span>Tickets</span><span>Playbooks</span><span style="color:#1b61c9;font-weight:500">Digest</span><span>Reports</span></div>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">Priya Raman · CSM<div style="width:36px;height:36px;border-radius:50%;background:#e0e2e6;color:#181d26;display:flex;align-items:center;justify-content:center;font-weight:500">PR</div></div>
+</div>
+<div style="padding:32px 48px 0">
+<div style="font-size:32px;color:#181d26">Weekly digest</div>
+<div style="margin-top:6px;font-size:16px">Monday, Oct 26 · 15 accounts you own, ordered by what matters most</div>
+
+<div style="display:grid;grid-template-columns:640px 1fr;gap:32px;margin-top:28px;align-items:start">
+<div>
+<div style="font-weight:500;color:#181d26;margin-bottom:10px;font-size:16px">Form 1 · Email</div>
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;overflow:hidden">
+<div style="padding:16px 24px;border-bottom:1px solid #eee;line-height:1.6"><span style="color:#41454d">From</span> Anchor CX &lt;digest@anchorcx.com&gt;<br><span style="color:#41454d">To</span> Priya Raman<br><span style="color:#41454d">Subject</span> <b style="color:#181d26;font-weight:500">Your week in accounts: 2 need you now</b></div>
+<div style="padding:24px">
+<div style="font-size:14px;color:#181d26;font-weight:500;margin-bottom:8px">Needs you now</div>
+<sc-for list="{{ urgent }}" as="u" hint-placeholder-count="2"><div style="border:1px solid #181d26;border-radius:8px;padding:12px 14px;margin-bottom:8px"><b style="font-weight:500;color:#181d26">{{ u.acct }}</b> · {{ u.text }}</div></sc-for>
+<div style="margin-top:20px">
+<sc-for list="{{ accounts }}" as="a" hint-placeholder-count="4">
+<div style="padding:16px 0;border-top:1px solid #eee">
+<div style="display:flex;gap:12px;align-items:baseline"><span style="font-size:13px;font-weight:500;padding:2px 10px;border-radius:6px;background:{{ a.bg }};color:{{ a.fg }}">{{ a.score }}</span><span style="font-size:16px;font-weight:500;color:#181d26">{{ a.headline }}</span></div>
+<ul style="margin:8px 0 0 0;padding-left:20px;line-height:1.6;color:#333840"><sc-for list="{{ a.changes }}" as="c" hint-placeholder-count="2"><li>{{ c }}</li></sc-for></ul></div>
+</sc-for></div>
+<div style="color:#41454d;padding-top:14px;border-top:1px solid #eee">12 other accounts had no meaningful change. <a href="#">Open digest in Anchor CX</a></div>
+</div></div></div>
+
+<div>
+<div style="font-weight:500;color:#181d26;margin-bottom:10px;font-size:16px">Form 2 · Same digest in the app</div>
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:28px">
+<div style="background:#181d26;color:#fff;border-radius:10px;padding:18px 22px"><div style="font-weight:500;margin-bottom:8px;font-size:16px">Needs you now</div>
+<sc-for list="{{ urgent }}" as="u" hint-placeholder-count="2"><div style="padding:6px 0;line-height:1.5"><b style="font-weight:500">{{ u.acct }}</b> · {{ u.text }}</div></sc-for></div>
+<sc-for list="{{ accounts }}" as="a" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:72px 1fr auto;gap:16px;padding:20px 0;border-bottom:1px solid #eee;align-items:start">
+<div style="font-size:15px;font-weight:500;padding:6px 0;text-align:center;border-radius:6px;background:{{ a.bg }};color:{{ a.fg }}">{{ a.score }}</div>
+<div><div style="font-size:16px;font-weight:500;color:#181d26">{{ a.headline }}</div>
+<ul style="margin:8px 0 0 0;padding-left:20px;line-height:1.6"><sc-for list="{{ a.changes }}" as="c" hint-placeholder-count="2"><li>{{ c }}</li></sc-for></ul></div>
+<a href="#">Open account →</a></div>
+</sc-for>
+<div style="padding-top:16px;color:#41454d">12 other accounts had no meaningful change.</div>
+</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:560px 1fr;gap:32px;margin-top:40px;align-items:start">
+<div style="background:#fff;border:1px solid #ddd;border-radius:10px;padding:24px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-size:16px;font-weight:500;color:#181d26">Preview this rule</div><span style="color:#41454d">For Operations · Ben Nakamura</span></div>
+<div style="margin-top:14px;border:1px solid #ddd;border-radius:6px;padding:12px 16px;color:#181d26">Alert when health score drops 10 or more points in 14 days</div>
+<div style="margin-top:18px;font-size:20px;color:#181d26;line-height:1.4">Would have sent <b style="font-weight:500">212 alerts</b> last month. <b style="font-weight:500;color:#1b61c9">14 would have mattered.</b></div>
+<div style="display:flex;height:10px;border-radius:5px;overflow:hidden;background:#e0e2e6;margin-top:14px"><div style="width:6.6%;background:#1b61c9"></div></div>
+<div style="color:#41454d;margin-top:8px">Mattered = the account later renewed late, downgraded or churned.</div>
+<div style="display:flex;gap:12px;margin-top:18px"><button style="font:inherit;font-weight:500;background:#181d26;color:#fff;border:0;border-radius:12px;padding:12px 20px">Add to digest rules</button><button style="font:inherit;font-weight:500;background:#fff;color:#181d26;border:1px solid #ddd;border-radius:12px;padding:12px 20px">Change rule</button></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<div style="background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:20px"><div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Rejected</span><span style="font-weight:500;color:#181d26">Daily email</span></div>
+<div style="margin-top:14px;line-height:1.7;color:#181d26">Mon · 3 accounts changed<br>Tue · 1 account changed<br>Wed · 4 accounts changed</div>
+<div style="margin-top:10px;color:#41454d;line-height:1.5">Too close to the alerts people already mute.</div></div>
+<div style="background:#fff;border:1px dashed #9297a0;border-radius:10px;padding:20px"><div style="display:flex;gap:8px;align-items:center"><span style="background:#e0e2e6;color:#181d26;border-radius:6px;padding:3px 10px;font-weight:500">Rejected</span><span style="font-weight:500;color:#181d26">In-app inbox</span></div>
+<div style="margin-top:14px;line-height:1.7;color:#181d26">Inbox <span style="background:#181d26;color:#fff;border-radius:9999px;padding:1px 9px">212</span><br>Score changed · Northwind<br>Ticket updated · Harbor &amp; Pine</div>
+<div style="margin-top:10px;color:#41454d;line-height:1.5">Too close to the alerts people already mute.</div></div>
+</div></div>
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const G = ['#fde8e6', '#b42318'], A = ['#fdf1d6', '#8a5a00'], N = ['#e6f4e6', '#006400'];
+    const a = (c, score, headline, changes) => ({ bg: c[0], fg: c[1], score, headline, changes });
+    return {
+      urgent: [
+        { acct: 'Northwind Logistics', text: 'Billing sync failed again and their VP of Finance is questioning the integration. Reply to Marcus today.' },
+        { acct: 'Harbor & Pine', text: 'Renewal notice deadline is Friday and no proposal has been sent.' }
+      ],
+      accounts: [
+        a(A, '62', 'Northwind Logistics: score down 16, two escalations open', ['Weekly active users down 30% in the last 30 days', 'Billing-sync and route-export tickets are both escalated', 'Main sponsor Tom Reyes moved on; Marcus Delgado is the new contact']),
+        a(G, '58', 'Harbor & Pine: renewal in 9 days, no proposal sent', ['Score down 6 after two unanswered support replies', 'Contract auto-renews unless notice is given by Friday']),
+        a(A, '71', 'Bluepeak Health: score down 7, seat use falling', ['14 of 60 licensed seats inactive for 30 days', 'Admin has not logged in since Oct 6']),
+        a(N, '84', 'Lumen Freight: score up 6, expansion signal', ['Added 9 users in the last two weeks', 'Asked about the route optimization add-on'])
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
