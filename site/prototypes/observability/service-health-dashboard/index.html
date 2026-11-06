@@ -511,7 +511,6 @@ class Component extends DCLogic {
       { label: 'CSAT', value: pct(S.csat), ...d('csat', 'pts', true), note, onClick: () => this.drill({ csat: ['Positive (4–5)','Neutral (3)','Negative (1–2)'] }, { sort: { key: 'csat', dir: 'asc' } }) },
       { label: 'Median first reply', value: dur(S.frt), ...d('frt', 'rel', false), note, onClick: () => this.drill({ handler: AGENTS }, { sort: { key: 'frt', dir: 'desc' } }) },
       { label: 'Median resolution', value: dur(S.res), ...d('res', 'rel', false), note, onClick: () => this.drill({ status: ['Solved','Closed'], handler: AGENTS }, { sort: { key: 'res', dir: 'desc' } }) },
-      ...(showFin ? [{ label: 'Fin resolution rate', value: pct(S.fin), ...d('fin', 'pts', true), note, onClick: () => this.drill({ handler: ['Fin AI'] }) }] : []),
       { label: 'SLA attainment', value: pct(S.sla), ...d('sla', 'pts', true), note, onClick: () => this.drill({ sla: ['Breached'] }) },
       { label: 'Unresolved now', value: unresolved.length.toString(), text: aged.toString(), color: aged > 15 ? C.coral : C.muted, note: 'older than 3 days', onClick: () => this.drill({ status: UNRESOLVED }, { noDate: true }) },
     ].map(k => ({ ...k, delta: k.text, dColor: k.color }));
