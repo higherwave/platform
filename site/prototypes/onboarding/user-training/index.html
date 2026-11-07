@@ -24,7 +24,7 @@
 <div style="background:#ffffff;color:#333840;font-family:Inter,system-ui,sans-serif;min-height:100vh;padding:72px 24px 120px;">
   <div style="max-width:900px;margin:0 auto;">
 
-    <h1 style="font-family:Inter,system-ui,sans-serif;font-size:46px;font-weight:500;line-height:1.05;letter-spacing:-0.01em;color:#181d26;margin:40px 0 36px;">Whirl Onboarding Practice Exam</h1>
+    <h1 style="font-family:Inter,system-ui,sans-serif;font-size:46px;font-weight:500;line-height:1.05;letter-spacing:-0.01em;color:#181d26;margin:40px 0 36px;">Onboarding Practice Exam</h1>
 
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:36px;position:sticky;top:0;background:#ffffff;padding:12px 0;z-index:5;">
       <button onClick="{{ timedToggle.onClick }}" style="{{ timedToggle.style }}"><span style="{{ timedToggle.dotStyle }}"></span>{{ timedToggle.label }}</button>
@@ -89,7 +89,7 @@
           </div>
         </sc-if>
         <sc-if value="{{ review.noFlags }}" hint-placeholder-val="{{ false }}">
-          <p style="font-size:16px;line-height:1.5;color:#41454d;">Nothing flagged. You're ready to start working in Whirl.</p>
+          <p style="font-size:16px;line-height:1.5;color:#41454d;">Nothing flagged. You're ready to start working in the platform.</p>
         </sc-if>
         <button onClick="{{ review.onBack }}" style="margin-top:24px;background:#181d26;color:#ffffff;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;">← Back to questions</button>
       </div>
@@ -271,7 +271,7 @@
     </div>
     </sc-if>
 
-    <div style="margin-top:56px;padding-top:28px;border-top:1px solid #dddddd;font-size:13px;color:#9297a0;line-height:1.6;">Prepared by your Whirl onboarding trainer. Model answers draw on Whirl's platform, capabilities, and security documentation. Use them as a reference to check your understanding, not a script to memorize. Questions about your environment? Ask your Whirl contact.</div>
+    <div style="margin-top:56px;padding-top:28px;border-top:1px solid #dddddd;font-size:13px;color:#9297a0;line-height:1.6;">Prepared by your platform onboarding trainer. Model answers draw on the platform, capabilities, and security documentation. Use them as a reference to check your understanding, not a script to memorize. Questions about your environment? Ask your platform contact.</div>
 
   </div>
 </div>
@@ -283,8 +283,8 @@ class Component extends DCLogic {
   data = [
     // ===== PLATFORM BASICS =====
     { id: "b1", theme: "platform", persona: "admin", type: "mcq", seconds: 45,
-      question: "Whirl describes itself as an IBE. What does IBE stand for, and what is it the counterpart to?",
-      probing: "Whether you can explain Whirl's category in one sentence to a stakeholder who has never heard of it.",
+      question: "The platform describes itself as an IBE. What does IBE stand for, and what is it the counterpart to?",
+      probing: "Whether you can explain the platform's category in one sentence to a stakeholder who has never heard of it.",
       options: [
         { text: "Intelligent Build Engine — a counterpart to CI/CD pipelines" },
         { text: "Integrated Business Environment — IT's answer to the developer IDE", correct: true },
@@ -297,13 +297,13 @@ class Component extends DCLogic {
         "Which part of your team's week would the IBE replace first?"
       ] },
     { id: "b2", theme: "platform", persona: "admin", type: "open", seconds: 120,
-      question: "Name the three layers of the Whirl platform and what each one does.",
+      question: "Name the three layers of the platform and what each one does.",
       probing: "Whether you understand how data flows from your systems into agent output, so you know where to look when something is missing or wrong.",
       core: "From the bottom up: Connectors pull from your systems, Intelligence turns that into connected context, and Agents turn context into work.",
       numbered: [
-        "Whirl Connectors — secure, read-only connections to your enterprise applications, running in your dedicated environment.",
-        "Whirl Intelligence — a connected, continuously updated view of your processes, configurations, dependencies, and rules.",
-        "Whirl Agents — research, requirements, design, coding, and testing work built on top of that context."
+        "Connectors — secure, read-only connections to your enterprise applications, running in your dedicated environment.",
+        "Intelligence — a connected, continuously updated view of your processes, configurations, dependencies, and rules.",
+        "Agents — research, requirements, design, coding, and testing work built on top of that context."
       ],
       closing: "If an agent's output looks thin, the first question is usually whether the right system is connected and indexed, not whether the agent is broken.",
       followups: [
@@ -311,20 +311,20 @@ class Component extends DCLogic {
         "Which of your systems of record should be connected before anything else?"
       ] },
     { id: "b3", theme: "platform", persona: "architect", type: "open", seconds: 130,
-      question: "Your CIO asks why the team should use Whirl instead of handing engineers a general coding agent. What's your answer?",
+      question: "Your CIO asks why the team should use the platform instead of handing engineers a general coding agent. What's your answer?",
       probing: "Whether you can articulate what makes enterprise IT work different from software development, rather than just saying 'it's more specialized.'",
       numbered: [
         "Enterprise IT work is more than writing code: it's understanding how configured systems actually behave, analyzing impact, defining requirements, getting sign-off, testing, and releasing.",
-        "A coding agent doesn't carry context on your org's configurations, integrations, and processes. Whirl maintains that context continuously, so output is grounded in your environment.",
-        "IT works cross-functionally. Whirl is built around stakeholder-visible status, approval workflows, and sign-off gates, which an IDE isn't.",
-        "Whirl still hands off to the IDE or coding agent of choice when code is needed. It complements those tools; it doesn't compete with them."
+        "A coding agent doesn't carry context on your org's configurations, integrations, and processes. The platform maintains that context continuously, so output is grounded in your environment.",
+        "IT works cross-functionally. The platform is built around stakeholder-visible status, approval workflows, and sign-off gates, which an IDE isn't.",
+        "The platform still hands off to the IDE or coding agent of choice when code is needed. It complements those tools; it doesn't compete with them."
       ],
       followups: [
         "Where would you still reach for a coding agent directly?",
         "What would building this in-house actually require from your team?"
       ] },
     { id: "b4", theme: "platform", persona: "analyst", type: "mcq", seconds: 45,
-      question: "Which stage of the Whirl workflow produces epics, user stories, and test cases?",
+      question: "Which stage of the platform workflow produces epics, user stories, and test cases?",
       probing: "Whether you know which stage to start in for a given task.",
       options: [
         { text: "Research" },
@@ -340,16 +340,16 @@ class Component extends DCLogic {
 
     // ===== INTELLIGENCE & CONTEXT =====
     { id: "n1", theme: "intelligence", persona: "architect", type: "open", seconds: 120,
-      question: "What is the 'rediscovery tax,' and how does Whirl avoid it?",
+      question: "What is the 'rediscovery tax,' and how does the platform avoid it?",
       probing: "Whether you understand why persistent, governed context matters more than a smarter model.",
-      answer: "The rediscovery tax is the time spent relearning how a system works every time someone starts a new project or a new AI session: re-reading configs, re-tracing integrations, re-interviewing the person who built it.\n\nWhirl avoids it by retaining governed, secure context about your systems and processes from the start, so each piece of work builds on what's already known instead of starting from zero.",
+      answer: "The rediscovery tax is the time spent relearning how a system works every time someone starts a new project or a new AI session: re-reading configs, re-tracing integrations, re-interviewing the person who built it.\n\nThe platform avoids it by retaining governed, secure context about your systems and processes from the start, so each piece of work builds on what's already known instead of starting from zero.",
       followups: [
         "Where does your team pay the rediscovery tax most today?",
         "What happens to that context when the person who built a system leaves?"
       ] },
     { id: "n2", theme: "intelligence", persona: "analyst", type: "open", seconds: 140,
-      question: "You've just been assigned an unfamiliar Salesforce org. How would you use Whirl in your first week to get up to speed?",
-      probing: "Whether you can sequence Whirl's research capabilities into a practical onboarding plan.",
+      question: "You've just been assigned an unfamiliar Salesforce org. How would you use the platform in your first week to get up to speed?",
+      probing: "Whether you can sequence the platform's research capabilities into a practical onboarding plan.",
       numbered: [
         "Run an As-Is Process Map to see current processes, roles, systems, and pain points.",
         "Generate an Onboarding Guide for your role: processes, risks, key contacts, and a 30-day learning path.",
@@ -367,7 +367,7 @@ class Component extends DCLogic {
         "Check the source: confirm the rule in the org and note what's different.",
         "Check freshness and coverage: was the change recent, and is that system fully connected?",
         "Ask the agent to show what it based the answer on, and correct or re-run with the right context.",
-        "Report the mismatch to your Whirl contact so the gap can be fixed for everyone on your team."
+        "Report the mismatch to your platform contact so the gap can be fixed for everyone on your team."
       ],
       closing: "The goal is output an IT professional is willing to put their name on. Verification is part of the workflow, not a sign the tool failed.",
       followups: [
@@ -377,8 +377,8 @@ class Component extends DCLogic {
 
     // ===== AGENTS & WORKFLOWS =====
     { id: "g1", theme: "agents", persona: "analyst", type: "open", seconds: 150,
-      question: "A business leader sends a two-line request: 'We need a new approval step for discounts over 20%.' Walk through how you'd take it from request to build-ready work in Whirl.",
-      probing: "Whether you can chain Whirl's capabilities end to end rather than jumping straight to configuration.",
+      question: "A business leader sends a two-line request: 'We need a new approval step for discounts over 20%.' Walk through how you'd take it from request to build-ready work in the platform.",
+      probing: "Whether you can chain the platform's capabilities end to end rather than jumping straight to configuration.",
       flow: [
         "Business Intent — one-page brief, checked against system context",
         "Change Impact Analysis — objects, automations, integrations, and teams affected",
@@ -393,7 +393,7 @@ class Component extends DCLogic {
         "Which step would you skip for a very small change, and what's the risk?"
       ] },
     { id: "g2", theme: "agents", persona: "architect", type: "open", seconds: 130,
-      question: "Before a large change, you want to know what could break. Which Whirl capability do you use, and what should you look for in its output?",
+      question: "Before a large change, you want to know what could break. Which platform capability do you use, and what should you look for in its output?",
       probing: "Whether you use impact analysis as a decision tool, not a formality.",
       answer: "Change Impact Analysis. It identifies the objects, automations, integrations, and teams affected by a proposed change.",
       bulletsLabel: "What to look for",
@@ -408,8 +408,8 @@ class Component extends DCLogic {
         "How would you present this to a CAB?"
       ] },
     { id: "g3", theme: "agents", persona: "admin", type: "mcq", seconds: 45,
-      question: "You're planning to move off Process Builder. Which Whirl capability helps you start?",
-      probing: "Whether you know Whirl's technical-debt capabilities by name.",
+      question: "You're planning to move off Process Builder. Which platform capability helps you start?",
+      probing: "Whether you know the platform's technical-debt capabilities by name.",
       options: [
         { text: "Retirement Plan" },
         { text: "Process Builder Migration", correct: true },
@@ -422,8 +422,8 @@ class Component extends DCLogic {
         "What tests would you want in place before switching any of them off?"
       ] },
     { id: "g4", theme: "agents", persona: "architect", type: "open", seconds: 130,
-      question: "Your company is consolidating two Salesforce orgs after an acquisition. How can Whirl help?",
-      probing: "Whether you can apply Whirl to a large, multi-step transformation, not just individual tickets.",
+      question: "Your company is consolidating two Salesforce orgs after an acquisition. How can the platform help?",
+      probing: "Whether you can apply the platform to a large, multi-step transformation, not just individual tickets.",
       numbered: [
         "Org Comparison to find overlaps and conflicts across data, automations, and security.",
         "Migration Assessment to guide pre-migration decisions across systems, data, processes, security, and compliance.",
@@ -435,9 +435,9 @@ class Component extends DCLogic {
         "How would you break this into releases?"
       ] },
     { id: "g5", theme: "agents", persona: "analyst", type: "open", seconds: 120,
-      question: "Whirl generates the user stories. At what point do you hand off to your IDE or coding agent, and what goes with it?",
-      probing: "Whether you understand the handoff between Whirl and developer tools, and keep context intact across it.",
-      answer: "Hand off once a story has a Technical Design: a precise implementation spec for that individual story. Whirl passes code into the IDE or coding agent of choice.\n\nThe story, acceptance criteria, technical design, and linked test cases should travel together, so the developer isn't rediscovering context Whirl already had.",
+      question: "The platform generates the user stories. At what point do you hand off to your IDE or coding agent, and what goes with it?",
+      probing: "Whether you understand the handoff between the platform and developer tools, and keep context intact across it.",
+      answer: "Hand off once a story has a Technical Design: a precise implementation spec for that individual story. The platform passes code into the IDE or coding agent of choice.\n\nThe story, acceptance criteria, technical design, and linked test cases should travel together, so the developer isn't rediscovering context the platform already had.",
       followups: [
         "What do you do when the developer finds the spec is wrong mid-build?",
         "Who owns updating the test cases if the implementation changes?"
@@ -450,7 +450,7 @@ class Component extends DCLogic {
       numbered: [
         "Use Business Requirements to turn the notes plus system context into prioritized, testable requirements.",
         "Review the risks and open questions it surfaces, and resolve the ones you can before sharing.",
-        "Send the requirements to stakeholders through Whirl's approval workflow so sign-off is visible and recorded."
+        "Send the requirements to stakeholders through the platform's approval workflow so sign-off is visible and recorded."
       ],
       closing: "The open questions list is often the most valuable part. It shows stakeholders what still needs a decision.",
       followups: [
@@ -458,7 +458,7 @@ class Component extends DCLogic {
         "What makes a requirement 'testable'?"
       ] },
     { id: "r2", theme: "requirements", persona: "architect", type: "open", seconds: 120,
-      question: "What's the difference between To-Be Process Design and Solution Design in Whirl?",
+      question: "What's the difference between To-Be Process Design and Solution Design in the platform?",
       probing: "Whether you can separate the business process decision from the system design decision.",
       tableHead: { a: "To-Be Process Design", b: "Solution Design" },
       tableRows: [
@@ -472,7 +472,7 @@ class Component extends DCLogic {
         "What would you do if the solution design can't support the agreed process?"
       ] },
     { id: "r3", theme: "requirements", persona: "analyst", type: "open", seconds: 120,
-      question: "Marketing is launching a new product and wants the CRM ready. How does Whirl help before IT configuration begins?",
+      question: "Marketing is launching a new product and wants the CRM ready. How does the platform help before IT configuration begins?",
       probing: "Whether you know to get business sign-off on system requirements before building.",
       answer: "Product Launch Readiness turns new-product materials into system requirements for business sign-off before IT configuration begins.\n\nIf the launch includes a new region, Market Entry Plan covers the localization, compliance, territory, and CRM changes needed.",
       followups: [
@@ -482,7 +482,7 @@ class Component extends DCLogic {
 
     // ===== TESTING & RELEASE =====
     { id: "t1", theme: "testing", persona: "admin", type: "open", seconds: 130,
-      question: "What should a Whirl Test Plan include, and how is it connected to the rest of the work?",
+      question: "What should a Test Plan include, and how is it connected to the rest of the work?",
       probing: "Whether you see testing as traceable to requirements, not a separate activity.",
       answer: "A Test Plan creates QA and UAT test cases tied to requirements, with expected results and pass/fail criteria.",
       numbered: [
@@ -492,7 +492,7 @@ class Component extends DCLogic {
       ],
       followups: [
         "A requirement has no test case. Is that a problem?",
-        "Who runs UAT, and how do you get their results back into Whirl?"
+        "Who runs UAT, and how do you get their results back into the platform?"
       ] },
     { id: "t2", theme: "testing", persona: "admin", type: "open", seconds: 130,
       question: "It's the day before a release. What does Release Readiness check, and what do you do with the result?",
@@ -510,7 +510,7 @@ class Component extends DCLogic {
         "How would you explain a 'no-go' to the business stakeholder who's waiting?"
       ] },
     { id: "t3", theme: "testing", persona: "architect", type: "open", seconds: 120,
-      question: "You need to retire an old integration that some teams may still rely on. How do you do it safely with Whirl?",
+      question: "You need to retire an old integration that some teams may still rely on. How do you do it safely with the platform?",
       probing: "Whether you know retirement is a staged process with ownership, not a single delete.",
       spectrum: ["Announcement", "Soft disablement", "Monitoring", "Removal", "Archiving"],
       spectrumNote: "Retirement Plan walks a component through each stage with clear ownership. Run Change Impact Analysis first to find who still depends on it.",
@@ -521,22 +521,22 @@ class Component extends DCLogic {
 
     // ===== SECURITY & ACCESS =====
     { id: "x1", theme: "security", persona: "admin", type: "mcq", seconds: 45,
-      question: "Your security team asks whether Whirl uses your data to train models. What's the correct answer?",
+      question: "Your security team asks whether the platform uses your data to train models. What's the correct answer?",
       probing: "Whether you can answer the most common security question accurately.",
       options: [
         { text: "Only anonymized data is used for training" },
-        { text: "Data is used to fine-tune a Whirl model for your org only" },
-        { text: "No. Your data is never used to train anything, and Whirl doesn't run its own models", correct: true },
+        { text: "Data is used to fine-tune a platform model for your org only" },
+        { text: "No. Your data is never used to train anything, and the platform doesn't run its own models", correct: true },
         { text: "Training is opt-out in the admin settings" }
       ],
-      answer: "No. Your data is never used to train anything. Whirl does not run its own models; it uses established model providers, and data isolation is consistent across the AI layer.",
+      answer: "No. Your data is never used to train anything. The platform does not run its own models; it uses established model providers, and data isolation is consistent across the AI layer.",
       followups: [
         "Where can your security team get the SOC 2 Type II report?",
         "How would you explain 'no proprietary models' to a non-technical stakeholder?"
       ] },
     { id: "x2", theme: "security", persona: "architect", type: "open", seconds: 130,
-      question: "A security reviewer asks how Whirl's architecture differs from typical SaaS. What do you tell them?",
-      probing: "Whether you can explain Whirl's isolation model accurately, without overstating or understating it.",
+      question: "A security reviewer asks how the platform's architecture differs from typical SaaS. What do you tell them?",
+      probing: "Whether you can explain the platform's isolation model accurately, without overstating or understating it.",
       groups: [
         { label: "Isolation", items: [
           "Not multi-tenant SaaS",
@@ -546,7 +546,7 @@ class Component extends DCLogic {
         { label: "Operations", items: [
           "Immutable by design: versioned, auditable changes",
           "No interactive login to production, such as SSH",
-          "Access limited to Whirl-managed devices with FIDO2 MFA"
+          "Access limited to platform-managed devices with FIDO2 MFA"
         ] },
         { label: "Connections", items: [
           "Read-only connectors to your systems",
@@ -563,7 +563,7 @@ class Component extends DCLogic {
         "Who would you bring in if they want to go deeper?"
       ] },
     { id: "x3", theme: "security", persona: "admin", type: "open", seconds: 130,
-      question: "Whirl recommends time-bound, project-scoped access for agents. Why, and how would you apply it on your team?",
+      question: "The platform recommends time-bound, project-scoped access for agents. Why, and how would you apply it on your team?",
       probing: "Whether you understand the risk of agents accumulating more access than the people who built them.",
       answer: "AI agents can end up with more access than the humans who set them up, and broad standing access rarely gets cleaned up. Time-bound, project-scoped access limits an agent to what a specific project needs, for as long as it needs it.",
       numbered: [
@@ -576,8 +576,8 @@ class Component extends DCLogic {
         "Who on your team should approve agent access?"
       ] },
     { id: "x4", theme: "security", persona: "analyst", type: "open", seconds: 120,
-      question: "Which Whirl capabilities would you use to prepare for a data exposure or compliance review?",
-      probing: "Whether you know Whirl's audit capabilities and when to use them.",
+      question: "Which the platform capabilities would you use to prepare for a data exposure or compliance review?",
+      probing: "Whether you know the platform's audit capabilities and when to use them.",
       numbered: [
         "External Access Audit — reviews sharing settings and profiles to find data exposed to external and guest users.",
         "Data Classification Audit — finds missing or inconsistent field ownership and compliance classifications within an object."
@@ -589,12 +589,12 @@ class Component extends DCLogic {
 
     // ===== COLLABORATION & SIGN-OFF =====
     { id: "c1", theme: "collaboration", persona: "analyst", type: "open", seconds: 120,
-      question: "How is Whirl built for cross-functional work, and how should your team use it?",
-      probing: "Whether you use Whirl's sign-off features instead of falling back to email and spreadsheets.",
-      answer: "IT rarely works alone: an architect's design needs business sign-off, a change needs CAB approval, and requirements only matter once a stakeholder validates them. Whirl is built around stakeholder-visible status, approval workflows, and sign-off gates.",
+      question: "How is the platform built for cross-functional work, and how should your team use it?",
+      probing: "Whether you use the platform's sign-off features instead of falling back to email and spreadsheets.",
+      answer: "IT rarely works alone: an architect's design needs business sign-off, a change needs CAB approval, and requirements only matter once a stakeholder validates them. The platform is built around stakeholder-visible status, approval workflows, and sign-off gates.",
       bulletsLabel: "In practice",
       bullets: [
-        "Route approvals through Whirl so status is visible to everyone.",
+        "Route approvals through the platform so status is visible to everyone.",
         "Keep decisions attached to the artifact they apply to.",
         "Don't move to the next stage until the sign-off gate is cleared."
       ],
@@ -617,11 +617,11 @@ class Component extends DCLogic {
 
     // ===== ADOPTION & ROLLOUT =====
     { id: "a1", theme: "adoption", persona: "admin", type: "open", seconds: 130,
-      question: "You're leading Whirl adoption for your IT team. What does a good first 30 days look like?",
+      question: "You're leading platform adoption for your IT team. What does a good first 30 days look like?",
       probing: "Whether you can plan a rollout that builds real habits, not just logins.",
       numbered: [
         "Connect the core systems of record first, so agents have real context.",
-        "Pick one real, well-scoped project, not a demo, and run it end to end in Whirl.",
+        "Pick one real, well-scoped project, not a demo, and run it end to end in the platform.",
         "Have each role use the capabilities closest to their daily work: analysts on requirements, architects on design and impact, admins on health checks and testing.",
         "Share what the pilot produced and how long it took, then expand to the next project."
       ],
@@ -630,11 +630,11 @@ class Component extends DCLogic {
         "One teammate keeps working the old way. What do you do?"
       ] },
     { id: "a2", theme: "adoption", persona: "architect", type: "open", seconds: 120,
-      question: "Whirl's goal is to become 'the environment you work inside,' not a tool you log into. What habits make that happen?",
+      question: "the platform's goal is to become 'the environment you work inside,' not a tool you log into. What habits make that happen?",
       probing: "Whether you see adoption as daily workflow change, not occasional use.",
       numbered: [
-        "Start every new request in Whirl, even small ones.",
-        "Keep requirements, designs, stories, and tests in Whirl instead of copying them out.",
+        "Start every new request in the platform, even small ones.",
+        "Keep requirements, designs, stories, and tests in the platform instead of copying them out.",
         "Use Research before asking a colleague how something works.",
         "Run health checks on a regular schedule, not only when something breaks."
       ],
@@ -644,7 +644,7 @@ class Component extends DCLogic {
       ] },
     { id: "a3", theme: "adoption", persona: "admin", type: "open", seconds: 120,
       question: "Which health checks would you run first on a mature Salesforce org, and why?",
-      probing: "Whether you can prioritize Whirl's technical-debt findings by risk.",
+      probing: "Whether you can prioritize the platform's technical-debt findings by risk.",
       groups: [
         { label: "Run first: deployment risk", items: [
           "Hardcoded Rule IDs",
@@ -672,10 +672,10 @@ class Component extends DCLogic {
 
     // ===== MEASURING VALUE =====
     { id: "v1", theme: "value", persona: "architect", type: "open", seconds: 130,
-      question: "Your CIO asks whether Whirl is working. How do you measure it?",
+      question: "Your CIO asks whether the platform is working. How do you measure it?",
       probing: "Whether you measure outcomes the business cares about, not just usage.",
       numbered: [
-        "Cycle time: how long from request to release, compared with similar work before Whirl.",
+        "Cycle time: how long from request to release, compared with similar work before the platform.",
         "Backlog: whether the team is clearing it faster.",
         "Rework: fewer defects and fewer requirements changes after sign-off.",
         "Rediscovery time: how quickly new team members get productive on an unfamiliar system."
@@ -683,14 +683,14 @@ class Component extends DCLogic {
       closing: "Capture a baseline on a few comparable projects before you start, so you have something to compare against.",
       followups: [
         "Which of these would you report first, and to whom?",
-        "How would you separate Whirl's impact from other changes on the team?"
+        "How would you separate the platform's impact from other changes on the team?"
       ] },
     { id: "v2", theme: "value", persona: "analyst", type: "open", seconds: 120,
       question: "A stakeholder says, 'AI output still needs review, so what did we actually save?' How do you answer?",
       probing: "Whether you can explain where the time savings come from without overstating them.",
-      answer: "Review is expected; Whirl is built so IT professionals can sign off on its output with confidence. The time saved is in what comes before review: discovery, documentation, impact analysis, drafting requirements, and writing test cases, which are the tasks Whirl compresses from weeks to hours.\n\nReviewing a complete, grounded draft is much faster than producing it from scratch.",
+      answer: "Review is expected; the platform is built so IT professionals can sign off on its output with confidence. The time saved is in what comes before review: discovery, documentation, impact analysis, drafting requirements, and writing test cases, which are the tasks the platform compresses from weeks to hours.\n\nReviewing a complete, grounded draft is much faster than producing it from scratch.",
       followups: [
-        "Give a specific task from your last project and how long it took before Whirl.",
+        "Give a specific task from your last project and how long it took before the platform.",
         "When would review take longer than doing it yourself?"
       ] }
   ];

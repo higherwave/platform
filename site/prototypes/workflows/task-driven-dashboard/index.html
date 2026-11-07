@@ -16,7 +16,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
 *{box-sizing:border-box}
 </style>
 </helmet>
-<div data-screen-label="Whirl app" style="height:100vh;display:flex;background:#ffffff;overflow:hidden">
+<div data-screen-label="Platform app" style="height:100vh;display:flex;background:#ffffff;overflow:hidden">
 <div style="width:232px;flex:none;border-right:1px solid #dddddd;padding:20px 12px;display:flex;flex-direction:column;gap:24px">
 <div style="display:flex;flex-direction:column;gap:2px">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4"><a onClick="{{ n.pick }}" style="display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 12px;border-radius:6px;font-size:14px;cursor:pointer;color:{{ n.color }};background:{{ n.bg }};font-weight:{{ n.weight }}">{{ n.label }}<span style="font-size:12px;color:#41454d">{{ n.badge }}</span></a></sc-for>
@@ -149,7 +149,7 @@ a{color:#1b61c9;text-decoration:none}a:hover{color:#1a3866}
 <div style="font-size:16px;font-weight:500">Handoff</div>
 <div style="background:#ffffff;border:1px solid #dddddd;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">ServiceNow change request</div><div style="font-size:13px;color:#41454d">Normal change · CAB Thursday</div></div>
 <div style="background:#ffffff;border:1px solid #dddddd;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Jira · HRIS-2210</div><div style="font-size:13px;color:#41454d">Workday build tasks, 3 subtasks</div></div>
-<div style="font-size:12px;color:#41454d;line-height:1.4">Whirl is read-only. Approved packets are handed off; your team applies them.</div>
+<div style="font-size:12px;color:#41454d;line-height:1.4">The platform is read-only. Approved packets are handed off; your team applies them.</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px">
 <div style="font-size:16px;font-weight:500">Audit trail</div>
@@ -177,7 +177,7 @@ const LX = [14, 218, 422, 626];
 const NODES = [
   { id: 'wt', lane: 0, y: 64, type: 'Field', name: 'Worker Type', src: true, p: 'config', impact: 'The field being changed. Adding a Contractor value fans out to three downstream systems.', evidence: 'Workday tenant config, field WRK_TYPE, 3 existing values.' },
   { id: 'bp', lane: 0, y: 224, type: 'Business process', name: 'Hire: Contractor sub-process', p: 'config', impact: 'New sub-process needed. Triggered when Worker Type = Contractor.', evidence: 'Hire BP definition, condition rules on step 2.' },
-  { id: 'ap', lane: 0, y: 384, type: 'Approval step', name: 'Cost center owner approval', indirect: true, p: 'inferred', impact: 'Whirl infers contractors skip this step because the existing rule only matches Employee. Needs confirmation.', evidence: 'Inferred from 212 completed hires in the last 12 months; no contractor records exist yet.' },
+  { id: 'ap', lane: 0, y: 384, type: 'Approval step', name: 'Cost center owner approval', indirect: true, p: 'inferred', impact: 'The platform infers contractors skip this step because the existing rule only matches Employee. Needs confirmation.', evidence: 'Inferred from 212 completed hires in the last 12 months; no contractor records exist yet.' },
   { id: 'pr', lane: 1, y: 64, type: 'Provisioning rule', name: 'Map employeeType attribute', p: 'config', impact: 'Rule must accept the new value or contractors will be provisioned as employees.', evidence: 'Okta profile mapping, Workday → Okta, attribute employeeType.' },
   { id: 'gr', lane: 1, y: 224, type: 'Group', name: 'Contractors-Default', indirect: true, p: 'confirmed', impact: 'Two hops away. Group membership drives app access; confirm contractor app list.', evidence: 'Confirmed by IT Security, Aug 14.' },
   { id: 'ci', lane: 2, y: 144, type: 'Catalog item', name: 'New hire onboarding', p: 'config', impact: 'Triggered on hire. Needs a Contractor variant with reduced equipment.', evidence: 'Flow Designer trigger on inbound Workday event.' },
@@ -190,7 +190,7 @@ const DASH = { data: '', trigger: '7 5', approval: '1 6' };
 
 class Component extends DCLogic {
   state = { lens: 0, sel: 'ap', verified: null, view: 0, approved: false };
-  go(i) { this.setState({ view: i }); const m = document.querySelector('[data-screen-label="Whirl app"] > div:last-child'); if (m) m.scrollTop = 0; }
+  go(i) { this.setState({ view: i }); const m = document.querySelector('[data-screen-label="Platform app"] > div:last-child'); if (m) m.scrollTop = 0; }
   nav(i) {
     const badges = ['', '', '', this.state.approved ? '' : '1'];
     return NAV.map((n, j) => ({ ...n, badge: badges[j], pick: () => this.go(j), bg: i === j ? '#e0e2e6' : 'transparent', color: i === j ? '#181d26' : '#333840', weight: i === j ? 500 : 400 }));
