@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#ffffff;-webkit-font-smoothing:antialiased}
+a{color:#1b61c9;text-decoration:none}
+a:hover{color:#1a3866}
+</style>
+</helmet>
+<div style="font-family:'Haas Groot Disp','Haas',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',sans-serif;color:#181d26;background:#ffffff;padding:0 24px 96px;">
+<div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:48px;">
+
+<header style="padding:96px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:end;">
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div style="font-size:14px;font-weight:500;letter-spacing:0.16px;color:#41454d;">Comparative analysis · Dependency visualization for the CIO</div>
+    <h1 style="margin:0;font-size:48px;font-weight:400;line-height:1.1;text-wrap:pretty;">Finding the three things that matter in a 10,000-node org</h1>
+    <p style="margin:0;font-size:20px;line-height:1.5;color:#333840;text-wrap:pretty;max-width:560px;">Eight ways to draw a Salesforce integration and dependency graph, judged by how well each answers a CIO’s questions before a change ships.</p>
+  </div>
+  <div style="background:#f5e9d4;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;">
+    <div style="font-size:14px;font-weight:500;color:#41454d;">From market research</div>
+    <p style="margin:0;font-size:18px;line-height:1.45;color:#181d26;text-wrap:pretty;">Scale makes the map unreadable. A large Salesforce org can have thousands of fields and hundreds of automations. A complete map is useless if nobody can find the three things that matter for the change at hand. This is fundamentally a progressive-disclosure and scoping problem, which makes it squarely a design problem.</p>
+  </div>
+</header>
+
+<section style="background:#181d26;color:#ffffff;border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:32px;">
+  <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">What the CIO needs from the map</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;">
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #41454d;padding-top:16px;">
+      <div style="font-size:20px;line-height:1.35;">What breaks if we change this?</div>
+      <div style="font-size:14px;line-height:1.45;color:#dddddd;">The blast radius of a field, flow, or package before it ships.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #41454d;padding-top:16px;">
+      <div style="font-size:20px;line-height:1.35;">What does this system touch?</div>
+      <div style="font-size:14px;line-height:1.45;color:#dddddd;">The footprint of an integration like NetSuite or Marketo, for renewals and vendor replacement.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #41454d;padding-top:16px;">
+      <div style="font-size:20px;line-height:1.35;">Where is risk concentrated?</div>
+      <div style="font-size:14px;line-height:1.45;color:#dddddd;">Objects with overlapping automations, near platform limits, or without an owner.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #41454d;padding-top:16px;">
+      <div style="font-size:20px;line-height:1.35;">Who needs to be in the room?</div>
+      <div style="font-size:14px;line-height:1.45;color:#dddddd;">The teams and reports downstream of a change, so sign-off happens before go-live.</div>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px;padding-top:48px;">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:720px;">
+    <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">Eight formats</h2>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#333840;">Each sketch uses the same kind of org: a few source systems, core objects, their fields and automations, and the reports and teams downstream.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:24px;">
+    <sc-for list="{{ formats }}" as="f" hint-placeholder-count="8">
+      <article style="border:1px solid #dddddd;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:16px;background:#ffffff;">
+        <div style="background:#f8fafc;border-radius:6px;padding:12px;">{{ f.sketch }}</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:14px;font-weight:500;color:#41454d;">{{ f.num }} · {{ f.kind }}</div>
+          <h3 style="margin:0;font-size:20px;font-weight:500;line-height:1.3;">{{ f.name }}</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45;color:#333840;">
+          <div><span style="font-weight:500;color:#181d26;">Good for: </span>{{ f.good }}</div>
+          <div><span style="font-weight:500;color:#181d26;">Breaks when: </span>{{ f.breaks }}</div>
+        </div>
+        <sc-if value="{{ showScores }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:13px;color:#41454d;border-top:1px solid #dddddd;padding-top:12px;">
+            <sc-for list="{{ f.scores }}" as="s" hint-placeholder-count="5">
+              <div>{{ s.k }}</div><div style="letter-spacing:2px;color:#181d26;">{{ s.d }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="margin-top:auto;font-size:15px;font-weight:500;line-height:1.4;color:#181d26;text-wrap:pretty;">{{ f.verdict }}</div>
+      </article>
+    </sc-for>
+  </div>
+</section>
+
+<section style="background:#f5e9d4;border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:32px;">
+  <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">Side by side</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px 24px;font-size:14px;line-height:1.45;color:#333840;">
+    <div><span style="font-weight:500;color:#181d26;">Scale</span> stays readable as the org grows to thousands of components.</div>
+    <div><span style="font-weight:500;color:#181d26;">Scoping</span> narrows to what one change affects.</div>
+    <div><span style="font-weight:500;color:#181d26;">Traversal</span> follows a dependency chain without losing your place.</div>
+    <div><span style="font-weight:500;color:#181d26;">Flow</span> shows direction and data movement between systems.</div>
+    <div><span style="font-weight:500;color:#181d26;">Exec read</span> a CIO understands it in under a minute, untrained.</div>
+  </div>
+  <div style="overflow-x:auto;">
+    <div style="min-width:720px;display:grid;grid-template-columns:minmax(200px,1.6fr) repeat(5,minmax(90px,1fr));font-size:14px;">
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Format</div>
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Scale</div>
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Scoping</div>
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Traversal</div>
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Flow</div>
+      <div style="padding:12px 0;font-weight:500;border-bottom:1px solid #181d26;">Exec read</div>
+      <sc-for list="{{ formats }}" as="f" hint-placeholder-count="8">
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;color:#181d26;">{{ f.name }}</div>
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;letter-spacing:2px;">{{ f.d1 }}</div>
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;letter-spacing:2px;">{{ f.d2 }}</div>
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;letter-spacing:2px;">{{ f.d3 }}</div>
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;letter-spacing:2px;">{{ f.d4 }}</div>
+        <div style="padding:12px 0;border-bottom:1px solid #d9cbb2;letter-spacing:2px;">{{ f.d5 }}</div>
+      </sc-for>
+    </div>
+  </div>
+  <p style="margin:0;font-size:14px;line-height:1.45;color:#41454d;">Scores are a design judgment on a 1–5 scale, assuming an org with 5,000+ metadata components and 10–30 integrations.</p>
+</section>
+
+<section style="background:#aa2d00;color:#ffffff;border-radius:12px;padding:48px;display:flex;flex-direction:column;gap:32px;">
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+    <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">No single view works. Compose them by altitude.</h2>
+    <p style="margin:0;font-size:16px;line-height:1.5;">Each format wins at one altitude and fails at the others. The pattern that scales is a ladder: start from a question, show the smallest view that answers it, and let every element open the next level down.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;">
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #ffffff;padding-top:16px;">
+      <div style="font-size:14px;font-weight:500;">Level 1 · Org</div>
+      <div style="font-size:20px;line-height:1.35;">Generated layered architecture with flow-weighted edges</div>
+      <div style="font-size:14px;line-height:1.45;">Which systems connect to Salesforce, and how much moves between them.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #ffffff;padding-top:16px;">
+      <div style="font-size:14px;font-weight:500;">Level 2 · Hotspots</div>
+      <div style="font-size:20px;line-height:1.35;">Treemap of objects by dependency radius and risk</div>
+      <div style="font-size:14px;line-height:1.45;">Where complexity sits, before anyone asks about a specific change.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #ffffff;padding-top:16px;">
+      <div style="font-size:14px;font-weight:500;">Level 3 · Change scope</div>
+      <div style="font-size:20px;line-height:1.35;">Ego network beside a ranked impact list</div>
+      <div style="font-size:14px;line-height:1.45;">What this change touches, two hops out, grouped by who owns it.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #ffffff;padding-top:16px;">
+      <div style="font-size:14px;font-weight:500;">Level 4 · Evidence</div>
+      <div style="font-size:20px;line-height:1.35;">Component detail</div>
+      <div style="font-size:14px;line-height:1.45;">The exact formula, flow element, or API call that creates the dependency.</div>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:24px;padding-top:48px;">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:760px;">
+    <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">Level 3 prototype: change scope</h2>
+    <p style="margin:0;font-size:16px;line-height:1.5;color:#333840;">Pick a change. Ring distance is hop count from it. Hover a node to see the path back; click any node or list item to re-center. The trail keeps your place.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <span style="font-size:14px;font-weight:500;color:#41454d;margin-right:4px;">Change</span>
+      <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
+        <button onClick="{{ p.onClick }}" style="font:inherit;font-size:14px;padding:8px 14px;border-radius:6px;border:1px solid {{ p.border }};background:{{ p.bg }};color:{{ p.fg }};cursor:pointer;">{{ p.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span style="font-size:14px;font-weight:500;color:#41454d;margin-right:4px;">Reach</span>
+      <div style="display:flex;border:1px solid #dddddd;border-radius:6px;overflow:hidden;">
+        <sc-for list="{{ hopOpts }}" as="o" hint-placeholder-count="3">
+          <button onClick="{{ o.onClick }}" style="font:inherit;font-size:14px;padding:8px 14px;border:none;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer;">{{ o.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:stretch;">
+    <div style="flex:1.6 1 520px;min-width:0;border:1px solid #dddddd;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:#41454d;">
+        <span>Trail:</span>
+        <sc-for list="{{ trail }}" as="t" hint-placeholder-count="1">
+          <sc-if value="{{ t.notFirst }}" hint-placeholder-val="{{ false }}"><span>›</span></sc-if>
+          <button onClick="{{ t.onClick }}" style="font:inherit;font-size:13px;border:none;background:none;padding:2px 4px;color:#1b61c9;cursor:pointer;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <div>{{ graph }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:#41454d;">
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#aa2d00;"></span>Change</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#181d26;"></span>Integration</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#fcab79;border:1px solid #181d26;"></span>Automation</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#254fad;"></span>Team</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#e0e2e6;border:1px solid #181d26;"></span>Report</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#a8d8c4;border:1px solid #181d26;"></span>Object</span>
+        <span style="display:flex;gap:6px;align-items:center;"><span style="width:10px;height:10px;border-radius:50%;background:#f4d35e;border:1px solid #181d26;"></span>Field</span>
+      </div>
+    </div>
+    <aside style="flex:1 1 300px;min-width:0;background:#f8fafc;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:20px;max-height:640px;overflow:auto;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:14px;font-weight:500;color:#41454d;">{{ targetKind }}</div>
+        <div style="font-size:24px;line-height:1.3;word-break:break-word;">{{ targetLabel }}</div>
+        <div style="font-size:14px;line-height:1.45;color:#333840;">{{ summary }}</div>
+        <div style="font-size:14px;line-height:1.45;color:#181d26;font-weight:500;">{{ breakdown }}</div>
+      </div>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:13px;font-weight:500;color:#41454d;border-bottom:1px solid #dddddd;padding-bottom:6px;">{{ g.name }} · {{ g.count }}</div>
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+            <button onClick="{{ it.onClick }}" onMouseEnter="{{ it.onEnter }}" onMouseLeave="{{ it.onLeave }}" style="font:inherit;text-align:left;border:none;background:{{ it.bg }};border-radius:6px;padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;gap:2px;" style-hover="background:#e0e2e6;">
+              <span style="font-size:14px;color:#181d26;word-break:break-word;">{{ it.label }}</span>
+              <span style="font-size:12px;color:#41454d;">{{ it.meta }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+      <sc-if value="{{ hasHidden }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:14px;color:#41454d;">{{ hiddenText }}</div>
+      </sc-if>
+    </aside>
+  </div>
+</section>
+
+<section style="background:#f8fafc;border-radius:12px;padding:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:48px;">
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">Design principles</h2>
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:14px;line-height:1.5;color:#333840;">
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Start from the change, not the org.</span>Search or pick a component and the map scopes itself around it.</div>
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Cap at two hops by default.</span>Show what lies beyond as a count, not as more dots.</div>
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Aggregate hubs.</span>Account and Opportunity collapse to one node with a count until opened.</div>
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Rank before you render.</span>A list sorted by severity and owner sits beside every graph.</div>
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Type the edges.</span>Writes, reads, and syncs-to carry different risk and should look different.</div>
+      <div><span style="font-size:16px;font-weight:500;color:#181d26;display:block;">Keep positions stable.</span>Same component, same place, every visit, so a mental map can form.</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <h2 style="margin:0;font-size:32px;font-weight:400;line-height:1.2;">Mapped to Whirl’s published analyses</h2>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);font-size:14px;line-height:1.45;">
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Impact analysis</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Ego network + ranked list</div>
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Org Comparison</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Adjacency matrix, org A × org B</div>
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Vendor Replacement</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Sankey of the tool’s operational footprint</div>
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Duplicate Fields, Relationship Field Limits</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Treemap hotspots</div>
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Process Builder and Workflow Rule Migration</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Matrix of automations × objects, with a ranked readiness list</div>
+      <div style="padding:12px 12px 12px 0;border-bottom:1px solid #dddddd;font-weight:500;">Solution Design</div><div style="padding:12px 0;border-bottom:1px solid #dddddd;color:#333840;">Generated layered architecture</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultHops&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2,&quot;min&quot;:1,&quot;max&quot;:3,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Prototype&quot;},&quot;showScores&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Format cards&quot;}}">
+class Component extends DCLogic {
+  static N = [
+    ['acc','Account','object'],['opp','Opportunity','object'],['lead','Lead','object'],['quote','Quote','object'],['case','Case','object'],
+    ['f_ind','Account.Industry__c','field'],['f_seg','Account.Segment__c','field'],['f_lind','Lead.Industry__c','field'],['f_stage','Opportunity.StageName','field'],['f_arr','Opportunity.ARR__c','field'],['f_disc','Quote.Discount__c','field'],
+    ['fl_l2a','Lead_To_Account_Sync','automation','Flow'],['fl_opp','Opp_Stage_Sync','automation','Flow'],['ap_acc','AccountService','automation','Apex class'],['tr_opp','OpportunityTrigger','automation','Apex trigger'],['vr_ind','Industry_Required','automation','Validation rule'],['pb_terr','Territory_Assign','automation','Process Builder'],['fl_disc','Discount_Approval','automation','Flow'],
+    ['i_mkto','Marketo lead sync','integration'],['i_ns','NetSuite customer sync','integration'],['i_snow','Snowflake ELT','integration'],['i_zd','Zendesk case bridge','integration'],['i_ds','DocuSign CLM','integration'],
+    ['r_ind','Accounts by Industry','report','Report'],['r_pipe','Pipeline by Segment','report','Report'],['r_book','Exec Bookings','report','Dashboard'],['r_csat','CSAT by Segment','report','Report'],
+    ['tm_rev','RevOps','team'],['tm_fin','Finance','team'],['tm_mkt','Marketing Ops','team'],['tm_sup','Support','team']
+  ];
+  static E = [['f_ind','acc'],['f_seg','acc'],['f_lind','lead'],['f_stage','opp'],['f_arr','opp'],['f_disc','quote'],['f_ind','vr_ind'],['f_ind','fl_l2a'],['f_lind','fl_l2a'],['f_ind','ap_acc'],['f_ind','r_ind'],['f_ind','pb_terr'],['f_ind','i_ns'],['f_seg','pb_terr'],['f_seg','r_pipe'],['f_seg','r_csat'],['ap_acc','f_seg'],['f_lind','i_mkto'],['i_mkto','tm_mkt'],['f_stage','fl_opp'],['f_stage','tr_opp'],['fl_opp','f_arr'],['tr_opp','i_ns'],['f_arr','r_book'],['f_arr','i_snow'],['r_book','tm_fin'],['i_ns','tm_fin'],['pb_terr','tm_rev'],['r_pipe','tm_rev'],['fl_l2a','tm_rev'],['f_disc','fl_disc'],['fl_disc','tm_fin'],['quote','i_ds'],['quote','opp'],['acc','opp'],['lead','acc'],['case','acc'],['case','i_zd'],['i_zd','tm_sup'],['r_csat','tm_sup'],['acc','i_snow'],['opp','i_snow']];
+  static COL = { object:'#a8d8c4', field:'#f4d35e', automation:'#fcab79', integration:'#181d26', report:'#e0e2e6', team:'#254fad' };
+  static ORDER = ['integration','automation','team','report','object','field'];
+  static GNAME = { integration:'Integrations', automation:'Automations', team:'Teams', report:'Reports & dashboards', object:'Objects', field:'Fields' };
+  static TNAME = { integration:'Integration', automation:'Automation', team:'Team', report:'Report', object:'Object', field:'Field' };
+
+  state = { target:'f_ind', hops:null, hover:null, trail:['f_ind'] };
+
+  node(id){ const n = Component.N.find(x=>x[0]===id); return { id, label:n[1], t:n[2], sub:n[3] }; }
+  bfs(src){
+    const adj = {}; Component.N.forEach(n=>adj[n[0]]=[]);
+    Component.E.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});
+    const d={[src]:0}, p={}, q=[src];
+    while(q.length){ const u=q.shift(); for(const v of adj[u]) if(d[v]==null){d[v]=d[u]+1;p[v]=u;q.push(v);} }
+    return {d,p};
+  }
+  go(id){ this.setState(s=>{ const i=s.trail.indexOf(id); return { target:id, hover:null, trail: i>=0 ? s.trail.slice(0,i+1) : [...s.trail,id].slice(-5) }; }); }
+
+  rng(seed){ return ()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+  sketches(){
+    if (this._sk) return this._sk;
+    const h=React.createElement, INK='#181d26', MUT='#9297a0', HL='#dddddd', CO='#aa2d00';
+    const S=(...k)=>h('svg',{viewBox:'0 0 280 170',width:'100%',style:{display:'block',height:'auto'}},...k);
+    const T=(x,y,s,o={})=>h('text',{x,y,fontSize:o.fs||9,fill:o.fill||'#41454d',textAnchor:o.a||'start',fontFamily:'inherit'},s);
+    const pal=['#a8d8c4','#f4d35e','#fcab79',INK,'#e0e2e6'];
+    // 1 hairball
+    let r=this.rng(11); const pts=[]; for(let i=0;i<95;i++){const a=r()*6.283,d=Math.sqrt(r());pts.push([140+Math.cos(a)*d*128,85+Math.sin(a)*d*74,r()]);}
+    const hl=[]; pts.forEach((p,i)=>{for(let k=0;k<4;k++){const q=pts[Math.floor(r()*pts.length)];if(Math.hypot(p[0]-q[0],p[1]-q[1])<60)hl.push(h('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:MUT,strokeOpacity:.45,strokeWidth:.6}));}});
+    const hair=S(...hl,...pts.map(p=>h('circle',{cx:p[0],cy:p[1],r:2.6,fill:pal[Math.floor(p[2]*5)],stroke:INK,strokeWidth:.5})));
+    // 2 radial
+    const rl=[],rn=[],cx=140,cy=85;
+    for(let i=0;i<6;i++){const a=(i*60-90)*Math.PI/180,x=cx+Math.cos(a)*40,y=cy+Math.sin(a)*40;rl.push(h('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:MUT,strokeWidth:1}));
+      const kids=i%2?2:3; for(let j=0;j<kids;j++){const b=a+(j-(kids-1)/2)*0.3,x2=cx+Math.cos(b)*72,y2=cy+Math.sin(b)*72;rl.push(h('line',{x1:x,y1:y,x2,y2,stroke:HL,strokeWidth:1}));rn.push(h('circle',{cx:x2,cy:y2,r:3,fill:'#e0e2e6',stroke:INK,strokeWidth:.5}));}
+      rn.push(h('circle',{cx:x,cy:y,r:5.5,fill:pal[i%3],stroke:INK,strokeWidth:.8}));}
+    const radial=S(h('circle',{cx,cy,r:40,fill:'none',stroke:HL,strokeDasharray:'3 3'}),h('circle',{cx,cy,r:72,fill:'none',stroke:HL,strokeDasharray:'3 3'}),...rl,...rn,h('circle',{cx,cy,r:9,fill:CO}),T(276,166,'+38 at 3 hops',{a:'end'}));
+    // 3 clustered
+    const cl=[[45,42,20,'NetSuite'],[45,130,18,'Marketo'],[245,44,22,'Snowflake'],[245,132,16,'Zendesk']], big=[148,87,54];
+    r=this.rng(5); const dots=[]; for(let i=0;i<16;i++){const a=r()*6.283,d=Math.sqrt(r())*38;dots.push(h('circle',{cx:big[0]+Math.cos(a)*d,cy:big[1]+Math.sin(a)*d*.85,r:2.6,fill:pal[i%3],stroke:INK,strokeWidth:.5}));}
+    const clustered=S(...cl.map((c,i)=>h('line',{x1:c[0],y1:c[1],x2:big[0],y2:big[1],stroke:INK,strokeOpacity:.18,strokeWidth:[9,5,7,3][i],strokeLinecap:'round'})),
+      h('circle',{cx:big[0],cy:big[1],r:big[2],fill:'#e8f4ee',stroke:'#0a2e0e',strokeWidth:1}),...dots,T(big[0],big[1]+big[2]-6,'Salesforce · expanded',{a:'middle',fill:'#0a2e0e'}),
+      ...cl.map(c=>h('circle',{cx:c[0],cy:c[1],r:c[2],fill:'#ffffff',stroke:MUT})),...cl.map(c=>T(c[0],c[1]+3,c[3],{a:'middle',fs:8.5,fill:INK})));
+    // 4 matrix
+    r=this.rng(3); const mc=[], ox=92, oy=14, cs=13;
+    for(let i=0;i<11;i++)for(let j=0;j<11;j++){const v=r();mc.push(h('rect',{x:ox+j*cs,y:oy+i*cs,width:cs-1,height:cs-1,fill:v>.7?INK:'#ffffff',fillOpacity:v>.7?Math.min(1,(v-.55)*2):1,stroke:HL,strokeWidth:.5}));}
+    const matrix=S(...mc,h('rect',{x:ox-2,y:oy+4*cs-1,width:11*cs+3,height:cs+1,fill:'none',stroke:CO,strokeWidth:1.6}),T(ox-6,oy+4*cs+9,'Account',{a:'end',fill:CO}),T(ox-6,oy+8,'automations →',{a:'end'}),T(ox-6,oy+20,'× fields',{a:'end'}));
+    // 5 sankey
+    const band=(x1,y1,x2,y2,w,c)=>h('path',{d:`M${x1},${y1} C${(x1+x2)/2},${y1} ${(x1+x2)/2},${y2} ${x2},${y2}`,stroke:c,strokeWidth:w,strokeOpacity:.75,fill:'none'});
+    const sankey=S(band(30,35,130,40,24,'#a8d8c4'),band(30,85,130,94,34,'#f4d35e'),band(30,132,130,145,16,'#fcab79'),band(140,36,240,32,14,'#a8d8c4'),band(140,82,240,50,14,'#f4d35e'),band(140,100,240,95,22,'#f4d35e'),band(140,118,240,138,12,'#f4d35e'),band(140,145,240,108,10,'#fcab79'),
+      ...[[20,20,30],[20,65,40],[20,120,25],[130,25,30],[130,70,55],[130,135,20],[240,20,40],[240,75,40],[240,128,22]].map(b=>h('rect',{x:b[0],y:b[1],width:10,height:b[2],fill:INK})),
+      T(18,14,'Sources'),T(128,14,'Objects'),T(262,14,'Consumers',{a:'end'}));
+    // 6 treemap
+    const tm=[[0,0,120,92,'Account',CO,'#fff'],[120,0,80,92,'Opportunity','#fcab79',INK],[200,0,60,52,'Quote','#e0e2e6',INK],[200,52,60,40,'Case','#e0e2e6',INK],[0,92,70,58,'Lead','#fcab79',INK],[70,92,60,58,'Contract','#e0e2e6',INK],[130,92,70,58,'Product','#e0e2e6',INK],[200,92,60,58,'42 custom','#f8fafc',INK]];
+    const treemap=S(...tm.map(b=>h('rect',{x:10+b[0],y:10+b[1],width:b[2],height:b[3],fill:b[5],stroke:'#ffffff',strokeWidth:2})),...tm.map(b=>T(16+b[0],24+b[1],b[4],{fill:b[6],fs:9.5})),T(16,40,'412 deps · 3 overlapping',{fill:'#fff',fs:8}),T(16,51,'automations',{fill:'#fff',fs:8}));
+    // 7 swimlane
+    const lanes=[[6,'Sources'],[60,'Salesforce'],[114,'Downstream']];
+    const bx=[[0,62,'Marketo'],[0,132,'NetSuite'],[0,202,'Zendesk'],[1,96,'Lead'],[1,168,'Account'],[2,80,'Snowflake'],[2,170,'Finance BI']];
+    const pos=b=>[b[1],lanes[b[0]][0]+22];
+    const ar=[[0,3],[1,4],[2,4],[3,4],[4,5],[4,6]].map(([a,b])=>{const[p1,q1]=pos(bx[a]),[p2,q2]=pos(bx[b]);const same=bx[a][0]===bx[b][0];return h('line',{x1:same?p1+28:p1+14,y1:same?q1+10:q1+20,x2:same?p2-28:p2,y2:same?q2+10:q2-1,stroke:INK,strokeWidth:.9,markerEnd:'url(#swA)'});});
+    const swim=S(h('defs',null,h('marker',{id:'swA',viewBox:'0 0 6 6',refX:5,refY:3,markerWidth:5,markerHeight:5,orient:'auto'},h('path',{d:'M0,0 L6,3 L0,6 z',fill:INK}))),
+      ...lanes.map(l=>h('rect',{x:6,y:l[0],width:268,height:50,rx:6,fill:'#ffffff'})),...lanes.map(l=>T(12,l[0]+12,l[1])),...ar,
+      ...bx.map(b=>{const[x,y]=pos(b);return h('rect',{x:x-28,y,width:56,height:20,rx:3,fill:'#ffffff',stroke:INK,strokeWidth:.8});}),...bx.map(b=>{const[x,y]=pos(b);return T(x,y+13,b[2],{a:'middle',fill:INK,fs:8.5});}));
+    // 8 ranked
+    const rows=[['Exec Bookings','Finance',.92],['NetSuite customer sync','Finance',.84],['Territory_Assign','RevOps',.62],['AccountService','RevOps',.5],['Accounts by Industry','RevOps',.36],['Industry_Required','Admin',.28]];
+    const ranked=S(...rows.flatMap((w,i)=>[T(8,22+i*24,w[0],{fill:INK,fs:9.5}),T(8,32+i*24,w[1],{fs:8}),h('rect',{x:150,y:16+i*24,width:w[2]*118,height:9,rx:2,fill:i<2?CO:MUT}),h('line',{x1:8,x2:272,y1:38+i*24,y2:38+i*24,stroke:HL,strokeWidth:.6})]));
+    this._sk={hair,radial,clustered,matrix,sankey,treemap,swim,ranked};
+    return this._sk;
+  }
+
+  formats(){
+    const sk=this.sketches(), dots=v=>'●'.repeat(v)+'○'.repeat(5-v), K=['Scale','Scoping','Traversal','Flow','Exec read'];
+    const F=[
+      ['Node-link, physics layout','Force-directed network',sk.hair,'Showing that the org is complex, and letting specialists discover clusters during exploration.','Past ~200 nodes it becomes a hairball. The layout reshuffles on each load, so nobody builds a mental map.','The default most tools ship. Useful as texture, not as an answer.',[1,2,2,2,1]],
+      ['Radial, N-hop neighborhood','Ego network',sk.radial,'Blast radius of one component. Hop rings make distance from the change literal; clicking a neighbor re-centers, which makes traversal natural.','A hub like Account floods ring two. Needs aggregation and a hop cap.','The strongest single format for change scoping.',[4,5,5,3,4]],
+      ['Aggregated, expand on demand','Clustered graph with semantic zoom',sk.clustered,'Org-wide overview. Components collapse into systems or objects, edges merge into weighted bundles, and one cluster opens at a time.','Cluster choice is opinionated, and cross-cluster detail stays hidden until expanded.','The right overview if clusters match how IT talks: system, object, team.',[5,3,4,3,3]],
+      ['Rows × columns','Adjacency matrix',sk.matrix,'Dense many-to-many relationships: which automations write which fields, or overlap between two orgs. No edge crossings at any density.','Paths and direction are invisible, and executives read it slowly. Row ordering makes or breaks it.','An analyst tool. Strong for org comparison and duplicate detection.',[4,2,2,1,2]],
+      ['Weighted flow','Sankey diagram',sk.sankey,'How data moves between systems, e.g. Marketo → Lead → Account → Snowflake. Volume reads at a glance in a board deck.','Sync loops create cycles it cannot draw, and past ~25 nodes it tangles. Not navigable.','The best format for an integration footprint slide.',[3,3,1,5,5]],
+      ['Nested area','Treemap',sk.treemap,'Where complexity and risk concentrate. Area is dependency count; color is risk, such as overlapping automation or proximity to limits.','It shows no relationships at all.','A hotspot finder. Pair it with a graph view for drill-down.',[5,2,3,1,4]],
+      ['Swimlanes by tier','Layered architecture',sk.swim,'The diagram CIOs already know: sources, Salesforce, downstream. Stable positions and easy to annotate.','Usually hand-drawn and stale within a quarter. Never reaches field level.','Generated from the graph, it becomes the trusted top level.',[2,2,2,4,5]],
+      ['Sorted table','Ranked impact list',sk.ranked,'The literal answer: 23 components affected, sorted by severity, with owners. Scales to any size and exports to a change ticket.','Structure is lost; explaining why something is affected needs a path view.','Every graph view needs one beside it.',[5,5,3,1,4]]
+    ];
+    return F.map((f,i)=>({num:String(i+1).padStart(2,'0'),kind:f[0],name:f[1],sketch:f[2],good:f[3],breaks:f[4],verdict:f[5],scores:f[6].map((v,j)=>({k:K[j],d:dots(v)})),d1:dots(f[6][0]),d2:dots(f[6][1]),d3:dots(f[6][2]),d4:dots(f[6][3]),d5:dots(f[6][4])}));
+  }
+
+  graph(target,hops,d,p){
+    const h=React.createElement, W=760, H=500, cx=380, cy=250;
+    const radii = hops===1?[0,150]:hops===2?[0,115,200]:[0,85,160,225];
+    const ang={[target]:-Math.PI/2}, pos={[target]:[cx,cy]}, ord=Component.ORDER;
+    for(let k=1;k<=hops;k++){
+      const ring=Object.keys(d).filter(id=>d[id]===k);
+      if(!ring.length) continue;
+      const norm=a=>((a%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+      ring.sort((a,b)=> k===1 ? ord.indexOf(this.node(a).t)-ord.indexOf(this.node(b).t) : (norm(ang[p[a]])-norm(ang[p[b]])) || ord.indexOf(this.node(a).t)-ord.indexOf(this.node(b).t));
+      const step=2*Math.PI/ring.length;
+      let start=-Math.PI/2;
+      if(k>1){let sx=0,sy=0;ring.forEach((id,i)=>{sx+=Math.cos(ang[p[id]]-i*step);sy+=Math.sin(ang[p[id]]-i*step);});start=Math.atan2(sy,sx);}
+      ring.forEach((id,i)=>{const a=start+i*step;ang[id]=a;pos[id]=[cx+Math.cos(a)*radii[k],cy+Math.sin(a)*radii[k]];});
+    }
+    const vis=id=>d[id]!=null&&d[id]<=hops;
+    const path=new Set(); let x=this.state.hover; while(x&&x!==target&&p[x]){path.add(x+'|'+p[x]);path.add(p[x]+'|'+x);x=p[x];}
+    const edges=Component.E.filter(([a,b])=>vis(a)&&vis(b)).map(([a,b])=>{
+      const tree=p[a]===b||p[b]===a, on=path.has(a+'|'+b);
+      return h('line',{key:a+b,x1:pos[a][0],y1:pos[a][1],x2:pos[b][0],y2:pos[b][1],stroke:on?'#aa2d00':tree?'#9297a0':'#dddddd',strokeWidth:on?2.4:tree?1.2:.8});
+    });
+    const visIds=Object.keys(d).filter(vis);
+    const ringLabel=k=>{
+      const as=visIds.filter(id=>d[id]===k).map(id=>((ang[id]%(2*Math.PI))+2*Math.PI)%(2*Math.PI)).sort((a,b)=>a-b);
+      if(!as.length) return Math.PI*0.75;
+      let best=0,ba=as[0]+Math.PI;
+      as.forEach((a,i)=>{const nx=i<as.length-1?as[i+1]:as[0]+2*Math.PI, g=nx-a; if(g>best){best=g;ba=a+g/2;}});
+      return ba;
+    };
+    const rings=radii.slice(1).map((rr,i)=>{const a=ringLabel(i+1);return h('g',{key:'r'+i},h('circle',{cx,cy,r:rr,fill:'none',stroke:'#dddddd',strokeDasharray:'4 4'}),h('text',{x:cx+Math.cos(a)*rr,y:cy+Math.sin(a)*rr+3.5,fontSize:10,fill:'#9297a0',textAnchor:'middle',fontFamily:'inherit',style:{paintOrder:'stroke',stroke:'#ffffff',strokeWidth:4}},`${i+1} hop${i?'s':''}`));});
+    // label placement with collision avoidance (priority: target, hover, inner rings first)
+    const R=k=>[13,8,6,4.5][k];
+    const obstacles=visIds.map(id=>{const[x,y]=pos[id],r=R(d[id])+1;return [x-r,y-r,x+r,y+r,id];});
+    const placed=[], labels={};
+    const hit=(b,self)=>b[0]<2||b[2]>W-2||b[1]<2||b[3]>H-2||placed.some(q=>b[0]<q[2]&&b[2]>q[0]&&b[1]<q[3]&&b[3]>q[1])||obstacles.some(q=>q[4]!==self&&b[0]<q[2]&&b[2]>q[0]&&b[1]<q[3]&&b[3]>q[1]);
+    const hov=this.state.hover;
+    const prio=[...visIds].sort((a,b)=>(a===target?-2:a===hov?-1:d[a])-(b===target?-2:b===hov?-1:d[b]));
+    prio.forEach(id=>{
+      const n=this.node(id),[nx,ny]=pos[id],k=d[id],nr=R(k),isT=id===target,isH=id===hov;
+      const fs=isT?13:isH?12:10.5, w=n.label.length*fs*0.56, hgt=fs+2;
+      const c=Math.cos(ang[id]),s=Math.sin(ang[id]);
+      const cands=isT?[['middle',nx,ny+nr+16]]:[
+        [c>0.25?'start':c<-0.25?'end':'middle', nx+c*(nr+6), ny+s*(nr+6)+3.5+(Math.abs(c)<=0.25?(s>0?8:-4):0)],
+        ['middle',nx,ny+nr+12],['middle',nx,ny-nr-5],['start',nx+nr+5,ny+3.5],['end',nx-nr-5,ny+3.5]];
+      for(const[anchor,tx,ty] of cands){
+        const x0=anchor==='start'?tx:anchor==='end'?tx-w:tx-w/2, b=[x0-2,ty-fs+1,x0+w+2,ty+3];
+        if(isT||isH||!hit(b,id)){placed.push(b);labels[id]={anchor,tx,ty,fs};break;}
+      }
+    });
+    const nodes=[...visIds].sort((a,b)=>(a===hov)-(b===hov)||d[b]-d[a]).map(id=>{
+      const n=this.node(id), [nx,ny]=pos[id], nr=R(d[id]), isT=id===target, isH=id===hov, L=labels[id];
+      return h('g',{key:id,style:{cursor:'pointer'},onClick:()=>this.go(id),onMouseEnter:()=>this.setState({hover:id}),onMouseLeave:()=>this.setState({hover:null})},
+        isH&&!isT?h('circle',{cx:nx,cy:ny,r:nr+5,fill:'none',stroke:'#aa2d00',strokeWidth:1.5}):null,
+        h('circle',{cx:nx,cy:ny,r:nr,fill:isT?'#aa2d00':Component.COL[n.t],stroke:isT?'#ffffff':'#181d26',strokeWidth:isT?3:.8}),
+        L?h('text',{x:L.tx,y:L.ty,fontSize:L.fs,fontWeight:isT||isH?500:400,fill:'#181d26',textAnchor:L.anchor,fontFamily:'inherit',style:{paintOrder:'stroke',stroke:'#ffffff',strokeWidth:4,strokeLinejoin:'round'}},n.label):null);
+    });
+    return h('svg',{viewBox:`0 0 ${W} ${H}`,width:'100%',style:{display:'block',height:'auto'}},...rings,...edges,...nodes);
+  }
+
+  renderVals(){
+    const hops=this.state.hops ?? this.props.defaultHops ?? 2;
+    const target=this.state.target, tn=this.node(target);
+    const {d,p}=this.bfs(target);
+    const visIds=Object.keys(d).filter(id=>id!==target&&d[id]<=hops);
+    const hidden=Object.keys(d).filter(id=>d[id]>hops).length;
+    const groups=Component.ORDER.map(t=>{
+      const items=visIds.filter(id=>this.node(id).t===t).sort((a,b)=>d[a]-d[b]).map(id=>{const n=this.node(id);return {label:n.label,meta:`${n.sub||Component.TNAME[n.t]} · ${d[id]} hop${d[id]>1?'s':''}${d[id]>1?' via '+this.node(p[id]).label:''}`,bg:id===this.state.hover?'#e0e2e6':'transparent',onClick:()=>this.go(id),onEnter:()=>this.setState({hover:id}),onLeave:()=>this.setState({hover:null})};});
+      return {name:Component.GNAME[t],count:items.length,items};
+    }).filter(g=>g.count);
+    const presets=[['f_ind','Account.Industry__c'],['fl_opp','Opp_Stage_Sync'],['i_ns','NetSuite customer sync'],['f_disc','Quote.Discount__c']].map(([id,label])=>{const on=id===target;return {label,bg:on?'#181d26':'#ffffff',fg:on?'#ffffff':'#181d26',border:on?'#181d26':'#dddddd',onClick:()=>this.setState({target:id,trail:[id],hover:null})};});
+    const hopOpts=[1,2,3].map(n=>({label:`${n} hop${n>1?'s':''}`,bg:n===hops?'#181d26':'#ffffff',fg:n===hops?'#ffffff':'#181d26',onClick:()=>this.setState({hops:n})}));
+    const cnt=t=>visIds.filter(id=>this.node(id).t===t).length;
+    const parts=[['integration','integration','integrations'],['automation','automation','automations'],['team','team','teams'],['report','report','reports']].map(([t,s,pl])=>{const c=cnt(t);return c?`${c} ${c>1?pl:s}`:null;}).filter(Boolean);
+    return {
+      showScores:this.props.showScores ?? true,
+      formats:this.formats(),
+      presets, hopOpts,
+      trail:this.state.trail.map((id,i)=>({label:this.node(id).label,notFirst:i>0,onClick:()=>this.go(id)})),
+      graph:this.graph(target,hops,d,p),
+      targetKind:tn.sub||Component.TNAME[tn.t],
+      targetLabel:tn.label,
+      summary:`${visIds.length} components within ${hops} hop${hops>1?'s':''} of this change.`,
+      breakdown:parts.length?parts.join(' · '):'No integrations, automations, teams, or reports in reach.',
+      groups,
+      hasHidden:hidden>0,
+      hiddenText:`+${hidden} more beyond ${hops} hop${hops>1?'s':''}`
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -77,33 +77,21 @@
   }
 
   function route() {
-    const cases = location.hash === '#cases';
-    const training = location.hash === '#training';
-    const chat = location.hash === '#chat';
+    const viz = location.hash === '#visualizations';
     const m = location.hash.match(/^#p=(.+)$/);
-    const p = !cases && !training && !chat && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
+    const p = !viz && m && PROTOS.find(x => x.id === decodeURIComponent(m[1]));
     const tog = (id, cls, on) => { const el = $(id); if (el) el.classList.toggle(cls, on); };
     const hide = (id, h) => { const el = $(id); if (el) el.hidden = h; };
-    tog('tab-patterns', 'on', !cases && !training && !chat);
-    tog('tab-chat', 'on', chat);
-    hide('chat', !chat);
-    tog('tab-cases', 'on', cases);
-    tog('tab-training', 'on', training);
-    hide('cases', !cases);
-    hide('training', !training);
-    hide('gallery', cases || training || chat || !!p);
-    hide('detail', cases || training || chat || !p);
-    if (chat) {
-      const f = document.querySelector('.chat-frame');
-      if (f && !f.src) f.src = 'prototypes/whirl-chat/index.html';
-      document.title = 'Whirl Chat Options · Knowledge Base';
+    tog('tab-patterns', 'on', !viz);
+    tog('tab-visualizations', 'on', viz);
+    hide('visualizations', !viz);
+    hide('gallery', viz || !!p);
+    hide('detail', viz || !p);
+    if (viz) {
+      const f = document.querySelector('.viz-frame');
+      if (f && !f.src) f.src = 'visualizations/index.html';
+      document.title = 'Visualizations · Knowledge Base';
     }
-    else if (training) {
-      const f = document.querySelector('.training-frame');
-      if (f && !f.src) f.src = 'training/onboarding/index.html';
-      document.title = 'Whirl Academy · Knowledge Base';
-    }
-    else if (cases) { window.renderCases($('cases')); document.title = 'Case Studies · Knowledge Base'; }
     else if (p) { renderDetail(p); document.title = `${p.title} · Knowledge Base`; }
     else { renderGallery(); document.title = 'Patterns and Prototypes · Knowledge Base'; }
   }
